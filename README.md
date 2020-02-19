@@ -17,7 +17,7 @@ Warrior	2.7	April 2019	2.7.0	Stable	21.0	1.42
 
 ## Private Repositories (ESSENTIAL SETUP)
 
-This Yocto BSP pulls data from 'Microsemi-SoC-IP' private repositories, the recipes use ssh to clone the repositories. In order to work without entering username/password ssh key configuration is required.
+This Yocto BSP pulls data from 'Microchip Bitbucket' private repositories, the recipes use ssh to clone the repositories. In order to work without entering username/password ssh key configuration is required.
 
 Follow the instructions from github on [configuring an ssh key](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
 
@@ -30,11 +30,11 @@ $ ssh-keygen -t rsa -b 4096 -C "your_email@example.com" -f ~/.ssh/filename
 #Check the agent pid
 eval $(ssh-agent -s)
 
-#Copy the filename.pub to the GitHub account.
+#Copy the filename.pub to the Bitbucket account.
 xcopy ~/.ssh/filename.pub
 
-#Which will update the list of known hosts.
-ssh -T git@github.com
+#Verify ssh clone of repository
+git clone ssh://git@bitbucket.microchip.com/fpga_pfsoc_es/polarfire-soc-yocto-bsp.git
 ```
 
 If this is not setup correctly you will see the following error:
