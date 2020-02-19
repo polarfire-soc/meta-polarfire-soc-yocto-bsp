@@ -4,13 +4,14 @@
   <remote name="openembedded" fetch="git://github.com/openembedded/" />
   <remote name="riscv" fetch="git://github.com/riscv/" />
   <remote name="yocto" fetch="git://git.yoctoproject.org/" />
-  <remote name="meta-mpfs-bsp" fetch="https://github.com/Microsemi-SoC-IP/" />
+  <remote name="polarfire-soc-yocto-bsp" fetch="https://bitbucket.microchip.com/scm/fpga_pfsoc_es/polarfire-soc-yocto-bsp.git" />
   <default remote="openembedded" revision="master" />
 
   <project name="meta-riscv" remote="riscv" path="meta-riscv" revision="master" />
-  <project name="meta-mpfs-bsp" remote="meta-mpfs-bsp" path="meta-mpfs-bsp" revision="master" />
+  <project name="polarfire-soc-yocto-bsp" remote="polarfire-soc-yocto-bsp" path="polarfire-soc-yocto-bsp" revision="mpfs_checkin_1" />
   <project name="openembedded-core" remote="openembedded" path="openembedded-core" revision="master" />
   <project name="bitbake" remote="openembedded" path="openembedded-core/bitbake" revision="master" />
   <project name="meta-openembedded" remote="openembedded" path="meta-openembedded" revision="master" />
 
 </manifest>
+

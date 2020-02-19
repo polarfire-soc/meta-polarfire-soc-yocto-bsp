@@ -74,7 +74,12 @@ Finally Build the Image, note the machine can also be set on the command line if
 Note: You only need this if you do not have an existing Yocto Project build environment.
 ```
 mkdir mpfs-yocto && cd mpfs-yocto
-repo init -u https://bitbucket.microchip.com/projects/FPGA_PFSOC_ES/repos/polarfire-soc-yocto-bsp -b master -m tools/manifests/riscv-yocto.xml
+
+
+Verify Branch name -b ?
+
+repo init -u https://bitbucket.microchip.com/scm/fpga_pfsoc_es/polarfire-soc-yocto-bsp -b mpfs_checkin_1 -m tools/manifests/riscv-yocto.xml
+
 repo sync
 repo start work --all
 ```
