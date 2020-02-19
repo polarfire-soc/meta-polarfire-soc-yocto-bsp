@@ -1,0 +1,91 @@
+From 1d0b5aab5cb33d7011db83ef99be21e91c2b7cee Mon Sep 17 00:00:00 2001
+From: Palmer Dabbelt <palmer@sifive.com>
+Date: Wed, 14 Aug 2019 18:04:02 -0700
+Subject: [PATCH 1/3] Pass --no-show-signatures to git
+
+I have signatures enabled by default.
+
+Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index b7204ed..ae023e9 100644
+--- a/Makefile
++++ b/Makefile
+@@ -52,7 +52,7 @@ asm: zsbl.asm fsbl.asm
+ 
+ lib/version.c: .git/HEAD .git/index
+ 	echo "const char *gitid = \"$(shell git describe --always --dirty)\";" > lib/version.c
+-	echo "const char *gitdate = \"$(shell git log -n 1 --date=short --format=format:"%ad.%h" HEAD)\";" >> lib/version.c
++	echo "const char *gitdate = \"$(shell git log -n 1 --date=short --format=format:"%ad.%h" --no-show-signatures HEAD)\";" >> lib/version.c
+ 	echo "const char *gitversion = \"$(shell git rev-parse HEAD)\";" >> lib/version.c
+ #	echo "const char *gitstatus = \"$(shell git status -s )\";" >> lib/version.c
+ 
+
+From ec746a9216e18d31a72407c93de51901a46f7669 Mon Sep 17 00:00:00 2001
+From: Palmer Dabbelt <palmer@sifive.com>
+Date: Wed, 14 Aug 2019 18:05:01 -0700
+Subject: [PATCH 2/3] Don't warn on our odd main arguments
+
+Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index ae023e9..d2fa53a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -8,7 +8,7 @@ CC=${CROSSCOMPILE}gcc
+ LD=${CROSSCOMPILE}ld
+ OBJCOPY=${CROSSCOMPILE}objcopy
+ OBJDUMP=${CROSSCOMPILE}objdump
+-CFLAGS=-I. -O2 -ggdb -march=rv64imafdc -mabi=lp64d -Wall -mcmodel=medany -mexplicit-relocs
++CFLAGS=-I. -O2 -ggdb -march=rv64imafdc -mabi=lp64d -Wall -mcmodel=medany -mexplicit-relocs -Wno-main
+ CCASFLAGS=-I. -mcmodel=medany -mexplicit-relocs
+ LDFLAGS=-nostdlib -nostartfiles
+ 
+
+From 068041f77c63dd1878376ba54d29c9f227a8a2d4 Mon Sep 17 00:00:00 2001
+From: Palmer Dabbelt <palmer@sifive.com>
+Date: Wed, 14 Aug 2019 18:26:04 -0700
+Subject: [PATCH 3/3] Import __libc_detect_null as detect_null
+
+This is a newlib function that doesn't exist in glibc, so just import
+it.  Fixes https://github.com/sifive/freedom-u540-c000-bootloader/issues/15 .
+
+Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
+---
+ lib/strlen.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/lib/strlen.c b/lib/strlen.c
+index 565955f..3d6addf 100644
+--- a/lib/strlen.c
++++ b/lib/strlen.c
+@@ -17,6 +17,14 @@
+ #include <string.h>
+ #include <stdint.h>
+ 
++static __inline unsigned long detect_null(unsigned long w)
++{
++  unsigned long mask = 0x7f7f7f7f;
++  if (sizeof (long) == 8)
++    mask = ((mask << 16) << 16) | mask;
++  return ~(((w & mask) + mask) | w | mask);
++}
++
+ size_t strlen(const char *str)
+ {
+   const char *start = str;
+@@ -35,7 +43,7 @@ size_t strlen(const char *str)
+     } while ((uintptr_t)str & (sizeof (long) - 1));
+ 
+   unsigned long *ls = (unsigned long *)str;
+-  while (!__libc_detect_null (*ls++))
++  while (!detect_null (*ls++))
+     ;
+   asm volatile ("" : "+r"(ls)); /* prevent "optimization" */
+ 

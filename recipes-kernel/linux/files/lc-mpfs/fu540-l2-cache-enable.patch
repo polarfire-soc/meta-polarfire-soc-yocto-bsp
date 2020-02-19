@@ -1,0 +1,157 @@
+diff --git a/Documentation/devicetree/bindings/riscv/sifive-l2-cache.txt b/Documentation/devicetree/bindings/riscv/sifive-l2-cache.txt
+index 73d8f19..b77c686 100644
+--- a/Documentation/devicetree/bindings/riscv/sifive-l2-cache.txt
++++ b/Documentation/devicetree/bindings/riscv/sifive-l2-cache.txt
+@@ -37,7 +37,7 @@ Optional Properties:
+ Example:
+ 
+ 	cache-controller@2010000 {
+-		compatible = "sifive,fu540-c000-ccache", "cache";
++		compatible = "sifive,fu540-c000-ccache", "sifive,ccache0", "cache";
+ 		cache-block-size = <64>;
+ 		cache-level = <2>;
+ 		cache-sets = <1024>;
+diff --git a/drivers/soc/Kconfig b/drivers/soc/Kconfig
+index 833e04a..1778f8c 100644
+--- a/drivers/soc/Kconfig
++++ b/drivers/soc/Kconfig
+@@ -14,6 +14,7 @@ source "drivers/soc/qcom/Kconfig"
+ source "drivers/soc/renesas/Kconfig"
+ source "drivers/soc/rockchip/Kconfig"
+ source "drivers/soc/samsung/Kconfig"
++source "drivers/soc/sifive/Kconfig"
+ source "drivers/soc/sunxi/Kconfig"
+ source "drivers/soc/tegra/Kconfig"
+ source "drivers/soc/ti/Kconfig"
+diff --git a/drivers/soc/Makefile b/drivers/soc/Makefile
+index 2ec3550..1462b303 100644
+--- a/drivers/soc/Makefile
++++ b/drivers/soc/Makefile
+@@ -20,6 +20,7 @@ obj-y				+= qcom/
+ obj-y				+= renesas/
+ obj-$(CONFIG_ARCH_ROCKCHIP)	+= rockchip/
+ obj-$(CONFIG_SOC_SAMSUNG)	+= samsung/
++obj-y				+= sifive/
+ obj-y				+= sunxi/
+ obj-$(CONFIG_ARCH_TEGRA)	+= tegra/
+ obj-y				+= ti/
+diff --git a/drivers/soc/sifive/Kconfig b/drivers/soc/sifive/Kconfig
+new file mode 100644
+index 00000000..ec42a47
+--- /dev/null
++++ b/drivers/soc/sifive/Kconfig
+@@ -0,0 +1,21 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# SiFive SOC Drivers
++#
++
++menu "SiFive SOC Drivers"
++
++config SOC_SIFIVE_CCACHE
++       tristate "SiFive composeable cache driver"
++       help
++         Say Y here to enable the SiFive composeable cache driver, which will
++         enable the entire cache when loaded.  Some bootleaders don't enable
++         the entire cache on boot, which leads to a low performance system on
++         almost all workloads.  The composeable cache does not support
++         decreasing the number of cache ways, so once this driver has been
++         loaded the system must be reset in order to reset in order to
++         re-enable the L2 LIM.
++
++         If in doubt, say Y.
++
++endmenu
+diff --git a/drivers/soc/sifive/Makefile b/drivers/soc/sifive/Makefile
+new file mode 100644
+index 00000000..ddd3e63
+--- /dev/null
++++ b/drivers/soc/sifive/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0-only
++obj-$(CONFIG_SOC_SIFIVE_CCACHE) +=     ccache.o
+diff --git a/drivers/soc/sifive/ccache.c b/drivers/soc/sifive/ccache.c
+new file mode 100644
+index 00000000..34ce133
+--- /dev/null
++++ b/drivers/soc/sifive/ccache.c
+@@ -0,0 +1,79 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * SiFive Composeable Cache Driver
++ *
++ * Copyright (C) 2019 SiFive, Inc
++ *
++ * Author: Palmer Dabbelt <palmer@sifive.com>
++ */
++
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_device.h>
++#include <linux/io.h>
++
++#define SIFIVE_CCACHE_WAYENABLE                0x8
++
++static int sifive_ccache_probe(struct platform_device *pdev)
++{
++       struct resource *mem;
++       void __iomem *base;
++
++       mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++       base = devm_ioremap_resource(&pdev->dev, mem);
++       if (IS_ERR(base)) {
++               dev_err(&pdev->dev, "could not acquire device memory\n");
++               return PTR_ERR(base);
++       }
++
++       writel_relaxed(255, base + SIFIVE_CCACHE_WAYENABLE);
++
++       return 0;
++}
++
++static int sifive_ccache_remove(struct platform_device *pdev)
++{
++       /* It is possible to increase the number of active ways in the ccache,
++        * but not possible to decrease the number.
++        */
++       return 0;
++}
++
++static const struct of_device_id sifive_ccache_of_match[] = {
++       { .compatible = "sifive,fu540-c000-ccache" },
++       { .compatible = "sifive,ccache0" },
++       {},
++};
++MODULE_DEVICE_TABLE(of, sifive_ccache_of_match);
++
++static struct platform_driver sifive_ccache_platform_driver = {
++       .probe          = sifive_ccache_probe,
++       .remove         = sifive_ccache_remove,
++       .driver         = {
++               .name           = "SiFive Composeable Cache Driver",
++               .of_match_table = sifive_ccache_of_match,
++       },
++};
++
++static int __init sifive_ccache_init(void)
++{
++       int err;
++
++       err = platform_driver_register(&sifive_ccache_platform_driver);
++       if (err)
++               return err;
++
++       return 0;
++}
++
++static void __exit sifive_ccache_exit(void)
++{
++       platform_driver_unregister(&sifive_ccache_platform_driver);
++}
++
++module_init(sifive_ccache_init);
++module_exit(sifive_ccache_exit);
++
++MODULE_AUTHOR("Palmer Dabbelt <palmer@sifive.com>");
++MODULE_DESCRIPTION("SiFive Composeable Cache Driver");
++MODULE_LICENSE("GPL");
