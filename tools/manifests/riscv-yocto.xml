@@ -4,7 +4,7 @@
   <remote name="openembedded" fetch="git://github.com/openembedded/" />
   <remote name="riscv" fetch="git://github.com/riscv/" />
   <remote name="yocto" fetch="git://git.yoctoproject.org/" />
-  <remote name="polarfire-soc-yocto-bsp" fetch="https://bitbucket.microchip.com/scm/fpga_pfsoc_es/polarfire-soc-yocto-bsp.git" />
+  <remote name="polarfire-soc-yocto-bsp" fetch="https://bitbucket.microchip.com/scm/fpga_pfsoc_es/" />
   <default remote="openembedded" revision="master" />
 
   <project name="meta-riscv" remote="riscv" path="meta-riscv" revision="master" />
