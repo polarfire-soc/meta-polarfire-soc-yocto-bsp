@@ -18,6 +18,7 @@ SRC_URI_append_mpfs = " \
     file://extra.cfg \
     file://0001-PCI-microsemi-Add-host-driver-for-Microsemi-PCIe-con.patch \
     file://0003-HACK-Revert-of-device-Really-only-set-bus-DMA-mask-w.patch \
+	file://0001-include-uio_driver.h-changes.patch \
 "
 
 SRC_URI_append_lc-mpfs = " \

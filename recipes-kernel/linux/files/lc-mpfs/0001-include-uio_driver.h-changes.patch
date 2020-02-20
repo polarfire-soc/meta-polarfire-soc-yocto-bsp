@@ -1,0 +1,26 @@
+From a4d38a7852d095f85a73dae2b05a4eeea3531e75 Mon Sep 17 00:00:00 2001
+From: praveen kumar <praveen.kumar@microchip.com>
+Date: Thu, 12 Dec 2019 12:54:39 +0530
+Subject: [PATCH] include uio_driver.h changes
+
+Signed-off-by: praveen kumar <praveen.kumar@microchip.com>
+---
+ include/linux/uio_driver.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/uio_driver.h b/include/linux/uio_driver.h
+index 3c85c81b0027..b80b68139bee 100644
+--- a/include/linux/uio_driver.h
++++ b/include/linux/uio_driver.h
+@@ -44,7 +44,7 @@ struct uio_mem {
+ 	struct uio_map		*map;
+ };
+ 
+-#define MAX_UIO_MAPS	5
++#define MAX_UIO_MAPS	8
+ 
+ struct uio_portio;
+ 
+-- 
+2.17.1
+

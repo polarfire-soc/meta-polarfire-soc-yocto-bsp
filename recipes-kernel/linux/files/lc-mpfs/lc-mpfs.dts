@@ -8,8 +8,9 @@
 	limit_dma_to_low32b_addr;
 
 	chosen {
-		bootargs = "console=ttySI0";  // for serial console
+		//bootargs = "console=ttySI0";  // for serial console
 		//bootargs = "console=tty0";  // for framebuffer console
+		bootargs = "console=ttySI0 uio_pdrv_genirq.of_id=generic-uio";  // for serial console
 	}; 
 
 	aliases {
@@ -555,6 +556,16 @@
 			clocks = <&xclk 0>;
 			clock-frequency = <400000>;
                 };
+ 		L57: gpio@2000103000 {
+ 			compatible = "microsemi,ms-pf-mss-gpio";
+ 			interrupt-parent = <&L4>;
+@@ -596,6 +603,7 @@
+ 			interrupt-parent = <&L4>;
+ 			clocks = <&xclk 0>;
+ 			interrupts = <32>;
++			status = "okay";
+ 		};				
+
 		L57: gpio@2000103000 {
 			compatible = "microsemi,ms-pf-mss-gpio";
 			interrupt-parent = <&L4>;
@@ -605,9 +616,19 @@
 		};
  		L60: uio_axi_lsram@2030000000 {
 			compatible = "generic-uio";
-			reg = <0x20 0x30000000 0  0x4000 >;
+			reg = <0x20 0x30000000 0  0x80000000  >;
 			status = "okay";
 		};
+		L61: uio_cq@2600000000 {
+			compatible = "generic-uio";
+			reg = 0x00000026 0x00000000 0x00000002 0x00000000>;
+			#status = "okay";
+		};
+		L61: uio_cq@2600000000 {
+			compatible = "generic-uio";
+			reg = 0x00000026 0x00000000 0x00000002 0x00000000>;
+			#status = "okay";
+        };
 		usb@2000200000 {
 			compatible = "microsemi,ms-pf-usb-host";
 			reg = <0x00000020 0x00200000 0x00000000 0x00001000>;
