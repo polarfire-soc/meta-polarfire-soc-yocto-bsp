@@ -60,6 +60,10 @@ echo 'DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"' >> ../build/conf/local.
 echo 'VIRTUAL-RUNTIME_init_manager = "systemd"' >> ../build/conf/local.conf
 echo 'HOSTTOOLS_NONFATAL_append = " ssh"' >> ../build/conf/local.conf
 
+echo '# Comment these two if you DO NOT want BitBake to build images useful for debugging.' >> ../build/conf/local.conf
+echo 'DEBUG_BUILD = "1"' >> ../build/conf/local.conf
+echo 'INHIBIT_PACKAGE_STRIP = "1"' >> ../build/conf/local.conf
+
 
 #CI SERVER DOES NOT USE THIS, for developers only!
 if [ "$1"  == "CISERVER" ]; then

@@ -2,6 +2,10 @@
 ## Description
 Yocto Project, through its standard layers mechanism, can directly accept the format described as a layer. The BSP (Board Support Package) captures all the hardware-specific details in one place in a standard format, which is useful for any person wishing to use the hardware platform regardless of the build system they are using.
 
+The polarfire-soc-yocto-bsp is a minimal layer on top of meta-riscv to provide additional modifications:
+ - Out of kernel device tree & config support.
+ - Additional Kernel support for Polarfire SoC
+
 Our BSP targets the mpfs 'PolarFire SoC'.
 
 ## Yocto Overview
@@ -12,7 +16,7 @@ For the host tools/packages refer the section on 'The Build Host Packages'
 
 Release Activity:
 
-Warrior	2.7	April 2019	2.7.0	Stable	21.0	1.42
+Zeus	3.0
 
 
 ## Private Repositories (ESSENTIAL SETUP)
@@ -125,25 +129,6 @@ build/conf/local.conf
 This configuration file contains all the local user configurations for your build environment. The local.conf file contains documentation on the various configuration options. Any variable set here overrides any variable set elsewhere within the environment unless that variable is hard-coded within a file (e.g. by using '=' instead of '?='). Some variables are hard-coded for various reasons but these variables are relatively rare.
 
 ```
-build/conf/bblayers.conf
-```
-This configuration file defines layers, which are directory trees, traversed (or walked) by BitBake. The bblayers.conf file uses the BBLAYERS variable to list the layers BitBake tries to find.
-
-If bblayers.conf is not present when you start the build, the OpenEmbedded build system creates it from bblayers.conf.sample when you source the top-level build environment setup script (i.e. oe-init-build-env).
-
-```
-build/tmp-glibc/
-```
-The OpenEmbedded build system creates and uses this directory for all the build system's output. The TMPDIR variable points to this directory.
-
-BitBake creates this directory if it does not exist. As a last resort, to clean up a build and start it from scratch (other than the downloads), you can remove everything in the tmp directory or get rid of the directory completely. If you do, you should also completely remove the build/sstate-cache directory.
-
-```
-build/tmp-glibc/deploy/
-```
-This directory contains any "end result" output from the OpenEmbedded build process. The DEPLOY_DIR variable points to this directory. For more detail on the contents of the deploy directory, see the "Images" and "Application Development SDK" sections in the Yocto Project Overview and Concepts Manual.
-
-```
 build/tmp-glibc/deploy/images/{MACHINE}
 ```
 This directory receives complete filesystem images. If you want to flash the resulting image from a build onto a device, look here for the image.
@@ -153,19 +138,27 @@ Be careful when deleting files in this directory. You can safely delete old imag
 If you do accidentally delete files here, you will need to force them to be re-created. In order to do that, you will need to know the target that produced them. For example, these commands rebuild and re-create the kernel files:
 
 
-## Yocto Image and Binaries directory
-```
-build/tmp-glibc/deploy/images/{MACHINE}
-```
+## Using Devtool to modify kernel Sources
+ Suppose you have a requirement of customizing the existing kernel sources, 
+devtool will be the best option to go, as it will do all the steps required to create a patch, bbappend file etc.
 
-Files of Interest:
-* U-Boot-{MACHINE}-2020.01.r0.bin
-* uImage (Link to Linux binary, .bin)
-* DTB {MACHINE}.dtb
+Steps:
 
-If using the SD card: 
-core-image-xxxxxxx-mpfs.wic.gz 
-   
+    From your build directory run "devtool modify mpfs-linux".
+    It will create a workspace directory containing the kernel sources in build directory
+
+cd workspace/sources/mpfs-linux
+
+    Modify the sources as per your requirement
+    Build the updated kernel by running the following command: "devtool build linux-intel"
+    If the build is successful, you can generate the yocto image, by running: "devtool build-image core-image-minimal"
+    After you test your image, by flashing on the hardware and found everything is working as per your requirement, you can instruct devtool to add the patches to your own layer
+        git status
+        git add <files>
+        git commit -m <message>
+        devtool finish mpfs-linux polarfire-soc-yocto-bsp
+    Once the above command finishes, the patches and .bbapend files are added to polarfire-soc-yocto-bsp/recipes-kernel/linux directory.
+
 
 
 ## Run in QEMU
@@ -181,3 +174,17 @@ The output of the build will be a ```<image>.wic.gz``` file. You can write this 
 ```
 $ zcat <image>-<machine>.wic.gz | sudo dd of=/dev/sdX bs=4M iflag=fullblock oflag=direct conv=fsync status=progress
 ```
+
+You will need to modify MSEL to allow using FSBL and OpenSBI + U-Boot bootloaders from uSD card instead of SPI NAND chip:
+
+      USB   LED    Mode Select                  Ethernet
+ +===|___|==****==+-+-+-+-+-+-+=================|******|===+
+ |                | | | | |X| |                 |      |   |
+ |                | | | | | | |                 |      |   |
+ |        HFXSEL->|X|X|X|X| |X|                 |______|   |
+ |                +-+-+-+-+-+-+                            |
+ |        RTCSEL-----/ 0 1 2 3 <--MSEL                     |
+ |                                                         |
+
+You can login with root account. There is no password set for root account thus you should set one before continuing. SSH daemon is started automatically.
+

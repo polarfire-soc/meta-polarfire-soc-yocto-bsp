@@ -5,10 +5,21 @@ SRC_URI_append = " \
            "
 DEPENDS_append = " u-boot-tools-native"
 
+# We use the revision in order to avoid having to fetch it from the
+# repo during parse
+SRCREV = "721d6b594be4dc2d13b61f6afee9e437278d3ddd"
+
+SRC_URI = "git://git.denx.de/u-boot.git \
+	   file://mpfs_defconfig\
+           file://tftp-mmc-boot.txt \
+"
+
+
 # Overwrite this for your server
 TFTP_SERVER_IP ?= "127.0.0.1"
 
 do_configure_prepend() {
+    cp -f ${WORKDIR}/mpfs_defconfig ${S}/configs
     sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/tftp-mmc-boot.txt
 
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
