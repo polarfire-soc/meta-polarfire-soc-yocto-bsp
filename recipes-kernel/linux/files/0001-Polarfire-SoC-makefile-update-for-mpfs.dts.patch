@@ -1,0 +1,20 @@
+From ebe5bc11a457ff4a05d1b79601e19a976eb5bef9 Mon Sep 17 00:00:00 2001
+From: Lewis Hanly <Lewis.Hanly@microchip.com>
+Date: Fri, 21 Feb 2020 23:57:45 +0000
+Subject: [PATCH] Polarfire SoC makefile update for mpfs.dts
+
+Makefile required to build 'in-kernel' device tree.
+
+Signed-off-by: Lewis Hanly <Lewis.Hanly@microchip.com>
+---
+ arch/riscv/boot/dts/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/riscv/boot/dts/Makefile b/arch/riscv/boot/dts/Makefile
+index dcc3ada78455..8c2de774680f 100644
+--- a/arch/riscv/boot/dts/Makefile
++++ b/arch/riscv/boot/dts/Makefile
+@@ -1,2 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0
++dtb-$(CONFIG_POLARFIRE_SOC) += mpfs.dtb
+ subdir-y += sifive

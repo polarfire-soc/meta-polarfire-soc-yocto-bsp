@@ -150,7 +150,7 @@ Steps:
 cd workspace/sources/mpfs-linux
 
     Modify the sources as per your requirement
-    Build the updated kernel by running the following command: "devtool build linux-intel"
+    Build the updated kernel by running the following command: "devtool build mpfs-linux"
     If the build is successful, you can generate the yocto image, by running: "devtool build-image core-image-minimal"
     After you test your image, by flashing on the hardware and found everything is working as per your requirement, you can instruct devtool to add the patches to your own layer
         git status
@@ -169,11 +169,15 @@ Simulation
 
 ## Running wic.gz image on hardware
 
-The output of the build will be a ```<image>.wic.gz``` file. You can write this file to an sd card using:
+The output of the build will be a ```<image><machine>.wic.gz``` file. You can write this file to an sd card using:
 
 ```
 $ zcat <image>-<machine>.wic.gz | sudo dd of=/dev/sdX bs=4M iflag=fullblock oflag=direct conv=fsync status=progress
 ```
+
+Example: Image name: core-image-full-cmdline, MACHINE=lc-mpfs, SD Card /sdb
+
+zcat core-image-full-cmdline-lc-mpfs.wic.gz | sudo dd of=/dev/sdb bs=4M iflag=fullblock oflag=direct conv=fsync status=progress
 
 You will need to modify MSEL to allow using FSBL and OpenSBI + U-Boot bootloaders from uSD card instead of SPI NAND chip:
 
@@ -186,5 +190,5 @@ You will need to modify MSEL to allow using FSBL and OpenSBI + U-Boot bootloader
  |        RTCSEL-----/ 0 1 2 3 <--MSEL                     |
  |                                                         |
 
-You can login with root account. There is no password set for root account thus you should set one before continuing. SSH daemon is started automatically.
+You can login with root account. Password set for root account is 'microchip'. SSH daemon is started automatically.
 

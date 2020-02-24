@@ -1,8 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI_append = " \
-            file://tftp-mmc-boot.txt \
-           "
+
 DEPENDS_append = " u-boot-tools-native"
 
 # We use the revision in order to avoid having to fetch it from the
@@ -40,5 +38,4 @@ do_deploy_append() {
     fi
 }
 
-FILES_${PN}_append_lc-mpfs = " /boot/boot.scr.uimg"
-FILES_${PN}_append_mpfs = " /boot/boot.scr.uimg"
+FILES_${PN}_append = " /boot/boot.scr.uimg"
