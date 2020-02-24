@@ -1,0 +1,1 @@
+SUBSYSTEM=="leds", KERNEL=="green:d3",  ATTR{link}="1", ATTR{tx}="1", ATTR{rx}="1", ATTR{device_name}="eth0"

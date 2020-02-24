@@ -1,10 +1,11 @@
 require recipes-kernel/linux/linux-common.inc
 
-LINUX_VERSION ?= "5.4.x"
+LINUX_VERSION ?= "5.5.x"
 KERNEL_VERSION_SANITY_SKIP="1"
 
-BRANCH = "linux-5.4.y"
+BRANCH = "linux-5.5.y"
 SRCREV = "${AUTOREV}"
+#file://0003-HACK-Revert-of-device-Really-only-set-bus-DMA-mask-w.patch
 SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git;branch=${BRANCH} \
            file://0001-Microchip-GPIO-Support-for-the-Polarfire-SoC.patch \
            file://0002-Microchip-SPI-Support-for-the-Polarfire-SoC.patch \
@@ -13,7 +14,6 @@ SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git;branch
            file://0005-Microchip-usb-musb-support-for-the-Polarfire-SoC.patch \
            file://0006-Microchip-UIO-CAN-support-for-the-Polarfire-SoC.patch \
            file://0001-include-uio_driver.h-changes.patch \
-           file://0003-HACK-Revert-of-device-Really-only-set-bus-DMA-mask-w.patch \
 	   file://0001-Polarfire-SoC-makefile-update-for-mpfs.dts.patch \
            "
 
