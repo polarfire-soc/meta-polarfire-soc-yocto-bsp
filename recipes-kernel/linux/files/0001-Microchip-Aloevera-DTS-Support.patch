@@ -1,24 +1,23 @@
-From 30f182ebf1dd76e514e342fcc32d98eaf33103d6 Mon Sep 17 00:00:00 2001
+From 1a271580719059034b965229f545fbbaec8b27ac Mon Sep 17 00:00:00 2001
 From: Lewis Hanly <Lewis.Hanly@microchip.com>
-Date: Tue, 25 Feb 2020 11:45:44 +0000
-Subject: [PATCH] Microchip Aloevera DTS Support
+Date: Tue, 25 Feb 2020 13:04:47 +0000
+Subject: [PATCH] Microchip-Aloevera-DTS-Support
 
-Adding DTS support:
-Polarfire AXI-PCIe Host
-Polarfire MSS - I2C / GPIO / CAN-UIO / SPI / qSPI / UIO
-
+Adding Polarfire SoC DTS support for the following:
+AXI-PCIE Host
+MSS-GPIO/I2C/SPI/qSPI/CAN-UIO/USB
 
 
 Signed-off-by: Lewis Hanly <Lewis.Hanly@microchip.com>
 ---
- arch/riscv/boot/dts/sifive/fu540-c000.dtsi | 106 +++++++++++++++++++++
- 1 file changed, 106 insertions(+)
+ arch/riscv/boot/dts/sifive/fu540-c000.dtsi | 89 ++++++++++++++++++++++
+ 1 file changed, 89 insertions(+)
 
 diff --git a/arch/riscv/boot/dts/sifive/fu540-c000.dtsi b/arch/riscv/boot/dts/sifive/fu540-c000.dtsi
-index a2e3d54e830c..7ac456296544 100644
+index a2e3d54e830c..2d9fafafae95 100644
 --- a/arch/riscv/boot/dts/sifive/fu540-c000.dtsi
 +++ b/arch/riscv/boot/dts/sifive/fu540-c000.dtsi
-@@ -268,6 +268,112 @@
+@@ -268,6 +268,95 @@
  			interrupts = <1 2 3>;
  			reg = <0x0 0x2010000 0x0 0x1000>;
  		};
@@ -33,9 +32,8 @@ index a2e3d54e830c..7ac456296544 100644
 +                                        <0 0 0 3 &pcie_intc 3>,
 +                                        <0 0 0 4 &pcie_intc 4>;
 +			interrupt-map-mask = <0 0 0 7>;
-+			interrupt-parent = <&L4>;
++			interrupt-parent = <&plic0>;
 +			#interrupt-cells = <1>;
-+			interrupts = <32>;
 +                        ranges = <0x3000000 0x0 0x40000000 0x0 0x40000000 0x0 0x20000000>;
 +                        reg = <0x20 0x30000000 0x0 0x4000000 0x20 0x0 0x0 0x100000>;
 +                        reg-names = "control", "apb";
@@ -50,14 +48,14 @@ index a2e3d54e830c..7ac456296544 100644
 +			#size-cells = <0>;
 +			compatible = "microsemi,ms-pf-mss-i2c";
 +			reg = <0x20 0x00100000 0x0 0x1000>;
-+			interrupt-parent = <&L4>;
-+			interrupts = <35>; // pactron
-+			clocks = <&xclk 0>;
++			interrupt-parent = <&plic0>;
++			interrupts = <32>;
++			clocks = <&prci PRCI_CLK_TLCLK>;
 +			clock-frequency = <400000>;
 +                };
 +		L57: gpio@2000103000 {
 +			compatible = "microsemi,ms-pf-mss-gpio";
-+			interrupt-parent = <&L4>;
++			interrupt-parent = <&plic0>;
 +			interrupts = <7 7 7 7 7 7 7>;
 +			gpio-controller;
 +			reg = <0x20 0x00103000 0x0 0x1000>;
@@ -70,48 +68,33 @@ index a2e3d54e830c..7ac456296544 100644
 +			#size-cells = <0>;
 +			compatible = "microsemi,ms-pf-mss-can-uio";
 +			reg = <0x20 0x00105000 0x0 0x1000>;
-+			interrupt-parent = <&L4>;
-+			clocks = <&xclk 0>;
++			interrupt-parent = <&plic0>;
++			clocks = <&prci PRCI_CLK_TLCLK>;
 +			interrupts = <32>;
 +		};
 +		L54: spi@2000107000 {
 +			compatible = "microsemi,ms-pf-mss-spi";
-+			interrupt-parent = <&L4>;
-+			interrupts = <34>; // pactron
++			interrupt-parent = <&plic0>;
++			interrupts = <32>;
 +			reg = <0x20 0x00107000 0 0x1000>;
-+			clocks = <&xclk 0>;
++			clocks = <&prci PRCI_CLK_TLCLK>;
 +			spi-max-frequency = <25000000>;
 +			#address-cells = <1>;
 +			#size-cells = <0>;
 +			num-cs = <8>;
 +			status = "okay";
-+			spidev1: spidev@0 {
-+                     compatible = "linux,spidev";
-+                     spi-max-frequency = <16000000>;
-+                     reg = <0>;
-+                     };
 +		};
 +		L58: qspi@2000400000 {
 +			compatible = "microsemi,ms-pf-mss-qspi";
-+			interrupt-parent = <&L4>;
++			interrupt-parent = <&plic0>;
 +			interrupts = <32>;
 +			reg = <0x20 0x00400000 0 0x1000>;
-+			clocks = <&xclk 0>;
++			clocks = <&prci PRCI_CLK_TLCLK>;
 +			spi-max-frequency = <25000000>;
 +			#address-cells = <1>;
 +			#size-cells = <0>;
 +			num-cs = <8>;
 +			status = "okay";
-+		};
-+ 		L60: uio_axi_lsram@2030000000 {
-+			compatible = "generic-uio";
-+			reg = <0x20 0x30000000 0  0x80000000  >;
-+			status = "okay";
-+		};
-+		L61: uio_cq@2600000000 {
-+			compatible = "generic-uio";
-+			reg = <0x00000026 0x00000000 0x00000002 0x00000000>;
-+			#status = "okay";
 +		};
 +		usb@2000200000 {
 +			compatible = "microsemi,ms-pf-usb-host";
@@ -127,7 +110,6 @@ index a2e3d54e830c..7ac456296544 100644
 +			power = <500>;
 +			status = "ok";
 +		};
-+
  
  	};
  };
