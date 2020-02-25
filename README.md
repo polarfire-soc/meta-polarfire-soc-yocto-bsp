@@ -114,6 +114,13 @@ Other Machines you may want to test with:
 * lc-mpfs
 * qemuriscv64
 
+## Yocto Images
+
+The OpenEmbedded build system provides several example images to satisfy different needs. 
+When you issue the bitbake command you provide a “top-level” recipe that essentially begins the build for the type of image you want.
+
+For the list of support image recipes [Yocto Reference, Images](https://www.yoctoproject.org/docs/3.0/ref-manual/ref-manual.html#ref-images).
+
 
 ## Yocto Build Output
 The OpenEmbedded build system creates the Build Directory when you run the build environment setup scripts (i.e. oe-init-build-env).
@@ -190,5 +197,5 @@ You will need to modify MSEL to allow using FSBL and OpenSBI + U-Boot bootloader
  |        RTCSEL-----/ 0 1 2 3 <--MSEL                     |
  |                                                         |
 
-You can login with root account. Password set for root account is 'microchip'. SSH daemon is started automatically.
+You can login with root account, no password required. SSH daemon is started automatically.
 
