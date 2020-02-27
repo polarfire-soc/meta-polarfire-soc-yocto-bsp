@@ -40,7 +40,7 @@ fi
 echo 'DL_DIR ?= "'$dlDIR'"' >> ../build/conf/local.conf
 echo 'SSTATE_DIR ?= "'$sstateDIR'"' >> ../build/conf/local.conf
 #echo 'MACHINE ?= "qemuriscv64"' >> ../build/conf/local.conf
-echo 'MACHINE ?= "mpfs"' >> ../build/conf/local.conf
+echo 'MACHINE ?= "lc-mpfs"' >> ../build/conf/local.conf
 echo 'EXTRA_IMAGE_FEATURES_append = " ssh-server-dropbear"' >> ../build/conf/local.conf
 echo 'EXTRA_IMAGE_FEATURES_append = " package-management"' >> ../build/conf/local.conf
 echo 'PACKAGECONFIG_append_pn-qemu-native = " sdl"' >> ../build/conf/local.conf

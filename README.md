@@ -37,13 +37,14 @@ Make sure to install the [repo command](https://source.android.com/setup/build/d
 
  
 ### Supported Machine Targets
-The `MACHINE` option can be used to set the target board for which linux is built, and if left blank it will default to `MACHINE=mpfs`.           
+The `MACHINE` option can be used to set the target board for which linux is built, and if left blank it will default to `MACHINE=lc-mpfs`.           
 The following table details the available targets:
 
 | `MACHINE` | Board Name |
 | --- | --- |
 | `MACHINE=mpfs` | MPFS-DEV-KIT, HiFive Unleashed Expansion Board |
 | `MACHINE=lc-mpfs` | LC-MPFS-DEV-KIT |
+| `MACHINE=qemuriscv64` | Simulation |
 
 
 ## Quick Start
@@ -90,32 +91,21 @@ For detailed information on Bitbake refer to the [user manual] (https://www.yoct
 ```
 MACHINE=<machine> bitbake <image>
 
-Example: MACHINE=lc-mpfs bitbake core-image-full-cmdline
+Example: MACHINE=lc-mpfs bitbake mpfs-dev-cli
 ```
+
 ## Images
 
+ - 'mpfs-dev-cli' A console image with development tools.
  - 'core_image_minimal' A small console image to allow you to boot.
  - 'core_image_full_cmdline' A console only image with more full Featured Linux support.
- For more information on default images refer to [Yocto reference manual] (https://www.yoctoproject.org/docs/3.0/ref-manual/ref-manual.html#ref-images)
-Other Machines you may want to test with:
 
-* qemuriscv64
+ For more information on a available images refer to [Yocto reference manual] (https://www.yoctoproject.org/docs/3.0/ref-manual/ref-manual.html#ref-images)
 
-
-## Yocto Build Output
-The OpenEmbedded build system creates the Build Directory when you run the build environment setup scripts (i.e. oe-init-build-env).
-
-If you do not give the Build Directory a specific name when you run a setup script, the name defaults to "build".
 
 ## Yocto Image and Binaries directory
 ```
 build/tmp-glibc/deploy/images/{MACHINE}
-```
-
-## Run in QEMU
-Simulation
-```
-./openembedded-core/scripts/runqemu nographic
 ```
 
 ### Running wic.gz image on hardware
@@ -149,6 +139,11 @@ You will need to modify MSEL to allow using FSBL and OpenSBI + U-Boot bootloader
  |                                                         |
 ```
 
-You can login with `root` account. There is no password set for `root` account thus you should set one before continuing.  SSH daemon is started automatically.
+You can login with `root` account. The password is `microchip`.
 
 
+## Run in QEMU
+Simulation
+```
+./openembedded-core/scripts/runqemu nographic
+```
