@@ -67,7 +67,7 @@ simulation with best-in-class constraints management, Debug Tools capabilities, 
 Programming support.
 
 Download Libero SoC PolarFire v2.2 for Windows environment 
-[here](https://www.microsemi.com/document-portal/doc_download/1243420-download-libero-soc-polarfire-v2-2-for-windows).
+[here](https://www.microsemi.com/document-portal/doc_download/1243420-download-libero-soc-polarfire-v2-2-for-windows).         
 Download Libero SoC PolarFire v2.2 for Linux environment 
 [here](https://www.microsemi.com/document-portal/doc_download/1243421-download-libero-soc-polarfire-v2-2-for-linux).
 
@@ -89,44 +89,18 @@ to download the standalone programmer (if needed).
 | FP Express | Software for Windows and Linux | FlashPro5 | Hardware programmer for Windows and Linux |
 | FlashPro | Software for Windows | FlashPro4 | Hardware programmer for Windows |
 
-### Microsemi PolarFire Linux SDK for the HiFive Unleashed Expansion Board
-The Microsemi PolarFire Linux SDK is based on the SiFive freedom-u-sdk with modifications to the
+### Polarfire SoC Buildroot SDK for the HiFive Unleashed Expansion Board
+The Polarfire SoC Buildroot SDK is based on the SiFive freedom-u-sdk with modifications to the
 device tree to support the HiFive Unleashed Expansion board. It also includes drivers for Microsemi
-PCIe, I C, SPI, MMUART, and GPIO peripherals. See to download the 2 Firmware Versions (see page 7)
-Microsemi PolarFire Linux SDK.
-The build procedure follows that of the freedom-u-sdk as described in [HiFive Unleashed Getting Started
-Guide](https://www.sifive.com/documentation/boards/hifive-unleashed/hifive-unleashed-getting-started-guide/).
-Before building the Linux image, the following packages must be installed depending on the Linux
-distribution in your machine.
-
-#### Ubuntu
-(tested on Ubuntu 16.04)
-```
-apt-get update
-sudo apt-get install autoconf automake autotools-dev bc bison build-essential curl
-flex gawk gdisk git gperf libgmp-dev libmpc-dev libmpfr-dev libncurses-dev libssl-dev
-libtool patchutils python screen texinfo unzip zlib1g-dev patch device-tree-compiler
-openssl-devel wget
-```
-
-#### Centos
-(tested on Centos7)
-```
-yum update
-sudo yum install autoconf automake autotools-dev bc bison build-essential gcc-c++
-curl flex gawk gdisk git gperf gmp-devel libmpc-dev libmpfr-dev ncurses-devel libssldev
-libtool patchutils python screen texinfo unzip zlib1g-dev zlib-devel patch dtc
-openssl-devel wget vim-common
-```
+PCIe, I2C, SPI, MMUART, and GPIO peripherals.     
 
 ### Firmware Versions
-The following table contains links to the Libero Project, .stp file, .job file, and the Linux SDK for each
+The following table contains links to the .stp file, .job file, and the Linux SDK for each
 release.
 
-| Revision | Libero Project | .stp | .job | MPFS-Linux-SDK |
-| --- | --- | --- | --- | --- |
-| Initial release | [Libero Initial Release](https://my.microsemi.com/awelcome/filedownloadLogin.aspx?code=pvvuoqopwoxpqppppootur&src=ext&ver=0) | [.stp Initial Release](https://my.microsemi.com/AWelcome/FileDownload.aspx?code=pvvtxqopwoxpqpposttrpv&src=EXT&ver=0) | [.job Initial Release](https://my.microsemi.com/AWelcome/FileDownload.aspx?code=pvvsoqopwoxpqoxruqoqpo&src=EXT&ver=0) | [MPFS-Linux-SDK](ftp://ftpsoc.microsemi.com/outgoing/mpfs-linux-sdk-20180906.tar.gz) 
-For more documentation, visit the [extranet](https://my.microsemi.com/tools/search/SitePages/mainsearch.aspx?k=Mi-V%20Embedded%20Experts%20Program&dh=1.) page.
+| Revision | .stp | .job | MPFS-Linux-SDK |
+| --- | --- | --- | --- |
+| Initial release | [.stp Initial Release](https://my.microsemi.com/AWelcome/FileDownload.aspx?code=pvvtxqopwoxpqpposttrpv&src=EXT&ver=0) | [.job Initial Release](https://my.microsemi.com/AWelcome/FileDownload.aspx?code=pvvsoqopwoxpqoxruqoqpo&src=EXT&ver=0) | [Polarfire SoC Buildroot SDK](https://github.com/Microsemi-SoC-IP/mpfs-linux-sdk) 
 
 ## Board Setup
 Follow the instructions to set up the HiFive Unleashed board.
@@ -135,9 +109,19 @@ Ensure the fan is plugged in.
 
 ![Power Button and Fan Connection](images/HiFive_Unleashed_board_Power_Button_and_Fan_Connection.JPG)
 
-2. Set all pins in the DIP-switch block to the LEFT. The ON position=0; therefore, this sets MSEL to
-mode 1111. See the boot modes table in Section 4 of the [HiFive Unleashed Getting Started Guide](https://sifive.cdn.prismic.io/sifive%2Ffa3a584a-a02f-4fda-b758-a2def05f49f9_hifive-unleashed-getting-started-guide-v1p1.pdf) for
+2. Set the pins in the DIP-switch block to the as shown in the diagram below. The ON position=0; therefore, this sets MSEL to
+mode 1011, which will boot Linux automatically. See the boot modes table in Section 4 of the [HiFive Unleashed Getting Started Guide](https://sifive.cdn.prismic.io/sifive%2Ffa3a584a-a02f-4fda-b758-a2def05f49f9_hifive-unleashed-getting-started-guide-v1p1.pdf) for
 more information on MSEL.
+```
+      USB   LED    Mode Select                  Ethernet
+ +===|___|==****==+-+-+-+-+-+-+=================|******|====
+ |                | | | | |X| |                 |      |   
+ |                | | | | | | |                 |      |   
+ |        HFXSEL->|X|X|X|X| |X|                 |______|   
+ |                +-+-+-+-+-+-+                            
+ |        RTCSEL-----/ 0 1 2 3 <--MSEL                     
+ |                                                         
+``` 
 
 ![DIP Switch Setting](images/HiFive_Unleashed_Board_DIP-Switch_setting.png)
 
@@ -237,7 +221,7 @@ For instructions on how to build and load a Linux image, see the Linux build ins
 #### Linux Boot and Login Credentials
 The Linux boot process can be observed by connecting a serial terminal to the USB port on the HiFive
 Unleashed board. Settings are 115200 baud, 8 data bits, 1 stop bit, no parity, and no flow control.
-The root password is “microchip”. The console should look similar to the following figure.
+Log in using the root account. No password is required. The console should look similar to the following figure.
 
 ![Console Image for Boot](images/Console_Image_for_Boot.png)
 
@@ -309,3 +293,6 @@ Visit the following links for further reference reading materials.
 [Libero SoC PolarFire Documentation](https://www.microsemi.com/product-directory/design-resources/3863-libero-soc-polarfire#documents)     
 [FlashPro User Guide for PolarFire](https://www.microsemi.com/document-portal/doc_download/137626-flashpro-user-guide-for-polarfire)     
 [FlashPro Express User Guide for PolarFire](https://www.microsemi.com/document-portal/doc_download/137627-flashpro-express-user-guide-for-polarfire)     
+
+## Technical Support
+For technical queries, visit the [Microsemi SoC Customer Portal](https://soc.microsemi.com/Portal/Default.aspx), select “PolarFire SoC” under Product Family, “MPFSXXXX” under Device Family and type in the query. Microchip’s technical support team will create a ticket, address the query and track it to completion
