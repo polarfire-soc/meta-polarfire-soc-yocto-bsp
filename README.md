@@ -62,7 +62,7 @@ Note: You only need this if you do not have an existing Yocto Project build envi
 mkdir mpfs-yocto && cd mpfs-yocto
 
 
-repo init -u https://bitbucket.microchip.com/scm/fpga_pfsoc_es/polarfire-soc-yocto-bsp -b cq_updates_req_Ryan -m tools/manifests/riscv-yocto.xml
+repo init -u https://bitbucket.microchip.com/scm/fpga_pfsoc_es/polarfire-soc-yocto-bsp -m tools/manifests/riscv-yocto.xml
 
 repo sync
 repo start work --all
@@ -97,9 +97,13 @@ Example: MACHINE=lc-mpfs bitbake mpfs-dev-cli
 ## Images
 
  - 'mpfs-dev-cli' A console image with development tools.
+```
      *You can login with `root` account. The password is `microchip`.
-     
-    * The OE core-image* *You can login with `root` account and have no password
+```
+
+```     
+    * With the OE core-image-*  you can login with `root` account and have no password
+```
  - 'core_image_minimal' A small console image to allow you to boot.
  - 'core_image_full_cmdline' A console only image with more full Featured Linux support.
 
@@ -115,7 +119,7 @@ build/tmp-glibc/deploy/images/{MACHINE}
 
 Disk images files use `<image>-<machine>.wic.gz` format, for example,
 
-`core-image-minimal-lc-mpfs.wic.gz`. We are interested in `.wic.gz` disk images for writing to uSD card.
+`mpfs-dev-cli-lc-mpfs.wic.gz`. We are interested in `.wic.gz` disk images for writing to uSD card.
 
 > Be very careful while picking /dev/sdX device! Look at dmesg, lsblk, blkid, GNOME Disks, etc. before and after plugging in your uSD card to find a proper device. Double check it to avoid overwriting any of system disks/partitions!
 > 
@@ -126,7 +130,7 @@ Disk images files use `<image>-<machine>.wic.gz` format, for example,
 Example write uSD card:
 
 ```bash
-zcat core-image-minimal-lc-mpfs.wic.gz | sudo dd of=/dev/sdX bs=512K iflag=fullblock oflag=direct conv=fsync status=progress
+zcat mpfs-dev-cli-lc-mpfs.wic.gz | sudo dd of=/dev/sdX bs=512K iflag=fullblock oflag=direct conv=fsync status=progress
 ```
 
 You will need to modify MSEL to allow using FSBL and OpenSBI + U-Boot bootloaders from uSD card instead of SPI NAND chip:
