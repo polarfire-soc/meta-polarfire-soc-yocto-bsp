@@ -18,23 +18,23 @@ index a2e3d54e830c..bd7a709e6f53 100644
  			reg = <0x0 0x2010000 0x0 0x1000>;
  		};
 -
-++                L56: i2c@2000100000 {
-++                        #address-cells = <1>;
-++			#size-cells = <0>;
-++			compatible = "microsemi,ms-pf-mss-i2c";
-++			reg = <0x20 0x00100000 0x0 0x1000>;
-++			interrupt-parent = <&plic0>;
-++			interrupts = <32>;
-++			clocks = <&prci PRCI_CLK_TLCLK>;
-++			clock-frequency = <400000>;
-++                };
-++		L57: gpio@2000103000 {
-++			compatible = "microsemi,ms-pf-mss-gpio";
-++			interrupt-parent = <&plic0>;
-++			interrupts = <7 7 7 7 7 7 7>;
-++			gpio-controller;
-++			reg = <0x20 0x00103000 0x0 0x1000>;
-++			reg-names = "control";
++                L56: i2c@2000100000 {
++                        #address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "microsemi,ms-pf-mss-i2c";
++			reg = <0x20 0x00100000 0x0 0x1000>;
++			interrupt-parent = <&plic0>;
++			interrupts = <32>;
++			clocks = <&prci PRCI_CLK_TLCLK>;
++			clock-frequency = <400000>;
++                };
++		L57: gpio@2000103000 {
++			compatible = "microsemi,ms-pf-mss-gpio";
++			interrupt-parent = <&plic0>;
++			interrupts = <7 7 7 7 7 7 7>;
++			gpio-controller;
++			reg = <0x20 0x00103000 0x0 0x1000>;
++			reg-names = "control";
 +			#gpio-cells = <2>;
 +			#status = "okay";
 +		};
