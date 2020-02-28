@@ -41,7 +41,6 @@ IMAGE_INSTALL = "\
     git \
     swig \
     boost \
-    cmake \
     orc \
     libudev \
     glib-2.0 \
