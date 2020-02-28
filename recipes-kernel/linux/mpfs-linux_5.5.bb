@@ -7,7 +7,6 @@ BRANCH = "linux-5.5.y"
 SRCREV = "${AUTOREV}"
 
 SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git;branch=${BRANCH} \
-           file://0001-Microchip-Aloevera-DTS-Support.patch \
            file://0001-Microchip-GPIO-Support-for-the-Polarfire-SoC.patch \
            file://0002-Microchip-SPI-Support-for-the-Polarfire-SoC.patch \
            file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
@@ -21,10 +20,12 @@ SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git;branch
 SRC_URI_append_mpfs = " \
     file://extra.cfg \
     file://0001-PCI-microsemi-Add-host-driver-for-Microsemi-PCIe-con.patch \
+    file://0001-Microchip-Adding-Polarfire-SoC-mpfs-DTS-support.patch \
 "
 
 SRC_URI_append_lc-mpfs = " \
     file://extra.cfg \
+    file://0001-Microchip-Adding-Polarfire-SoC-lc-mpfs-DTS-support.patch \
 "
 
 

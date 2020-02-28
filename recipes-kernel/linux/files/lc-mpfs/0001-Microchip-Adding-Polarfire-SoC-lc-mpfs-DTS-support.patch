@@ -1,0 +1,99 @@
+From caf4a62c983f8f9bd2b06624b903ff12c066e996 Mon Sep 17 00:00:00 2001
+From: Lewis Hanly <Lewis.Hanly@microchip.com>
+Date: Fri, 28 Feb 2020 11:06:01 +0000
+Subject: [PATCH] Adding Polarfire SoC DTS support for the following: Adding
+ MSS-GPIO/I2C/SPI/qSPI/CAN-UIO/USB/UIO
+
+Signed-off-by: Lewis Hanly <Lewis.Hanly@microchip.com>
+---
+ arch/riscv/boot/dts/sifive/fu540-c000.dtsi | 78 +++++++++++++++++++++-
+ 1 file changed, 77 insertions(+), 1 deletion(-)
+
+diff --git a/arch/riscv/boot/dts/sifive/fu540-c000.dtsi b/arch/riscv/boot/dts/sifive/fu540-c000.dtsi
+index a2e3d54e830c..bd7a709e6f53 100644
+--- a/arch/riscv/boot/dts/sifive/fu540-c000.dtsi
++++ b/arch/riscv/boot/dts/sifive/fu540-c000.dtsi
+@@ -268,6 +268,82 @@
+ 			interrupts = <1 2 3>;
+ 			reg = <0x0 0x2010000 0x0 0x1000>;
+ 		};
+-
+++                L56: i2c@2000100000 {
+++                        #address-cells = <1>;
+++			#size-cells = <0>;
+++			compatible = "microsemi,ms-pf-mss-i2c";
+++			reg = <0x20 0x00100000 0x0 0x1000>;
+++			interrupt-parent = <&plic0>;
+++			interrupts = <32>;
+++			clocks = <&prci PRCI_CLK_TLCLK>;
+++			clock-frequency = <400000>;
+++                };
+++		L57: gpio@2000103000 {
+++			compatible = "microsemi,ms-pf-mss-gpio";
+++			interrupt-parent = <&plic0>;
+++			interrupts = <7 7 7 7 7 7 7>;
+++			gpio-controller;
+++			reg = <0x20 0x00103000 0x0 0x1000>;
+++			reg-names = "control";
++			#gpio-cells = <2>;
++			#status = "okay";
++		};
++		L55: can@2000105000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "microsemi,ms-pf-mss-can-uio";
++			reg = <0x20 0x00105000 0x0 0x1000>;
++			interrupt-parent = <&plic0>;
++			clocks = <&prci PRCI_CLK_TLCLK>;
++			interrupts = <32>;
++		};
++		L54: spi@2000107000 {
++			compatible = "microsemi,ms-pf-mss-spi";
++			interrupt-parent = <&plic0>;
++			interrupts = <32>;
++			reg = <0x20 0x00107000 0 0x1000>;
++			clocks = <&prci PRCI_CLK_TLCLK>;
++			spi-max-frequency = <25000000>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			num-cs = <8>;
++			status = "okay";
++		};
++		L58: qspi@2000400000 {
++			compatible = "microsemi,ms-pf-mss-qspi";
++			interrupt-parent = <&plic0>;
++			interrupts = <32>;
++			reg = <0x20 0x00400000 0 0x1000>;
++			clocks = <&prci PRCI_CLK_TLCLK>;
++			spi-max-frequency = <25000000>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			num-cs = <8>;
++			status = "okay";
++		};
++		usb@2000200000 {
++			compatible = "microsemi,ms-pf-usb-host";
++			reg = <0x00000020 0x00200000 0x00000000 0x00001000>;
++			reg-names = "mc","control";
++			interrupt-parent = <0xb>;
++			interrupts = <0x20 0x20>;
++			interrupt-names = "mc","dma";
++			dr_mode = "host";
++			multipoint = <1>;
++			num-eps = <8>;
++			ram-bits = <12>;
++			power = <500>;
++			status = "ok";
++		};
++		L60: uio_axi_lsram@2030000000 {
++			compatible = "generic-uio";
++			reg = <0x20 0x30000000 0 0x80000000 >;
++                       status = "okay";
++                };
++                L61: uio_cq@2600000000 {
++                         compatible = "generic-uio";
++                         reg =    <0x00000026 0x00000000 0x00000000 0x40000000>;
++                         status = "okay";
++                };
+ 	};
+ };

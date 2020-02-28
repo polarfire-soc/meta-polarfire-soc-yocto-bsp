@@ -97,6 +97,9 @@ Example: MACHINE=lc-mpfs bitbake mpfs-dev-cli
 ## Images
 
  - 'mpfs-dev-cli' A console image with development tools.
+     *You can login with `root` account. The password is `microchip`.
+     
+    * The OE core-image* *You can login with `root` account and have no password
  - 'core_image_minimal' A small console image to allow you to boot.
  - 'core_image_full_cmdline' A console only image with more full Featured Linux support.
 
@@ -138,9 +141,6 @@ You will need to modify MSEL to allow using FSBL and OpenSBI + U-Boot bootloader
  |        RTCSEL-----/ 0 1 2 3 <--MSEL                     |
  |                                                         |
 ```
-
-You can login with `root` account. The password is `microchip`.
-
 
 ## Run in QEMU
 Simulation
