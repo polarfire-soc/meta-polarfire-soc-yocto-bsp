@@ -1,58 +1,26 @@
 DESCRIPTION = "Microchip MPFS Development CLI Linux image"
 
-inherit core-image extrausers
+inherit image-buildinfo core-image extrausers
 EXTRA_USERS_PARAMS = "usermod -P microchip root;"
 
-IMAGE_FEATURES += "\
-    dev-pkgs \
-    dbg-pkgs \
-    doc-pkgs \
-    tools-profile \
-    tools-debug \
-    tools-profile \
-    tools-sdk \
-    eclipse-debug \
-    ssh-server-openssh"
-
+IMAGE_FEATURES += "splash ssh-server-openssh \
+                   tools-debug tools-sdk debug-tweaks \
+                   dev-pkgs dbg-pkgs \
+                  "
 
 IMAGE_INSTALL = "\
     packagegroup-core-boot \
     packagegroup-core-full-cmdline \
-    kernel-modules \
-    kernel-devsrc \
-    kernel-dev \
-    sysstat \
-    dhrystone \
-    whetstone \
-    iperf3 \
-    iperf2 \
-    tinymembench \
-    sysbench \
-    memtester \
-    lmbench \
-    vim \
-    nano \
-    mc \
-    chrony \
-    curl \
-    wget \
-    git \
-    bind-utils \
-    haveged \
-    e2fsprogs-resize2fs \
-    e2fsprogs-e2fsck \
-    e2fsprogs-mke2fs \
-    parted \
-    gptfdisk \
-    rsync \
+    perl-modules \
+    alsa-utils \
+    i2c-tools \
     screen \
-    tmux \
-    stress-ng \
+    vim vim-vimrc \
     dhcp-client \
     nbd-client \
     mpfr-dev \
     gmp-dev \
-    libmpc-dev \
+    libmpc-dev \    
     zlib-dev \
     flex \
     bison \
@@ -65,14 +33,41 @@ IMAGE_INSTALL = "\
     elfutils-dev \
     pciutils \
     usbutils \
-    devmem2 \
     mtd-utils \
     sysfsutils \
     htop \
-    nvme-cli \
+    iw \
     python3 \
+    git \
+    swig \
+    boost \
     cmake \
-    python3-scons \
+    orc \
+    libudev \
+    glib-2.0 \
+    evtest devmem2 iperf3 memtester lmbench \
+    tcpdump \
+    iw \
+    libudev \
+    nano \
+    nfs-utils-client \
+    cifs-utils \
+    openssh-sftp \
+    openssh-sftp-server \
+    procps \
+    protobuf \
+    ntp ntpdate ntp-utils \
+    linux-firmware \
+    libsodium \
+    sqlite3 \
+    tar \
+    wget \
+    zip \
+    unzip \
+    rsync \
+    kernel-modules kernel-devsrc kernel-dev \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     "
+
+
 
