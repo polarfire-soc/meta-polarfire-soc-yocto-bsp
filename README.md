@@ -66,6 +66,7 @@ repo init -u https://bitbucket.microchip.com/scm/fpga_pfsoc_es/polarfire-soc-yoc
 repo sync
 
 ```
+
 Run the Polarfire SoC Setup Script
 '''
 ./polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh
