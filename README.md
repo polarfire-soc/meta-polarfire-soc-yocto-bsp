@@ -67,9 +67,11 @@ repo sync
 
 ./polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh
 
+```
 
-#To make modifications to working branches in all repositories issue the following:
 
+To make modifications to working branches in all repositories issue the following:
+```
 repo start work --all
 ```
 
