@@ -90,7 +90,7 @@ Run the setup script and source the build environment
 
 ## Build the sources
 Using yocto bitbake command and setting the MACHINE and image requried.
-For detailed information on Bitbake refer to the [user manual] (https://www.yoctoproject.org/docs/3.0/bitbake-user-manual/bitbake-user-manual.html) 
+For detailed information on Bitbake refer to the [user manual](https://www.yoctoproject.org/docs/3.0/bitbake-user-manual/bitbake-user-manual.html) 
 ```
 MACHINE=<machine> bitbake <image>
 
@@ -110,7 +110,7 @@ Example: MACHINE=lc-mpfs bitbake mpfs-dev-cli
  - 'core_image_minimal' A small console image to allow you to boot.
  - 'core_image_full_cmdline' A console only image with more full Featured Linux support.
 
- For more information on a available images refer to [Yocto reference manual] (https://www.yoctoproject.org/docs/3.0/ref-manual/ref-manual.html#ref-images)
+ For more information on a available images refer to [Yocto reference manual](https://www.yoctoproject.org/docs/3.0/ref-manual/ref-manual.html#ref-images)
 
 
 ## Yocto Image and Binaries directory
@@ -156,14 +156,14 @@ Simulation
 ```
 
 ## Some Usefull bitbake commands.
-'''
 Bake an image (add -k to continue building even errors are found in the tasks execution)
+```
 bitbake <image>
-'''
+```
 
-'''
+
 Execute a particular package's task. Default Tasks names: clean, fetch, unpack, patch, configure, compile, install, package, package_write, and build.
-
+```
 bitbake <package> -c <task>
 
 Example: To (force) compiling the mpfs kernel (virtual/kernel) and then build, type:
@@ -171,12 +171,15 @@ Example: To (force) compiling the mpfs kernel (virtual/kernel) and then build, t
 $ bitbake  mpfs-linux -f -c compile
 
 $ bitbake mpfs-linux
-'''
+```
 
-'''
+
 Look at the layers in the build
+```
 bitbake-layers show-layers
 
 Check if certain package is present on current Yocto Setup
 bitbake -s | grep <package>
-'''
+```
+
+
