@@ -61,13 +61,19 @@ Note: You only need this if you do not have an existing Yocto Project build envi
 ```
 mkdir mpfs-yocto && cd mpfs-yocto
 
-
-repo init -u https://bitbucket.microchip.com/scm/fpga_pfsoc_es/polarfire-soc-yocto-bsp -m tools/manifests/riscv-yocto.xml
+repo init -u https://bitbucket.microchip.com/scm/fpga_pfsoc_es/polarfire-soc-yocto-bsp -b master -m tools/manifests/riscv-yocto.xml
 
 repo sync
-repo start work --all
 
+```
+Run the Polarfire SoC Setup Script
+'''
 ./polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh
+```
+
+To make modifications to working branches in all repositories issue the following:
+```
+repo start work --all
 ```
 
 ## Update Existing Workspace
@@ -102,7 +108,7 @@ Example: MACHINE=lc-mpfs bitbake mpfs-dev-cli
 ```
 
 ```     
-    * With the OE core-image-*  you can login with `root` account and have no password
+    * With the OE core-image-*  you can login with `root` account, there is no password set.
 ```
  - 'core_image_minimal' A small console image to allow you to boot.
  - 'core_image_full_cmdline' A console only image with more full Featured Linux support.
@@ -151,3 +157,29 @@ Simulation
 ```
 ./openembedded-core/scripts/runqemu nographic
 ```
+
+## Some Usefull bitbake commands.
+'''
+Bake an image (add -k to continue building even errors are found in the tasks execution)
+bitbake <image>
+'''
+
+'''
+Execute a particular package's task. Default Tasks names: clean, fetch, unpack, patch, configure, compile, install, package, package_write, and build.
+
+bitbake <package> -c <task>
+
+Example: To (force) compiling the mpfs kernel (virtual/kernel) and then build, type:
+
+$ bitbake  mpfs-linux -f -c compile
+
+$ bitbake mpfs-linux
+'''
+
+'''
+Look at the layers in the build
+bitbake-layers show-layers
+
+Check if certain package is present on current Yocto Setup
+bitbake -s | grep <package>
+'''
