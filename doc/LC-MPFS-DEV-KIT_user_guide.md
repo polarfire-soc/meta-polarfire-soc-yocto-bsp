@@ -67,7 +67,7 @@ The following instructions guide you to set up the LC-MPFS-DEV-KIT.
 10. The Linux boot process can be observed on a serial terminal.
 
 11. You should see linux boot. Enter the following login credentials.
-```
+
 User login: root
 
 mpfs-dev-cli Password is Microchip.
