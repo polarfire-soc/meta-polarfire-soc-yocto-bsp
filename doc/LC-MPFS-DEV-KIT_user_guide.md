@@ -70,7 +70,8 @@ The following instructions guide you to set up the LC-MPFS-DEV-KIT.
 
 User login: root
 
-mpfs-dev-cli Password is Microchip.
+mpfs-dev-cli Password is 'Microchip'
+
 core-image* No password is set
 
 
