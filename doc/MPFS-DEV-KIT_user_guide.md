@@ -89,18 +89,25 @@ to download the standalone programmer (if needed).
 | FP Express | Software for Windows and Linux | FlashPro5 | Hardware programmer for Windows and Linux |
 | FlashPro | Software for Windows | FlashPro4 | Hardware programmer for Windows |
 
-### Polarfire SoC Buildroot SDK for the HiFive Unleashed Expansion Board
-The Polarfire SoC Buildroot SDK is based on the SiFive freedom-u-sdk with modifications to the
-device tree to support the HiFive Unleashed Expansion board. It also includes drivers for Microsemi
-PCIe, I2C, SPI, MMUART, and GPIO peripherals.     
+### Polarfire SoC Yocto BSP for the HiFive Unleashed Expansion Board
+The Polarfire SoC Yocoto BSP builds the requried cross-compile toolchain and software to boot
+a Linux system. It includes drivers for Micrsemi PCIe / I2C, SPI, QSPI, CAN and GPIO peripherals.
+The build creates wic. gz file which is a compressed sector by sector copy of a bootable microSD card.
+The following software applications are copied to the SD card.
+ * FSBL (First Stage Boot loader)
+ * Opensbi and U-boot
+ * DTB (Device Tree Blob)
+ * A Linux kernel image
+
+
 
 ### Firmware Versions
-The following table contains links to the .stp file, .job file, and the Linux SDK for each
+The following table contains links to the .stp file, .job file
 release.
 
-| Revision | .stp | .job | MPFS-Linux-SDK |
+| Revision | .stp | .job | 
 | --- | --- | --- | --- |
-| Initial release | [.stp Initial Release](https://my.microsemi.com/AWelcome/FileDownload.aspx?code=pvvtxqopwoxpqpposttrpv&src=EXT&ver=0) | [.job Initial Release](https://my.microsemi.com/AWelcome/FileDownload.aspx?code=pvvsoqopwoxpqoxruqoqpo&src=EXT&ver=0) | [Polarfire SoC Buildroot SDK](https://github.com/Microsemi-SoC-IP/mpfs-linux-sdk) 
+| Initial release | [.stp Initial Release](https://my.microsemi.com/AWelcome/FileDownload.aspx?code=pvvtxqopwoxpqpposttrpv&src=EXT&ver=0) | [.job Initial Release](https://my.microsemi.com/AWelcome/FileDownload.aspx?code=pvvsoqopwoxpqoxruqoqpo&src=EXT&ver=0)
 
 ## Board Setup
 Follow the instructions to set up the HiFive Unleashed board.
@@ -125,7 +132,7 @@ more information on MSEL.
 
 ![DIP Switch Setting](images/HiFive_Unleashed_Board_DIP-Switch_setting.png)
 
-3. Insert an SD-card programmed with the bootloaders and Linux. See the Building the Linux Image section of this document for details on creating the content of this SD card.
+3. Insert an SD-card programmed with the bootloaders and Linux. 
 4. 
 ![SD Card](images/HiFive_Unleashed_Board_SD_Card.png)
 

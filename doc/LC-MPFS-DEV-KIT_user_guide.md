@@ -3,23 +3,6 @@
 ## Overview
 The LC-MPFS-DEV-KIT consists of SiFive's U540 processor and Microchip’s PolarFire FPGA on a single board. The LC-MPFS-DEV-KIT is a reduced version of the HiFive Unleashed platform. The LC-MPFS-DEV-KIT enables users to create a Linux system running on the RISC-V core complex, with a large FPGA fabric accessible through the memory map. The PolarFire FPGA is shipped with a pre-configured bitstream which enables peripherals such as GPIO, UART, SPI, and I2C on the PolarFire FPGA fabric.
 
-## Reference
-Visit the following links for further reference reading materials.
-### Recommended Reading
-[RISC-V User-level ISA Specification](https://riscv.org/specifications/)     
-[RISC-V Draft Privileged ISA Specification](https://riscv.org/specifications/privileged-isa/)     
-[SiFive FU540-C000 User Manual](https://www.sifive.com/documentation/chips/freedom-u540-c000-manual/)     
-[TU0844 Libero SoC PolarFire v2.2 Design Flow Tutorial](https://www.microsemi.com/document-portal/doc_download/1243632-tu0844-libero-soc-polarfire-v2-2-design-flow-tutorial)     
-[HiFive Unleashed Getting Started Guide](https://www.microsemi.com/document-portal/doc_download/1243284-hifive-unleashed-getting-started-guide)   
-
-### Reference
-[PolarFire FPGA Documentation](https://www.microsemi.com/product-directory/fpgas/3854-polarfire-fpgas#documentation)     
-[Libero SoC PolarFire Documentation](https://www.microsemi.com/product-directory/design-resources/3863-libero-soc-polarfire#documents)     
-[FlashPro User Guide for PolarFire](https://www.microsemi.com/document-portal/doc_download/137626-flashpro-user-guide-for-polarfire)     
-[FlashPro Express User Guide for PolarFire](https://www.microsemi.com/document-portal/doc_download/137627-flashpro-express-user-guide-for-polarfire)     
-[PolarFire SoC Information](https://www.microsemi.com/product-directory/soc-fpgas/5498-polarfire-soc-fpga)         
-[Schematics of LC-MPFS-DEV-KIT](https://www.microsemi.com/document-portal/doc_download/1244485-lc-mpfs-dev-kit-schematics) 
-
 ## Hardware Features
 This section describes the features of the LC-MPFS-DEV-KIT hardware with the block diagram. 
 
@@ -47,7 +30,7 @@ Along with the purchase of the LC-MPFS-DEV-KIT, customers are eligible for one p
 The latest revisions of the Libero project and bitstream files are available [here](http://soc.microsemi.com/download/rsc/?f=Libero_Project_LC-MPFS-DEV-KIT).
 
 ## Board Setup
-The following instructions guide you through settting up the LC-MPFS-DEV-KIT.
+The following instructions guide you to set up the LC-MPFS-DEV-KIT.
 
 1. Switch off the power button on the LC-MPFS-DEV-KIT.
 
@@ -67,7 +50,7 @@ The following instructions guide you through settting up the LC-MPFS-DEV-KIT.
 
 ![DIP Switch Setting](images/DIP_Switch.PNG)
 
-3. To prepare the SD-card programmed with the bootloaders and Linux images, see Building and Loading the Linux Image.
+3. To prepare the SD-card programmed with the bootloader and Linux images, see Building and Loading the Linux Image.
 
 4. Insert the SD card into the SD card slot J10.
 5. Connect the micro USB cable from J7 to the Host PC. The USB connector has two serial interfaces: the higher index serial port is used for the Linux serial console and the lower index serial port is used for JTAG debug.
@@ -81,14 +64,14 @@ The following instructions guide you through settting up the LC-MPFS-DEV-KIT.
 ![Power on the Device](images/Power_On.PNG)
 
 9. Configure the serial terminal in the Host PC for 115200 baud, 8 data bits, no stop bits, no parity, and no flow control. Push reset button (near the power button) on the LC-MPFS-DEV-KIT.
-10. The Linux boot process can be observed on a serial terminal as shown in the following image.
+10. The Linux boot process can be observed on a serial terminal.
 
 11. You should see linux boot. Enter the following login credentials.
 ```
 User login: root
 
-No password is required
-```
+mpfs-dev-cli Password is Microchip.
+core-image* No password is set
 
 
 ## Programming Guide
@@ -193,5 +176,3 @@ Visit the following links for further reference reading materials.
 
 ## Technical Support
 For technical queries, visit the [Microsemi SoC Customer Portal](https://soc.microsemi.com/Portal/Default.aspx), select “PolarFire SoC” under Product Family, “MPFSXXXX” under Device Family and type in the query. Microchip’s technical support team will create a ticket, address the query and track it to completion
- and track it to completion.
-  
