@@ -218,13 +218,6 @@ See the [FlashPro Express User Guide](https://www.microsemi.com/document-portal/
 ## Building and Loading the Linux Image
 For instructions on how to build and load a Linux image, see the Linux build instructions in [top level readme](../README.md).
 
-#### Linux Boot and Login Credentials
-The Linux boot process can be observed by connecting a serial terminal to the USB port on the HiFive
-Unleashed board. Settings are 115200 baud, 8 data bits, 1 stop bit, no parity, and no flow control.
-Log in using the root account. No password is required. The console should look similar to the following figure.
-
-![Console Image for Boot](images/Console_Image_for_Boot.png)
-
 ## FPGA Design in Libero
 Libero SoC Design suite provides a comprehensive design flow including traditional FPGA design flow,
 embedded design flow, and graphical configurators. The suite provides a comprehensive development
