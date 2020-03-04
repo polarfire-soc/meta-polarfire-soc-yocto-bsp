@@ -92,5 +92,30 @@ bitbake-layers add-layer ../meta-openembedded/meta-python
 bitbake-layers add-layer ../meta-openembedded/meta-multimedia
 bitbake-layers add-layer ../meta-openembedded/meta-networking
 bitbake-layers add-layer ../meta-riscv
-bitbake-layers add-layer ../polarfire-soc-yocto-bsp
+bitbake-layers add-layer ../meta-polarfire-soc-yocto-bsp
+
+
+
+echo "---------------------------------------------------"
+echo "MACHINE=${MACHINE} bitbake ${BITBAKEIMAGE}"
+echo "---------------------------------------------------"
+echo ""
+echo "Buildable machine info"
+echo "---------------------------------------------------"
+echo " Default ${MACHINE} lc-mpfs"
+echo "* mpfs: HiFive Unleashed board with the Microsemi’s HiFive Unleashed Expansion kit."
+echo "* lc-mpfs: Microchip’s PolarFire FPGA using the Sifive U540 processor on a single board."
+echo "* qemuriscv64: The 64-bit RISC-V machine"
+echo "---------------------------------------------------"
+echo "Bitbake Image"
+echo "---------------------------------------------------"
+echo "* core-dev-cli: MPFS Linux console-only development Image."
+echo "* core-image-minimal: OE minimal command line image"
+echo "* core-image-minimal: OE console-only image with more full-featured Linux system functionality installed."
+echo "* qemuriscv64: The 64-bit RISC-V machine"
+echo "---------------------------------------------------"
+
+# start build
+#echo "Starting build"
+#bitbake $BITBAKEIMAGE
 
