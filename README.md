@@ -61,7 +61,7 @@ Note: You only need this if you do not have an existing Yocto Project build envi
 ```
 mkdir mpfs-yocto && cd mpfs-yocto
 
-repo init -u https://bitbucket.microchip.com/scm/fpga_pfsoc_es/polarfire-soc-yocto-bsp -b master -m tools/manifests/riscv-yocto.xml
+repo init -u https://github.com/polarfire-soc/meta-polarfire-soc-yocto-bsp -b master -m tools/manifests/riscv-yocto.xml
 
 repo sync
 
