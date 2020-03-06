@@ -65,7 +65,7 @@ repo init -u https://github.com/polarfire-soc/meta-polarfire-soc-yocto-bsp -b ma
 
 repo sync
 
-./polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh
+. ./meta-polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh
 
 ```
 
