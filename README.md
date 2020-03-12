@@ -2,7 +2,7 @@
 
 
 Support for Microchip Polarfire-SoC (MPFS-DEV-KIT and LC-MPFS-DEV-KIT) are available in Yocto/OE provided by either the OpenEmbedded Core or for additional and more complete support the meta-polarfire-soc-yocto-bsp layer. 
-This Yocto BSP layer builds a complete SD compressed Image for booting the development board.
+This Yocto BSP layer builds a complete compressed uSD Image for booting the development board.
 
 The 'Polarfire SoC Yocto BSP' is build on top of the RISCV Architectural layer (meta-riscv) to provide additional hardware specific features. 
 Using Yocto 'Openembedded' you will build the following:
