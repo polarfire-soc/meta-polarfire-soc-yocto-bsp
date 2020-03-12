@@ -1,15 +1,11 @@
 #!/bin/bash
 
-if [ "$1"  == "CISERVER" ]; then
-echo "CI SERVER configuration to shared folders tbd"
+DIR="build"
+MACHINE="lc-mpfs"
+CONFFILE="conf/auto.conf"
+BITBAKEIMAGE="mpfs-dev-cli"
 dlDIR="$HOME/dldir"
 sstateDIR="$HOME/sstate"
-else
-echo "Yocto Developer folders for dl / sstate"
-dlDIR="$HOME/dldir"
-
-sstateDIR="$HOME/sstate"
-fi
 
 
 # make sure sstate is there
@@ -18,6 +14,7 @@ if [ ! -d $sstateDIR ]; then
  mkdir -p $sstateDIR
 fi
 
+
 # make sure dldir is there
 if [ ! -d $dlDIR ]; then
  mkdir -p $dlDIR
@@ -25,66 +22,24 @@ fi
 
 echo $(pwd)
 
-. ./openembedded-core/oe-init-build-env
-
-echo $(pwd)
-# we will be in build here
-if [ ! -d "./build" ]; then
- mkdir -p build
-else
-exit
+# Reconfigure dash on debian-like systems
+which aptitude > /dev/null 2>&1
+ret=$?
+if [ "$(readlink /bin/sh)" = "dash" -a "$ret" = "0" ]; then
+  sudo aptitude install expect -y
+  expect -c 'spawn sudo dpkg-reconfigure -freadline dash; send "n\n"; interact;'
+elif [ "${0##*/}" = "dash" ]; then
+  echo "dash as default shell is not supported"
+  return
 fi
+# bootstrap OE
+echo "Init OE"
+export BASH_SOURCE="openembedded-core/oe-init-build-env"
+. ./openembedded-core/oe-init-build-env $DIR
 
-
-#cat <<EOF > ./conf/local.conf
-echo 'DL_DIR ?= "'$dlDIR'"' >> ../build/conf/local.conf
-echo 'SSTATE_DIR ?= "'$sstateDIR'"' >> ../build/conf/local.conf
-#echo 'MACHINE ?= "qemuriscv64"' >> ../build/conf/local.conf
-echo 'MACHINE ?= "lc-mpfs"' >> ../build/conf/local.conf
-echo 'EXTRA_IMAGE_FEATURES_append = " ssh-server-dropbear"' >> ../build/conf/local.conf
-echo 'EXTRA_IMAGE_FEATURES_append = " package-management"' >> ../build/conf/local.conf
-echo 'PACKAGECONFIG_append_pn-qemu-native = " sdl"' >> ../build/conf/local.conf
-echo 'PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"' >> ../build/conf/local.conf
-echo 'USER_CLASSES ?= "buildstats buildhistory buildstats-summary image-mklibs image-prelink"' >> ../build/conf/local.conf
-
-# would question these requires, may not need
-echo 'require conf/distro/include/no-static-libs.inc' >> ../build/conf/local.conf
-echo 'require conf/distro/include/yocto-uninative.inc' >> ../build/conf/local.conf
-echo 'require conf/distro/include/security_flags.inc' >> ../build/conf/local.conf
-echo 'INHERIT += "uninative"' >> ../build/conf/local.conf
-
-echo '# same here, check if these are really needed' >> ../build/conf/local.conf
-echo 'DISTRO_FEATURES_append = " largefile opengl ptest multiarch wayland pam systemd " ' >> ../build/conf/local.conf
-echo 'DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"' >> ../build/conf/local.conf
-
-echo 'VIRTUAL-RUNTIME_init_manager = "systemd"' >> ../build/conf/local.conf
-echo 'HOSTTOOLS_NONFATAL_append = " ssh"' >> ../build/conf/local.conf
-
-echo '# Comment these two if you DO NOT want BitBake to build images useful for debugging.' >> ../build/conf/local.conf
-echo 'DEBUG_BUILD = "1"' >> ../build/conf/local.conf
-echo 'INHIBIT_PACKAGE_STRIP = "1"' >> ../build/conf/local.conf
-
-
-#CI SERVER DOES NOT USE THIS, for developers only!
-if [ "$1"  == "CISERVER" ]; then
-echo "CI SERVER SHOULD NOT SET SSTATE_MIRRORS/ PREMIRRORS_prepend"
-else
-    echo "Developer setting up SSTATE mirrors and premirrors prepend"	
-    echo 'SSTATE_MIRRORS ?= "\
-    file://.* http://someserver.tld/share/sstate/PATH;downloadfilename=PATH \n \
-    file://.* file:///some/local/dir/sstate/PATH"' >> ../build/conf/local.conf
-
-    echo 'PREMIRRORS_prepend = "\
-         git://.*/.* http://www.lewis.org/sources/ \n \
-         ftp://.*/.* http://www.lewis.org/sources/ \n \
-         http://.*/.* http://www.lewis.org/sources/ \n \
-         https://.*/.* http://www.lewis.org/sources/ \n"' >> ./conf/local.conf
-
-
-fi
-
-cd ../build
-
+# Symlink the cache
+echo "Setup symlink for sstate"
+ln -s $sstateDIR sstate-cache
 # add the missing layers
 echo "Adding layers"
 bitbake-layers add-layer ../meta-openembedded/meta-oe
@@ -96,6 +51,40 @@ bitbake-layers add-layer ../meta-polarfire-soc-yocto-bsp
 
 
 
+# fix the configuration
+echo "Creating auto.conf"
+
+if [ -e $CONFFILE ]; then
+    rm -rf $CONFFILE
+fi
+cat <<EOF > $CONFFILE
+MACHINE ?= "${MACHINE}"
+#IMAGE_FEATURES += "tools-debug"
+#IMAGE_FEATURES += "tools-tweaks"
+#IMAGE_FEATURES += "dbg-pkgs"
+# rootfs for debugging
+#IMAGE_GEN_DEBUGFS = "1"
+#IMAGE_FSTYPES_DEBUGFS = "tar.gz"
+EXTRA_IMAGE_FEATURES_append = " ssh-server-dropbear"
+EXTRA_IMAGE_FEATURES_append = " package-management"
+PACKAGECONFIG_append_pn-qemu-native = " sdl"
+PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
+USER_CLASSES ?= "buildstats buildhistory buildstats-summary image-mklibs image-prelink"
+
+require conf/distro/include/no-static-libs.inc
+require conf/distro/include/yocto-uninative.inc
+require conf/distro/include/security_flags.inc
+
+INHERIT += "uninative"
+
+DISTRO_FEATURES_append = " largefile opengl ptest multiarch wayland pam  systemd "
+DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
+VIRTUAL-RUNTIME_init_manager = "systemd"
+HOSTTOOLS_NONFATAL_append = " ssh"
+EOF
+
+
+echo "To build an image run"
 echo "---------------------------------------------------"
 echo "MACHINE=${MACHINE} bitbake ${BITBAKEIMAGE}"
 echo "---------------------------------------------------"
@@ -104,14 +93,14 @@ echo "Buildable machine info"
 echo "---------------------------------------------------"
 echo " Default ${MACHINE} lc-mpfs"
 echo "* mpfs: HiFive Unleashed board with the Microsemi’s HiFive Unleashed Expansion kit."
-echo "* lc-mpfs: Microchip’s PolarFire FPGA using the Sifive U540 processor on a single board."
+echo "* lc-mpfs: Microchip’s PolarFire SoC FPGA using the Sifive U540 processor on a single board."
 echo "* qemuriscv64: The 64-bit RISC-V machine"
 echo "---------------------------------------------------"
 echo "Bitbake Image"
 echo "---------------------------------------------------"
-echo "* core-dev-cli: MPFS Linux console-only development Image."
-echo "* core-image-minimal: OE minimal command line image"
-echo "* core-image-minimal: OE console-only image with more full-featured Linux system functionality installed."
+echo "* core-dev-cli: MPFS Linux console-only with development tools Image."
+echo "* core-image-minimal: OE console-only image"
+echo "* core-image-full-cmdline: OE console-only image with more full-featured Linux system functionality installed."
 echo "* qemuriscv64: The 64-bit RISC-V machine"
 echo "---------------------------------------------------"
 
