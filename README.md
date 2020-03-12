@@ -122,12 +122,11 @@ Example write uSD card:
 
 ```bash
 zcat mpfs-dev-cli-lc-mpfs.wic.gz | sudo dd of=/dev/sdX bs=512K iflag=fullblock oflag=direct conv=fsync status=progress
-
-
+```
 
 ## Run in QEMU
 Simulation
-```
+```bash
 ./openembedded-core/scripts/runqemu nographic
 ```
 
@@ -151,7 +150,6 @@ $ bitbake  mpfs-linux -f -c compile
 
 $ bitbake mpfs-linux
 ```
-
 
 Look at the layers in the build
 ```
