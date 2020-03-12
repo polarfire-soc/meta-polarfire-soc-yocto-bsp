@@ -17,7 +17,7 @@ The complete User Guides, containing board and boot instructions, are available 
 
 
 ## Building Linux Using Yocto
-This section describes the procedure to build the Disk image and loading it into an SD card using
+This section describes the procedure to build the Disk image and loading it into an uSD card using
 bitbake and standard disk utilities.
 
 Yocto Release Activity:
