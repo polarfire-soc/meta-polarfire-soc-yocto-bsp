@@ -59,23 +59,6 @@ The HiFive Unleashed Expansion board contains the following items:
 Download and install the following development tools in the PC in order to design, synthesize, simulate,
 and debug on the HiFive Unleashed Platform (MPFS-DEV-KIT).
 
-### Libero SoC PolarFire Design Suite
-The Libero SoC PolarFire Design Suite offers high productivity with its comprehensive, easy-to-learn,
-easy-to-adopt development tools for designing with Microsemi's PolarFire FPGA Family. The suite
-integrates industry standard Synopsys Synplify Pro ME® synthesis and Mentor Graphics ModelSim ME
-simulation with best-in-class constraints management, Debug Tools capabilities, and Secure Production
-Programming support.
-
-Download Libero SoC PolarFire v2.2 for Windows environment 
-[here](https://www.microsemi.com/document-portal/doc_download/1243420-download-libero-soc-polarfire-v2-2-for-windows).         
-Download Libero SoC PolarFire v2.2 for Linux environment 
-[here](https://www.microsemi.com/document-portal/doc_download/1243421-download-libero-soc-polarfire-v2-2-for-linux).
-
-Along with the purchase of the MPFS-DEV-KIT, customers are eligible for two Platinum Floating licenses for 
-the Libero SoC PolarFire Design Suite. Write to [mi-v-embeddedpartner@microchip.com](mi-v-embeddedpartner@microchip.com) 
-with the subject “License Request <your organization name>” and include the 12-digit MAC ID of the two linux
-machines/PCs in your email.
-
 ### Programming FlashPro and FlashPro Express
 The Microsemi FlashPro programming system is a combination of Microsemi's FlashPro software and a
 hardware programmer. Together, they provide in-system programming (ISP) for all FPGA families. The
@@ -102,12 +85,11 @@ The following software applications are copied to the SD card.
 
 
 ### Firmware Versions
-The following table contains links to the .stp file, .job file
-release.
+The following table contains links to the schematic, .stp file and .job file for each release.
 
-| Revision | .stp | .job | 
+| Revision | .stp | .job | Schematic |
 | --- | --- | --- | --- |
-| Initial release | [.stp Initial Release](https://my.microsemi.com/AWelcome/FileDownload.aspx?code=pvvtxqopwoxpqpposttrpv&src=EXT&ver=0) | [.job Initial Release](https://my.microsemi.com/AWelcome/FileDownload.aspx?code=pvvsoqopwoxpqoxruqoqpo&src=EXT&ver=0)
+| Initial release | [.stp](http://www.microsemi.com/index.php?option=com_docman&task=doc_download&gid=1244810) | [.job](http://www.microsemi.com/index.php?option=com_docman&task=doc_download&gid=1244809) | [Schematic](http://www.microsemi.com/index.php?option=com_docman&task=doc_download&gid=1244811) |
 
 ## Board Setup
 Follow the instructions to set up the HiFive Unleashed board.
