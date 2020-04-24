@@ -32,9 +32,9 @@ Detailed instructions for various distributions can be found in "[Required Packa
 ### Dependencies
 
 The BSP uses the Yocto RISCV Architecture Layer.
-> For Ubuntu 18.04 (or newer) install python3-distutils package.
+ For Ubuntu 18.04 (or newer) install python3-distutils package.
 
-Make sure to install the [repo command](https://source.android.com/setup/build/downloading#installing-repo) by Google first.
+**Make sure to install the [repo command](https://source.android.com/setup/build/downloading#installing-repo) by Google first.**
  
 ### Supported Machine Targets
 The `MACHINE` option can be used to set the target board for which linux is built, and if left blank it will default to `MACHINE=lc-mpfs`.           
@@ -95,11 +95,10 @@ cd mpfs-yocto
 
 Using yocto bitbake command and setting the MACHINE and image requried.
 
-```
+```bash
 MACHINE=<machine> bitbake <image>
-
-Example: MACHINE=lc-mpfs bitbake mpfs-dev-cli
 ```
+Example: MACHINE=lc-mpfs bitbake mpfs-dev-cli
 
 ### Yocto Image and Binaries directory
 ```
@@ -108,7 +107,7 @@ build/tmp-glibc/deploy/images/{MACHINE}
 
 ### Running wic.gz image on hardware
 
-Disk images files use `<image>-<machine>.wic.gz` format, for example,
+Compressed Disk images files use `<image>-<machine>.wic.gz` format, for example,
 
 `mpfs-dev-cli-lc-mpfs.wic.gz`. We are interested in `.wic.gz` disk images for writing to uSD card.
 
@@ -118,7 +117,7 @@ Disk images files use `<image>-<machine>.wic.gz` format, for example,
 > 
 > We advice to use 16GB or 32GB uSD cards. 8GB cards (shipped with HiFive Unleashed) can still be used with CLI images.
 
-Example write uSD card:
+Example write the disk image to the uSD card:
 
 ```bash
 zcat mpfs-dev-cli-lc-mpfs.wic.gz | sudo dd of=/dev/sdX bs=512K iflag=fullblock oflag=direct conv=fsync status=progress
@@ -130,32 +129,32 @@ Simulation
 ./openembedded-core/scripts/runqemu nographic
 ```
 
-## Some Usefull bitbake commands.
+## Some Useful bitbake commands.
 
 For detailed information on Bitbake refer to the [user manual](https://www.yoctoproject.org/docs/3.0/bitbake-user-manual/bitbake-user-manual.html) 
 
 Bake an image (add -k to continue building even errors are found in the tasks execution)
-```
+```bash
 bitbake <image>
 ```
 
-
 Execute a particular package's task. Default Tasks names: clean, fetch, unpack, patch, configure, compile, install, package, package_write, and build.
-```
+```bash
 bitbake <package> -c <task>
+```
 
-Example: To (force) compiling the mpfs kernel (virtual/kernel) and then build, type:
-
+Example: To (force) compiling the mpfs kernel (virtual/kernel:
+```bash
 $ bitbake  mpfs-linux -f -c compile
-
-$ bitbake mpfs-linux
 ```
 
 Look at the layers in the build
-```
+```bash
 bitbake-layers show-layers
+```
 
 Check if certain package is present on current Yocto Setup
+```bash
 bitbake -s | grep <package>
 ```
 
