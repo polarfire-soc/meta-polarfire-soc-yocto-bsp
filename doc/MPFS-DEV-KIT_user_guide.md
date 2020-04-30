@@ -3,9 +3,7 @@
 ## Overview
 The HiFive Unleashed Platform™ is purpose-built to emulate most of the functionality of the upcoming
 PolarFire SoC FPGA, which will be the industry’s first RISC-V based FPGA SoC.       
-This guide describes the MPFS-DEV-KIT, board setup, and installation steps to get the HiFive Unleashed
-platform boot Linux. New IP cores can be ported on the PolarFire FPGA with the Libero SoC PolarFire
-Design Suite. For more details on the design suite, see section FPGA Design in Libero.        
+This guide describes the MPFS-DEV-KIT, board setup, and the process for booting Linux on the HiFive Unleashed platform.     
 
 ### HiFive Unleashed Platform (MPFS-DEV-KIT)   
 The HiFive Unleashed Platform consists of the SiFive’s HiFive Unleashed kit and Microsemi’s HiFive
@@ -23,7 +21,6 @@ enabling PCIe root port functionality.
 - One USB-A to micro USB-B cable
 - One 12 V, AC power adapter and cord
 - One FlashPro4/FlashPro5 programming dongle
-- Two Libero Platinum software licenses of duration one year ($995 value)
 
 SiFive’s HiFive Unleashed development kit is based on the Freedom U540-C000 chip, the first 4+1 multicore RISC-V Linux-capable SoC.
 
@@ -54,27 +51,6 @@ The HiFive Unleashed Expansion board contains the following items:
 ![HiFive Unleashed Expansion Board Block Diagram](images/HUEB_Block_Diagram.png)
 
 ![HiFive Unleashed Expansion Board](images/HUEB.png)
-
-## System Setup and Prerequisites
-Download and install the following development tools in the PC in order to design, synthesize, simulate,
-and debug on the HiFive Unleashed Platform (MPFS-DEV-KIT).
-
-### Libero SoC PolarFire Design Suite
-The Libero SoC PolarFire Design Suite offers high productivity with its comprehensive, easy-to-learn,
-easy-to-adopt development tools for designing with Microsemi's PolarFire FPGA Family. The suite
-integrates industry standard Synopsys Synplify Pro ME® synthesis and Mentor Graphics ModelSim ME
-simulation with best-in-class constraints management, Debug Tools capabilities, and Secure Production
-Programming support.
-
-Download Libero SoC PolarFire v2.2 for Windows environment 
-[here](https://www.microsemi.com/document-portal/doc_download/1243420-download-libero-soc-polarfire-v2-2-for-windows).         
-Download Libero SoC PolarFire v2.2 for Linux environment 
-[here](https://www.microsemi.com/document-portal/doc_download/1243421-download-libero-soc-polarfire-v2-2-for-linux).
-
-Along with the purchase of the MPFS-DEV-KIT, customers are eligible for two Platinum Floating licenses for 
-the Libero SoC PolarFire Design Suite. Write to [mi-v-embeddedpartner@microchip.com](mi-v-embeddedpartner@microchip.com) 
-with the subject “License Request <your organization name>” and include the 12-digit MAC ID of the two linux
-machines/PCs in your email.
 
 ### Programming FlashPro and FlashPro Express
 The Microsemi FlashPro programming system is a combination of Microsemi's FlashPro software and a
@@ -108,6 +84,8 @@ release.
 | Revision | .stp | .job | 
 | --- | --- | --- | --- |
 | Initial release | [.stp Initial Release](https://my.microsemi.com/AWelcome/FileDownload.aspx?code=pvvtxqopwoxpqpposttrpv&src=EXT&ver=0) | [.job Initial Release](https://my.microsemi.com/AWelcome/FileDownload.aspx?code=pvvsoqopwoxpqoxruqoqpo&src=EXT&ver=0)
+| Second release | [.stp Second Release](http://www.microsemi.com/index.php?option=com_docman&task=doc_download&gid=1244810) | [.job Second Release](http://www.microsemi.com/index.php?option=com_docman&task=doc_download&gid=1244809) |
+ 
 
 ## Board Setup
 Follow the instructions to set up the HiFive Unleashed board.
@@ -133,7 +111,7 @@ more information on MSEL.
 ![DIP Switch Setting](images/HiFive_Unleashed_Board_DIP-Switch_setting.png)
 
 3. Insert an SD-card programmed with the bootloaders and Linux. 
-4. 
+
 ![SD Card](images/HiFive_Unleashed_Board_SD_Card.png)
 
 4. If available, connect the board to a network switch. The board will run DHCP on boot and start an
@@ -293,6 +271,8 @@ Visit the following links for further reference reading materials.
 [Libero SoC PolarFire Documentation](https://www.microsemi.com/product-directory/design-resources/3863-libero-soc-polarfire#documents)     
 [FlashPro User Guide for PolarFire](https://www.microsemi.com/document-portal/doc_download/137626-flashpro-user-guide-for-polarfire)     
 [FlashPro Express User Guide for PolarFire](https://www.microsemi.com/document-portal/doc_download/137627-flashpro-express-user-guide-for-polarfire)     
+[PolarFire SoC Information](https://www.microsemi.com/product-directory/soc-fpgas/5498-polarfire-soc-fpga)     
+[Schematics of MPFS-DEV-KIT](http://www.microsemi.com/index.php?option=com_docman&task=doc_download&gid=1244811)
 
 ## Technical Support
 For technical queries, visit the [Microsemi SoC Customer Portal](https://soc.microsemi.com/Portal/Default.aspx), select “PolarFire SoC” under Product Family, “MPFSXXXX” under Device Family and type in the query. Microchip’s technical support team will create a ticket, address the query and track it to completion
