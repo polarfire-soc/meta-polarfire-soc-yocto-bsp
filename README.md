@@ -15,6 +15,7 @@ Using Yocto 'Openembedded' you will build the following:
 Currently the following development platforms are supported:
 - [MPFS-DEV-KIT](doc/MPFS-DEV-KIT_user_guide.md) (HiFive Unleashed Expansion Board)
 - [LC-MPFS-DEV-KIT](doc/LC-MPFS-DEV-KIT_user_guide.md)
+
 The complete User Guides for each development platform, containing board and boot instructions, are available in the `doc/` subdirectory. 
 
 
