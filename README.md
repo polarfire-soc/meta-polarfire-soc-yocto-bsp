@@ -63,7 +63,7 @@ The following table details the available targets:
  - 'core-image-minimal' A small console image to allow you to boot.
  - 'core-image-full-cmdline' A console only image with more full Featured Linux support.
 
- For more information on a available images refer to [Yocto reference manual](https://www.yoctoproject.org/docs/3.0/ref-manual/ref-manual.html#ref-images)
+ For more information on available images refer to [Yocto reference manual](https://www.yoctoproject.org/docs/3.0/ref-manual/ref-manual.html#ref-images)
 
 ## Quick Start
 
@@ -126,8 +126,8 @@ Example write the disk image to the uSD card:
 zcat mpfs-dev-cli-lc-mpfs.wic.gz | sudo dd of=/dev/sdX bs=512K iflag=fullblock oflag=direct conv=fsync status=progress
 ```
 
-## Run in QEMU
-Simulation
+## Run in Simulation (QEMU)
+
 ```bash
 ./openembedded-core/scripts/runqemu nographic
 ```
