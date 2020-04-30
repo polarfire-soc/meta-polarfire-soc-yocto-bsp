@@ -134,11 +134,11 @@ Simulation
 
 ## Additional Reading
 
-[Yocto User Manual](https://www.yoctoproject.org/docs/3.0/mega-manual/mega-manual.html)
-[Yocto Development Task Manual] (https://www.yoctoproject.org/docs/3.0/dev-manual/dev-manual.html)
-[Yocto Bitbake User Manual](https://www.yoctoproject.org/docs/3.0/bitbake-user-manual/bitbake-user-manual.html)
-[PolarFire SoC Buildroot BSP](https://github.com/polarfire-soc/polarfire-soc-buildroot-sdk)
-[MPFS-DEV-KIT User Guide](doc/MPFS-DEV-KIT_user_guide.md)
-[LC-MPFS-DEV-KIT User Guide](doc/LC-MPFS-DEV-KIT_user_guide.md)
-[U-Boot Documentation] (https://www.denx.de/wiki/U-Boot/Documentation)
-[Kernel Documentation for v5.4](https://www.kernel.org/doc/html/v5.4/)
+[Yocto User Manual](https://www.yoctoproject.org/docs/3.0/mega-manual/mega-manual.html) 
+[Yocto Development Task Manual] (https://www.yoctoproject.org/docs/3.0/dev-manual/dev-manual.html) 
+[Yocto Bitbake User Manual](https://www.yoctoproject.org/docs/3.0/bitbake-user-manual/bitbake-user-manual.html) 
+[PolarFire SoC Buildroot BSP](https://github.com/polarfire-soc/polarfire-soc-buildroot-sdk) 
+[MPFS-DEV-KIT User Guide](doc/MPFS-DEV-KIT_user_guide.md) 
+[LC-MPFS-DEV-KIT User Guide](doc/LC-MPFS-DEV-KIT_user_guide.md) 
+[U-Boot Documentation] (https://www.denx.de/wiki/U-Boot/Documentation) 
+[Kernel Documentation for v5.4](https://www.kernel.org/doc/html/v5.4/) 
