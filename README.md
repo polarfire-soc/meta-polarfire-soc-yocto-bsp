@@ -12,8 +12,10 @@ Using Yocto 'Openembedded' you will build the following:
   - Device Tree Binary (DTB)
   - Linux Kernel Images
 
-
-The complete User Guides, containing board and boot instructions, are available in the `doc/` subdirectory, for the [MPFS-DEV-KIT](doc/MPFS-DEV-KIT_user_guide.md) and [LC-MPFS-DEV-KIT](doc/LC-MPFS-DEV-KIT_user_guide.md).
+Currently the following development platforms are supported:
+- [MPFS-DEV-KIT](doc/MPFS-DEV-KIT_user_guide.md) (HiFive Unleashed Expansion Board)
+- [LC-MPFS-DEV-KIT](doc/LC-MPFS-DEV-KIT_user_guide.md)
+The complete User Guides for each development platform, containing board and boot instructions, are available in the `doc/` subdirectory. 
 
 
 ## Building Linux Using Yocto
@@ -129,33 +131,13 @@ Simulation
 ./openembedded-core/scripts/runqemu nographic
 ```
 
-## Some Useful bitbake commands.
+## Additional Reading
 
-For detailed information on Bitbake refer to the [user manual](https://www.yoctoproject.org/docs/3.0/bitbake-user-manual/bitbake-user-manual.html) 
-
-Bake an image (add -k to continue building even errors are found in the tasks execution)
-```bash
-bitbake <image>
-```
-
-Execute a particular package's task. Default Tasks names: clean, fetch, unpack, patch, configure, compile, install, package, package_write, and build.
-```bash
-bitbake <package> -c <task>
-```
-
-Example: To (force) compiling the mpfs kernel (virtual/kernel:
-```bash
-$ bitbake  mpfs-linux -f -c compile
-```
-
-Look at the layers in the build
-```bash
-bitbake-layers show-layers
-```
-
-Check if certain package is present on current Yocto Setup
-```bash
-bitbake -s | grep <package>
-```
-
-
+[Yocto User Manual](https://www.yoctoproject.org/docs/3.0/mega-manual/mega-manual.html)
+[Yocto Development Task Manual] (https://www.yoctoproject.org/docs/3.0/dev-manual/dev-manual.html)
+[Yocto Bitbake User Manual](https://www.yoctoproject.org/docs/3.0/bitbake-user-manual/bitbake-user-manual.html)
+[PolarFire SoC Buildroot BSP](https://github.com/polarfire-soc/polarfire-soc-buildroot-sdk)
+[MPFS-DEV-KIT User Guide](doc/MPFS-DEV-KIT_user_guide.md)
+[LC-MPFS-DEV-KIT User Guide](doc/LC-MPFS-DEV-KIT_user_guide.md)
+[U-Boot Documentation] (https://www.denx.de/wiki/U-Boot/Documentation)
+[Kernel Documentation for v5.4](https://www.kernel.org/doc/html/v5.4/)
