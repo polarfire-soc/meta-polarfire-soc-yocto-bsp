@@ -1,0 +1,98 @@
+From 05c6ae360893fd87be04208982bf2226402c4c45 Mon Sep 17 00:00:00 2001
+From: Padmarao Begari <padmarao.begari@microchip.com>
+Date: Fri, 19 Jun 2020 16:20:13 +0530
+Subject: [PATCH 2/5] include configs for the Microchip mpfs-icicle SoC board.
+
+include configuration for icicle kit
+
+Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
+---
+ include/configs/microchip_mpfs_icicle.h | 64 +++++++++----------------
+ 1 file changed, 22 insertions(+), 42 deletions(-)
+
+diff --git a/include/configs/microchip_mpfs_icicle.h b/include/configs/microchip_mpfs_icicle.h
+index 2f90ab3175..5da67c295f 100644
+--- a/include/configs/microchip_mpfs_icicle.h
++++ b/include/configs/microchip_mpfs_icicle.h
+@@ -7,56 +7,36 @@
+ #ifndef __CONFIG_H
+ #define __CONFIG_H
+ 
+-/*
+- * CPU and Board Configuration Options
+- */
+-#define CONFIG_BOOTP_SEND_HOSTNAME
++#include <linux/sizes.h>
+ 
+-/*
+- * Miscellaneous configurable options
+- */
+-#define CONFIG_SYS_CBSIZE	1024 /* Console I/O Buffer Size */
++#define CONFIG_SYS_SDRAM_BASE       0x80000000
++#define CONFIG_SYS_INIT_SP_ADDR     (CONFIG_SYS_SDRAM_BASE + SZ_2M)
+ 
+-/*
+- * Print Buffer Size
+- */
+-#define CONFIG_SYS_PBSIZE	\
+-	(CONFIG_SYS_CBSIZE + sizeof(CONFIG_SYS_PROMPT) + 16)
++#define CONFIG_SYS_LOAD_ADDR        (CONFIG_SYS_SDRAM_BASE + SZ_2M)
+ 
+-/*
+- * max number of command args
+- */
+-#define CONFIG_SYS_MAXARGS	16
++#define CONFIG_SYS_MALLOC_LEN       SZ_8M
+ 
+-/*
+- * Boot Argument Buffer Size
+- */
+-#define CONFIG_SYS_BARGSIZE	CONFIG_SYS_CBSIZE
+-
+-/*
+- * Size of malloc() pool
+- * 512kB is suggested, (CONFIG_ENV_SIZE + 128 * 1024) was not enough
+- */
+-#define CONFIG_SYS_MALLOC_LEN	(512 << 10)
++#define CONFIG_SYS_BOOTM_LEN        SZ_64M
+ 
+-/*
+- * Physical Memory Map
+- */
+-#define PHYS_SDRAM_0		0x80000000 /* SDRAM Bank #1 */
+-#define PHYS_SDRAM_0_SIZE	0x40000000 /* 1 GB */
+-#define CONFIG_SYS_SDRAM_BASE	PHYS_SDRAM_0
++#define CONFIG_STANDALONE_LOAD_ADDR 0x80200000
++/* GEM clock */
++#define PFSOC_GEM_CLK_FREQ 150000000
+ 
+-/* Init Stack Pointer */
+-#define CONFIG_SYS_INIT_SP_ADDR	(CONFIG_SYS_SDRAM_BASE + 0x200000)
++/* Environment options */
+ 
+-#define CONFIG_SYS_LOAD_ADDR	0x80000000 /* SDRAM */
++#define BOOT_TARGET_DEVICES(func) \
++    func(MMC, mmc, 0) \
++    func(DHCP, dhcp, na) 
+-/*
+- * memtest works on DRAM
+- */
+-#define CONFIG_SYS_MEMTEST_START	PHYS_SDRAM_0
+-#define CONFIG_SYS_MEMTEST_END		(PHYS_SDRAM_0 + PHYS_SDRAM_0_SIZE)
++#include <config_distro_bootcmd.h>
+ 
+-/* When we use RAM as ENV */
++#define CONFIG_EXTRA_ENV_SETTINGS \
++	"fdt_high=0xffffffffffffffff\0" \
++	"initrd_high=0xffffffffffffffff\0" \
++	"kernel_addr_r=0x84000000\0" \
++	"fdt_addr_r=0x88000000\0" \
++	"scriptaddr=0x88100000\0" \
++	"pxefile_addr_r=0x88200000\0" \
++	"ramdisk_addr_r=0x88300000\0" \
++	BOOTENV
+ 
+ #endif /* __CONFIG_H */
+-- 
+2.17.1
+

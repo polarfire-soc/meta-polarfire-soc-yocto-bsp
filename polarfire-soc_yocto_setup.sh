@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIR="build"
-MACHINE="lc-mpfs"
+MACHINE="icicle-kit-es"
 CONFFILE="conf/auto.conf"
 BITBAKEIMAGE="mpfs-dev-cli"
 dlDIR="$HOME/dldir"
@@ -65,6 +65,8 @@ MACHINE ?= "${MACHINE}"
 # rootfs for debugging
 #IMAGE_GEN_DEBUGFS = "1"
 #IMAGE_FSTYPES_DEBUGFS = "tar.gz"
+IMAGE_INSTALL_append = " python3"
+IMAGE_INSTALL_append = " python3-requests"
 EXTRA_IMAGE_FEATURES_append = " ssh-server-dropbear"
 EXTRA_IMAGE_FEATURES_append = " package-management"
 PACKAGECONFIG_append_pn-qemu-native = " sdl"
@@ -81,6 +83,7 @@ DISTRO_FEATURES_append = " largefile opengl ptest multiarch wayland pam  systemd
 DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
 VIRTUAL-RUNTIME_init_manager = "systemd"
 HOSTTOOLS_NONFATAL_append = " ssh"
+#DEBUG_BUILD = "1"
 EOF
 
 
@@ -91,14 +94,15 @@ echo "---------------------------------------------------"
 echo ""
 echo "Buildable machine info"
 echo "---------------------------------------------------"
-echo " Default ${MACHINE} lc-mpfs"
+echo " Default MACHINE=${MACHINE}"
+echo "* icicle-kit-es: Microchip Polarfire SoC Icicle Kit Engineering Sample."
 echo "* mpfs: HiFive Unleashed board with the Microsemi’s HiFive Unleashed Expansion kit."
 echo "* lc-mpfs: Microchip’s PolarFire SoC FPGA using the Sifive U540 processor on a single board."
 echo "* qemuriscv64: The 64-bit RISC-V machine"
 echo "---------------------------------------------------"
 echo "Bitbake Image"
 echo "---------------------------------------------------"
-echo "* core-dev-cli: MPFS Linux console-only with development tools Image."
+echo "* mpfs-dev-cli: MPFS Linux console-only with development tools Image."
 echo "* core-image-minimal: OE console-only image"
 echo "* core-image-full-cmdline: OE console-only image with more full-featured Linux system functionality installed."
 echo "* qemuriscv64: The 64-bit RISC-V machine"

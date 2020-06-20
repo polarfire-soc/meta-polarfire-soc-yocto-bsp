@@ -7,6 +7,7 @@ SRC_URI = "file://l2ways.c \
            file://COPYING \
            file://tune-my-box \
 	   file://freq.sh \
+	   file://coremarkpro_1.1.2743.tar \
 	   "	
 
 do_compile () {
@@ -14,10 +15,12 @@ do_compile () {
 }
 
 FILES_${PN} += "/mpfs/tools"
+FILES_${PN} += "/mpfs/coremarkpro/*"
 
-do_install () {
-	install -d ${D}/mpfs/tools
-	chmod a+x ${D}/mpfs/tools	
+
+do_install() {
+    install -d ${D}/mpfs/coremarkpro
+    chmod a+x ${D}/mpfs/coremarkpro
+    install -d ${D}/mpfs/tools
+    cp -r ${WORKDIR}/coremarkpro_1.1.2743 ${D}/mpfs/coremarkpro
 }
-
-
