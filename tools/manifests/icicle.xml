@@ -5,12 +5,11 @@
   <remote name="yocto" fetch="git://git.yoctoproject.org/" />
   <remote name="meta-polarfire-soc-yocto-bsp" fetch="https://bitbucket.microchip.com/scm/fpga_pfsoc_es/" />
   <default remote="openembedded" revision="master" />
-
-  <project name="meta-riscv" remote="riscv" path="meta-riscv" revision="master" />
   <project name="meta-polarfire-soc-yocto-bsp" remote="meta-polarfire-soc-yocto-bsp" path="meta-polarfire-soc-yocto-bsp" revision="develop_icicle-kit-es" />
-  <project name="openembedded-core" remote="openembedded" path="openembedded-core" revision="master" />
-  <project name="bitbake" remote="openembedded" path="openembedded-core/bitbake" revision="master" />
-  <project name="meta-openembedded" remote="openembedded" path="meta-openembedded" revision="master" />
+  <project name="meta-riscv" remote="riscv" path="meta-riscv" revision="6f495435ed9269030e16b9051b9012ce42038c04" />
+  <project name="openembedded-core" remote="openembedded" path="openembedded-core" revision="38e3d5bd3d05ed00a2fc55e3729cb8a6d4e4132f" />
+  <project name="bitbake" remote="openembedded" path="openembedded-core/bitbake" revision="9a5dd1be63395c76d3fac2c3c7ba6557fe47b442" />
+  <project name="meta-openembedded" remote="openembedded" path="meta-openembedded" revision="a6e846dadc5dcb5e4248d37c5f971c8a1f55df4a" />
 
 </manifest>
 
