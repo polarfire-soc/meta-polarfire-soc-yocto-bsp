@@ -1,5 +1,5 @@
 CONFIG_CMDLINE_BOOL=y
-CONFIG_CMDLINE="earlycon=sbi root=/dev/mmcblk0p3 rootwait console=ttyS0,115200n8 uio_pdrv_genirq.of_id=generic-uio"
+CONFIG_CMDLINE="earlycon=sbi root=/dev/mmcblk0p3 rootwait console=ttyS1,115200n8 uio_pdrv_genirq.of_id=generic-uio"
 CONFIG_UIO=y
 CONFIG_UIO_PDRV_GENIRQ=y
 CONFIG_UIO_DMEM_GENIRQ=y

@@ -318,15 +318,12 @@
 
 	};
 
-
-	refclk: refclk {
-			compatible = "fixed-clock";
-			#clock-cells = <0>;
-			clock-frequency = <600000000>;
-			clock-output-names = "msspllclk";
-       	};
-
-    
+    refclk: refclk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <600000000>;
+		clock-output-names = "msspllclk";
+    };    
     clkcfg: clkcfg@20002000 {
             compatible = "microchip,pfsoc-clkcfg";
             reg = <0x0 0x20002000 0x0 0x1000>;
@@ -335,7 +332,6 @@
             #clock-cells = <1>;
             clock-output-names = "cpuclk", "axiclk", "ahbclk", "ENVMclk", "MAC0clk", "MAC1clk", "MMCclk", "TIMERclk", "MMUART0clk", "MMUART1clk", "MMUART2clk", "MMUART3clk", "MMUART4clk", "SPI0clk", "SPI1clk", "I2C0clk", "I2C1clk", "CAN0clk", "CAN1clk", "USBclk", "RESERVED", "RTCclk", "QSPIclk", "GPIO0clk", "GPIO1clk", "GPIO2clk", "DDRCclk", "FIC0clk", "FIC1clk", "FIC2clk", "FIC3clk", "ATHENAclk", "CFMclk";
         };
-        
     serial0: serial@20000000 {
             compatible = "ns16550a";
             reg = <0x0 0x20000000 0x0 0x400>;
@@ -345,6 +341,39 @@
             interrupts = <90>;
             current-speed = <115200>;
             clocks = <&clkcfg 8>;
+            status = "disabled"; /* Reserved for the HSS */
+      };
+    serial1: serial@20100000 {
+            compatible = "ns16550a";
+            reg = <0x0 0x20100000 0x0 0x400>;
+            reg-io-width = <4>;
+            reg-shift = <2>;
+            interrupt-parent = <&L1>;
+            interrupts = <91>;
+            current-speed = <115200>;	    
+	    clocks = <&clkcfg 9>;
+            status = "okay";
+      };
+    serial2: serial@20102000 {
+            compatible = "ns16550a";
+            reg = <0x0 0x20102000 0x0 0x400>;
+            reg-io-width = <4>;
+            reg-shift = <2>;
+            interrupt-parent = <&L1>;
+            interrupts = <92>;
+            current-speed = <115200>;
+            clocks = <&clkcfg 10>;
+            status = "okay";
+      };
+    serial3: serial@20104000 {
+            compatible = "ns16550a";
+            reg = <0x0 0x20104000 0x0 0x400>;
+            reg-io-width = <4>;
+            reg-shift = <2>;
+            interrupt-parent = <&L1>;
+            interrupts = <93>;
+            current-speed = <115200>;
+            clocks = <&clkcfg 11>;
             status = "okay";
       };
   /*emmc: sdhc@20008000 {

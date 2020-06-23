@@ -337,7 +337,7 @@
     };
 
    chosen {
-        stdout-path = "/serial@20000000:115200n8";
+        stdout-path = "/serial@20100000:115200n8";
         bootargs = "console=ttyS0,115200n8 ";
    };
  
@@ -357,16 +357,16 @@
             #clock-cells = <1>;
             clock-output-names = "cpuclk", "axiclk", "ahbclk", "ENVMclk", "MAC0clk", "MAC1clk", "MMCclk", "TIMERclk", "MMUART0clk", "MMUART1clk", "MMUART2clk", "MMUART3clk", "MMUART4clk", "SPI0clk", "SPI1clk", "I2C0clk", "I2C1clk", "CAN0clk", "CAN1clk", "USBclk", "RESERVED", "RTCclk", "QSPIclk", "GPIO0clk", "GPIO1clk", "GPIO2clk", "DDRCclk", "FIC0clk", "FIC1clk", "FIC2clk", "FIC3clk", "ATHENAclk", "CFMclk";
         };
-    serial0: serial@20000000 {
+    serial0: serial@20100000 {
             compatible = "ns16550a";
-            reg = <0x0 0x20000000 0x0 0x400>;
+            reg = <0x0 0x20100000 0x0 0x400>;
             reg-io-width = <4>;
             reg-shift = <2>;
             interrupt-parent = <&L1>;
-            interrupts = <90>;
+            interrupts = <91>;
             current-speed = <115200>;
             clock-frequency = <150000000>;
-            clocks = <&clkcfg 8>;
+            clocks = <&clkcfg 9>;
             status = "okay";
       };
    emmc: sdhc@20008000 {
