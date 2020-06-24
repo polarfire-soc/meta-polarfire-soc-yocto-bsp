@@ -317,32 +317,6 @@
                 ti,fifo-depth = <0x01>;
             };
         };
-        pcie: pci@E0000000 {
-		#address-cells = <3>;
-		#interrupt-cells = <1>;
-		#size-cells = <2>;
-		compatible = "microsemi,ms-pf-axi-pcie-host";
-		device_type = "pci";
-		clocks = <&clkcfg 28>, <&clkcfg 30>;
-		clock-names = "pcie","regclk";
-       		bus-range = <0x00 0x7f>;
-		interrupt-map = <0 0 0 1 &pcie_intc 1>,
-                                <0 0 0 2 &pcie_intc 2>,
-                                <0 0 0 3 &pcie_intc 3>,
-                                <0 0 0 4 &pcie_intc 4>;
-		interrupt-map-mask = <0 0 0 7>;
-		interrupt-parent = <&L1>;
-		interrupts = <32>;
-		ranges = <0x43000000 0x0 0xE8000000 0x0 0xE8000000 0x0 0x8000000>;
-                reg = <0x0 0xE0000000 0x0 0x8000000 0x0 0x43000000 0x0 0x10000>;
-                reg-names = "control", "apb";
-		pcie_intc: interrupt-controller {
-			#address-cells = <0>;
-			#interrupt-cells = <1>;
-			interrupt-controller;
-		};
-	};
-
 	L60: uio_axi_lsram@2030000000 {
 		compatible = "generic-uio";
 		reg = <0x20 0x30000000 0 0x80000000 >;
