@@ -40,7 +40,6 @@ do_configure_prepend_mpfs() {
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
             -d ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/boot.scr.uimg
-        cp -f  ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
     fi
 }
 
@@ -51,7 +50,6 @@ do_configure_prepend_lc-mpfs() {
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
             -d ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/boot.scr.uimg
-        cp -f  ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
     fi
 }
 
@@ -75,4 +73,15 @@ do_configure_prepend_icicle-kit-es-sd() {
     fi
 }
 
-
+do_deploy_append_mpfs() {
+    if [ -f "${WORKDIR}/boot.scr.uimg" ]; then
+        install -d ${DEPLOY_DIR_IMAGE}
+        install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
+    fi
+}
+do_deploy_append_lc-mpfs() {
+    if [ -f "${WORKDIR}/boot.scr.uimg" ]; then
+        install -d ${DEPLOY_DIR_IMAGE}
+        install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
+    fi
+}
