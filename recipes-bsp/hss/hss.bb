@@ -73,7 +73,9 @@ do_configure_icicle-kit-es () {
 	cp -f ${WORKDIR}/git/boards/icicle-kit-es/def_config  ${WORKDIR}/git/.config
 
 	## HSS uses kconfiglib
-        ln -s ${WORKDIR}/hssconfig ${TOPDIR}/tmp-glibc/hosttools/genconfig
+	if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
+            ln -s ${WORKDIR}/hssconfig ${TOPDIR}/tmp-glibc/hosttools/genconfig
+        fi
 
 	# Clear the old config file
 	if [ -f ${WORKDIR}/git/config.h ]; then
@@ -101,7 +103,9 @@ do_configure_icicle-kit-es-sd () {
 	cp -f ${WORKDIR}/git/boards/icicle-kit-es/def_config.sdcard  ${WORKDIR}/git/.config
 
 	## HSS uses kconfiglib
-        ln -s ${WORKDIR}/hssconfig ${TOPDIR}/tmp-glibc/hosttools/genconfig
+        if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
+            ln -s ${WORKDIR}/hssconfig ${TOPDIR}/tmp-glibc/hosttools/genconfig
+        fi
 
 	# Clear the old config file
 	if [ -f ${WORKDIR}/git/config.h ]; then
