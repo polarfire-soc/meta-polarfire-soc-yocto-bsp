@@ -73,7 +73,7 @@ do_configure_icicle-kit-es () {
 	cp -f ${WORKDIR}/git/boards/icicle-kit-es/def_config  ${WORKDIR}/git/.config
 
 	## HSS uses kconfiglib
-        cp -f ${WORKDIR}/hssconfig  ${WORKDIR}/git/
+        ln -s ${WORKDIR}/hssconfig ${TOPDIR}/tmp-glibc/hosttools/genconfig
 
 	# Clear the old config file
 	if [ -f ${WORKDIR}/git/config.h ]; then
@@ -101,7 +101,7 @@ do_configure_icicle-kit-es-sd () {
 	cp -f ${WORKDIR}/git/boards/icicle-kit-es/def_config.sdcard  ${WORKDIR}/git/.config
 
 	## HSS uses kconfiglib
-        cp -f ${WORKDIR}/hssconfig  ${WORKDIR}/git/
+        ln -s ${WORKDIR}/hssconfig ${TOPDIR}/tmp-glibc/hosttools/genconfig
 
 	# Clear the old config file
 	if [ -f ${WORKDIR}/git/config.h ]; then
@@ -113,7 +113,7 @@ do_configure_icicle-kit-es-sd () {
 do_compile_icicle-kit-es-sd () {
 
 	## Creating the config for HSS
-	oe_runmake BOARD=icicle-kit-es hssconfig
+	oe_runmake BOARD=icicle-kit-es genconfig
 	## Adding u-boot as a payload
 	## Using bin2chunks application
 	make -C ${WORKDIR}/git/tools/bin2chunks      
@@ -125,7 +125,7 @@ do_compile_icicle-kit-es-sd () {
 do_compile_icicle-kit-es() {
 
 	## Creating the config for HSS
-	oe_runmake BOARD=${MACHINE} hssconfig
+	oe_runmake BOARD=${MACHINE} genconfig
 	## Adding u-boot as a payload
 	## Using bin2chunks application
 	make -C ${WORKDIR}/git/tools/bin2chunks      
