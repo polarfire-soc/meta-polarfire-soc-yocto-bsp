@@ -87,3 +87,5 @@ do_deploy_append_icicle-kit-es() {
     install -d ${DEPLOY_DIR_IMAGE}
     install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
 }
+
+FILES_${PN}_append = " /boot/boot.scr.uimg"
