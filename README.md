@@ -19,9 +19,6 @@ The complete User Guides for each development platform, containing board and boo
 - [ICICLE-KIT-ES] (tbd)
 
 
-The complete User Guides for each development platform, containing board and boot instructions, are available in the `doc/` subdirectory. 
-
-
 ## Building Linux Using Yocto
 This section describes the procedure to build the Disk image and loading it into an uSD card using
 bitbake and standard disk utilities.
@@ -156,6 +153,8 @@ Example write the disk image to the SD card for the icicle kit:
 ```bash
 zcat mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdb bs=512k iflag=fullblock oflag=direct conv=fsync status=progress
 ```
+
+If you have issues 'DDing' the flash image try and reduce the block size, bs=512
 
 ## Run in Simulation (QEMU)
 
