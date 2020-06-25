@@ -1,4 +1,4 @@
-# short-description: Create SD card image for Polarfire SoC with FSBL and OpenSBI/u-boot/linux
+# short-description: Create SD card image for HiFive Unleashed development board with FSBL and OpenSBI
 
 part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --active --size=100M --align 4096
 part fsbl --source rawcopy --sourceparams="file=fsbl.bin" --ondisk mmcblk0 --fixed-size 32K --align 1 --part-type 5b193300-fc78-40cd-8002-e86c45580b47

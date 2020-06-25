@@ -14,16 +14,18 @@ import sys
 
 #------------------------------------------------------------------------------
 # mpfs_configuration_generator.py version
+# 0.3.4 fixed comment formatting bug in hw_memory.h generation
+# 0.3.3 updated copyright format
 # 0.3.2 removed leading zeros from decimal values ( clock rates)
 #------------------------------------------------------------------------------
 def get_script_ver():
     '''
     This changes anytime anytime the mpfs_configuration_generator.py script
-    changes. This does not nessesary mean the xml format has been updated in
+    changes. This does not necessarily mean the xml format has been updated in
     get_xml_ver()
     :return: script version
     '''
-    return "0.3.2"
+    return "0.3.4"
 
 #------------------------------------------------------------------------------
 # xml description version
@@ -169,7 +171,7 @@ def WriteCopyright(root, theFile, filename, creator):
     '''
     generate copyright notice based on the following:
     #/*******************************************************************************
-    # * Copyright 2019 Microchip Corporation.
+    # * Copyright 2019-2020 Microchip FPGA Embedded Systems Solutions.
     # *
     # * SPDX-License-Identifier: MIT
     # *
@@ -184,7 +186,7 @@ def WriteCopyright(root, theFile, filename, creator):
     '''
     theFile.write('/**********************************************************'
                   '*********************\n')
-    theFile.write(" * Copyright " + str(datetime.datetime.now().year) + " Microchip Corporation.\n")
+    theFile.write(" * Copyright 2019-" + str(datetime.datetime.now().year) + " Microchip FPGA Embedded Systems Solutions.\n")
     theFile.write(' * \n')
     theFile.write(' * SPDX-License-Identifier: MIT\n')
     theFile.write(' * \n')
@@ -370,7 +372,7 @@ def generate_mem_elements(headerFile, mem_elements, tags):
         if len(s1) >= name_size_gap:
             name_size_gap = len(s1) + 4
         # create the strings for writing
-        s = s.ljust(name_gap, ' ') + mem_value +  ' */ \n'
+        s = s.ljust(name_gap, ' ') + mem_value +  '\n'
         reg_description = '/*' + description + ' */ \n'
         s1 = s1.ljust(name_size_gap, ' ') + mem_size \
              + '    /* Length of memory block*/ \n'

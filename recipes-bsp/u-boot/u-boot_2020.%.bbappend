@@ -72,26 +72,18 @@ do_configure_prepend_icicle-kit-es-sd() {
 }
 
 do_deploy_append_mpfs() {
-    if [ -f "${WORKDIR}/boot.scr.uimg" ]; then
-        install -d ${DEPLOY_DIR_IMAGE}
-        install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
-    fi
+    install -d ${DEPLOY_DIR_IMAGE}
+    install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
 }
 do_deploy_append_lc-mpfs() {
-    if [ -f "${WORKDIR}/boot.scr.uimg" ]; then
-        install -d ${DEPLOY_DIR_IMAGE}
-        install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
-    fi
-}
-do_deploy_append_icicle-kit-es() {
-    if [ -f "${WORKDIR}/boot.scr.uimg" ]; then
-        install -d ${DEPLOY_DIR_IMAGE}
-        install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
-    fi
+    install -d ${DEPLOY_DIR_IMAGE}
+    install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
 }
 do_deploy_append_icicle-kit-es-sd() {
-    if [ -f "${WORKDIR}/boot.scr.uimg" ]; then
-        install -d ${DEPLOY_DIR_IMAGE}
-        install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
-    fi
+    install -d ${DEPLOY_DIR_IMAGE}
+    install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
+}
+do_deploy_append_icicle-kit-es() {
+    install -d ${DEPLOY_DIR_IMAGE}
+    install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
 }

@@ -1,8 +1,8 @@
 # Microchip Yocto BSP for the MPFS Polarfire-SoC
 
 
-Support for Microchip Polarfire-SoC (MPFS-DEV-KIT and LC-MPFS-DEV-KIT) are available in Yocto/OE provided by either the OpenEmbedded Core or for additional and more complete support the meta-polarfire-soc-yocto-bsp layer. 
-This Yocto BSP layer builds a complete compressed uSD Image for booting the development board.
+Support for Microchip Polarfire-SoC are available in Yocto/OE provided by either the OpenEmbedded Core or for additional and more complete support the meta-polarfire-soc-yocto-bsp layer. 
+This Yocto BSP layer builds a complete compressed Image for booting the development board.
 
 The 'Polarfire SoC Yocto BSP' is build on top of the RISCV Architectural layer (meta-riscv) to provide additional hardware specific features. 
 Using Yocto 'Openembedded' you will build the following:
@@ -12,8 +12,9 @@ Using Yocto 'Openembedded' you will build the following:
   - Device Tree Binary (DTB)
   - Linux Kernel Images
 
-Currently the following development platforms are supported:
-- [MPFS-DEV-KIT](doc/MPFS-DEV-KIT_user_guide.md) (HiFive Unleashed Expansion Board)
+The complete User Guides for each development platform, containing board and boot instructions, are available for the following supported platforms:
+
+- [MPFS-DEV-KIT](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-dev-kit/MPFS-DEV-KIT_user_guide.md) (HiFive Unleashed Expansion Board)
 - [LC-MPFS-DEV-KIT](doc/LC-MPFS-DEV-KIT_user_guide.md)
 - [ICICLE-KIT-ES] (tbd)
 
@@ -110,7 +111,7 @@ e.g: /component/work/PFSOC_MSS_C0/PFSOC_MSS_C0_0
 Update the following folder with the updated XML file (use the same name) :
 
 ```bash
-meta-polarfire-soc-yocto-bsp/recipes-bsp/hss/files/${MACHINE}
+meta-polarfire-soc-yocto-bsp/recipes-bsp/hss/files/${MACHINE}/ICICLE_MSS_0.xml
 ```
 
 ### Setting up Build Environment
@@ -133,18 +134,10 @@ Example: MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 ```
 build/tmp-glibc/deploy/images/{MACHINE}
 ```
-
-### Running on Icicle Kit
-
-Boot plan: (hss)->(u-boot)->(linux).
-All Binaries required for the boot process are located in the Yocto image directory:
+For Example the following is the path for the Icicle-kit-es
 ```
 build/tmp-glibc/deploy/images/icicle-kit-es
 ```
-
-
-
-
 
 ### Running wic.gz image on hardware
 
@@ -161,7 +154,7 @@ Compressed Disk images files use `<image>-<machine>.wic.gz` format, for example,
 Example write the disk image to the SD card for the icicle kit:
 
 ```bash
-zcat mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdb bs=512K iflag=fullblock oflag=direct conv=fsync status=progress
+zcat mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdb bs=512k iflag=fullblock oflag=direct conv=fsync status=progress
 ```
 
 ## Run in Simulation (QEMU)
