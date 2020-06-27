@@ -14,26 +14,17 @@ do_compile[depends] += "virtual/bootloader:do_deploy"
 
 PV = "1.0+git${SRCPV}"
 SRCREV="${AUTOREV}"
-SRC_URI = "git://git@github.com/polarfire-soc/hart-software-services.git;protocol=ssh;branch=master \
+SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;branch=master \
 	   "
-
-SRC_URI_append_lc-mpfs = " \
-    file://default_config \
-"
-SRC_URI_append_mpfs = " \
-    file://default_config \
-"
 
 SRC_URI_append_icicle-kit-es = " \
     file://def_config \
-    file://hssconfig \
     file://mpfs_configuration_generator.py \
     file://ICICLE_MSS_0.xml \
 "
 
 SRC_URI_append_icicle-kit-es-sd = " \
     file://def_config \
-    file://hssconfig \
     file://mpfs_configuration_generator.py \
     file://ICICLE_MSS_0.xml \
 "
@@ -58,29 +49,33 @@ do_configure_icicle-kit-es () {
 	##echo "Creating Polarfore SoC XML Hardware Configuration folder "
 	python3 ${WORKDIR}/mpfs_configuration_generator.py ${WORKDIR}/ICICLE_MSS_0.xml
 	if [ -d ${WORKDIR}/git/hardware ]; then
-	if [ -d ${WORKDIR}/git/boards/${MACHINE}/config/hardware ]; then
-  	## force remove the hardware directory
-	rm -rf ${WORKDIR}/git/boards/${MACHINE}/config/hardware
-	fi
-	# Finally move the configuration over to HSS configuration folder
-	mv -f ${WORKDIR}/git/hardware ${WORKDIR}/git/boards/${MACHINE}/config/hardware
+		if [ -d ${WORKDIR}/git/boards/${MACHINE}/config/hardware ]; then
+			## force remove the hardware directory
+			rm -rf ${WORKDIR}/git/boards/${MACHINE}/config/hardware
+		fi
+		# Finally move the configuration over to HSS configuration folder
+		mv -f ${WORKDIR}/git/hardware ${WORKDIR}/git/boards/${MACHINE}/config/hardware
 	fi ## Finished if hardware folder generated from xml
-
-	# Specify any needed configure commands here
-	## We can use the yocto config in recipes_bsp/hss/files
-	##cp -f ${WORKDIR}/defconfig  ${WORKDIR}/git/.config
-	## For now use default configuration from HSS
-	cp -f ${WORKDIR}/git/boards/icicle-kit-es/def_config  ${WORKDIR}/git/.config
-
-	## HSS uses kconfiglib
-	if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
-            ln -s ${WORKDIR}/hssconfig ${TOPDIR}/tmp-glibc/hosttools/genconfig
-        fi
 
 	# Clear the old config file
 	if [ -f ${WORKDIR}/git/config.h ]; then
 		rm -f ${WORKDIR}/git/config.h
 	fi
+
+	# Specify any needed configure commands here
+	## We can use the yocto config in recipes_bsp/hss/files
+	##cp -f ${WORKDIR}/def_config  ${WORKDIR}/git/.config
+	## For now use default configuration from HSS
+	cp -f ${WORKDIR}/git/boards/icicle-kit-es/def_config  ${WORKDIR}/git/.config
+        ## HSS uses kconfiglib, must be installed in default location
+	## Create a symbolic link to the tool
+	if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
+		if [ -f /usr/local/bin/genconfig ]; then
+			ln -s /usr/local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
+		else
+			ln -s ~/.local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
+		fi
+        fi
 }
 do_configure_icicle-kit-es-sd () {
 
@@ -88,35 +83,39 @@ do_configure_icicle-kit-es-sd () {
 	##echo "Creating Polarfore SoC XML Hardware Configuration folder "
 	python3 ${WORKDIR}/mpfs_configuration_generator.py ${WORKDIR}/ICICLE_MSS_0.xml
 	if [ -d ${WORKDIR}/git/hardware ]; then
-	if [ -d ${WORKDIR}/git/boards/icicle-kit-es/config/hardware ]; then
-  	# force remove the hardware directory
-	rm -rf ${WORKDIR}/git/boards/icicle-kit-es/config/hardware
-	fi
-	# Finally move the configuration over to HSS configuration folder
-	mv -f ${WORKDIR}/git/hardware ${WORKDIR}/git/boards/icicle-kit-es/config
+		if [ -d ${WORKDIR}/git/boards/icicle-kit-es/config/hardware ]; then
+			# force remove the hardware directory
+			rm -rf ${WORKDIR}/git/boards/icicle-kit-es/config/hardware
+		fi
+		# Finally move the configuration over to HSS configuration folder
+		mv -f ${WORKDIR}/git/hardware ${WORKDIR}/git/boards/icicle-kit-es/config
 	fi ## Finished if hardware folder generated from xml
-
-	# Specify any needed configure commands here
-	## We can use the yocto config in recipes_bsp/hss/files
-	##cp -f ${WORKDIR}/default_config  ${WORKDIR}/git/.config
-	## For now use default configuration from HSS
-	cp -f ${WORKDIR}/git/boards/icicle-kit-es/def_config.sdcard  ${WORKDIR}/git/.config
-
-	## HSS uses kconfiglib
-        if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
-            ln -s ${WORKDIR}/hssconfig ${TOPDIR}/tmp-glibc/hosttools/genconfig
-        fi
 
 	# Clear the old config file
 	if [ -f ${WORKDIR}/git/config.h ]; then
-	rm -f ${WORKDIR}/git/config.h
+		rm -f ${WORKDIR}/git/config.h
         fi
+
+	# Specify any needed configure commands here
+	## We can use the yocto config in recipes_bsp/hss/files
+	##cp -f ${WORKDIR}/def_config  ${WORKDIR}/git/.config
+	## For now use default configuration from HSS
+	cp -f ${WORKDIR}/git/boards/icicle-kit-es/def_config.sdcard  ${WORKDIR}/git/.config
+
+        ## HSS uses kconfiglib, must be installed in default location ~/.local/bin/
+	## Create a symbolic link to the tool
+	if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
+		if [ -f /usr/local/bin/genconfig ]; then
+			ln -s /usr/local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
+		else
+			ln -s ~/.local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
+		fi
+        fi	
 }
 
 
-do_compile_icicle-kit-es-sd () {
-
-	## Creating the config for HSS
+do_compile () {
+    ## Creating the config for HSS
 	oe_runmake BOARD=icicle-kit-es genconfig
 	## Adding u-boot as a payload
 	## Using bin2chunks application
@@ -126,26 +125,8 @@ do_compile_icicle-kit-es-sd () {
 	oe_runmake BOARD=icicle-kit-es
 
 }
-do_compile_icicle-kit-es() {
 
-	## Creating the config for HSS
-	oe_runmake BOARD=${MACHINE} genconfig
-	## Adding u-boot as a payload
-	## Using bin2chunks application
-	make -C ${WORKDIR}/git/tools/bin2chunks      
-	${WORKDIR}/git/tools/bin2chunks/bin2chunks 0x80200000 0x80200000 0x80200000 0x80200000 32768 ${WORKDIR}/git/tools/bin2chunks/payload.bin 1 1 ${DEPLOY_DIR_IMAGE}/u-boot.bin 0x80200000
-        cp -f ${WORKDIR}/git/tools/bin2chunks/payload.bin ${WORKDIR}/git/
-	oe_runmake BOARD=${MACHINE}
-
-}
-
-do_install_icicle-kit-es() {
-	install -d ${DEPLOY_DIR_IMAGE}
-	install -m 755 ${WORKDIR}/git/hss.* ${DEPLOY_DIR_IMAGE}/
-	install -m 755 ${WORKDIR}/git/payload.bin ${DEPLOY_DIR_IMAGE}/
-}
-
-do_install_icicle-kit-es-sd() {
+do_install() {
 	install -d ${DEPLOY_DIR_IMAGE}
 	install -m 755 ${WORKDIR}/git/hss.* ${DEPLOY_DIR_IMAGE}/
 	install -m 755 ${WORKDIR}/git/payload.bin ${DEPLOY_DIR_IMAGE}/

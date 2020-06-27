@@ -18,6 +18,48 @@ The complete User Guides for each development platform, containing board and boo
 - [LC-MPFS-DEV-KIT](doc/LC-MPFS-DEV-KIT_user_guide.md)
 - [ICICLE-KIT-ES] (tbd)
 
+## Quick Start (Installation and further details below)
+
+### Create the Workspace
+
+This needs to be done every time you want a clean setup based on the latest layers.
+
+```bash
+mkdir yocto-dev && cd yocto-dev
+repo init -u https://bitbucket.microchip.com/scm/fpga_pfsoc_es/meta-polarfire-soc-yocto-bsp.git -b develop_icicle-kit-es -m tools/manifests/icicle.xml
+
+repo sync
+```
+
+### Setup Bitbake environment
+```bash
+cd yocto-dev
+. ./meta-polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh
+```
+
+### Building board Disk Image
+Using yocto bitbake command and setting the MACHINE and image requried.
+
+```bash
+MACHINE=icicle-kit-es bitbake mpfs-dev-cli
+```
+### Update Workspace
+
+If you want to pull in the latest changes in all layers.
+
+```bash
+cd yocto-dev
+repo sync
+repo rebase
+```
+### Copy the created Disk Image to flash device (USB mmc flash/SD/uSD)
+
+> Be very careful while picking /dev/sdX device! Look at dmesg, lsblk, GNOME Disks, etc. before and after plugging in your usb flash device/uSD/SD to find a proper device. Double check it to avoid overwriting any of system disks/partitions!
+> 
+```bash
+cd yocto-dev/build
+zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdX bs=512 iflag=fullblock oflag=direct conv=fsync status=progress
+```
 
 ## Building Linux Using Yocto
 This section describes the procedure to build the Disk image and loading it into an uSD card using
@@ -58,7 +100,6 @@ The following table details the available targets:
 | `MACHINE=icicle-kit-es-sd` | ICICLE-KIT-ES, Icicle Kit engineering samples (supports SD card boot)|
 | `MACHINE=qemuriscv64` | Simulation |
 
-
 ## Linux Images
 
  - 'mpfs-dev-cli' A console image with development tools.
@@ -74,28 +115,6 @@ The following table details the available targets:
 
  For more information on available images refer to [Yocto reference manual](https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#ref-images)
 
-## Quick Start
-
-### Create the Workspace
-
-This needs to be done every time you want a clean setup based on the latest layers.
-
-```bash
-mkdir yocto-dev && cd yocto
-repo init -u https://github.com/polarfire-soc/meta-polarfire-soc-yocto-bsp -b master -m tools/manifests/riscv-yocto.xml
-repo sync
-```
-
-### Updating Existing Workspace
-
-If you want to pull in the latest changes in all layers.
-
-```bash
-cd yocto-dev
-repo sync
-repo rebase
-```
-
 ### HSS Hardware Configuration from Libero Design
 
 (Support for the Icicle-kit only)
@@ -110,22 +129,6 @@ Update the following folder with the updated XML file (use the same name) :
 ```bash
 meta-polarfire-soc-yocto-bsp/recipes-bsp/hss/files/${MACHINE}/ICICLE_MSS_0.xml
 ```
-
-### Setting up Build Environment
-
-```bash
-cd yocto-dev
-. ./meta-polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh
-```
-
-### Building Disk Image
-
-Using yocto bitbake command and setting the MACHINE and image requried.
-
-```bash
-MACHINE=<machine> bitbake <image>
-```
-Example: MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 
 ### Yocto Image and Binaries directory
 ```
@@ -151,11 +154,9 @@ Compressed Disk images files use `<image>-<machine>.wic.gz` format, for example,
 Example write the disk image to the SD card for the icicle kit:
 
 ```bash
-zcat mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdb bs=512k iflag=fullblock oflag=direct conv=fsync status=progress
+cd yocto-dev/build
+zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdX bs=512 iflag=fullblock oflag=direct conv=fsync status=progress
 ```
-
-If you have issues 'DDing' the flash image try and reduce the block size, bs=512
-
 ## Run in Simulation (QEMU)
 
 ```bash
