@@ -86,6 +86,14 @@ The following table details the available targets:
 | `MACHINE=icicle-kit-es-sd` | ICICLE-KIT-ES, Icicle Kit engineering samples (supports SD card boot)|
 | `MACHINE=qemuriscv64` | Simulation |
 
+When building for different 'Machines' or want a 'clean' build, we recommend deleting the 'build' directory when switching.
+This will delete all cache / configurations and downloads. 
+```
+cd yocto-dev
+rm -rf build
+```
+
+
 ## Linux Images
 
  - 'mpfs-dev-cli' A console image with development tools.
