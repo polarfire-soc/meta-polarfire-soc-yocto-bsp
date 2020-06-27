@@ -21,28 +21,24 @@ The complete User Guides for each development platform, containing board and boo
 ## Build Instructions (Installation and further details below)
 
 ### Create the Workspace
-
 This needs to be done every time you want a clean setup based on the latest layers.
-
 ```bash
 mkdir yocto-dev && cd yocto-dev
 repo init -u https://bitbucket.microchip.com/scm/fpga_pfsoc_es/meta-polarfire-soc-yocto-bsp.git -b develop_icicle-kit-es -m tools/manifests/icicle.xml
+```
+### Update the repo workspace
+```bash
+repo sync
+repo rebase
 ```
 ### Setup Bitbake environment
 ```bash
 . ./meta-polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh
 ```
-
 ### Building board Disk Image
 Using yocto bitbake command and setting the MACHINE and image requried.
-
 ```bash
 MACHINE=icicle-kit-es bitbake mpfs-dev-cli
-```
-### Update the workspace
-```bash
-repo sync
-repo rebase
 ```
 ### Copy the created Disk Image to flash device (USB mmc flash/SD/uSD)
 
@@ -53,9 +49,7 @@ cd yocto-dev/build
 zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdX bs=512 iflag=fullblock oflag=direct conv=fsync status=progress
 ```
 
-## Building Linux Using Yocto
-This section describes the procedure to build the Disk image and loading it into an uSD card using
-bitbake and standard disk utilities.
+## Yocto Setup and BSP 
 
 Yocto Release Activity:
 Dunfell (Revision 3.1)	(Released April 2020)
