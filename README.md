@@ -18,7 +18,7 @@ The complete User Guides for each development platform, containing board and boo
 - [LC-MPFS-DEV-KIT](doc/LC-MPFS-DEV-KIT_user_guide.md)
 - [ICICLE-KIT-ES] (tbd)
 
-## Quick Start (Installation and further details below)
+## Build Instructions (Installation and further details below)
 
 ### Create the Workspace
 
@@ -27,13 +27,9 @@ This needs to be done every time you want a clean setup based on the latest laye
 ```bash
 mkdir yocto-dev && cd yocto-dev
 repo init -u https://bitbucket.microchip.com/scm/fpga_pfsoc_es/meta-polarfire-soc-yocto-bsp.git -b develop_icicle-kit-es -m tools/manifests/icicle.xml
-
-repo sync
 ```
-
 ### Setup Bitbake environment
 ```bash
-cd yocto-dev
 . ./meta-polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh
 ```
 
@@ -43,12 +39,8 @@ Using yocto bitbake command and setting the MACHINE and image requried.
 ```bash
 MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 ```
-### Update Workspace
-
-If you want to pull in the latest changes in all layers.
-
+### Update the workspace
 ```bash
-cd yocto-dev
 repo sync
 repo rebase
 ```
@@ -194,11 +186,13 @@ zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | s
   ```
   If payload is missing execute the following:
   ```bash
-  MACHINE=icicle-kit-es bitbake hss -c install
+  MACHINE=icicle-kit-es bitbake hss -c clean
+    MACHINE=icicle-kit-es bitbake hss -c install
   ```
-  If fsbl is missing execute the following:
+  If u-boot or boot.src.uimg missing
   ```bash
-  MACHINE=icickle-kit-es bitbake u540-c000-bootloader -c install
+  MACHINE=icickle-kit-es bitbake u-boot -c clean
+   MACHINE=icickle-kit-es bitbake u-boot -c install
   ```
   And finally a complete build:
   ```bash
