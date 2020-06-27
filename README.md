@@ -69,7 +69,7 @@ The BSP uses the Yocto RISCV Architecture Layer.
 
 **The Microchip 'Hart Software Services' (HSS) requires the Python library kconfiglib:**
 
-Use the default install location '~/.local/bin/'
+Use the default install location.
 ```
 pip3 install kconfiglib
 ```
