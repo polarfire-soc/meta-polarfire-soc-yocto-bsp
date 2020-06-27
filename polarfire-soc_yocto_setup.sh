@@ -4,21 +4,14 @@ DIR="build"
 MACHINE="icicle-kit-es"
 CONFFILE="conf/auto.conf"
 BITBAKEIMAGE="mpfs-dev-cli"
-dlDIR="$HOME/dldir"
-sstateDIR="$HOME/sstate"
 
+# clean up the output dir
+#echo "Cleaning build dir"
+#rm -rf $DIR
 
 # make sure sstate is there
-echo "Creating sstate directory"
-if [ ! -d $sstateDIR ]; then
- mkdir -p $sstateDIR
-fi
-
-
-# make sure dldir is there
-if [ ! -d $dlDIR ]; then
- mkdir -p $dlDIR
-fi
+#echo "Creating sstate directory"
+#mkdir -p ~/sstate/$MACHINE
 
 echo $(pwd)
 
@@ -38,8 +31,9 @@ export BASH_SOURCE="openembedded-core/oe-init-build-env"
 . ./openembedded-core/oe-init-build-env $DIR
 
 # Symlink the cache
-echo "Setup symlink for sstate"
-ln -s $sstateDIR sstate-cache
+#echo "Setup symlink for sstate"
+#ln -s ~/sstate/${MACHINE} sstate-cache
+
 # add the missing layers
 echo "Adding layers"
 bitbake-layers add-layer ../meta-openembedded/meta-oe
