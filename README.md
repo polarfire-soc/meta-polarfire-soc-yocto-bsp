@@ -93,7 +93,6 @@ cd yocto-dev
 rm -rf build
 ```
 
-
 ## Linux Images
 
  - 'mpfs-dev-cli' A console image with development tools.
@@ -109,7 +108,30 @@ rm -rf build
 
  For more information on available images refer to [Yocto reference manual](https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#ref-images)
 
-### HSS Hardware Configuration from Libero Design
+## Bitbake commands
+
+With the bitbake environment setup, execute the bitbake command in the following format to build the disk images.
+```bash
+MACHINE=<machine> bitbake <image>
+```
+Example building the icicle-kit-es machine and the mpfs-dev-cli Linux image
+```bash
+MACHINE=icicle-kit-es bitbake mpfs-dev-cli
+```
+
+To work with individual recipes:
+```bash
+MACHINE=<MACHINE> bitbake <recipe> -c <command>
+```
+BSP recipes avaialble: 
+* hss (Microchip HSS)
+* u540-c000-bootloader (Sifive FSBL)
+* u-boot 
+* mpfs-linux (kerenl our BSP)
+  
+Available commands: clean / configure / compile / install
+
+## HSS Hardware Configuration from Libero Design
 
 (Support for the Icicle-kit only)
 
@@ -198,7 +220,7 @@ zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | s
   ```
   And finally a complete build:
   ```bash
-  MACHINE=mpfs bitbake mpfs-dev-cli
+  MACHINE=icicle-kit-es bitbake mpfs-dev-cli
   ```
 
 ### Issue 002 fs.inotify.max_user_watches
