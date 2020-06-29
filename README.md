@@ -24,7 +24,7 @@ The complete User Guides for each development platform, containing board and boo
 This needs to be done every time you want a clean setup based on the latest layers.
 ```bash
 mkdir yocto-dev && cd yocto-dev
-repo init -u https://bitbucket.microchip.com/scm/fpga_pfsoc_es/meta-polarfire-soc-yocto-bsp.git -b master -m tools/manifests/icicle.xml
+repo init -u https://github.com/polarfire-soc/meta-polarfire-soc-yocto-bsp.git -b master -m tools/manifests/riscv-yocto.xml
 ```
 ### Update the repo workspace
 ```bash
