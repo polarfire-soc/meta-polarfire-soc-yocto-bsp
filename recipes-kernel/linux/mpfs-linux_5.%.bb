@@ -33,7 +33,7 @@ SRC_URI_append_mpfs = " \
     file://0002-Microchip-SPI-Support-for-the-Polarfire-SoC.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0004-Microchip-Adding-QSPI-driver-for-Polarfire-SoC.patch \
-    file://0005-Microchip-usb-musb-support-for-the-Polarfire-SoC.patch \
+    file://0005-v2-Microchip-usb-musb-support-for-the-Polarfire-SoC.patch \
     file://0006-Microchip-UIO-CAN-support-for-the-Polarfire-SoC.patch \
 "
 
@@ -46,7 +46,7 @@ SRC_URI_append_lc-mpfs = " \
     file://0002-Microchip-SPI-Support-for-the-Polarfire-SoC.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0004-Microchip-Adding-QSPI-driver-for-Polarfire-SoC.patch \
-    file://0005-Microchip-usb-musb-support-for-the-Polarfire-SoC.patch \
+    file://0005-v2-Microchip-usb-musb-support-for-the-Polarfire-SoC.patch \
     file://0006-Microchip-UIO-CAN-support-for-the-Polarfire-SoC.patch \
 "
 
