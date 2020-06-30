@@ -24,7 +24,7 @@ index a2e3d54e830c..bd7a709e6f53 100644
 +			compatible = "microsemi,ms-pf-mss-i2c";
 +			reg = <0x20 0x00100000 0x0 0x1000>;
 +			interrupt-parent = <&plic0>;
-+			interrupts = <32>;
++			interrupts = <35>;
 +			clocks = <&prci PRCI_CLK_TLCLK>;
 +			clock-frequency = <400000>;
 +                };
@@ -50,7 +50,7 @@ index a2e3d54e830c..bd7a709e6f53 100644
 +		L54: spi@2000107000 {
 +			compatible = "microsemi,ms-pf-mss-spi";
 +			interrupt-parent = <&plic0>;
-+			interrupts = <32>;
++			interrupts = <34>;
 +			reg = <0x20 0x00107000 0 0x1000>;
 +			clocks = <&prci PRCI_CLK_TLCLK>;
 +			spi-max-frequency = <25000000>;
