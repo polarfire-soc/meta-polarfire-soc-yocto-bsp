@@ -6,11 +6,12 @@ This Yocto BSP layer builds a complete compressed Image for booting the developm
 
 The 'Polarfire SoC Yocto BSP' is build on top of the RISCV Architectural layer (meta-riscv) to provide additional hardware specific features. 
 Using Yocto 'Openembedded' you will build the following:
-  - RISCV Toolchain
-  - Predefined Disk Images 
-  - Bootloader Binaries (FSBL, HSS, U-Boot)
-  - Device Tree Binary (DTB)
-  - Linux Kernel Images
+
+- RISCV Toolchain
+- Predefined Disk Images 
+- Bootloader Binaries (FSBL, HSS, U-Boot)
+- Device Tree Binary (DTB)
+- Linux Kernel Images
 
 The complete User Guides for each development platform, containing board and boot instructions, are available for the following supported platforms:
 
@@ -63,7 +64,7 @@ Detailed instructions for various distributions can be found in "[Required Packa
 ### Dependencies
 
 The BSP uses the Yocto RISCV Architecture Layer.
- For Ubuntu 18.04 (or newer) install python3-distutils package.
+For Ubuntu 18.04 (or newer) install python3-distutils package.
 
 **Make sure to install the [repo command](https://source.android.com/setup/build/downloading#installing-repo) by Google first.**
 
@@ -95,18 +96,13 @@ rm -rf build
 
 ## Linux Images
 
- - 'mpfs-dev-cli' A console image with development tools.
-```
-     *You can login with `root` account. The password is `microchip`.
-```
+- 'mpfs-dev-cli' A console image with development tools.
+  > * You can login with `root` account. The password is `microchip`.
+  > * With the OE core-image-*  you can login with `root` account, there is no password set.
+- 'core-image-minimal' A small console image to allow you to boot.
+- 'core-image-full-cmdline' A console only image with more full Featured Linux support.
 
-```     
-    * With the OE core-image-*  you can login with `root` account, there is no password set.
-```
- - 'core-image-minimal' A small console image to allow you to boot.
- - 'core-image-full-cmdline' A console only image with more full Featured Linux support.
-
- For more information on available images refer to [Yocto reference manual](https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#ref-images)
+For more information on available images refer to [Yocto reference manual](https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#ref-images)
 
 ## Bitbake commands
 
@@ -200,28 +196,29 @@ zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | s
 ## Known issues
 
 ### Issue 001: Required binaries not available before creating the disk image
-  We sometimes get dependencies not building correctly.
-  During the process do_wic_install payload may not be present for hss or opensbi.
 
-  For example after requesting a complete build:
+We sometimes get dependencies not building correctly.
+During the process do_wic_install payload may not be present for hss or opensbi.
 
-  ```bash
-  MACHINE=icicle-kit-es bitbake mpfs-dev-cli
-  ```
-  If payload is missing execute the following:
-  ```bash
-  MACHINE=icicle-kit-es bitbake hss -c clean
-    MACHINE=icicle-kit-es bitbake hss -c install
-  ```
-  If u-boot or boot.src.uimg missing
-  ```bash
-  MACHINE=icickle-kit-es bitbake u-boot -c clean
-   MACHINE=icickle-kit-es bitbake u-boot -c install
-  ```
-  And finally a complete build:
-  ```bash
-  MACHINE=icicle-kit-es bitbake mpfs-dev-cli
-  ```
+For example after requesting a complete build:
+
+```bash
+MACHINE=icicle-kit-es bitbake mpfs-dev-cli
+```
+If payload is missing execute the following:
+```bash
+MACHINE=icicle-kit-es bitbake hss -c clean
+MACHINE=icicle-kit-es bitbake hss -c install
+```
+If u-boot or boot.src.uimg missing
+```bash
+MACHINE=icickle-kit-es bitbake u-boot -c clean
+MACHINE=icickle-kit-es bitbake u-boot -c install
+```
+And finally a complete build:
+```bash
+MACHINE=icicle-kit-es bitbake mpfs-dev-cli
+```
 
 ### Issue 002 fs.inotify.max_user_watches
 
@@ -237,9 +234,9 @@ When this limit is not enough to monitor all files inside a directory, the limit
 
 Run the following command:
 
-  ```bash
- echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-  ```
+```bash
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+```
 
 [Details on max_user_watches](https://github.com/guard/listen/wiki/Increasing-the-amount-of-inotify-watchers)
 
