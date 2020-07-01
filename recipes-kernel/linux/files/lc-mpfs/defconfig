@@ -1,4 +1,5 @@
 CONFIG_CMDLINE="debug console=tty0 console=ttySIF0 rootwait root=/dev/mmcblk0p4 uio_pdrv_genirq.of_id=generic-uio"
+CONFIG_POLARFIRE_SOC=y
 CONFIG_SYSVIPC=y
 CONFIG_POSIX_MQUEUE=y
 CONFIG_NO_HZ_IDLE=y

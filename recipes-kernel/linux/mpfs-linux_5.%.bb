@@ -23,12 +23,13 @@ SRC_URI_append_icicle-kit-es-sd = " \
  "
  
 SRC_URI_append_mpfs = " \
-    file://0001-PCI-microsemi-Add-host-driver-for-Microsemi-PCIe-con.patch \
-    file://0002-Microsemi-PCIe-expansion-board-DT-entry.patch \
+    file://mpfs.dts \
     file://0004-SiFive-Unleashed-CPUFreq.patch \
     file://0007-Add-PWM-LEDs-D1-D2-D3-D4.patch \
     file://riscv-add-support-to-determine-no-of-L2-cache-way-enabled.patch \
-    file://0001-Polarfire-SoC-makefile-update-for-mpfs.dts.patch \
+    file://0001-Polarfire-SoC-DTS-support.patch \
+    file://v11-0003-PCI-microchip-Add-host-driver-for-Microchip-PCIe.patch \
+    file://v11-0004-PCI-microchip-Add-host-driver-for-Microchip-PCIe.patch \
     file://0001-Microchip-GPIO-Support-for-the-Polarfire-SoC.patch \
     file://0002-Microchip-SPI-Support-for-the-Polarfire-SoC.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
@@ -38,10 +39,11 @@ SRC_URI_append_mpfs = " \
 "
 
 SRC_URI_append_lc-mpfs = " \
+    file://mpfs.dts \
     file://0004-SiFive-Unleashed-CPUFreq.patch \
     file://0007-Add-PWM-LEDs-D1-D2-D3-D4.patch \
     file://riscv-add-support-to-determine-no-of-L2-cache-way-enabled.patch \
-    file://0001-Polarfire-SoC-makefile-update-for-mpfs.dts.patch \
+    file://0001-Polarfire-SoC-DTS-support.patch \
     file://0001-Microchip-GPIO-Support-for-the-Polarfire-SoC.patch \
     file://0002-Microchip-SPI-Support-for-the-Polarfire-SoC.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
@@ -55,6 +57,13 @@ do_configure_prepend_icicle-kit-es() {
 }
 do_configure_prepend_icicle-kit-es-sd() {
     cp -f ${WORKDIR}/icicle-kit-es-a000-microchip.dts ${S}/arch/riscv/boot/dts/microchip
+}
+
+do_configure_prepend_mpfs() {
+    cp -f ${WORKDIR}/mpfs.dts ${S}/arch/riscv/boot/dts/sifive
+}
+do_configure_prepend_lc-mpfs() {
+    cp -f ${WORKDIR}/mpfs.dts ${S}/arch/riscv/boot/dts/sifive
 }
 
 SRC_URI_append_icicle-kit-es = " file://defconfig"
