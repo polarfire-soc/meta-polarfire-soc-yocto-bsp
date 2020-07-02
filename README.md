@@ -18,7 +18,7 @@ The complete User Guides for each development platform, containing board and boo
 - [LC-MPFS-DEV-KIT](doc/LC-MPFS-DEV-KIT_user_guide.md)
 - [ICICLE-KIT-ES] (tbd)
 
-## Build Instructions (Installation and further details below)
+## [Build Instructions](#Yocto Setup and BSP)
 
 ### Create the Workspace
 This needs to be done every time you want a clean setup based on the latest layers.
@@ -48,7 +48,7 @@ MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 cd yocto-dev/build
 zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdX bs=512 iflag=fullblock oflag=direct conv=fsync status=progress
 ```
-
+<a name="Yocto Setup and BSP"></a>
 ## Yocto Setup and BSP 
 
 Yocto Release Activity:
