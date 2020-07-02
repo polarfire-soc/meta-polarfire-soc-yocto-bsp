@@ -72,10 +72,11 @@ do_configure_icicle-kit-es () {
 	if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
 		if [ -f /usr/local/bin/genconfig ]; then
 			ln -s /usr/local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
-		else
+		else if [ -f ~/.local/bin/genconfig ]
 			ln -s ~/.local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
+		else echo "Error install Kconfiglib - available at https://github.com/ulfalizer/Kconfiglib. "
 		fi
-        fi
+    fi
 }
 do_configure_icicle-kit-es-sd () {
 
@@ -94,7 +95,7 @@ do_configure_icicle-kit-es-sd () {
 	# Clear the old config file
 	if [ -f ${WORKDIR}/git/config.h ]; then
 		rm -f ${WORKDIR}/git/config.h
-        fi
+    fi
 
 	# Specify any needed configure commands here
 	## We can use the yocto config in recipes_bsp/hss/files
@@ -107,10 +108,11 @@ do_configure_icicle-kit-es-sd () {
 	if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
 		if [ -f /usr/local/bin/genconfig ]; then
 			ln -s /usr/local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
-		else
+		else if [ -f ~/.local/bin/genconfig ]
 			ln -s ~/.local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
+		else echo "Error install Kconfiglib - available at https://github.com/ulfalizer/Kconfiglib. "
 		fi
-        fi	
+    fi	
 }
 
 
