@@ -72,9 +72,10 @@ do_configure_icicle-kit-es () {
 	if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
 		if [ -f /usr/local/bin/genconfig ]; then
 			ln -s /usr/local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
-		else if [ -f ~/.local/bin/genconfig ]
+		elif [ -f ~/.local/bin/genconfig ]; then
 			ln -s ~/.local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
-		else echo "Error install Kconfiglib - available at https://github.com/ulfalizer/Kconfiglib. "
+		else 
+		     bbfatal "Error install Kconfiglib - available at https://github.com/ulfalizer/Kconfiglib."
 		fi
     fi
 }
@@ -108,9 +109,10 @@ do_configure_icicle-kit-es-sd () {
 	if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
 		if [ -f /usr/local/bin/genconfig ]; then
 			ln -s /usr/local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
-		else if [ -f ~/.local/bin/genconfig ]
+		elif [ -f ~/.local/bin/genconfig ]; then
 			ln -s ~/.local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
-		else echo "Error install Kconfiglib - available at https://github.com/ulfalizer/Kconfiglib. "
+		else 
+		     bbfatal "Error install Kconfiglib - available at https://github.com/ulfalizer/Kconfiglib."
 		fi
     fi	
 }
