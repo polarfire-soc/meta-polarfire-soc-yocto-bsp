@@ -16,7 +16,7 @@ The complete User Guides for each development platform, containing board and boo
 
 - [MPFS-DEV-KIT](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-dev-kit/MPFS-DEV-KIT_user_guide.md) (HiFive Unleashed Expansion Board)
 - [LC-MPFS-DEV-KIT](doc/LC-MPFS-DEV-KIT_user_guide.md)
-- [ICICLE-KIT-ES] (https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md) (Icicle Kit ES)
+- [ICICLE-KIT-ES](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md) (Icicle Kit Engineering Sample)
 
 ## [Build Instructions](#Instructions) Installation and further details below
 
