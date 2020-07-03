@@ -15,7 +15,7 @@ Using Yocto 'Openembedded' you will build the following:
 The complete User Guides for each development platform, containing board and boot instructions, are available for the following supported platforms:
 
 - [MPFS-DEV-KIT](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-dev-kit/MPFS-DEV-KIT_user_guide.md) (HiFive Unleashed Expansion Board)
-- [LC-MPFS-DEV-KIT](doc/LC-MPFS-DEV-KIT_user_guide.md)
+- [LC-MPFS-DEV-KIT]([doc/LC-MPFS-DEV-KIT_user_guide.md](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md))
 - [ICICLE-KIT-ES](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md) (Icicle Kit Engineering Sample)
 
 ## [Build Instructions](#Instructions) Installation and further details below
@@ -115,7 +115,6 @@ Example building the icicle-kit-es machine and the mpfs-dev-cli Linux image
 ```bash
 MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 ```
-
 To work with individual recipes:
 ```bash
 MACHINE=<MACHINE> bitbake <recipe> -c <command>
