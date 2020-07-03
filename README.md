@@ -75,7 +75,7 @@ pip3 install kconfiglib
 ```
  
 ### Supported Machine Targets
-The `MACHINE` (board) option can be used to set the target board for which linux is built, and if left blank it will default to `MACHINE=lc-mpfs`.           
+The `MACHINE` (board) option can be used to set the target board for which linux is built, and if left blank it will default to `MACHINE=icicle-kit-es`.           
 The following table details the available targets:
 
 | `MACHINE` | Board Name |
