@@ -18,7 +18,7 @@ The complete User Guides for each development platform, containing board and boo
 - [LC-MPFS-DEV-KIT]([doc/LC-MPFS-DEV-KIT_user_guide.md](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md))
 - [ICICLE-KIT-ES](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md) (Icicle Kit Engineering Sample)
 
-## [Build Instructions](#Instructions) Installation and further details below
+## Build Instructions [Installation and further details below](#Instructions)
 
 ### Create the Workspace
 This needs to be done every time you want a clean setup based on the latest layers.
