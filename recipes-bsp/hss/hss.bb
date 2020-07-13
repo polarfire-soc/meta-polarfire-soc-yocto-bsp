@@ -45,17 +45,13 @@ EXTRA_OEMAKE += 'PYTHON=nativepython STAGING_INCDIR=${STAGING_INCDIR_NATIVE} STA
 
 do_configure_icicle-kit-es () {
 
-	## Parsing the Polarfore SoC XML Hardware Configuration file from Libero Design
-	##echo "Creating Polarfore SoC XML Hardware Configuration folder "
-	python3 ${WORKDIR}/mpfs_configuration_generator.py ${WORKDIR}/ICICLE_MSS_0.xml
-	if [ -d ${WORKDIR}/git/hardware ]; then
-		if [ -d ${WORKDIR}/git/boards/${MACHINE}/config/hardware ]; then
-			## force remove the hardware directory
-			rm -rf ${WORKDIR}/git/boards/${MACHINE}/config/hardware
-		fi
-		# Finally move the configuration over to HSS configuration folder
-		mv -f ${WORKDIR}/git/hardware ${WORKDIR}/git/boards/${MACHINE}/config/hardware
-	fi ## Finished if hardware folder generated from xml
+	## Parsing the PolarFire SoC XML Hardware Configuration file from Libero Design
+	if [ -d ${WORKDIR}/git/boards/icicle-kit-es/soc_config ]; then
+		# force remove the config directory
+		rm -rf ${WORKDIR}/git/boards/icicle-kit-es/soc_config
+	fi
+	python3 ${WORKDIR}/mpfs_configuration_generator.py ${WORKDIR}/ICICLE_MSS_0.xml 
+	mv -f ${WORKDIR}/git/hardware ${WORKDIR}/git/boards/icicle-kit-es/soc_config
 
 	# Clear the old config file
 	if [ -f ${WORKDIR}/git/config.h ]; then
@@ -81,22 +77,18 @@ do_configure_icicle-kit-es () {
 }
 do_configure_icicle-kit-es-sd () {
 
-	## Parsing the Polarfore SoC XML Hardware Configuration file from Libero Design
-	##echo "Creating Polarfore SoC XML Hardware Configuration folder "
-	python3 ${WORKDIR}/mpfs_configuration_generator.py ${WORKDIR}/ICICLE_MSS_0.xml
-	if [ -d ${WORKDIR}/git/hardware ]; then
-		if [ -d ${WORKDIR}/git/boards/icicle-kit-es/config/hardware ]; then
-			# force remove the hardware directory
-			rm -rf ${WORKDIR}/git/boards/icicle-kit-es/config/hardware
-		fi
-		# Finally move the configuration over to HSS configuration folder
-		mv -f ${WORKDIR}/git/hardware ${WORKDIR}/git/boards/icicle-kit-es/config
-	fi ## Finished if hardware folder generated from xml
+	## Parsing the PolarFire SoC XML Hardware Configuration file from Libero Design
+	if [ -d ${WORKDIR}/git/boards/icicle-kit-es/soc_config ]; then
+		# force remove the config directory
+		rm -rf ${WORKDIR}/git/boards/icicle-kit-es/soc_config
+	fi
+	python3 ${WORKDIR}/mpfs_configuration_generator.py ${WORKDIR}/ICICLE_MSS_0.xml 
+	mv -f ${WORKDIR}/git/hardware ${WORKDIR}/git/boards/icicle-kit-es/soc_config
 
 	# Clear the old config file
 	if [ -f ${WORKDIR}/git/config.h ]; then
 		rm -f ${WORKDIR}/git/config.h
-    fi
+        fi
 
 	# Specify any needed configure commands here
 	## We can use the yocto config in recipes_bsp/hss/files

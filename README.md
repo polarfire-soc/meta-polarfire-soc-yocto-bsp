@@ -1,4 +1,4 @@
-# Microchip Yocto BSP for the MPFS Polarfire-SoC
+# Microchip PolarFire SoC Yocto BSP
 
 
 Support for Microchip Polarfire-SoC are available in Yocto/OE provided by either the OpenEmbedded Core or for additional and more complete support the meta-polarfire-soc-yocto-bsp layer. 
@@ -6,7 +6,7 @@ This Yocto BSP layer builds a complete compressed Image for booting the developm
 
 The 'Polarfire SoC Yocto BSP' is build on top of the RISCV Architectural layer (meta-riscv) to provide additional hardware specific features. 
 Using Yocto 'Openembedded' you will build the following:
-- RISCV Toolchain
+- RISC-V Toolchain
 - Predefined Disk Images 
 - Bootloader Binaries (FSBL, HSS, U-Boot)
 - Device Tree Binary (DTB)
@@ -14,9 +14,10 @@ Using Yocto 'Openembedded' you will build the following:
 
 The complete User Guides for each development platform, containing board and boot instructions, are available for the following supported platforms:
 
+- [ICICLE-KIT-ES](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-icicle-kit-es/ICICLE_KIT_user_guide.md) (Icicle Kit Engineering Sample)
 - [MPFS-DEV-KIT](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-dev-kit/MPFS-DEV-KIT_user_guide.md) (HiFive Unleashed Expansion Board)
-- [LC-MPFS-DEV-KIT]([doc/LC-MPFS-DEV-KIT_user_guide.md](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md))
-- [ICICLE-KIT-ES](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md) (Icicle Kit Engineering Sample)
+- [LC-MPFS-DEV-KIT](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md)
+
 
 ## Build Instructions [Installation and further details below](#Instructions)
 
@@ -80,10 +81,10 @@ The following table details the available targets:
 
 | `MACHINE` | Board Name |
 | --- | --- |
-| `MACHINE=mpfs` | MPFS-DEV-KIT, HiFive Unleashed Expansion Board |
-| `MACHINE=lc-mpfs` | LC-MPFS-DEV-KIT |
 | `MACHINE=icicle-kit-es` | ICICLE-KIT-ES, Icicle Kit engineering samples (supports emmc boot) |
 | `MACHINE=icicle-kit-es-sd` | ICICLE-KIT-ES, Icicle Kit engineering samples (supports SD card boot)|
+| `MACHINE=mpfs` | MPFS-DEV-KIT, HiFive Unleashed Expansion Board |
+| `MACHINE=lc-mpfs` | LC-MPFS-DEV-KIT |
 | `MACHINE=qemuriscv64` | Simulation |
 
 When building for different 'Machines' or want a 'clean' build, we recommend deleting the 'build' directory when switching.
