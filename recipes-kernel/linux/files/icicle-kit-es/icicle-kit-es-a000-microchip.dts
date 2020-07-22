@@ -353,7 +353,7 @@
         clock-frequency = <100000>;
         clocks = <&clkcfg 16>;
         status = "okay";
-        pac193x@0x30 {
+        pac193x@0x10 {
             compatible = "microchip,pac1934";
             reg = <0x30>;
             samp-rate = <64>;
@@ -361,7 +361,7 @@
             ch1: channel@0 {
                 bi-dir;
                 uohms-shunt-res = <1000>;
-                rail-name = "VDD";
+                rail-name = "VDDREG";
                 channel-enabled;
             };
             ch2: channel@1 {
@@ -374,7 +374,7 @@
             };
             ch4: channel@3 {
                 uohms-shunt-res = <100000>;
-                rail-name = "VDDA";
+                rail-name = "VDDA_REG";
             };
         };
     };
