@@ -65,6 +65,7 @@ IMAGE_INSTALL = "\
     unzip \
     rsync \
     dtc \
+    cmake \
     kernel-modules kernel-devsrc kernel-dev \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     "
