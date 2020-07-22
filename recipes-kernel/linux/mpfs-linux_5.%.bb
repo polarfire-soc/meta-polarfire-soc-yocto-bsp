@@ -14,6 +14,7 @@ SRC_URI_append_icicle-kit-es = " \
     file://0001-PFSoC-Icicle-kit-Adding-DTS-makefile.patch \
     file://0001-Microchip-Polarfire-SoC-Clock-Driver.patch \
     file://0002-PFSoC-MAC-Interface-auto-negotiation.patch \
+    file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0008-pac139x.patch \
  "
 SRC_URI_append_icicle-kit-es-sd = " \
@@ -21,6 +22,7 @@ SRC_URI_append_icicle-kit-es-sd = " \
     file://0001-PFSoC-Icicle-kit-Adding-DTS-makefile.patch \
     file://0001-Microchip-Polarfire-SoC-Clock-Driver.patch \
     file://0002-PFSoC-MAC-Interface-auto-negotiation.patch \
+    file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0008-pac139x.patch \
  "
  
