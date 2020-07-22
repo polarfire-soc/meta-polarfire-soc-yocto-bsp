@@ -343,9 +343,39 @@
 		};
 	};
 
-	L60: uio_axi_lsram@2030000000 {
-		compatible = "generic-uio";
-		reg = <0x20 0x30000000 0 0x80000000 >;
-                status = "okay";
+	i2c1: i2c@02010b000 {
+        #address-cells = <1>;
+        #size-cells = <0>;
+        compatible = "microsemi,ms-pf-mss-i2c";
+        reg = <0x0 0x2010b000 0x0 0x1000>;
+        interrupt-parent = <&L1>;
+        interrupts = <61>;
+        clock-frequency = <100000>;
+        clocks = <&clkcfg 16>;
+        status = "okay";
+        pac193x@0x30 {
+            compatible = "microchip,pac1934";
+            reg = <0x30>;
+            samp-rate = <64>;
+            status = "okay";
+            ch1: channel@0 {
+                bi-dir;
+                uohms-shunt-res = <1000>;
+                rail-name = "VDD";
+                channel-enabled;
+            };
+            ch2: channel@1 {
+                uohms-shunt-res = <10000>;
+                rail-name = "VDDA25";
+            };
+            ch3: channel@2 {
+                uohms-shunt-res = <10000>;
+                rail-name = "VDD25";
+            };
+            ch4: channel@3 {
+                uohms-shunt-res = <100000>;
+                rail-name = "VDDA";
+            };
         };
+    };
 };
