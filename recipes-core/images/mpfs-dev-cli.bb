@@ -4,13 +4,15 @@ inherit image-buildinfo core-image extrausers
 EXTRA_USERS_PARAMS = "usermod -P microchip root;"
 
 IMAGE_FEATURES += " ssh-server-openssh \
-                   tools-debug tools-sdk debug-tweaks \
+                   tools-debug tools-sdk debug-tweaks package-management \
                    dev-pkgs dbg-pkgs \
                   "
 
 IMAGE_INSTALL = "\
     packagegroup-core-boot \
     packagegroup-core-full-cmdline \
+	apt \
+	dpkg \
     perl-modules \
     alsa-utils \
     i2c-tools \
@@ -38,6 +40,7 @@ IMAGE_INSTALL = "\
     htop \
     iw \
     python3 \
+	pip3 \
     git \
     swig \
     boost \

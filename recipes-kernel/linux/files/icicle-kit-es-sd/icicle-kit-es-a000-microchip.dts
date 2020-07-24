@@ -355,7 +355,7 @@
             status = "okay";
             pac193x@0x10 {
                 compatible = "microchip,pac1934";
-                reg = <0x30>;
+                reg = <0x10>;
                 samp-rate = <64>;
                 status = "okay";
                 ch1: channel@0 {
@@ -377,5 +377,38 @@
                         rail-name = "VDDA_REG";
                 };
             };
+        };
+		mssgpio0: gpio@20120000 {
+            compatible = "microsemi,ms-pf-mss-gpio";
+            interrupt-parent = <&L1>;
+            interrupts = <13 14 15 16 17 18 19 20 21 22 23 24 25 26 51>;
+            gpio-controller;
+            clocks = <&clkcfg 23>;
+            reg = <0x00 20120000 0x0 0x1000>;
+            reg-names = "control";
+            #gpio-cells = <0>;
+            status = "okay";
+        };
+        mssgpio1: gpio@0x20121000 {
+            compatible = "microsemi,ms-pf-mss-gpio";
+            interrupt-parent = <&L1>;
+            interrupts = <27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 52>;
+            gpio-controller;
+            clocks = <&clkcfg 24>;
+            reg = <0x00 0x20121000 0x0 0x1000>;
+            reg-names = "control";
+            #gpio-cells = <1>;
+            status = "okay";
+        };
+        mssgpio2: gpio@0x20122000 {
+            compatible = "microsemi,ms-pf-mss-gpio";
+            interrupt-parent = <&L1>;
+            interrupts = <13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 53>;
+            gpio-controller;
+            clocks = <&clkcfg 25>;
+            reg = <0x00 0x20122000 0x0 0x1000>;
+            reg-names = "control";
+            #gpio-cells = <2>;
+            status = "okay";
         };
 };
