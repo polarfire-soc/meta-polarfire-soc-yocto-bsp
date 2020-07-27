@@ -40,7 +40,6 @@ IMAGE_INSTALL = "\
     htop \
     iw \
     python3 \
-	pip3 \
     git \
     swig \
     boost \

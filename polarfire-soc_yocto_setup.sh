@@ -72,6 +72,8 @@ require conf/distro/include/yocto-uninative.inc
 require conf/distro/include/security_flags.inc
 
 INHERIT += "uninative"
+INHERIT += " pypi setuptools"
+
 
 DISTRO_FEATURES_append = " largefile opengl ptest multiarch wayland pam  systemd "
 DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
