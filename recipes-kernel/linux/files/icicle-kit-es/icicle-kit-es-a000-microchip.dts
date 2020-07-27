@@ -408,6 +408,21 @@
         reg = <0x00 0x20122000 0x0 0x1000>;
         reg-names = "control";
         #gpio-cells = <2>;
-        status = "disabled";
+        status = "enabled";
     };
+	mssusb: usb@0x20201000 {
+		compatible = "microsemi,ms-pf-usb-host";
+		reg = <0x0 0x20201000 0x00000000 0x00001000>;
+		reg-names = "mc","control";
+		clocks = <&clkcfg 9>;
+		interrupt-parent = <0xb>;
+		interrupts = <0x20 0x20>;
+		interrupt-names = "mc","dma";
+		dr_mode = "host";
+		multipoint = <1>;
+		num-eps = <8>;
+		ram-bits = <12>;
+		power = <500>;
+		status = "ok";
+	};
 };
