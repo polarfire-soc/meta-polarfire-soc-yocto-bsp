@@ -1,7 +1,6 @@
 DESCRIPTION = "Microchip MPFS Development CLI Linux image"
 
 inherit image-buildinfo core-image extrausers pypi setuptools3
-EXTRA_USERS_PARAMS = "usermod -P microchip root;"
 
 IMAGE_FEATURES += " ssh-server-openssh \
                    tools-debug tools-sdk debug-tweaks package-management \

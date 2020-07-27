@@ -188,82 +188,82 @@
 
 	};
 
-    	refclk: refclk {
+    refclk: refclk {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
 		clock-frequency = <600000000>;
 		clock-output-names = "msspllclk";
-    	};    
-    	clkcfg: clkcfg@20002000 {
-            compatible = "microchip,pfsoc-clkcfg";
-            reg = <0x0 0x20002000 0x0 0x1000>;
-            reg-names = "mss_sysreg";
-            clocks = <&refclk>;
-            #clock-cells = <1>;
-            clock-output-names = "cpuclk", "axiclk", "ahbclk", "ENVMclk", "MAC0clk", "MAC1clk", "MMCclk", "TIMERclk", "MMUART0clk", "MMUART1clk", "MMUART2clk", "MMUART3clk", "MMUART4clk", "SPI0clk", "SPI1clk", "I2C0clk", "I2C1clk", "CAN0clk", "CAN1clk", "USBclk", "RESERVED", "RTCclk", "QSPIclk", "GPIO0clk", "GPIO1clk", "GPIO2clk", "DDRCclk", "FIC0clk", "FIC1clk", "FIC2clk", "FIC3clk", "ATHENAclk", "CFMclk";
-        };
-    	serial0: serial@20000000 {
-            compatible = "ns16550a";
-            reg = <0x0 0x20000000 0x0 0x400>;
-            reg-io-width = <4>;
-            reg-shift = <2>;
-            interrupt-parent = <&L1>;
-            interrupts = <90>;
-            current-speed = <115200>;
-            clocks = <&clkcfg 8>;
-            status = "disabled"; /* Reserved for the HSS */
-        };
-    	serial1: serial@20100000 {
-            compatible = "ns16550a";
-            reg = <0x0 0x20100000 0x0 0x400>;
-            reg-io-width = <4>;
-            reg-shift = <2>;
-            interrupt-parent = <&L1>;
-            interrupts = <91>;
-            current-speed = <115200>;	    
+    };    
+    clkcfg: clkcfg@20002000 {
+        compatible = "microchip,pfsoc-clkcfg";
+        reg = <0x0 0x20002000 0x0 0x1000>;
+        reg-names = "mss_sysreg";
+        clocks = <&refclk>;
+        #clock-cells = <1>;
+        clock-output-names = "cpuclk", "axiclk", "ahbclk", "ENVMclk", "MAC0clk", "MAC1clk", "MMCclk", "TIMERclk", "MMUART0clk", "MMUART1clk", "MMUART2clk", "MMUART3clk", "MMUART4clk", "SPI0clk", "SPI1clk", "I2C0clk", "I2C1clk", "CAN0clk", "CAN1clk", "USBclk", "RESERVED", "RTCclk", "QSPIclk", "GPIO0clk", "GPIO1clk", "GPIO2clk", "DDRCclk", "FIC0clk", "FIC1clk", "FIC2clk", "FIC3clk", "ATHENAclk", "CFMclk";
+    };
+    serial0: serial@20000000 {
+        compatible = "ns16550a";
+        reg = <0x0 0x20000000 0x0 0x400>;
+        reg-io-width = <4>;
+        reg-shift = <2>;
+        interrupt-parent = <&L1>;
+        interrupts = <90>;
+        current-speed = <115200>;
+        clocks = <&clkcfg 8>;
+        status = "disabled"; /* Reserved for the HSS */
+     };
+    serial1: serial@20100000 {
+        compatible = "ns16550a";
+        reg = <0x0 0x20100000 0x0 0x400>;
+        reg-io-width = <4>;
+        reg-shift = <2>;
+        interrupt-parent = <&L1>;
+        interrupts = <91>;
+        current-speed = <115200>;	    
 	    clocks = <&clkcfg 9>;
-            status = "okay";
-        };
-    	serial2: serial@20102000 {
-            compatible = "ns16550a";
-            reg = <0x0 0x20102000 0x0 0x400>;
-            reg-io-width = <4>;
-            reg-shift = <2>;
-            interrupt-parent = <&L1>;
-            interrupts = <92>;
-            current-speed = <115200>;
-            clocks = <&clkcfg 10>;
-            status = "okay";
-        };
-    	serial3: serial@20104000 {
-            compatible = "ns16550a";
-            reg = <0x0 0x20104000 0x0 0x400>;
-            reg-io-width = <4>;
-            reg-shift = <2>;
-            interrupt-parent = <&L1>;
-            interrupts = <93>;
-            current-speed = <115200>;
-            clocks = <&clkcfg 11>;
-            status = "okay";
-        };
-        emmc: sdhc@20008000 {
-           compatible = "cdns,sd4hc";
-           reg = <0x0 0x20008000 0x0 0x1000>;
-           interrupt-parent = <&L1>;
-           interrupts = <88 89>;
-           pinctrl-names = "default";
-           clocks = <&clkcfg 6>;     
-           bus-width = <4>;
-	   cap-mmc-highspeed;
-           mmc-ddr-3_3v; 
-           max-frequency = <200000000>;
-	   non-removable;
-	   no-sd;
-	   no-sdio;
-           voltage-ranges = <3300 3300>;
-	   status = "okay";
-        };
-        /*sdcard: sdhc@20008000 {
+        status = "okay";
+    };
+    serial2: serial@20102000 {
+        compatible = "ns16550a";
+        reg = <0x0 0x20102000 0x0 0x400>;
+        reg-io-width = <4>;
+        reg-shift = <2>;
+        interrupt-parent = <&L1>;
+        interrupts = <92>;
+        current-speed = <115200>;
+        clocks = <&clkcfg 10>;
+        status = "okay";
+    };
+    serial3: serial@20104000 {
+        compatible = "ns16550a";
+        reg = <0x0 0x20104000 0x0 0x400>;
+        reg-io-width = <4>;
+        reg-shift = <2>;
+        interrupt-parent = <&L1>;
+        interrupts = <93>;
+        current-speed = <115200>;
+        clocks = <&clkcfg 11>;
+        status = "okay";
+    };
+    emmc: sdhc@20008000 {
+        compatible = "cdns,sd4hc";
+        reg = <0x0 0x20008000 0x0 0x1000>;
+        interrupt-parent = <&L1>;
+        interrupts = <88 89>;
+        pinctrl-names = "default";
+        clocks = <&clkcfg 6>;     
+        bus-width = <4>;
+	    cap-mmc-highspeed;
+        mmc-ddr-3_3v; 
+        max-frequency = <200000000>;
+	    non-removable;
+	    no-sd;
+	    no-sdio;
+        voltage-ranges = <3300 3300>;
+	    status = "okay";
+    };
+    /*sdcard: sdhc@20008000 {
             compatible = "cdns,sd4hc";
             reg = <0x0 0x20008000 0x0 0x1000>;
             interrupt-parent = <&L1>;
@@ -282,9 +282,9 @@
 	    sd-uhs-sdr104;  
             max-frequency = <200000000>;
 	    status = "okay";     
-        };*/
+    };*/
 
-       /* emac0: ethernet@20110000 {
+    /* emac0: ethernet@20110000 {
             compatible = "cdns,macb";
             reg = <0x0 0x20110000 0x0 0x2000>;
             interrupt-parent = <&L1>;
@@ -300,24 +300,24 @@
                         reg = <8>;
                 ti,fifo-depth = <0x01>;
             };
-        }; */ 
-        emac1: ethernet@20112000 {
-            compatible = "cdns,macb";
-            reg = <0x0 0x20112000 0x0 0x2000>;
-            interrupt-parent = <&L1>;
-            interrupts = <70 71 72 73>;
-            mac-address = [56 34 12 00 FC 00];
-            phy-mode = "sgmii";
-            clocks = <&clkcfg 5>, <&clkcfg 2>;
-            clock-names = "pclk", "hclk";   
-            #address-cells = <1>;
-            #size-cells = <0>;
-            phy1: ethernet-phy@9 {
-                        reg = <9>;
-                ti,fifo-depth = <0x01>;
-            };
+    }; */ 
+    emac1: ethernet@20112000 {
+        compatible = "cdns,macb";
+        reg = <0x0 0x20112000 0x0 0x2000>;
+        interrupt-parent = <&L1>;
+        interrupts = <70 71 72 73>;
+        mac-address = [56 34 12 00 FC 00];
+        phy-mode = "sgmii";
+        clocks = <&clkcfg 5>, <&clkcfg 2>;
+        clock-names = "pclk", "hclk";   
+        #address-cells = <1>;
+        #size-cells = <0>;
+        phy1: ethernet-phy@9 {
+            reg = <9>;
+            ti,fifo-depth = <0x01>;
         };
-        pcie: pci@E0000000 {
+    };
+    pcie: pci@E0000000 {
 		#address-cells = <3>;
 		#interrupt-cells = <1>;
 		#size-cells = <2>;
@@ -342,7 +342,6 @@
 			interrupt-controller;
 		};
 	};
-
 	i2c1: i2c@02010b000 {
         #address-cells = <1>;
         #size-cells = <0>;
@@ -387,7 +386,7 @@
         reg = <0x00 20120000 0x0 0x1000>;
         reg-names = "control";
         #gpio-cells = <0>;
-        status = "okay";
+        status = "disabled";
     };
     mssgpio1: gpio@0x20121000 {
         compatible = "microsemi,ms-pf-mss-gpio";
@@ -398,7 +397,7 @@
         reg = <0x00 0x20121000 0x0 0x1000>;
         reg-names = "control";
         #gpio-cells = <1>;
-        status = "okay";
+        status = "disabled";
     };
     mssgpio2: gpio@0x20122000 {
         compatible = "microsemi,ms-pf-mss-gpio";
@@ -409,6 +408,6 @@
         reg = <0x00 0x20122000 0x0 0x1000>;
         reg-names = "control";
         #gpio-cells = <2>;
-        status = "okay";
+        status = "disabled";
     };
 };
