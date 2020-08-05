@@ -452,7 +452,7 @@ index 000000000000..c62d4589eba8
 +	mss_gpio->gpio_out_base = mss_gpio->base + (0x88u/sizeof(MSS_GPIO_REG_TYPE));
 +
 +	ngpio = of_irq_count(node);
-+	if (ngpio >= MSS_NUM_GPIO) {
++	if (ngpio > MSS_NUM_GPIO) {
 +		dev_err(dev, "too many interrupts\n");
 +		return -EINVAL;
 +	}

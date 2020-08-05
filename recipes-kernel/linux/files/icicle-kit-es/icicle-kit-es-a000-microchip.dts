@@ -358,63 +358,43 @@
             samp-rate = <64>;
             status = "okay";
             ch1: channel@0 {
-                bi-dir;
-                uohms-shunt-res = <1000>;
+                uohms-shunt-res = <10000>;
                 rail-name = "VDDREG";
-                channel-enabled;
+                channel_enabled;
             };
             ch2: channel@1 {
                 uohms-shunt-res = <10000>;
                 rail-name = "VDDA25";
+		channel_enabled;
             };
             ch3: channel@2 {
                 uohms-shunt-res = <10000>;
                 rail-name = "VDD25";
+		channel_enabled;
             };
             ch4: channel@3 {
-                uohms-shunt-res = <100000>;
+                uohms-shunt-res = <10000>;
                 rail-name = "VDDA_REG";
+		channel_enabled;
             };
         };
     };
-	mssgpio0: gpio@20120000 {
+    mssgpio: gpio@0x20122000 {
         compatible = "microsemi,ms-pf-mss-gpio";
         interrupt-parent = <&L1>;
-        interrupts = <13 14 15 16 17 18 19 20 21 22 23 24 25 26 51>;
-        gpio-controller;
-        clocks = <&clkcfg 23>;
-        reg = <0x00 20120000 0x0 0x1000>;
-        reg-names = "control";
-        #gpio-cells = <0>;
-        status = "disabled";
-    };
-    mssgpio1: gpio@0x20121000 {
-        compatible = "microsemi,ms-pf-mss-gpio";
-        interrupt-parent = <&L1>;
-        interrupts = <27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 52>;
-        gpio-controller;
-        clocks = <&clkcfg 24>;
-        reg = <0x00 0x20121000 0x0 0x1000>;
-        reg-names = "control";
-        #gpio-cells = <1>;
-        status = "disabled";
-    };
-    mssgpio2: gpio@0x20122000 {
-        compatible = "microsemi,ms-pf-mss-gpio";
-        interrupt-parent = <&L1>;
-        interrupts = <13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 53>;
+        interrupts = <13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44>;
         gpio-controller;
         clocks = <&clkcfg 25>;
         reg = <0x00 0x20122000 0x0 0x1000>;
         reg-names = "control";
         #gpio-cells = <2>;
-        status = "enabled";
+        status = "okay";
     };
-	mssusb: usb@0x20201000 {
+	mssusb: usb@20201000 {
 		compatible = "microsemi,ms-pf-usb-host";
 		reg = <0x0 0x20201000 0x00000000 0x00001000>;
 		reg-names = "mc","control";
-		clocks = <&clkcfg 9>;
+		clocks = <&clkcfg 19>;
 		interrupt-parent = <0xb>;
 		interrupts = <0x20 0x20>;
 		interrupt-names = "mc","dma";
@@ -423,6 +403,6 @@
 		num-eps = <8>;
 		ram-bits = <12>;
 		power = <500>;
-		status = "ok";
+		status = "okay";
 	};
 };

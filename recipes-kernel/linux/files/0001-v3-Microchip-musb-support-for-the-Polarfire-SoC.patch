@@ -1,51 +1,48 @@
-From fb5f9859db7c37f5cef30c169d368f65f06c4cbf Mon Sep 17 00:00:00 2001
+From 5bac789b874a8ad1d0acf7aeb184067ea7d09f25 Mon Sep 17 00:00:00 2001
 From: m34782 <lewis.hanly@microchip.com>
-Date: Tue, 30 Jun 2020 09:47:54 +0100
-Subject: [PATCH] [v2] Microchip usb-musb support for the Polarfire SoC
+Date: Tue, 4 Aug 2020 08:53:30 +0100
+Subject: [PATCH] v3-Microchip musb support for the Polarfire SoC
 
-Adding Microsemi driver for the mpfs platform.
-
-Signed-off-by: Lewis Hanly <Lewis.Hanly@microchip.com>
+Signed-off-by: Lewis Hanly <lewis.hanly@microchip.com>
 ---
- drivers/usb/musb/Kconfig          |   5 +
+ drivers/usb/musb/Kconfig          |   4 +
  drivers/usb/musb/Makefile         |   1 +
- drivers/usb/musb/musb-microsemi.c | 366 ++++++++++++++++++++++++++++++
- 3 files changed, 372 insertions(+)
- create mode 100644 drivers/usb/musb/musb-microsemi.c
+ drivers/usb/musb/musb_microsemi.c | 366 ++++++++++++++++++++++++++++++
+ 3 files changed, 371 insertions(+)
+ create mode 100644 drivers/usb/musb/musb_microsemi.c
 
 diff --git a/drivers/usb/musb/Kconfig b/drivers/usb/musb/Kconfig
-index eb2ded1026ee..ec3f3e9ccb9d 100644
+index eb2ded1026ee..7235598a5918 100644
 --- a/drivers/usb/musb/Kconfig
 +++ b/drivers/usb/musb/Kconfig
-@@ -121,6 +121,11 @@ config USB_MUSB_MEDIATEK
+@@ -121,6 +121,10 @@ config USB_MUSB_MEDIATEK
  	depends on GENERIC_PHY
  	select USB_ROLE_SWITCH
  
 +config USB_MUSB_MICROSEMI
 +	tristate "Microsemi PolarFire"
-+	depends on USB_MUSB_HOST
-+	depends on ARCH_RISCVPC
++	depends on CONFIG_USB_MUSB_HDRC
 +
  comment "MUSB DMA mode"
  
  config MUSB_PIO_ONLY
 diff --git a/drivers/usb/musb/Makefile b/drivers/usb/musb/Makefile
-index 932247360a9f..7e153e289b99 100644
+index 932247360a9f..0ceb4f82803d 100644
 --- a/drivers/usb/musb/Makefile
 +++ b/drivers/usb/musb/Makefile
 @@ -25,6 +25,7 @@ obj-$(CONFIG_USB_MUSB_UX500)			+= ux500.o
  obj-$(CONFIG_USB_MUSB_JZ4740)			+= jz4740.o
  obj-$(CONFIG_USB_MUSB_SUNXI)			+= sunxi.o
  obj-$(CONFIG_USB_MUSB_MEDIATEK)      		+= mediatek.o
-+obj-$(CONFIG_USB_MUSB_MICROSEMI)		+= musb-microsemi.o
++obj-$(CONFIG_USB_MUSB_MICROSEMI)		+= musb_microsemi.o
  
  # the kconfig must guarantee that only one of the
  # possible I/O schemes will be enabled at a time ...
-diff --git a/drivers/usb/musb/musb-microsemi.c b/drivers/usb/musb/musb-microsemi.c
+diff --git a/drivers/usb/musb/musb_microsemi.c b/drivers/usb/musb/musb_microsemi.c
 new file mode 100644
-index 000000000000..4f4496d399ba
+index 000000000000..d3db743a10ae
 --- /dev/null
-+++ b/drivers/usb/musb/musb-microsemi.c
++++ b/drivers/usb/musb/musb_microsemi.c
 @@ -0,0 +1,366 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
@@ -86,7 +83,7 @@ index 000000000000..4f4496d399ba
 +
 +static irqreturn_t polarfire_interrupt(int irq, void *__hci)
 +{
-+	unsigned long	flags;
++	unsigned long	flags; feck
 +	irqreturn_t	retval = IRQ_NONE;
 +	struct musb	*musb = __hci;
 +
