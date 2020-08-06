@@ -10,8 +10,10 @@ IMAGE_FEATURES += " ssh-server-openssh \
 IMAGE_INSTALL = "\
     packagegroup-core-boot \
     packagegroup-core-full-cmdline \
-	apt \
-	dpkg \
+    collectd \
+    libgpiod \
+    libgpiod-tools \
+    libgpiod-dev \
     perl-modules \
     alsa-utils \
     i2c-tools \
@@ -39,6 +41,10 @@ IMAGE_INSTALL = "\
     htop \
     iw \
     python3 \
+    python3-pip \
+    python3-flask \
+    python3-flask-dev \
+    python3-werkzeug \
     git \
     swig \
     boost \
