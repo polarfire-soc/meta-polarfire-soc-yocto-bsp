@@ -10,6 +10,8 @@ IMAGE_FEATURES += " ssh-server-openssh \
 IMAGE_INSTALL = "\
     packagegroup-core-boot \
     packagegroup-core-full-cmdline \
+    iiohttpserver \
+    coremarkpro \
     collectd \
     libgpiod \
     libgpiod-tools \
@@ -62,8 +64,6 @@ IMAGE_INSTALL = "\
     openssh-sftp-server \
     procps \
     protobuf \
-    ntp ntpdate ntp-utils \
-    linux-firmware \
     libsodium \
     sqlite3 \
     tar \
