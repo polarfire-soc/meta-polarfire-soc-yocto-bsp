@@ -1,4 +1,11 @@
 
+EXTRA_IMAGE_FEATURES += " \
+      dbg-pkgs \      
+      debug-tweaks \  
+      tools-sdk \     
+      dev-pkgs"
+
+
 IMAGE_INSTALL = "\
     iiohttpserver \
     collectd \
@@ -7,6 +14,7 @@ IMAGE_INSTALL = "\
     libgpiod-dev \
     i2c-tools \
     vim vim-vimrc \
+    net-tools \
     dhcp-client \
     glibc-dev \
     sysfsutils \
