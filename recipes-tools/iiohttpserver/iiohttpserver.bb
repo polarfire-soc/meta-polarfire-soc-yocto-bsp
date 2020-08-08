@@ -3,13 +3,13 @@ SECTION = "base"
 LICENSE = "CLOSED"
 
 PR = "r0"
-SRC_URI = "file://iiohttpserver-0.0.9.tar \
+SRC_URI = "file://iiohttpserver-0.0.10.tar \
 	   "	
 
 do_install() {
     install -d ${D}/opt/microchip/iiohttpserver
     chmod a+x ${D}/opt/microchip/iiohttpserver
-    cp -r ${WORKDIR}/iiohttpserver-0.0.9/iiohttpserver ${D}/opt/microchip/
+    cp -r ${WORKDIR}/iiohttpserver-0.0.10/iiohttpserver ${D}/opt/microchip/
 }
 
 
