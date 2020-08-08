@@ -1,10 +1,7 @@
 
 EXTRA_IMAGE_FEATURES += " \
-      dbg-pkgs \      
-      debug-tweaks \  
-      tools-sdk \     
-      dev-pkgs"
-
+      tools-debug \      
+      tools-sdk"
 
 IMAGE_INSTALL = "\
     iiohttpserver \
@@ -16,8 +13,6 @@ IMAGE_INSTALL = "\
     vim vim-vimrc \
     net-tools \
     dhcp-client \
-    glibc-dev \
-    sysfsutils \
     htop \
     iw \
     python3 \
@@ -28,11 +23,6 @@ IMAGE_INSTALL = "\
     libudev \
     glib-2.0 \
     sqlite3 \
-    tar \
-    wget \
-    zip \
-    unzip \
-    rsync \
     dtc \
     cmake \
     ${CORE_IMAGE_EXTRA_INSTALL} \
