@@ -15,20 +15,20 @@ SRC_URI_append_icicle-kit-es = " \
             file://${UBOOT_ENV}.txt \
             file://mpfs_icicle.dts \
             file://0001-defconfig-for-the-Microchip-mpfs-icicle-SoC-board.patch \
-	    file://0001-PATCH-2-5-include-configs-for-the-Microchip-mpfs-ici.patch \
-	    file://0003-device-tree-for-the-Microchip-mpfs-icicle-SoC-board.patch \
-	    file://0004-board-specific-code-for-the-Microchip-mpfs-icicle-So.patch \
-	    file://0005-gem-driver-for-the-Microchip-mpfs-icicle-SoC-board.patch \
+	    file://0002-include-configs-for-the-Microchip-mpfs-icicle-kit.patch \
+	    file://0003-device-tree-for-the-Microchip-mpfs-icicle-kit.patch \
+	    file://0004-board-specific-code-for-the-Microchip-mpfs-icicle-ki.patch \
+	    file://0005-gem-driver-for-the-Microchip-mpfs-icicle-kit.patch \
            "
 
 SRC_URI_append_icicle-kit-es-sd = " \
             file://mpfs_icicle.dts \
             file://${UBOOT_ENV}.txt \
             file://0001-defconfig-for-the-Microchip-mpfs-icicle-SoC-board.patch \
-	    file://0001-PATCH-2-5-include-configs-for-the-Microchip-mpfs-ici.patch \
-	    file://0003-device-tree-for-the-Microchip-mpfs-icicle-SoC-board.patch \
-	    file://0004-board-specific-code-for-the-Microchip-mpfs-icicle-So.patch \
-	    file://0005-gem-driver-for-the-Microchip-mpfs-icicle-SoC-board.patch \
+	    file://0002-include-configs-for-the-Microchip-mpfs-icicle-kit.patch \
+	    file://0003-device-tree-for-the-Microchip-mpfs-icicle-kit.patch \
+	    file://0004-board-specific-code-for-the-Microchip-mpfs-icicle-ki.patch \
+	    file://0005-gem-driver-for-the-Microchip-mpfs-icicle-kit.patch \
            "
 # Overwrite this for your server
 TFTP_SERVER_IP ?= "127.0.0.1"

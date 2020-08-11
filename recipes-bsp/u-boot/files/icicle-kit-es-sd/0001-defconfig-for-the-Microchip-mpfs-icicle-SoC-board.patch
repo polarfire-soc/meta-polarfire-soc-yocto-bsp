@@ -1,6 +1,6 @@
-From fdc51c5e6788b4a4fedebcde1006a969b6d10aa7 Mon Sep 17 00:00:00 2001
+From e217be0b771f59f253873d139f1d1ee3af9b52c5 Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Fri, 19 Jun 2020 16:17:33 +0530
+Date: Tue, 11 Aug 2020 13:40:17 +0530
 Subject: [PATCH 1/5] defconfig for the Microchip mpfs-icicle SoC board.
 
 deconfig for icicle kit
