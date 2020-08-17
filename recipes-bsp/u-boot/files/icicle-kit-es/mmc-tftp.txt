@@ -6,7 +6,10 @@
 
 # Try to boot a fitImage from the MMC
 if load ${devtype} ${devnum}:${distro_bootpart} ${ramdisk_addr_r} fitImage; then
-  bootm ${ramdisk_addr_r}
+ imxtract ${ramdisk_addr_r} fdt@microchip_icicle-kit-es-a000-microchip.dtb ${fdt_addr_r}
+ fdt addr ${fdt_addr_r}
+ fdt set /ethernet@20112000 mac-address ${icicle_mac_addr}
+ bootm ${ramdisk_addr_r} - ${fdt_addr_r}
 fi;
 
 # Setup the DHCP for a TFTP boot

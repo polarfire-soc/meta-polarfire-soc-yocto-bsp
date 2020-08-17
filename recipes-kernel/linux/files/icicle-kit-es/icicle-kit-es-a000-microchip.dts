@@ -398,7 +398,7 @@
 		reg-names = "mc","control";
 		clocks = <&clkcfg 19>;
 		interrupt-parent = <0xb>;
-		interrupts = <0x20 0x20>;
+		interrupts = <86 87>;
 		interrupt-names = "mc","dma";
 		dr_mode = "host";
 		multipoint = <1>;
