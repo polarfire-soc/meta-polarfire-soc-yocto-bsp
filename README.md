@@ -97,12 +97,10 @@ rm -rf build
 ## Linux Images
 
 - 'mpfs-dev-cli' A console image with development tools.
-
-  > * You can login with `root` account. The password is `microchip`.
+- 'core-image-minimal' A small console image to allow you to boot.
+- 'core-image-minimal-dev' A small console image with some development tools to allow you to boot.
   
-  > * With the OE core-image-*  you can login with `root` account, there is no password set.
- - 'core-image-minimal' A small console image to allow you to boot.
- - 'core-image-full-cmdline' A console only image with more full Featured Linux support.
+  > * Login with `root` account, there is no password set.
 
 For more information on available images refer to [Yocto reference manual](https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#ref-images)
 
