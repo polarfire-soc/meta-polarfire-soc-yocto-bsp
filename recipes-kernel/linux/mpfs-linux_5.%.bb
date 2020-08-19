@@ -16,7 +16,6 @@ SRC_URI_append_icicle-kit-es = " \
     file://0002-PFSoC-MAC-Interface-auto-negotiation.patch \
     file://0001-Microchip-GPIO-Support-for-the-Polarfire-SoC.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
-    file://0001-v4-Microchip-Icicle-Kit-MUSB-Support.patch \
     file://0008-pac139x.patch \
  "
 SRC_URI_append_icicle-kit-es-sd = " \
@@ -41,7 +40,6 @@ SRC_URI_append_mpfs = " \
     file://0002-Microchip-SPI-Support-for-the-Polarfire-SoC.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0004-Microchip-Adding-QSPI-driver-for-Polarfire-SoC.patch \
-    file://0001-v4-Microchip-Icicle-Kit-MUSB-Support.patch \
     file://0006-Microchip-UIO-CAN-support-for-the-Polarfire-SoC.patch \
 "
 
@@ -55,7 +53,6 @@ SRC_URI_append_lc-mpfs = " \
     file://0002-Microchip-SPI-Support-for-the-Polarfire-SoC.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0004-Microchip-Adding-QSPI-driver-for-Polarfire-SoC.patch \
-    file://0001-v4-Microchip-Icicle-Kit-MUSB-Support.patch \
     file://0006-Microchip-UIO-CAN-support-for-the-Polarfire-SoC.patch \
 "
 

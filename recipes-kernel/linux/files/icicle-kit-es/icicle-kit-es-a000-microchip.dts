@@ -397,7 +397,7 @@
 		reg = <0x0 0x20201000 0x00000000 0x00001000>;
 		reg-names = "mc","control";
 		clocks = <&clkcfg 19>;
-		interrupt-parent = <0xb>;
+		interrupt-parent = <&L1>;
 		interrupts = <86 87>;
 		interrupt-names = "mc","dma";
 		dr_mode = "host";
