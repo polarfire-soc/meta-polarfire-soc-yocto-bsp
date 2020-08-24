@@ -92,8 +92,7 @@ rm -rf build
 
 ## Linux Images
 
-- 'mpfs-dev-cli' A console image with development tools.
-- 'core-image-minimal' A small console image to allow you to boot.
+- 'mpfs-dev-cli' A console image with development tools to allow you to boot.
 - 'core-image-minimal-dev' A small console image with some development tools to allow you to boot.
   
   > * Login with `root` account, there is no password set.
