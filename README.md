@@ -1,10 +1,6 @@
 # Microchip PolarFire SoC Yocto BSP
 
-
-Support for Microchip Polarfire-SoC are available in Yocto/OE provided by either the OpenEmbedded Core or for additional and more complete support the meta-polarfire-soc-yocto-bsp layer. 
-This Yocto BSP layer builds a complete compressed Image for booting the development board.
-
-The 'Polarfire SoC Yocto BSP' is build on top of the RISCV Architectural layer (meta-riscv) to provide additional hardware specific features. 
+Microchip Polarfire-SoC Yocto 'Board Support Package' (BSP) is based on OpenEmbedded (OE). The 'Polarfire SoC Yocto BSP' layer is build on top of the RISC-V Architectural layer (meta-riscv) to provide hardware specific features and additional disk images. 
 Using Yocto 'Openembedded' you will build the following:
 - RISC-V Toolchain
 - Predefined Disk Images 
@@ -14,7 +10,7 @@ Using Yocto 'Openembedded' you will build the following:
 
 The complete User Guides for each development platform, containing board and boot instructions, are available for the following supported platforms:
 
-- [ICICLE-KIT-ES](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-icicle-kit-es/ICICLE_KIT_user_guide.md) (Icicle Kit Engineering Sample)
+- [ICICLE-KIT-ES](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-icicle-kit-es/icicle-kit-sw-developer-guide/icicle-kit-sw-developer-guide.md) (Icicle Kit Engineering Sample)
 - [MPFS-DEV-KIT](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-dev-kit/MPFS-DEV-KIT_user_guide.md) (HiFive Unleashed Expansion Board)
 - [LC-MPFS-DEV-KIT](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md)
 
@@ -22,7 +18,7 @@ The complete User Guides for each development platform, containing board and boo
 ## Build Instructions [Installation and further details below](#Instructions)
 
 ### Create the Workspace
-This needs to be done every time you want a clean setup based on the latest layers.
+This needs to be done every time you want a clean setup based on the latest BSP.
 ```bash
 mkdir yocto-dev && cd yocto-dev
 repo init -u https://github.com/polarfire-soc/meta-polarfire-soc-yocto-bsp.git -b master -m tools/manifests/riscv-yocto.xml
@@ -84,7 +80,7 @@ The following table details the available targets:
 | `MACHINE=icicle-kit-es` | ICICLE-KIT-ES, Icicle Kit engineering samples (supports emmc boot) |
 | `MACHINE=icicle-kit-es-sd` | ICICLE-KIT-ES, Icicle Kit engineering samples (supports SD card boot)|
 | `MACHINE=mpfs` | MPFS-DEV-KIT, HiFive Unleashed Expansion Board |
-| `MACHINE=lc-mpfs` | LC-MPFS-DEV-KIT |
+| `MACHINE=lc-mpfs` | LC-MPFS-DEV-KIT, Low cost HiFive Unleashed Expansion Board |
 | `MACHINE=qemuriscv64` | Simulation |
 
 When building for different 'Machines' or want a 'clean' build, we recommend deleting the 'build' directory when switching.
