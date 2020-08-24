@@ -15,7 +15,7 @@ The complete User Guides for each development platform, containing board and boo
 - [LC-MPFS-DEV-KIT](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md)
 
 
-## Build Instructions [Installation and further details below](#Instructions)
+## Build Instructions [Yocto setup and further details below](#Instructions)
 
 ### Create the Workspace
 This needs to be done every time you want a clean setup based on the latest BSP.
