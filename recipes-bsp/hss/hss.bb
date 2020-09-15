@@ -54,6 +54,7 @@ do_configure_icicle-kit-es () {
 			rm -rf ${WORKDIR}/git/boards/${MACHINE}/config/hardware
 		fi
 		# Finally move the configuration over to HSS configuration folder
+		mkdir -p ${WORKDIR}/git/boards/${MACHINE}/config
 		mv -f ${WORKDIR}/git/hardware ${WORKDIR}/git/boards/${MACHINE}/config/hardware
 	fi ## Finished if hardware folder generated from xml
 
@@ -110,7 +111,7 @@ do_configure_icicle-kit-es-sd () {
 		else
 			ln -s ~/.local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
 		fi
-        fi	
+        fi
 }
 
 
@@ -119,7 +120,7 @@ do_compile () {
 	oe_runmake BOARD=icicle-kit-es genconfig
 	## Adding u-boot as a payload
 	## Using bin2chunks application
-	make -C ${WORKDIR}/git/tools/bin2chunks      
+	make -C ${WORKDIR}/git/tools/bin2chunks
 	${WORKDIR}/git/tools/bin2chunks/bin2chunks 0x80200000 0x80200000 0x80200000 0x80200000 32768 ${WORKDIR}/git/tools/bin2chunks/payload.bin 1 1 ${DEPLOY_DIR_IMAGE}/u-boot.bin 0x80200000
         cp -f ${WORKDIR}/git/tools/bin2chunks/payload.bin ${WORKDIR}/git/
 	oe_runmake BOARD=icicle-kit-es
@@ -128,6 +129,6 @@ do_compile () {
 
 do_install() {
 	install -d ${DEPLOY_DIR_IMAGE}
-	install -m 755 ${WORKDIR}/git/hss.* ${DEPLOY_DIR_IMAGE}/
+	install -m 755 ${WORKDIR}/git/hss* ${DEPLOY_DIR_IMAGE}/
 	install -m 755 ${WORKDIR}/git/payload.bin ${DEPLOY_DIR_IMAGE}/
 }
