@@ -54,7 +54,7 @@ do_configure_icicle-kit-es () {
 			rm -rf ${WORKDIR}/git/boards/${MACHINE}/config/hardware
 		fi
 		# Finally move the configuration over to HSS configuration folder
-		mv -f ${WORKDIR}/git/hardware ${WORKDIR}/git/boards/${MACHINE}/config/hardware
+		mv -f ${WORKDIR}/git/hardware ${WORKDIR}/git/boards/${MACHINE}/config
 	fi ## Finished if hardware folder generated from xml
 
 	# Clear the old config file
@@ -71,11 +71,11 @@ do_configure_icicle-kit-es () {
 	## Create a symbolic link to the tool
 	if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
 		if [ -f /usr/local/bin/genconfig ]; then
-			ln -s /usr/local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
+			ln -fs /usr/local/bin/genconfig ${TOPDIR}/tmp/hosttools/
 		else
-			ln -s ~/.local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
+			ln -fs ~/.local/bin/genconfig ${TOPDIR}/tmp/hosttools/
 		fi
-        fi
+    fi
 }
 do_configure_icicle-kit-es-sd () {
 
@@ -106,11 +106,11 @@ do_configure_icicle-kit-es-sd () {
 	## Create a symbolic link to the tool
 	if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
 		if [ -f /usr/local/bin/genconfig ]; then
-			ln -s /usr/local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
+			ln -fs /usr/local/bin/genconfig ${TOPDIR}/tmp/hosttools/
 		else
-			ln -s ~/.local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
+			ln -fs ~/.local/bin/genconfig ${TOPDIR}/tmp/hosttools/
 		fi
-        fi	
+    fi	
 }
 
 
@@ -128,6 +128,6 @@ do_compile () {
 
 do_install() {
 	install -d ${DEPLOY_DIR_IMAGE}
-	install -m 755 ${WORKDIR}/git/hss.* ${DEPLOY_DIR_IMAGE}/
+	install -m 755 ${WORKDIR}/git/Default/hss.* ${DEPLOY_DIR_IMAGE}/
 	install -m 755 ${WORKDIR}/git/payload.bin ${DEPLOY_DIR_IMAGE}/
 }
