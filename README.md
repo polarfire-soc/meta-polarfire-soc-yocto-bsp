@@ -112,7 +112,6 @@ To work with individual recipes:
 MACHINE=<MACHINE> bitbake <recipe> -c <command>
 ```
 BSP recipes avaialble: 
-* hss (Microchip HSS)
 * u540-c000-bootloader (Sifive FSBL)
 * u-boot 
 * mpfs-linux (kerenl our BSP)
