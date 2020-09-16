@@ -111,12 +111,18 @@ To work with individual recipes:
 ```bash
 MACHINE=<MACHINE> bitbake <recipe> -c <command>
 ```
-BSP recipes avaialble: 
-* u540-c000-bootloader (Sifive FSBL)
-* u-boot 
-* mpfs-linux (kerenl our BSP)
+**Available BSP recipes:**
+ 
+  - u540-c000-bootloader (Sifive FSBL)
+  - u-boot 
+  - mpfs-linux (BSP kernel)
   
-Available commands: clean / configure / compile / install
+**Available commands:**
+
+  - clean
+  - configure
+  - compile
+  - install
 
 ### Yocto Image and Binaries directory
 ```
