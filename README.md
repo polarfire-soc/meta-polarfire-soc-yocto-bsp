@@ -75,13 +75,13 @@ pip3 install kconfiglib
 The `MACHINE` (board) option can be used to set the target board for which linux is built, and if left blank it will default to `MACHINE=icicle-kit-es`.           
 The following table details the available targets:
 
-| `MACHINE` | Board Name |
-| --- | --- |
-| `MACHINE=icicle-kit-es` | ICICLE-KIT-ES, Icicle Kit engineering samples (supports emmc boot) |
-| `MACHINE=icicle-kit-es-sd` | ICICLE-KIT-ES, Icicle Kit engineering samples (supports SD card boot)|
-| `MACHINE=mpfs` | MPFS-DEV-KIT, HiFive Unleashed Expansion Board |
-| `MACHINE=lc-mpfs` | LC-MPFS-DEV-KIT, Low cost HiFive Unleashed Expansion Board |
-| `MACHINE=qemuriscv64` | Simulation |
+| `MACHINE`                  | Board Name                                                            |
+| -------------------------- | --------------------------------------------------------------------- |
+| `MACHINE=icicle-kit-es`    | ICICLE-KIT-ES, Icicle Kit engineering samples (supports emmc boot)    |
+| `MACHINE=icicle-kit-es-sd` | ICICLE-KIT-ES, Icicle Kit engineering samples (supports SD card boot) |
+| `MACHINE=mpfs`             | MPFS-DEV-KIT, HiFive Unleashed Expansion Board                        |
+| `MACHINE=lc-mpfs`          | LC-MPFS-DEV-KIT, Low cost HiFive Unleashed Expansion Board            |
+| `MACHINE=qemuriscv64`      | Simulation                                                            |
 
 When building for different 'Machines' or want a 'clean' build, we recommend deleting the 'build' directory when switching.
 This will delete all cache / configurations and downloads. 
