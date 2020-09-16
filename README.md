@@ -90,14 +90,19 @@ cd yocto-dev
 rm -rf build
 ```
 
-## Linux Images
+### Linux Images
+The table below summarizes the most common Linux images that can be built using this BSP.
 
-- 'mpfs-dev-cli' A console image with development tools to allow you to boot.
-- 'core-image-minimal-dev' A small console image with some development tools to allow you to boot.
-  
-  > * Login with `root` account, there is no password set.
+| bitbake `<image>` argument | Description                                        |
+| -------------------------- | -------------------------------------------------- |
+| `core-image-minimal-dev`   | A small console image with some development tools. |
+| `mpfs-dev-cli`             | A console image with development tools.            |
 
 For more information on available images refer to [Yocto reference manual](https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#ref-images)
+
+#### Target machine Linux login
+Login with `root` account, there is no password set.
+
 
 ## Bitbake commands
 
