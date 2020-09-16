@@ -4,7 +4,7 @@ Microchip Polarfire-SoC Yocto 'Board Support Package' (BSP) is based on OpenEmbe
 Using Yocto 'Openembedded' you will build the following:
 - RISC-V Toolchain
 - Predefined Disk Images 
-- Bootloader Binaries (FSBL, HSS, U-Boot)
+- Bootloader Binaries (FSBL, U-Boot)
 - Device Tree Binary (DTB)
 - Linux Kernel Images
 
@@ -64,13 +64,6 @@ For Ubuntu 18.04 (or newer) install python3-distutils package.
 
 **Make sure to install the [repo command](https://source.android.com/setup/build/downloading#installing-repo) by Google first.**
 
-**The Microchip 'Hart Software Services' (HSS) requires the Python library kconfiglib:**
-
-Use the default install location.
-```
-pip3 install kconfiglib
-```
- 
 ### Supported Machine Targets
 The `MACHINE` (board) option can be used to set the target board for which linux is built, and if left blank it will default to `MACHINE=icicle-kit-es`.           
 The following table details the available targets:
@@ -125,21 +118,6 @@ BSP recipes avaialble:
 * mpfs-linux (kerenl our BSP)
   
 Available commands: clean / configure / compile / install
-
-## HSS Hardware Configuration from Libero Design
-
-(Support for the Icicle-kit only)
-
-The HSS recipe generates embedded software header files from information 
-supplied by Libero from the Libero design. Libero supplies the information in 
-the form of an xml file. This can be found in the Libero component subdirectory
-e.g: /component/work/PFSOC_MSS_C0/PFSOC_MSS_C0_0
-
-Update the following folder with the updated XML file (use the same name) :
-
-```bash
-meta-polarfire-soc-yocto-bsp/recipes-bsp/hss/files/${MACHINE}/ICICLE_MSS_0.xml
-```
 
 ### Yocto Image and Binaries directory
 ```
