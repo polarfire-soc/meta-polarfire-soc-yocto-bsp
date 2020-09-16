@@ -129,6 +129,6 @@ do_compile () {
 
 do_install() {
 	install -d ${DEPLOY_DIR_IMAGE}
-	install -m 755 ${WORKDIR}/git/hss* ${DEPLOY_DIR_IMAGE}/
+	install -m 755 ${WORKDIR}/git/Default/hss.* ${DEPLOY_DIR_IMAGE}/
 	install -m 755 ${WORKDIR}/git/payload.bin ${DEPLOY_DIR_IMAGE}/
 }
