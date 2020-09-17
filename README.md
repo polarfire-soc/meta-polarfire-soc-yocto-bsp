@@ -16,7 +16,8 @@ The complete User Guides for each development platform, containing board and boo
   - [LC-MPFS-DEV-KIT](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md)
 
 
-## Build Instructions [Yocto setup and further details below](#Instructions)
+## Build Instructions 
+Before continuing, ensure that the prerequisite packages are present on your system. Please see the [Host PC setup for Yocto section](#Dependencies) for further details.
 
 ### Create the Workspace
 This needs to be done every time you want a clean setup based on the latest BSP.
@@ -46,24 +47,6 @@ MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 cd yocto-dev/build
 zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdX bs=512 iflag=fullblock oflag=direct conv=fsync status=progress
 ```
-<a name="Instructions"></a>
-## Yocto Setup and BSP 
-
-Yocto Release Activity:
-Dunfell (Revision 3.1)	(Released April 2020)
-
-### Required packages for the Build Host
-This document assumes you are running on a modern Linux system. The process documented here was tested using Ubuntu 18.04 LTS. 
-It should also work with other Linux distributions if the equivalent prerequisite packages are installed.
-
-Detailed instructions for various distributions can be found in "[Required Packages for the Build Host](https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#required-packages-for-the-build-host)" section in Yocto Project Reference Manual.
-
-### Dependencies
-
-The BSP uses the Yocto RISCV Architecture Layer.
-For Ubuntu 18.04 (or newer) install python3-distutils package.
-
-**Make sure to install the [repo command](https://source.android.com/setup/build/downloading#installing-repo) by Google first.**
 
 ### Supported Machine Targets
 The `MACHINE` (board) option can be used to set the target board for which linux is built, and if left blank it will default to `MACHINE=icicle-kit-es`.           
@@ -158,6 +141,32 @@ zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | s
 ./openembedded-core/scripts/runqemu nographic
 ```
 
+<a name="Dependencies"></a>
+## Host PC setup for Yocto
+
+### Yocto Dependancies
+This document assumes you are running on a modern Linux system. The process documented here was tested using Ubuntu 18.04 LTS. 
+It should also work with other Linux distributions if the equivalent prerequisite packages are installed.
+
+The BSP uses the Yocto RISCV Architecture Layer, and the Yocto release Dunfell (Revision 3.1)	(Released April 2020).
+
+**Make sure to install the [repo command](https://source.android.com/setup/build/downloading#installing-repo) by Google first.**
+
+Detailed instructions for various distributions can be found in the "[Required Packages for the Build Host](https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#required-packages-for-the-build-host)" section in the Yocto Project Reference Manual.
+
+<a name="OtherDeps"></a>
+### Other Dependencies
+
+For Ubuntu 18.04 (or newer) install python3-distutils:
+```
+sudo apt install python3-distutils
+```
+
+kconfiglib is required to build the 'Hart Software Services' (HSS):
+```
+pip3 install kconfiglib
+```
+
 ## Additional Reading
 
 [Yocto User Manual](https://www.yoctoproject.org/docs/3.1/mega-manual/mega-manual.html) 
@@ -222,4 +231,13 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 
 [Details on max_user_watches](https://github.com/guard/listen/wiki/Increasing-the-amount-of-inotify-watchers)
 
-
+### Issue 003: genconfig: command not found
+If you encounter the following error, make sure that the python library kconfiglib is installed correctly.
+```
+| genconfig
+| /bin/bash: genconfig: command not found
+| targets.mk:50: recipe for target 'config.h' failed
+| make: *** [config.h] Error 127
+| WARNING: exit code 1 from a shell command.
+```
+See [Other Dependencies](#OtherDeps) for installation instructions.
