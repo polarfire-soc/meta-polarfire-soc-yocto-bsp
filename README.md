@@ -5,7 +5,7 @@ Using Yocto 'Openembedded' you will build the following:
 
   - RISC-V Toolchain
   - Predefined Disk Images 
-  - Bootloader Binaries (FSBL, U-Boot)
+  - Bootloader Binaries (FSBL, HSS, U-Boot)
   - Device Tree Binary (DTB)
   - Linux Kernel Images
 
@@ -97,6 +97,7 @@ MACHINE=<MACHINE> bitbake <recipe> -c <command>
 ```
 **Available BSP recipes:**
  
+  - hss (Microchip Hart Software Services)
   - u540-c000-bootloader (Sifive FSBL)
   - u-boot 
   - mpfs-linux (BSP kernel)
