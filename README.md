@@ -45,7 +45,7 @@ MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 > 
 ```bash
 cd yocto-dev/build
-zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdX bs=512 iflag=fullblock oflag=direct conv=fsync status=progress
+zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdX bs=4096 iflag=fullblock oflag=direct conv=fsync status=progress
 ```
 
 ### Supported Machine Targets
@@ -133,7 +133,7 @@ Example write the disk image to the SD card for the icicle kit:
 
 ```bash
 cd yocto-dev/build
-zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdX bs=512 iflag=fullblock oflag=direct conv=fsync status=progress
+zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdX bs=4096 iflag=fullblock oflag=direct conv=fsync status=progress
 ```
 ## Run in Simulation (QEMU)
 
