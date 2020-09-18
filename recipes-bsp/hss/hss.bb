@@ -13,7 +13,7 @@ do_compile[depends] += "virtual/bootloader:do_deploy"
 
 
 PV = "1.0+git${SRCPV}"
-SRCREV="${AUTOREV}"
+SRCREV="9b620330ca67456fdcad643f9ae98bb785a09740"
 SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;branch=master \
 	   "
 
