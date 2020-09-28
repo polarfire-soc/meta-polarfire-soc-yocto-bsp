@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.md;md5=2dc9e752dd76827e3a4eebfd5b3c6226"
 
 inherit deploy
 # Strict dependency
-do_compile[depends] += "u-boot:do_deploy"
+do_configure[depends] += "u-boot:do_deploy"
 
 
 PV = "1.0+git${SRCPV}"

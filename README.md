@@ -5,7 +5,7 @@ Using Yocto 'Openembedded' you will build the following:
 
   - RISC-V Toolchain
   - Predefined Disk Images 
-  - Bootloader Binaries (FSBL, HSS, U-Boot)
+  - Bootloader Binaries (FSBL / U-Boot)
   - Device Tree Binary (DTB)
   - Linux Kernel Images
 
@@ -97,7 +97,7 @@ MACHINE=<MACHINE> bitbake <recipe> -c <command>
 ```
 **Available BSP recipes:**
  
-  - hss (Microchip Hart Software Services)
+  - hss (Microchip Hart Software Services) payload generator
   - u540-c000-bootloader (Sifive FSBL)
   - u-boot 
   - mpfs-linux (BSP kernel)
@@ -162,10 +162,11 @@ For Ubuntu 18.04 (or newer) install python3-distutils:
 ```
 sudo apt install python3-distutils
 ```
+HSS Payload Generator uses libelf and libyaml, as well as zlib (a dependency of libelf).
 
-kconfiglib is required to build the 'Hart Software Services' (HSS):
 ```
-pip3 install kconfiglib
+sudo apt-get install libyaml-dev
+sudo apt-get install libelf-dev
 ```
 
 ## Additional Reading
@@ -232,13 +233,4 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 
 [Details on max_user_watches](https://github.com/guard/listen/wiki/Increasing-the-amount-of-inotify-watchers)
 
-### Issue 003: genconfig: command not found
-If you encounter the following error, make sure that the python library kconfiglib is installed correctly.
-```
-| genconfig
-| /bin/bash: genconfig: command not found
-| targets.mk:50: recipe for target 'config.h' failed
-| make: *** [config.h] Error 127
-| WARNING: exit code 1 from a shell command.
-```
 See [Other Dependencies](#OtherDeps) for installation instructions.
