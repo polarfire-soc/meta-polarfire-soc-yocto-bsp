@@ -1,5 +1,5 @@
 SUMMARY = "Polarfire SoC Linux example applications"
-DESCRIPTION = "Linux Example applications, includes the following
+DESCRIPTION = "Linux Example applications, includes the following \
 -iiohttpserver collects ADC measurements and displays them via a webserver.\
 - "
 

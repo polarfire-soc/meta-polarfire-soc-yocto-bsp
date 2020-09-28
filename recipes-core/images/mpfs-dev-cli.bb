@@ -10,7 +10,7 @@ IMAGE_FEATURES += " ssh-server-openssh \
 IMAGE_INSTALL = "\
     packagegroup-core-boot \
     packagegroup-core-full-cmdline \
-    pfsoc_apps \
+    pfsocapps \
     coremarkpro \
     collectd \
     libgpiod \
