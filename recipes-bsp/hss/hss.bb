@@ -1,11 +1,8 @@
-SUMMARY = "Hart Software Services (HSS)"
-DESCRIPTION = "Microchip Polarfire SoC Bootloader\
-- Zeroth Stage Boot Loader (ZSBL)\
-- First Stage Boot Loader (FSBL)\
-- Service Provider"
+SUMMARY = ""Microchip Polarfire SoC Hart Software Services (HSS) Payload Generator"
+DESCRIPTION = "HSS requires U-Boot to be packaged with header details applied with hss payload generator"
 
 LICENSE = "MIT & BSD-2-Clause"
-LIC_FILES_CHKSUM = "file://LICENSE.md;md5=18287c7f3e6c73444d65f5ca062ea060"
+LIC_FILES_CHKSUM = "file://LICENSE.md;md5=2dc9e752dd76827e3a4eebfd5b3c6226"
 
 inherit deploy
 # Strict dependency
@@ -13,117 +10,36 @@ do_compile[depends] += "virtual/bootloader:do_deploy"
 
 
 PV = "1.0+git${SRCPV}"
-SRCREV="9b620330ca67456fdcad643f9ae98bb785a09740"
-SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;branch=master \
+SRCREV="${AUTOREV}"
+#SRCREV="a165f67e9a62b453d0cdaf10f464b9d1307a39e9"
+SRC_URI = "git://git@bitbucket.microchip.com/fpga_pfsoc_es/hart-software-services.git;protocol=ssh;branch=develop_ig \
+           file://uboot.yaml
 	   "
 
-SRC_URI_append_icicle-kit-es = " \
-    file://def_config \
-    file://mpfs_configuration_generator.py \
-    file://ICICLE_MSS_0.xml \
-"
-
-SRC_URI_append_icicle-kit-es-sd = " \
-    file://def_config \
-    file://mpfs_configuration_generator.py \
-    file://ICICLE_MSS_0.xml \
-"
 S = "${WORKDIR}/git"
 
-RDEPENDS_${PN} += " \
-    python3-psutil \
-"
 
-EXTRA_OEMAKE = 'CROSS_COMPILE=${TARGET_PREFIX} CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}" V=1'
 EXTRA_OEMAKE += 'HOSTCC="${BUILD_CC} ${BUILD_CFLAGS} ${BUILD_LDFLAGS}"'
-EXTRA_OEMAKE += 'PYTHON=nativepython STAGING_INCDIR=${STAGING_INCDIR_NATIVE} STAGING_LIBDIR=${STAGING_LIBDIR_NATIVE}'
+
+# NOTE: Only using the Payload generator from the HSS
 
 
-# NOTE: this is a Makefile-only piece of software, so we cannot generate much of the
-# recipe automatically - you will need to examine the Makefile yourself and ensure
-# that the appropriate arguments are passed in.
-
-do_configure_icicle-kit-es () {
-
-	## Parsing the PolarFire SoC XML Hardware Configuration file from Libero Design
-	if [ -d ${WORKDIR}/git/boards/icicle-kit-es/soc_config ]; then
-		# force remove the config directory
-		rm -rf ${WORKDIR}/git/boards/icicle-kit-es/soc_config
-	fi
-	python3 ${WORKDIR}/mpfs_configuration_generator.py ${WORKDIR}/ICICLE_MSS_0.xml 
-	mv -f ${WORKDIR}/git/hardware ${WORKDIR}/git/boards/icicle-kit-es/soc_config
-
-	# Clear the old config file
-	if [ -f ${WORKDIR}/git/config.h ]; then
-		rm -f ${WORKDIR}/git/config.h
-	fi
-
-	# Specify any needed configure commands here
-	## We can use the yocto config in recipes_bsp/hss/files
-	##cp -f ${WORKDIR}/def_config  ${WORKDIR}/git/.config
-	## For now use default configuration from HSS
-	cp -f ${WORKDIR}/git/boards/icicle-kit-es/def_config  ${WORKDIR}/git/.config
-        ## HSS uses kconfiglib, must be installed in default location
-	## Create a symbolic link to the tool
-	if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
-		if [ -f /usr/local/bin/genconfig ]; then
-			ln -s /usr/local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
-		elif [ -f ~/.local/bin/genconfig ]; then
-			ln -s ~/.local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
-		else 
-		     bbfatal "Error install Kconfiglib - available at https://github.com/ulfalizer/Kconfiglib."
-		fi
-    fi
-}
-do_configure_icicle-kit-es-sd () {
-
-	## Parsing the PolarFire SoC XML Hardware Configuration file from Libero Design
-	if [ -d ${WORKDIR}/git/boards/icicle-kit-es/soc_config ]; then
-		# force remove the config directory
-		rm -rf ${WORKDIR}/git/boards/icicle-kit-es/soc_config
-	fi
-	python3 ${WORKDIR}/mpfs_configuration_generator.py ${WORKDIR}/ICICLE_MSS_0.xml 
-	mv -f ${WORKDIR}/git/hardware ${WORKDIR}/git/boards/icicle-kit-es/soc_config
-
-	# Clear the old config file
-	if [ -f ${WORKDIR}/git/config.h ]; then
-		rm -f ${WORKDIR}/git/config.h
-        fi
-
-	# Specify any needed configure commands here
-	## We can use the yocto config in recipes_bsp/hss/files
-	##cp -f ${WORKDIR}/def_config  ${WORKDIR}/git/.config
-	## For now use default configuration from HSS
-	cp -f ${WORKDIR}/git/boards/icicle-kit-es/def_config.sdcard  ${WORKDIR}/git/.config
-
-        ## HSS uses kconfiglib, must be installed in default location ~/.local/bin/
-	## Create a symbolic link to the tool
-	if [ ! -f ${TOPDIR}/tmp-glibc/hosttools/genconfig ]; then
-		if [ -f /usr/local/bin/genconfig ]; then
-			ln -s /usr/local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
-		elif [ -f ~/.local/bin/genconfig ]; then
-			ln -s ~/.local/bin/genconfig ${TOPDIR}/tmp-glibc/hosttools/
-		else 
-		     bbfatal "Error install Kconfiglib - available at https://github.com/ulfalizer/Kconfiglib."
-		fi
-    fi	
+do_configure () {
+	## taking U-Boot binary and package for HSS
+	cp -f ${DEPLOY_DIR_IMAGE}/u-boot.bin ${WORKDIR}/git/
+	cp -f ${WORKDIR}/uboot.yaml ${WORKDIR}/git/tools/hss-payload-generator/
 }
 
 
 do_compile () {
-    ## Creating the config for HSS
-	oe_runmake BOARD=icicle-kit-es genconfig
-	## Adding u-boot as a payload
-	## Using bin2chunks application
-	make -C ${WORKDIR}/git/tools/bin2chunks      
-	${WORKDIR}/git/tools/bin2chunks/bin2chunks 0x80200000 0x80200000 0x80200000 0x80200000 32768 ${WORKDIR}/git/tools/bin2chunks/payload.bin 1 1 ${DEPLOY_DIR_IMAGE}/u-boot.bin 0x80200000
-        cp -f ${WORKDIR}/git/tools/bin2chunks/payload.bin ${WORKDIR}/git/
-	oe_runmake BOARD=icicle-kit-es
 
+	## Adding u-boot as a payload
+	## Using hss-payload-generator application
+	make -C ${WORKDIR}/git/tools/hss-payload-generator
+	${WORKDIR}/git/tools/hss-payload-generator/hss-payload-generator -c ${WORKDIR}/git/tools/hss-payload-generator/uboot.yaml -v payload.bin
 }
 
 do_install() {
 	install -d ${DEPLOY_DIR_IMAGE}
-	install -m 755 ${WORKDIR}/git/hss.* ${DEPLOY_DIR_IMAGE}/
 	install -m 755 ${WORKDIR}/git/payload.bin ${DEPLOY_DIR_IMAGE}/
 }
