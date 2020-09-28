@@ -1,4 +1,4 @@
-SUMMARY = ""Microchip Polarfire SoC Hart Software Services (HSS) Payload Generator"
+SUMMARY = "Microchip Polarfire SoC Hart Software Services (HSS) Payload Generator"
 DESCRIPTION = "HSS requires U-Boot to be packaged with header details applied with hss payload generator"
 
 LICENSE = "MIT & BSD-2-Clause"
