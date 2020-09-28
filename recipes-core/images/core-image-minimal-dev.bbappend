@@ -4,7 +4,7 @@ EXTRA_IMAGE_FEATURES += " \
       tools-sdk"
 
 IMAGE_INSTALL = "\
-    iiohttpserver \
+    pfsoc_apps \
     collectd \
     libgpiod \
     libgpiod-tools \
