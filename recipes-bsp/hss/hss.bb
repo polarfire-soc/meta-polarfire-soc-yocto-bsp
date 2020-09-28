@@ -13,8 +13,8 @@ PV = "1.0+git${SRCPV}"
 SRCREV="${AUTOREV}"
 #SRCREV="a165f67e9a62b453d0cdaf10f464b9d1307a39e9"
 SRC_URI = "git://git@bitbucket.microchip.com/fpga_pfsoc_es/hart-software-services.git;protocol=ssh;branch=develop_ig \
-           file://uboot.yaml
-	   "
+           file://uboot.yaml \
+          "
 
 S = "${WORKDIR}/git"
 
