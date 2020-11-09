@@ -21,7 +21,7 @@ IMAGE_INSTALL = "\
     i2c-tools \
     screen \
     vim vim-vimrc \
-    dhcp-client \
+    dhcpcd \
     nbd-client \
     mpfr-dev \
     gmp-dev \
