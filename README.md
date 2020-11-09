@@ -139,7 +139,7 @@ zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | s
 ## Run in Simulation (QEMU)
 
 ```bash
-./openembedded-core/scripts/runqemu nographic
+MACHINE=qemuriscv64 runqemu nographic
 ```
 
 <a name="Dependencies"></a>
