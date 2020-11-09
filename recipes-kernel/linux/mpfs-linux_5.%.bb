@@ -17,6 +17,9 @@ SRC_URI_append_icicle-kit-es = " \
     file://0001-Microchip-GPIO-Support-for-the-Polarfire-SoC.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0008-pac139x.patch \
+    file://v11-0004-PCI-microchip-Add-host-driver-for-Microchip-PCIe.patch \
+    file://v1-0002-Add-definition-for-Microchip-PolarFire-SoC.patch \
+    file://v1-0001-dt-bindings-CLK-microchip-Add-Microchip-PolarFire.patch \
  "
 SRC_URI_append_icicle-kit-es-sd = " \
     file://icicle-kit-es-a000-microchip.dts \
@@ -26,6 +29,9 @@ SRC_URI_append_icicle-kit-es-sd = " \
     file://0001-Microchip-GPIO-Support-for-the-Polarfire-SoC.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0008-pac139x.patch \
+    file://v11-0004-PCI-microchip-Add-host-driver-for-Microchip-PCIe.patch \
+    file://v1-0002-Add-definition-for-Microchip-PolarFire-SoC.patch \
+    file://v1-0001-dt-bindings-CLK-microchip-Add-Microchip-PolarFire.patch \
  "
  
 SRC_URI_append_mpfs = " \

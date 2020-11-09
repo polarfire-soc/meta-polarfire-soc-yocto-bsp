@@ -1,7 +1,7 @@
-From 8decb5d4aeecf1b668d502bff1e049c19d15e025 Mon Sep 17 00:00:00 2001
+From 428ecbe650a7643e23e7b28c103870a20420a1bb Mon Sep 17 00:00:00 2001
 From: Daire McNamara <daire.mcnamara@microchip.com>
 Date: Wed, 15 Apr 2020 11:23:32 +0100
-Subject: [PATCH v11 4/4] PCI: microchip: Add host driver for Microchip PCIe
+Subject: [PATCH v11a 4/4] PCI: microchip: Add host driver for Microchip PCIe
  controller
 
 add support for the Microchip PCIe PolarFire PCIe controller when
@@ -11,17 +11,17 @@ Signed-off-by: Daire McNamara <daire.mcnamara@microchip.com>
 ---
  drivers/pci/controller/Kconfig               |   9 +
  drivers/pci/controller/Makefile              |   1 +
- drivers/pci/controller/pcie-microchip-host.c | 683 +++++++++++++++++++
- 3 files changed, 693 insertions(+)
+ drivers/pci/controller/pcie-microchip-host.c | 730 +++++++++++++++++++
+ 3 files changed, 740 insertions(+)
  create mode 100644 drivers/pci/controller/pcie-microchip-host.c
 
 diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
-index b08efea39496..2bf5e7e894fb 100644
+index 20bf00f587bd..7487de6e394b 100644
 --- a/drivers/pci/controller/Kconfig
 +++ b/drivers/pci/controller/Kconfig
-@@ -286,6 +286,15 @@ config PCI_LOONGSON
- 	  Say Y here if you want to enable PCI controller support on
- 	  Loongson systems.
+@@ -268,6 +268,15 @@ config PCI_HYPERV_INTERFACE
+ 	  The Hyper-V PCI Interface is a helper driver allows other drivers to
+ 	  have a common interface with the Hyper-V PCI frontend driver.
  
 +config PCIE_MICROCHIP_HOST
 +	bool "Microchip AXI PCIe host bridge support"
@@ -33,26 +33,26 @@ index b08efea39496..2bf5e7e894fb 100644
 +	  Host Bridge driver.
 +
  source "drivers/pci/controller/dwc/Kconfig"
- source "drivers/pci/controller/mobiveil/Kconfig"
  source "drivers/pci/controller/cadence/Kconfig"
+ endmenu
 diff --git a/drivers/pci/controller/Makefile b/drivers/pci/controller/Makefile
-index efd9733ead26..27f89b499c6e 100644
+index 01b2502a5323..f926746e515e 100644
 --- a/drivers/pci/controller/Makefile
 +++ b/drivers/pci/controller/Makefile
-@@ -27,6 +27,7 @@ obj-$(CONFIG_PCIE_ROCKCHIP_EP) += pcie-rockchip-ep.o
- obj-$(CONFIG_PCIE_ROCKCHIP_HOST) += pcie-rockchip-host.o
+@@ -27,6 +27,7 @@ obj-$(CONFIG_PCIE_ROCKCHIP_HOST) += pcie-rockchip-host.o
  obj-$(CONFIG_PCIE_MEDIATEK) += pcie-mediatek.o
+ obj-$(CONFIG_PCIE_MOBIVEIL) += pcie-mobiveil.o
  obj-$(CONFIG_PCIE_TANGO_SMP8759) += pcie-tango.o
 +obj-$(CONFIG_PCIE_MICROCHIP_HOST) += pcie-microchip-host.o
  obj-$(CONFIG_VMD) += vmd.o
  obj-$(CONFIG_PCIE_BRCMSTB) += pcie-brcmstb.o
- obj-$(CONFIG_PCI_LOONGSON) += pci-loongson.o
+ # pcie-hisi.o quirks are needed even without CONFIG_PCIE_DW
 diff --git a/drivers/pci/controller/pcie-microchip-host.c b/drivers/pci/controller/pcie-microchip-host.c
 new file mode 100644
-index 000000000000..90d051100181
+index 000000000000..df10fc5b3ce9
 --- /dev/null
 +++ b/drivers/pci/controller/pcie-microchip-host.c
-@@ -0,0 +1,683 @@
+@@ -0,0 +1,730 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Microchip AXI PCIe Bridge host controller driver
@@ -67,6 +67,7 @@ index 000000000000..90d051100181
 + *	pcie-altera.c
 + */
 +#include <linux/irqchip/chained_irq.h>
++#include <linux/clk.h>
 +#include <linux/module.h>
 +#include <linux/msi.h>
 +#include <linux/of_address.h>
@@ -272,6 +273,45 @@ index 000000000000..90d051100181
 +	chained_irq_exit(chip, desc);
 +}
 +
++static inline struct clk *mc_pcie_probe_clock(struct device *dev, const char *id)
++{
++	struct clk *clk;
++	int ret;
++
++	clk = devm_clk_get(dev, id);
++	if (IS_ERR(clk))
++	    return clk;
++
++	ret = clk_prepare_enable(clk);
++	if (ret)
++		return ERR_PTR(ret);
++
++	devm_add_action_or_reset(dev, (void (*) (void *))clk_disable_unprepare, clk);
++
++	return clk;
++}
++
++static int mc_pcie_probe_clocks(struct mc_pcie *pcie)
++{
++	struct platform_device *pdev = pcie->pdev;
++	struct device *dev = &pdev->dev;
++	struct clk *fic0, *fic1, *fic3;
++
++	fic0 = mc_pcie_probe_clock(dev, "fic0");
++	if (IS_ERR(fic0))
++		return PTR_ERR(fic0);
++
++	fic1 = mc_pcie_probe_clock(dev, "fic1");
++	if (IS_ERR(fic1))
++		return PTR_ERR(fic1);
++
++	fic3 = mc_pcie_probe_clock(dev, "fic3");
++	if (IS_ERR(fic3))
++		return PTR_ERR(fic3);
++
++	return 0;
++}
++
 +static int mc_pcie_parse_dt(struct mc_pcie *pcie)
 +{
 +	struct platform_device *pdev = pcie->pdev;
@@ -280,6 +320,13 @@ index 000000000000..90d051100181
 +	struct resource *res;
 +	void __iomem *axi_base_addr;
 +	u32 irq;
++	int ret;
++
++	ret = mc_pcie_probe_clocks(pcie);
++	if (ret) {
++		dev_err(dev, "failed to get clock resources, error %d\n", ret);
++		return -ENODEV;
++	}
 +
 +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
 +	axi_base_addr = devm_ioremap_resource(dev, res);
@@ -737,6 +784,5 @@ index 000000000000..90d051100181
 +MODULE_DESCRIPTION("Microchip PCIe host controller driver");
 +MODULE_AUTHOR("Daire McNamara <daire.mcnamara@microchip.com>");
 -- 
-2.17.1
+2.25.1
 
-

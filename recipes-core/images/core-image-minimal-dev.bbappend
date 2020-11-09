@@ -4,6 +4,7 @@ EXTRA_IMAGE_FEATURES += " \
       tools-sdk"
 
 IMAGE_INSTALL = "\
+    pci_utils \
     pfsocapps \
     collectd \
     libgpiod \
