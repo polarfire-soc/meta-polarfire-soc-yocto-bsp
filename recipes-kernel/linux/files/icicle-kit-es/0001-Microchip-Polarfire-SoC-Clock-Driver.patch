@@ -1,569 +1,574 @@
-From 9a17e0602ac6e37909cd8da58f44fe4c30ed6e1e Mon Sep 17 00:00:00 2001
-From: m34782 <lewis.hanly@microchip.com>
-Date: Mon, 15 Jun 2020 08:30:09 +0100
-Subject: [PATCH] Microchip Polarfire SoC Clock Driver
+From 303ff81573c6ce2cc9a0e1db43d0bb529196572c Mon Sep 17 00:00:00 2001
+From: Daire McNamara <daire.mcnamara@microchip.com>
+Date: Wed, 14 Oct 2020 16:22:59 +0100
+Subject: [PATCH v1 04/10] clk: microchip: Add driver for Microchip PolarFire
+ SoC
 
-Support Clock configuration for the PFSoC
+Add support for clock configuration on Microchip PolarFire SoC
 
-Signed-off-by: Lewis Hanly <lewis.hanly@microchip.com>
+Signed-off-by: Daire McNamara <daire.mcnamara@microchip.com>
 ---
- drivers/clk/Kconfig               |   5 +
- drivers/clk/Makefile              |   1 +
- drivers/clk/microchip/Makefile    |   2 +
- drivers/clk/microchip/clk-pfsoc.c | 508 ++++++++++++++++++++++++++++++
- 4 files changed, 516 insertions(+)
+ drivers/clk/Kconfig                           |   1 +
+ drivers/clk/Makefile                          |   2 +-
+ drivers/clk/microchip/Kconfig                 |   7 +
+ drivers/clk/microchip/Makefile                |   6 +-
+ drivers/clk/microchip/clk-pfsoc.c             | 443 ++++++++++++++++++
+ .../dt-bindings/clock/microchip,pfsoc-clock.h |  45 ++
+ 6 files changed, 501 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/clk/microchip/Kconfig
  create mode 100644 drivers/clk/microchip/clk-pfsoc.c
+ create mode 100644 include/dt-bindings/clock/microchip,pfsoc-clock.h
 
 diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-index bcb257baed06..757304338e3c 100644
+index bcb257baed06..91ffbf5d795f 100644
 --- a/drivers/clk/Kconfig
 +++ b/drivers/clk/Kconfig
-@@ -339,6 +339,11 @@ config COMMON_CLK_FIXED_MMIO
- 	help
- 	  Support for Memory Mapped IO Fixed clocks
- 
-+config MCHP_CLK_PFSOC
-+        bool "Clk driver for PolarFire SoC"
-+	help
-+	  Supports Clock Configuration for PolarFire SoC
-+
- source "drivers/clk/actions/Kconfig"
- source "drivers/clk/analogbits/Kconfig"
- source "drivers/clk/bcm/Kconfig"
+@@ -349,6 +349,7 @@ source "drivers/clk/ingenic/Kconfig"
+ source "drivers/clk/keystone/Kconfig"
+ source "drivers/clk/mediatek/Kconfig"
+ source "drivers/clk/meson/Kconfig"
++source "drivers/clk/microchip/Kconfig"
+ source "drivers/clk/mvebu/Kconfig"
+ source "drivers/clk/qcom/Kconfig"
+ source "drivers/clk/renesas/Kconfig"
 diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index f4169cc2fd31..e399b657146b 100644
+index f4169cc2fd31..53b2653b0434 100644
 --- a/drivers/clk/Makefile
 +++ b/drivers/clk/Makefile
-@@ -89,6 +89,7 @@ obj-$(CONFIG_MACH_LOONGSON32)		+= loongson1/
+@@ -88,7 +88,7 @@ obj-$(CONFIG_ARCH_KEYSTONE)		+= keystone/
+ obj-$(CONFIG_MACH_LOONGSON32)		+= loongson1/
  obj-y					+= mediatek/
  obj-$(CONFIG_ARCH_MESON)		+= meson/
- obj-$(CONFIG_MACH_PIC32)		+= microchip/
-+obj-$(CONFIG_MCHP_CLK_PFSOC)	        += microchip/
+-obj-$(CONFIG_MACH_PIC32)		+= microchip/
++obj-y					+= microchip/
  ifeq ($(CONFIG_COMMON_CLK), y)
  obj-$(CONFIG_ARCH_MMP)			+= mmp/
  endif
+diff --git a/drivers/clk/microchip/Kconfig b/drivers/clk/microchip/Kconfig
+new file mode 100644
+index 000000000000..fcdddfbbcaba
+--- /dev/null
++++ b/drivers/clk/microchip/Kconfig
+@@ -0,0 +1,7 @@
++# SPDX-License-Identifier: GPL-2.0
++
++config MCHP_CLK_PFSOC
++	bool "Clk driver for PolarFire SoC"
++	depends on (RISCV && SOC_PFSOC) || COMPILE_TEST
++	help
++	  Supports Clock Configuration for PolarFire SoC
 diff --git a/drivers/clk/microchip/Makefile b/drivers/clk/microchip/Makefile
-index f34b247e870f..1c0741221b54 100644
+index f34b247e870f..601f09c1ab44 100644
 --- a/drivers/clk/microchip/Makefile
 +++ b/drivers/clk/microchip/Makefile
 @@ -1,3 +1,5 @@
  # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_COMMON_CLK_PIC32) += clk-core.o
- obj-$(CONFIG_PIC32MZDA) += clk-pic32mzda.o
-+obj-$(CONFIG_MCHP_CLK_PFSOC) += clk-pfsoc.o
+-obj-$(CONFIG_COMMON_CLK_PIC32) += clk-core.o
+-obj-$(CONFIG_PIC32MZDA) += clk-pic32mzda.o
 +
++obj-$(CONFIG_COMMON_CLK_PIC32)	+= clk-core.o
++obj-$(CONFIG_PIC32MZDA)		+= clk-pic32mzda.o
++obj-$(CONFIG_MCHP_CLK_PFSOC)	+= clk-pfsoc.o
 diff --git a/drivers/clk/microchip/clk-pfsoc.c b/drivers/clk/microchip/clk-pfsoc.c
 new file mode 100644
-index 000000000000..0c480b8af52e
+index 000000000000..d7f8472bf1eb
 --- /dev/null
 +++ b/drivers/clk/microchip/clk-pfsoc.c
-@@ -0,0 +1,508 @@
-+/* MICROCHIP Level Driver for PolarFire SoC
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * Copyright (C) 2020 Microchip, Inc.
+@@ -0,0 +1,443 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Daire McNamara,<daire.mcnamara@microchip.com>
++ * Copyright (C) 2020 Microchip Technology Inc.  All rights reserved.
 + */
-+
-+#include <linux/clkdev.h>
 +#include <linux/clk-provider.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <linux/of.h>
++#include <linux/io.h>
++#include <linux/module.h>
 +#include <linux/platform_device.h>
 +#include <linux/slab.h>
-+#include <linux/log2.h>
-+#include <linux/kernel.h>
-+#include <linux/io.h>
++#include <dt-bindings/clock/microchip,pfsoc-clock.h>
 +
-+/* Clock output phandle list
-+ * 0: CPU Clock
-+ * 1: AXI Clock
-+ * 2: AHB Clock (APB Clock)
-+ *
-+ * 3 + Bit Position of peripheral_subblock_name_array ::
-+ * 3: ENVM Clock
-+ * 4: MAC0 Clock
-+ * 5: MAC1 Clock
-+ * 6: MMC Clock
-+ * 7: TIMER Clock
-+ * 8: MMUART0 Clock
-+ * 9: MMUART1 Clock
-+ * 10: MMUART2 Clock
-+ * 11: MMUART3 Clock
-+ * 12: MMUART4 Clock
-+ * 13: SPI0 Clock
-+ * 14: SPI1 Clock
-+ * 15: I2C0 Clock
-+ * 16: I2C1 Clock
-+ * 17: CAN0 Clock
-+ * 18: CAN1 Clock
-+ * 19: USB Clock
-+ * 20: RESERVED
-+ * 21: RTC Clock
-+ * 22: QSPI Clock
-+ * 23: GPIO0 Clock
-+ * 24: GPIO1 Clock
-+ * 25: GPIO2 Clock
-+ * 26: DDRC Clock
-+ * 27: FIC0 Clock
-+ * 28: FIC1 Clock
-+ * 29: FIC2 Clock
-+ * 30: FIC3 Clock
-+ * 31: ATHENA Clock
-+ * 32: CFM Clock
-+ */
++/* address offset of control registers */
++#define REG_CLOCK_CONFIG_CR	0x08u
++#define REG_SUBBLK_CLOCK_CR	0x84u
++#define REG_SUBBLK_RESET_CR	0x88u
 +
-+/*Address offset of control registers*/
-+#define REG_CLOCK_CONFIG_CR 	0x08u
-+#define REG_SUBBLK_CLOCK_CR 	0x84u
-+/*SOFT_RESET_CR register renamed for clarity*/
-+#define REG_SUBBLK_RESET_CR 	0x88u
-+
-+/*Definition of main clocks*/
-+#define CPU_CLOCK 0
-+#define AXI_CLOCK 1
-+#define AHB_CLOCK 2
-+/*Number of main clocks*/
-+#define CFG_CLOCKS 3
-+#define NO_CLOCK CFG_CLOCKS
-+#define NO_SUPPORT 32
-+
-+/*MAX Frequency in Hz*/
-+#define CPU_CLOCK_MAX 800*1000*1000
-+#define AXI_CLOCK_MAX 400*1000*1000
-+#define AHB_CLOCK_MAX 200*1000*1000
-+
-+/*Non-Zero value allows for Clock Set capability*/
-+#define CPU_CLOCK_SET 1
-+#define AXI_CLOCK_SET 1
-+#define AHB_CLOCK_SET 1
-+
-+#define NAME_LEN 40ULL
-+
-+// Number of Gated peripheral sub blocks
-+#define NUM_SUBBLOCKS 30
-+
-+/*Total number of clocks handled by this driver*/
-+#define TOTAL_CLOCKS (CFG_CLOCKS+NUM_SUBBLOCKS)
-+
-+/*List of peripheral subblock names & associated refclk*/ 
-+/*(order is the bit offset order)*/
-+const char peripheral_subblock_name_array[][10] = {
-+	"ENVM",
-+	"MAC0",
-+	"MAC1",
-+	"MMC",
-+	"TIMER",
-+	"MMUART0",
-+	"MMUART1",
-+	"MMUART2",
-+	"MMUART3",
-+	"MMUART4",
-+	"SPI0",
-+	"SPI1",
-+	"I2C0",
-+	"I2C1",
-+	"CAN0",
-+	"CAN1",
-+	"USB",
-+	"RESERVED",
-+	"RTC",
-+	"QSPI",
-+	"GPIO0",
-+	"GPIO1",
-+	"GPIO2",
-+	"DDRC",
-+	"FIC0",
-+	"FIC1",
-+	"FIC2",
-+	"FIC3",
-+	"ATHENA",
-+	"CFM"
-+};
-+const int peripheral_subblock_refclk_array[NUM_SUBBLOCKS] = {
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	NO_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	NO_CLOCK,
-+	NO_SUPPORT,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	AHB_CLOCK,
-+	NO_CLOCK,
-+	NO_CLOCK,
-+	NO_CLOCK,
-+	NO_CLOCK,
-+	AHB_CLOCK,
-+	NO_CLOCK
++struct pfsoc_clock_data {
++	void __iomem *base;
++	struct clk_hw_onecell_data hw_data;
 +};
 +
-+struct microchip_clk_pfsoc_cfg {
++struct pfsoc_cfg_clock {
++	unsigned int id;
++	const char *name;
++	u8 shift;
++	u8 width;
++	const struct clk_div_table *table;
++	unsigned long flags;
++};
++
++struct pfsoc_cfg_hw_clock {
++	struct pfsoc_cfg_clock cfg;
++	void __iomem *sys_base;
++	/* lock is used to prevent multiple writes */
++	spinlock_t *lock;
 +	struct clk_hw hw;
-+	struct microchip_clk_pfsoc_driver *driver;
-+	char name[NAME_LEN];
-+	u32 subblk_offset; 
-+	u32 divider_offset; 
-+	unsigned long max;
-+};
-+
-+struct microchip_clk_pfsoc_driver {
-+	struct clk_onecell_data table;
-+	struct clk *clks[TOTAL_CLOCKS];
-+	struct microchip_clk_pfsoc_cfg cfg[TOTAL_CLOCKS];
-+	void __iomem *reg;
-+};
-+
-+#define to_microchip_clk_pfsoc_cfg(hw) container_of(hw, struct microchip_clk_pfsoc_cfg, hw)
-+
-+/* Helper function to calculate the clock rate
-+ * 
-+ * reg = register value of clock configuration
-+ * bit_offset = bit position for clock divider value
-+ * parent_rate = reference frequency
-+ *
-+ * returns calculated clock rate 
-+ */
-+static unsigned long microchip_clk_pfsoc_rate(u32 reg, u32 bit_offset, unsigned long parent_rate)
-+{
-+	return parent_rate/(1 << ((reg >> bit_offset) & 0x00000003));
-+}
-+
-+/* Determines closet rate supported by clock
-+ *
-+ */
-+static long microchip_clk_pfsoc_round_rate_helper(struct clk_hw *hw, unsigned long rate, unsigned long *parent_rate, u32 *divider_setting)
-+{
-+
-+	struct microchip_clk_pfsoc_cfg *cfg = to_microchip_clk_pfsoc_cfg(hw);
-+	int divider_start;
-+	int min = INT_MAX;
-+	int setting;
-+	int i;
-+	int val;
-+	long rounded_rate;
-+
-+	/* Max Frequency placed on rate depending on main clock type*/
-+	if (cfg->max < rate) {
-+		rate = cfg->max;
-+	}
-+
-+	
-+	/* AHB CLOCK divider cannot be set to 0*/
-+	if (cfg->divider_offset == (AHB_CLOCK*2u)) {
-+		divider_start = 1;
-+	} else {
-+		divider_start = 0;
-+	}
-+
-+	setting = 3;
-+	for (i=divider_start; i<4; i++) {
-+		val = (*parent_rate / (1 << i)) - rate;
-+		if (val < 0) val = val*-1; // convert to absolute
-+		if (val < min) {
-+			min = val;
-+			setting = i;
-+		}
-+	}
-+
-+	rounded_rate = *parent_rate / (1 << setting);
-+
-+	*divider_setting = (u32)setting;
-+
-+	return rounded_rate;
-+}
-+
-+/* Determines closet rate supported by clock
-+ *
-+ */
-+static long microchip_clk_pfsoc_round_rate(struct clk_hw *hw, unsigned long rate, unsigned long *parent_rate)
-+{
-+	int divider_setting;
-+	return microchip_clk_pfsoc_round_rate_helper(hw, rate, parent_rate, &divider_setting);
-+}
-+
-+
-+/* Sets the main clock to a specific rate
-+ *
-+ */
-+static int microchip_clk_pfsoc_set_rate(struct clk_hw *hw, unsigned long rate, unsigned long parent_rate)
-+{
-+
-+	struct microchip_clk_pfsoc_cfg *cfg = to_microchip_clk_pfsoc_cfg(hw);
-+	struct microchip_clk_pfsoc_driver *driver = cfg->driver;
-+	u32 divider_setting, reg, val;
-+	
-+	/*determine closet clock rate to desired rate*/
-+	microchip_clk_pfsoc_round_rate_helper(hw, rate, &parent_rate, &divider_setting);  
-+	divider_setting = divider_setting & 0x00000003u;
-+
-+	/* set appropriate divider setting within REG_CLOCK_CONFIG_CR*/
-+	reg = readl(driver->reg + REG_CLOCK_CONFIG_CR);
-+	val = (reg & ~(3u << cfg->divider_offset)) | (divider_setting << cfg->divider_offset);
-+	writel(val, driver->reg + REG_CLOCK_CONFIG_CR);
-+	reg = readl(driver->reg + REG_CLOCK_CONFIG_CR);
-+
-+	return (reg == val) ? 0 : -EIO;
-+}
-+
-+/* Calculates the clock rate of one of the main clocks
-+ *
-+ */
-+static unsigned long microchip_clk_pfsoc_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
-+{
-+	struct microchip_clk_pfsoc_cfg *cfg = to_microchip_clk_pfsoc_cfg(hw);
-+	struct microchip_clk_pfsoc_driver *driver = cfg->driver;
-+	u32 reg;
-+
-+	reg = readl(driver->reg + REG_CLOCK_CONFIG_CR);
-+	return microchip_clk_pfsoc_rate(reg, cfg->divider_offset, parent_rate);
-+}
-+
-+
-+/* Enables one of the peripheral sub blocks 
-+ *
-+ * First takes sub block out of reset & then proceeds to enable its clock
-+ *
-+ */
-+static int microchip_clk_pfsoc_enable(struct clk_hw *hw)
-+{
-+	u32 reg, val;
-+
-+	struct microchip_clk_pfsoc_cfg *cfg = to_microchip_clk_pfsoc_cfg(hw);
-+	struct microchip_clk_pfsoc_driver *driver = cfg->driver;
-+
-+	reg = readl(driver->reg + REG_SUBBLK_RESET_CR);
-+	val = reg & ~(1u << cfg->subblk_offset);
-+	writel(val, driver->reg + REG_SUBBLK_RESET_CR);
-+
-+	reg = readl(driver->reg + REG_SUBBLK_CLOCK_CR);
-+	val = reg | (1u << cfg->subblk_offset);
-+	reg = readl(driver->reg + REG_SUBBLK_CLOCK_CR);
-+
-+	return 0;
-+}
-+
-+/* Disables one of the peripheral sub blocks 
-+ *
-+ * First places sub block into reset & then proceeds to disable its clock
-+ *
-+ */
-+static void microchip_clk_pfsoc_disable(struct clk_hw *hw)
-+{
-+	u32 reg, val;
-+
-+	struct microchip_clk_pfsoc_cfg *cfg = to_microchip_clk_pfsoc_cfg(hw);
-+	struct microchip_clk_pfsoc_driver *driver = cfg->driver;
-+
-+	reg = readl(driver->reg + REG_SUBBLK_RESET_CR);
-+	val = reg | (1 << cfg->subblk_offset);
-+	reg = readl(driver->reg + REG_SUBBLK_RESET_CR);
-+
-+	reg = readl(driver->reg + REG_SUBBLK_CLOCK_CR);
-+	val = reg & ~(1 << cfg->subblk_offset);
-+	reg = readl(driver->reg + REG_SUBBLK_CLOCK_CR);
-+}
-+
-+/* Checks if one of the peripheral sub blocks is enabled
-+ *
-+ * For sub block to be considered enabled it must not be 
-+ * in reset and have its clock enabled
-+ *
-+ * Returns 1 is enabled & 0 otherwise
-+ */
-+static int microchip_clk_pfsoc_is_enabled(struct clk_hw *hw)
-+{
-+	u32 reg;
-+
-+	struct microchip_clk_pfsoc_cfg *cfg = to_microchip_clk_pfsoc_cfg(hw);
-+	struct microchip_clk_pfsoc_driver *driver = cfg->driver;
-+
-+	/* check if subblk is out of reset */
-+	reg = readl(driver->reg + REG_SUBBLK_RESET_CR);
-+	if ((reg & (1u << cfg->subblk_offset)) == 0u) {
-+		/* check if subblk clock is enabled*/
-+		reg = readl(driver->reg + REG_SUBBLK_CLOCK_CR);
-+		if (reg & (1u << cfg->subblk_offset)) {
-+			return 1;
-+		} else {
-+			return 0;
-+		}
-+	} 
-+	return 0;
-+}
-+
-+/* definition for main clocks with capability of setting clock 
-+ */
-+static const struct clk_ops microchip_clk_pfsoc_ops_rw = {
-+	.recalc_rate = microchip_clk_pfsoc_recalc_rate,
-+	.round_rate = microchip_clk_pfsoc_round_rate,
-+	.set_rate = microchip_clk_pfsoc_set_rate,
-+};
-+
-+/* definition for main clocks without capability of setting clock 
-+ */
-+
-+static const struct clk_ops microchip_clk_pfsoc_ops_ro = {
-+	.recalc_rate = microchip_clk_pfsoc_recalc_rate,
-+};
-+
-+/* definition for sub block clocks with capability of calculating its reference clock rate
-+ */
-+
-+static const struct clk_ops microchip_clk_pfsoc_ops_en_recalc = {
-+	.enable = microchip_clk_pfsoc_enable,
-+	.disable = microchip_clk_pfsoc_disable,
-+	.is_enabled = microchip_clk_pfsoc_is_enabled,
-+	.recalc_rate = microchip_clk_pfsoc_recalc_rate,
-+};
-+
-+/* definition for sub block clocks without capability of calculating its reference clock rate
-+ */
-+
-+static const struct clk_ops microchip_clk_pfsoc_ops_en = {
-+	.enable = microchip_clk_pfsoc_enable,
-+	.disable = microchip_clk_pfsoc_disable,
-+	.is_enabled = microchip_clk_pfsoc_is_enabled,
-+};
-+
-+/* empty definition
-+ */
-+static const struct clk_ops microchip_clk_pfsoc_ops_none = {
-+};
-+
-+
-+static int microchip_clk_pfsoc_probe(struct platform_device *pdev)
-+{
-+
-+	struct device *dev = &pdev->dev;
 +	struct clk_init_data init;
-+	struct microchip_clk_pfsoc_driver *driver;
++};
++
++#define to_pfsoc_cfg_clk(_hw) container_of(_hw, struct pfsoc_cfg_hw_clock, hw)
++
++struct pfsoc_periph_clock {
++	unsigned int id;
++	const char *name;
++	u8 shift;
++	unsigned long flags;
++};
++
++struct pfsoc_periph_hw_clock {
++	struct pfsoc_periph_clock periph;
++	void __iomem *sys_base;
++	/* lock is used to prevent multiple writes */
++	spinlock_t *lock;
++	struct clk_hw hw;
++};
++
++#define to_pfsoc_periph_clk(_hw) container_of(_hw, struct pfsoc_periph_hw_clock, hw)
++
++/*
++ * pfsoc_clk_lock prevents anything else from writing to the
++ * pfsoc clk block while a software locked register is being written.
++ */
++static DEFINE_SPINLOCK(pfsoc_clk_lock);
++
++static struct clk_parent_data pfsoc_cfg_parent[] = {
++	{ .fw_name = "msspllclk", .name = "msspllclk" },
++};
++
++static const struct clk_div_table pfsoc_div_cpu_axi_table[] = {
++	{ 0, 1 }, { 1, 2 }, { 2, 4 }, { 3, 8 },
++	{ 0, 0 }
++};
++
++static const struct clk_div_table pfsoc_div_ahb_table[] = {
++	{ 1, 2 }, { 2, 4}, { 3, 8 },
++	{ 0, 0 }
++};
++
++static unsigned long pfsoc_cfg_clk_recalc_rate(struct clk_hw *hw, unsigned long prate)
++{
++	struct pfsoc_cfg_hw_clock *cfg_hw = to_pfsoc_cfg_clk(hw);
++	struct pfsoc_cfg_clock *cfg = &cfg_hw->cfg;
++	void __iomem *base_addr = cfg_hw->sys_base;
++	unsigned long rate;
++	u32 val;
++
++	val = readl_relaxed(base_addr + REG_CLOCK_CONFIG_CR) >> cfg->shift;
++	val &= clk_div_mask(cfg->width);
++	rate = prate / (1u << val);
++
++	return rate;
++}
++
++static long pfsoc_cfg_clk_round_rate(struct clk_hw *hw, unsigned long rate, unsigned long *prate)
++{
++	struct pfsoc_cfg_hw_clock *cfg_hw = to_pfsoc_cfg_clk(hw);
++	struct pfsoc_cfg_clock *cfg = &cfg_hw->cfg;
++
++	return divider_round_rate(hw, rate, prate, cfg->table, cfg->width, cfg->flags);
++}
++
++static int pfsoc_cfg_clk_set_rate(struct clk_hw *hw, unsigned long rate, unsigned long prate)
++{
++	struct pfsoc_cfg_hw_clock *cfg_hw = to_pfsoc_cfg_clk(hw);
++	struct pfsoc_cfg_clock *cfg = &cfg_hw->cfg;
++	void __iomem *base_addr = cfg_hw->sys_base;
++	unsigned long flags = 0;
++	u32 divider_setting, val;
++
++	divider_setting = divider_get_val(rate, prate, cfg->table, cfg->width, cfg_hw->cfg.flags);
++
++	if (divider_setting < 0)
++		return divider_setting;
++
++	if (cfg_hw->lock)
++		spin_lock_irqsave(cfg_hw->lock, flags);
++	else
++		__acquire(cfg_hw->lock);
++
++	val = readl_relaxed(base_addr + REG_CLOCK_CONFIG_CR);
++	val &= ~(clk_div_mask(cfg->width) << cfg_hw->cfg.shift);
++	val |= divider_setting << cfg->shift;
++	writel_relaxed(val, base_addr + REG_CLOCK_CONFIG_CR);
++
++	if (cfg_hw->lock)
++		spin_unlock_irqrestore(cfg_hw->lock, flags);
++	else
++		__release(cfg_hw->lock);
++
++	return 0;
++}
++
++static const struct clk_ops pfsoc_clk_cfg_ops = {
++	.recalc_rate = pfsoc_cfg_clk_recalc_rate,
++	.round_rate = pfsoc_cfg_clk_round_rate,
++	.set_rate = pfsoc_cfg_clk_set_rate,
++};
++
++#define CLK_CFG(_id, _name, _parent, _shift, _width, _table, _flags) {	\
++		.cfg.id = _id,								\
++		.cfg.name = _name,							\
++		.cfg.shift = _shift,							\
++		.cfg.width = _width,							\
++		.cfg.table = _table,							\
++		.hw.init = CLK_HW_INIT_PARENTS_DATA(_name, _parent, &pfsoc_clk_cfg_ops,	\
++						    _flags),				\
++	}
++
++static struct pfsoc_cfg_hw_clock pfsoc_cfg_clks[] = {
++	CLK_CFG(CLK_CPU, "clk_cpu", pfsoc_cfg_parent, 0, 2, pfsoc_div_cpu_axi_table, 0),
++	CLK_CFG(CLK_AXI, "clk_axi", pfsoc_cfg_parent, 2, 2, pfsoc_div_cpu_axi_table, 0),
++	CLK_CFG(CLK_AHB, "clk_ahb", pfsoc_cfg_parent, 4, 2, pfsoc_div_ahb_table, 0),
++};
++
++static void pfsoc_clk_unregister_cfg(struct device *dev, struct clk_hw *hw)
++{
++	struct pfsoc_cfg_hw_clock *cfg_hw = to_pfsoc_cfg_clk(hw);
++
++	devm_clk_hw_unregister(dev, hw);
++	kfree(cfg_hw);
++}
++
++static struct clk_hw *pfsoc_clk_register_cfg(struct device *dev,
++					     struct pfsoc_cfg_hw_clock *cfg_hw,
++					     void __iomem *sys_base)
++{
++	struct clk_hw *hw;
++	int err;
++
++	cfg_hw->sys_base = sys_base;
++	cfg_hw->lock = &pfsoc_clk_lock;
++
++	hw = &cfg_hw->hw;
++	err = devm_clk_hw_register(dev, hw);
++	if (err)
++		return ERR_PTR(err);
++
++	return hw;
++}
++
++static int pfsoc_clk_register_cfgs(struct device *dev, struct pfsoc_cfg_hw_clock *cfg_hws,
++				   int num_clks, struct pfsoc_clock_data *data)
++{
++	struct clk_hw *hw;
++	void __iomem *sys_base = data->base;
++	unsigned int i, id;
++
++	for (i = 0; i < num_clks; i++) {
++		struct pfsoc_cfg_hw_clock *cfg_hw = &cfg_hws[i];
++
++		hw = pfsoc_clk_register_cfg(dev, cfg_hw, sys_base);
++		if (IS_ERR(hw)) {
++			dev_err(dev, "%s: failed to register clock %s\n", __func__,
++				cfg_hw->cfg.name);
++			goto err_clk;
++		}
++
++		id = cfg_hws[i].cfg.id;
++		data->hw_data.hws[id] = hw;
++	}
++
++	return 0;
++
++err_clk:
++	while (i--)
++		pfsoc_clk_unregister_cfg(dev, data->hw_data.hws[cfg_hws[i].cfg.id]);
++
++	return PTR_ERR(hw);
++}
++
++static int pfsoc_periph_clk_enable(struct clk_hw *hw)
++{
++	struct pfsoc_periph_hw_clock *periph_hw = to_pfsoc_periph_clk(hw);
++	struct pfsoc_periph_clock *periph = &periph_hw->periph;
++	void __iomem *base_addr = periph_hw->sys_base;
++	u32 reg, val;
++
++	reg = readl_relaxed(base_addr + REG_SUBBLK_RESET_CR);
++	val = reg & ~(1u << periph->shift);
++	writel_relaxed(val, base_addr + REG_SUBBLK_RESET_CR);
++
++	reg = readl_relaxed(base_addr + REG_SUBBLK_CLOCK_CR);
++	val = reg | (1u << periph->shift);
++	writel_relaxed(val, base_addr + REG_SUBBLK_CLOCK_CR);
++
++	return 0;
++}
++
++static void pfsoc_periph_clk_disable(struct clk_hw *hw)
++{
++	struct pfsoc_periph_hw_clock *periph_hw = to_pfsoc_periph_clk(hw);
++	struct pfsoc_periph_clock *periph = &periph_hw->periph;
++	void __iomem *base_addr = periph_hw->sys_base;
++	u32 reg, val;
++
++	reg = readl_relaxed(base_addr + REG_SUBBLK_RESET_CR);
++	val = reg | (1u << periph->shift);
++	writel_relaxed(val, base_addr + REG_SUBBLK_RESET_CR);
++
++	reg = readl_relaxed(base_addr + REG_SUBBLK_CLOCK_CR);
++	val = reg & ~(1u << periph->shift);
++	writel_relaxed(val, base_addr + REG_SUBBLK_CLOCK_CR);
++}
++
++static int pfsoc_periph_clk_is_enabled(struct clk_hw *hw)
++{
++	struct pfsoc_periph_hw_clock *periph_hw = to_pfsoc_periph_clk(hw);
++	struct pfsoc_periph_clock *periph = &periph_hw->periph;
++	void __iomem *base_addr = periph_hw->sys_base;
++	u32 reg;
++
++	reg = readl_relaxed(base_addr + REG_SUBBLK_RESET_CR);
++	if ((reg & (1u << periph->shift)) == 0u) {
++		reg = readl_relaxed(base_addr + REG_SUBBLK_CLOCK_CR);
++		if (reg & (1u << periph->shift))
++			return 1;
++	}
++
++	return 0;
++}
++
++static unsigned long pfsoc_periph_clk_recalc_rate(struct clk_hw *hw, unsigned long prate)
++{
++	return prate;
++}
++
++static const struct clk_ops pfsoc_periph_clk_ops = {
++	.enable = pfsoc_periph_clk_enable,
++	.disable = pfsoc_periph_clk_disable,
++	.is_enabled = pfsoc_periph_clk_is_enabled,
++	.recalc_rate = pfsoc_periph_clk_recalc_rate,
++};
++
++#define CLK_PERIPH(_id, _name, _parent, _shift, _flags) {				\
++		.periph.id = _id,							\
++		.periph.name = _name,							\
++		.periph.shift = _shift,							\
++		.hw.init = CLK_HW_INIT_HW(_name, _parent, &pfsoc_periph_clk_ops,	\
++					  _flags),					\
++	}
++
++#define PARENT_CLK(PARENT) (&pfsoc_cfg_clks[CLK_##PARENT].hw)
++
++static struct pfsoc_periph_hw_clock pfsoc_periph_clks[] = {
++	CLK_PERIPH(CLK_ENVM, "clk_periph_envm", PARENT_CLK(AHB), 0, CLK_IS_CRITICAL),
++	CLK_PERIPH(CLK_MAC0, "clk_periph_mac0", PARENT_CLK(AHB), 1, 0),
++	CLK_PERIPH(CLK_MAC1, "clk_periph_mac1", PARENT_CLK(AHB), 2, 0),
++	CLK_PERIPH(CLK_MMC, "clk_periph_mmc", PARENT_CLK(AHB), 3, 0),
++	CLK_PERIPH(CLK_TIMER, "clk_periph_timer", PARENT_CLK(AHB), 4, 0),
++	CLK_PERIPH(CLK_MMUART0, "clk_periph_mmuart0", PARENT_CLK(AHB), 5, 0),
++	CLK_PERIPH(CLK_MMUART1, "clk_periph_mmuart1", PARENT_CLK(AHB), 6, 0),
++	CLK_PERIPH(CLK_MMUART2, "clk_periph_mmuart2", PARENT_CLK(AHB), 7, 0),
++	CLK_PERIPH(CLK_MMUART3, "clk_periph_mmuart3", PARENT_CLK(AHB), 8, 0),
++	CLK_PERIPH(CLK_MMUART4, "clk_periph_mmuart4", PARENT_CLK(AHB), 9, 0),
++	CLK_PERIPH(CLK_SPI0, "clk_periph_spi0", PARENT_CLK(AHB), 10, 0),
++	CLK_PERIPH(CLK_SPI1, "clk_periph_spi1", PARENT_CLK(AHB), 11, 0),
++	CLK_PERIPH(CLK_I2C0, "clk_periph_i2c0", PARENT_CLK(AHB), 12, 0),
++	CLK_PERIPH(CLK_I2C1, "clk_periph_i2c1", PARENT_CLK(AHB), 13, 0),
++	CLK_PERIPH(CLK_CAN0, "clk_periph_can0", PARENT_CLK(AHB), 14, 0),
++	CLK_PERIPH(CLK_CAN1, "clk_periph_can1", PARENT_CLK(AHB), 15, 0),
++	CLK_PERIPH(CLK_USB, "clk_periph_usb", PARENT_CLK(AHB), 16, 0),
++	CLK_PERIPH(CLK_RTC, "clk_periph_rtc", PARENT_CLK(AHB), 18, 0),
++	CLK_PERIPH(CLK_QSPI, "clk_periph_qspi", PARENT_CLK(AHB), 19, 0),
++	CLK_PERIPH(CLK_GPIO0, "clk_periph_gpio0", PARENT_CLK(AHB), 20, 0),
++	CLK_PERIPH(CLK_GPIO1, "clk_periph_gpio1", PARENT_CLK(AHB), 21, 0),
++	CLK_PERIPH(CLK_GPIO2, "clk_periph_gpio2", PARENT_CLK(AHB), 22, 0),
++	CLK_PERIPH(CLK_DDRC, "clk_periph_ddrc", PARENT_CLK(AHB), 23, CLK_IS_CRITICAL),
++	CLK_PERIPH(CLK_FIC0, "clk_periph_fic0", PARENT_CLK(AHB), 24, 0),
++	CLK_PERIPH(CLK_FIC1, "clk_periph_fic1", PARENT_CLK(AHB), 25, 0),
++	CLK_PERIPH(CLK_FIC2, "clk_periph_fic2", PARENT_CLK(AHB), 26, 0),
++	CLK_PERIPH(CLK_FIC3, "clk_periph_fic3", PARENT_CLK(AHB), 27, 0),
++	CLK_PERIPH(CLK_ATHENA, "clk_periph_athena", PARENT_CLK(AHB), 28, 0),
++	CLK_PERIPH(CLK_CFM, "clk_periph_cfm", PARENT_CLK(AHB), 29, 0),
++};
++
++static void pfsoc_clk_unregister_periph(struct device *dev, struct clk_hw *hw)
++{
++	struct pfsoc_periph_hw_clock *periph_hw = to_pfsoc_periph_clk(hw);
++
++	devm_clk_hw_unregister(dev, hw);
++	kfree(periph_hw);
++}
++
++static struct clk_hw *pfsoc_clk_register_periph(struct device *dev,
++						struct pfsoc_periph_hw_clock *periph_hw,
++						void __iomem *sys_base)
++{
++	struct clk_hw *hw;
++	int err;
++
++	periph_hw->sys_base = sys_base;
++	periph_hw->lock = &pfsoc_clk_lock;
++
++	hw = &periph_hw->hw;
++	err = devm_clk_hw_register(dev, hw);
++	if (err)
++		return ERR_PTR(err);
++
++	return hw;
++}
++
++static int pfsoc_clk_register_periphs(struct device *dev, struct pfsoc_periph_hw_clock *periph_hws,
++				      int num_clks, struct pfsoc_clock_data *data)
++{
++	struct clk_hw *hw;
++	void __iomem *sys_base = data->base;
++	unsigned int i, id;
++
++	for (i = 0; i < num_clks; i++) {
++		struct pfsoc_periph_hw_clock *periph_hw = &periph_hws[i];
++
++		hw = pfsoc_clk_register_periph(dev, periph_hw, sys_base);
++		if (IS_ERR(hw)) {
++			dev_err(dev, "%s: failed to register clock %s\n", __func__,
++				periph_hw->periph.name);
++			goto err_clk;
++		}
++
++		id = periph_hws[i].periph.id;
++		data->hw_data.hws[id] = hw;
++	}
++
++	return 0;
++
++err_clk:
++	while (i--)
++		pfsoc_clk_unregister_periph(dev, data->hw_data.hws[periph_hws[i].periph.id]);
++
++	return PTR_ERR(hw);
++}
++
++static int pfsoc_clk_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct pfsoc_clock_data *clk_data;
 +	struct resource *res;
-+	const char *parent;
-+	int i;
++	int num_clks;
++	int ret;
 +
-+	parent = of_clk_get_parent_name(dev->of_node, 0);
-+	if (!parent) {
-+		dev_err(dev, "No OF parent clocks found\n");
-+		return -EINVAL;
-+	}
++	num_clks = ARRAY_SIZE(pfsoc_cfg_clks) + ARRAY_SIZE(pfsoc_periph_clks);
 +
-+	driver = devm_kzalloc(dev, sizeof(*driver), GFP_KERNEL);
-+	if (!driver) {
-+		dev_err(dev, "Out of memory\n");
++	clk_data = devm_kzalloc(dev, struct_size(clk_data, hw_data.hws, num_clks), GFP_KERNEL);
++	if (!clk_data)
 +		return -ENOMEM;
-+	}
 +
 +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	driver->reg = devm_ioremap_resource(dev, res);
-+	if (IS_ERR(driver->reg))
-+		return PTR_ERR(driver->reg);
++	clk_data->base = devm_ioremap_resource(dev, res);
++	if (IS_ERR(clk_data->base))
++		return PTR_ERR(clk_data->base);
 +
-+	/* Link the data structure */
-+	driver->table.clk_num = TOTAL_CLOCKS;
-+	driver->table.clks = &driver->clks[0];
-+	dev_set_drvdata(dev, driver);
++	clk_data->hw_data.num = num_clks;
 +
-+	/* Describe the main clocks */
-+	snprintf(driver->cfg[CPU_CLOCK].name, NAME_LEN, "%s.cpuclk", dev->of_node->name);
-+	driver->cfg[CPU_CLOCK].divider_offset = CPU_CLOCK*2u;
-+	driver->cfg[CPU_CLOCK].max = (CPU_CLOCK_SET)? CPU_CLOCK_MAX : 0;
++	ret = pfsoc_clk_register_cfgs(dev, pfsoc_cfg_clks, ARRAY_SIZE(pfsoc_cfg_clks), clk_data);
++	if (ret)
++		goto err_clk;
 +
-+	snprintf(driver->cfg[AXI_CLOCK].name, NAME_LEN, "%s.axiclk", dev->of_node->name);
-+	driver->cfg[AXI_CLOCK].divider_offset = AXI_CLOCK*2u;
-+	driver->cfg[AXI_CLOCK].max = (AXI_CLOCK_SET)? AXI_CLOCK_MAX : 0;
++	ret = pfsoc_clk_register_periphs(dev, pfsoc_periph_clks, ARRAY_SIZE(pfsoc_periph_clks),
++					 clk_data);
++	if (ret)
++		goto err_clk;
 +
-+	snprintf(driver->cfg[AHB_CLOCK].name, NAME_LEN, "%s.ahbclk", dev->of_node->name);
-+	driver->cfg[AHB_CLOCK].divider_offset = AHB_CLOCK*2u;
-+	driver->cfg[AHB_CLOCK].max = (AHB_CLOCK_SET)? AHB_CLOCK_MAX : 0;
++	ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_onecell_get, &clk_data->hw_data);
++	if (ret)
++		goto err_clk;
 +
-+	/* Describe the sub block clocks */
-+	for (i = CFG_CLOCKS; i < TOTAL_CLOCKS; i++) {
-+		snprintf(driver->cfg[i].name, NAME_LEN, "%s.%sclk", dev->of_node->name, peripheral_subblock_name_array[i - CFG_CLOCKS]);
-+		driver->cfg[i].subblk_offset = i - CFG_CLOCKS;
-+		driver->cfg[i].divider_offset = peripheral_subblock_refclk_array[i - CFG_CLOCKS]*2u;
-+		driver->cfg[i].max = 0;
-+	}
++	dev_info(dev, "registered PFSOC core clocks\n");
++	return ret;
 +
-+	/* Export the clocks */
-+	for (i = 0; i < TOTAL_CLOCKS; i++) {
-+		init.name = &driver->cfg[i].name[0];
-+		if (i < CFG_CLOCKS) {
-+			/* cpu, axi, or ahb clocks*/
-+			init.ops = driver->cfg[i].max ? &microchip_clk_pfsoc_ops_rw : &microchip_clk_pfsoc_ops_ro;
-+		} else {
-+			/* gated peripheral sub block clocks*/
-+			if (driver->cfg[i].divider_offset == (NO_CLOCK*2u)) {
-+				/*if there is no reference clock (one of the main clocks) 
-+				for the sub block then reduce capability of driver
-+				*/
-+				init.ops = &microchip_clk_pfsoc_ops_en;
-+			} else if (driver->cfg[i].divider_offset == (NO_SUPPORT*2u)) {
-+				init.ops = &microchip_clk_pfsoc_ops_none;
-+			} else {
-+				init.ops = &microchip_clk_pfsoc_ops_en_recalc;
-+			}
-+		}
-+
-+		init.num_parents = 1;
-+		init.parent_names = &parent;
-+		init.flags = 0;
-+
-+		driver->cfg[i].driver = driver;
-+		driver->cfg[i].hw.init = &init;
-+
-+		driver->clks[i] = devm_clk_register(dev, &driver->cfg[i].hw);
-+		if (IS_ERR(driver->clks[i])) {
-+			dev_err(dev, "Failed to register clock %d, %ld\n", i, PTR_ERR(driver->clks[i]));
-+			return PTR_ERR(driver->clks[i]);
-+		}
-+	}
-+
-+	of_clk_add_provider(dev->of_node, of_clk_src_onecell_get, &driver->table);
-+
-+	dev_info(dev, "Registered PFSOC core clocks\n");
-+
-+	return 0;
++err_clk:
++	dev_err(dev, "failed to register PFSOC core clocks\n");
++	return ret;
 +}
 +
-+static const struct of_device_id microchip_clk_pfsoc_of_match[] = {
++static const struct of_device_id pfsoc_clk_of_match_table[] = {
 +	{ .compatible = "microchip,pfsoc-clkcfg", },
 +	{}
 +};
++MODULE_DEVICE_TABLE(of, pfsoc_clk_match_table);
 +
-+static struct platform_driver microchip_clk_pfsoc_driver = {
++static struct platform_driver pfsoc_clk_driver = {
++	.probe = pfsoc_clk_probe,
 +	.driver	= {
 +		.name = "microchip-pfsoc-clkcfg",
-+		.of_match_table = microchip_clk_pfsoc_of_match,
++		.of_match_table = pfsoc_clk_of_match_table,
 +	},
-+	.probe = microchip_clk_pfsoc_probe,
 +};
 +
-+static int __init microchip_clk_pfsoc_init(void)
++static int __init clk_pfsoc_init(void)
 +{
-+	return platform_driver_register(&microchip_clk_pfsoc_driver);
++	return platform_driver_register(&pfsoc_clk_driver);
 +}
-+core_initcall(microchip_clk_pfsoc_init);
++core_initcall(clk_pfsoc_init);
 +
++static void __exit clk_pfsoc_exit(void)
++{
++	platform_driver_unregister(&pfsoc_clk_driver);
++}
++module_exit(clk_pfsoc_exit);
++
++MODULE_DESCRIPTION("Microchip PolarFire SoC Clock Driver");
++MODULE_LICENSE("GPL v2");
++MODULE_ALIAS("platform:clk-pfsoc");
+diff --git a/include/dt-bindings/clock/microchip,pfsoc-clock.h b/include/dt-bindings/clock/microchip,pfsoc-clock.h
+new file mode 100644
+index 000000000000..c9d8e4f6b963
+--- /dev/null
++++ b/include/dt-bindings/clock/microchip,pfsoc-clock.h
+@@ -0,0 +1,45 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Daire McNamara,<daire.mcnamara@microchip.com>
++ * Copyright (C) 2020 Microchip Technology Inc.  All rights reserved.
++ */
++
++#ifndef _DT_BINDINGS_CLK_MICROCHIP_PFSOC_H_
++#define _DT_BINDINGS_CLK_MICROCHIP_PFSOC_H_
++
++#define CLK_CPU		0
++#define CLK_AXI		1
++#define CLK_AHB		2
++
++#define CLK_ENVM	0
++#define CLK_MAC0	1
++#define CLK_MAC1	2
++#define CLK_MMC		3
++#define CLK_TIMER	4
++#define CLK_MMUART0	5
++#define CLK_MMUART1	6
++#define CLK_MMUART2	7
++#define CLK_MMUART3	8
++#define CLK_MMUART4	9
++#define CLK_SPI0	10
++#define CLK_SPI1	11
++#define CLK_I2C0	12
++#define CLK_I2C1	13
++#define CLK_CAN0	14
++#define CLK_CAN1	15
++#define CLK_USB		16
++#define CLK_RESERVED	17
++#define CLK_RTC		18
++#define CLK_QSPI	19
++#define CLK_GPIO0	20
++#define CLK_GPIO1	21
++#define CLK_GPIO2	22
++#define CLK_DDRC	23
++#define CLK_FIC0	24
++#define CLK_FIC1	25
++#define CLK_FIC2	26
++#define CLK_FIC3	27
++#define CLK_ATHENA	28
++#define CLK_CFM		29
++
++#endif	/* _DT_BINDINGS_CLK_MICROCHIP_PFSOC_H_ */
+-- 
+2.25.1
+
