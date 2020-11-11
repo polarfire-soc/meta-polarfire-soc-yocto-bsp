@@ -49,7 +49,7 @@ index 01b2502a5323..f926746e515e 100644
  # pcie-hisi.o quirks are needed even without CONFIG_PCIE_DW
 diff --git a/drivers/pci/controller/pcie-microchip-host.c b/drivers/pci/controller/pcie-microchip-host.c
 new file mode 100644
-index 000000000000..df10fc5b3ce9
+index 000000000000..bfb06f711aaa
 --- /dev/null
 +++ b/drivers/pci/controller/pcie-microchip-host.c
 @@ -0,0 +1,730 @@
@@ -319,7 +319,6 @@ index 000000000000..df10fc5b3ce9
 +	struct mc_msi *msi = &pcie->msi;
 +	struct resource *res;
 +	void __iomem *axi_base_addr;
-+	u32 irq;
 +	int ret;
 +
 +	ret = mc_pcie_probe_clocks(pcie);
@@ -339,14 +338,6 @@ index 000000000000..df10fc5b3ce9
 +	msi->vector_phy = MC_MSI_ADDR;
 +
 +	msi->num_vectors = MC_NUM_MSI_IRQS;
-+
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		dev_err(dev, "unable to request IRQ%d\n", irq);
-+		return -ENODEV;
-+	}
-+
-+	irq_set_chained_handler_and_data(irq, mc_pcie_isr, pcie);
 +
 +	return 0;
 +}
@@ -643,6 +634,7 @@ index 000000000000..df10fc5b3ce9
 +	u32 index;
 +	u32 atr_sz;
 +	u32 val;
++	u32 irq;
 +
 +	if (!dev->of_node)
 +		return -ENODEV;
@@ -671,6 +663,14 @@ index 000000000000..df10fc5b3ce9
 +		dev_err(dev, "failed to initialize host\n");
 +		return ret;
 +	}
++
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		dev_err(dev, "unable to request IRQ%d\n", irq);
++		return -ENODEV;
++	}
++
++	irq_set_chained_handler_and_data(irq, mc_pcie_isr, pcie);
 +
 +	/*
 +	 * Configure all inbound and outbound windows and prepare
