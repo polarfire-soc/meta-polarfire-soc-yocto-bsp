@@ -1,5 +1,18 @@
 CONFIG_CMDLINE_BOOL=y
-CONFIG_CMDLINE="earlycon=sbi root=/dev/mmcblk0p3 rootwait console=ttyS0,115200n8 uio_pdrv_genirq.of_id=generic-uio"
+CONFIG_CMDLINE="earlycon=sbi root=/dev/mmcblk0p3 rootwait console=ttyS0,115200n8 uio_pdrv_genirq.of_id=generic-uio pci-hpmemsize=0M libata.force=noncq"
+CONFIG_PCI=y
+CONFIG_PCI_DEBUG=y
+CONFIG_PCI_DOMAINS=y
+CONFIG_PCI_DOMAINS_GENERIC=y
+CONFIG_PCI_ECAM=y
+CONFIG_PCI_HOST_COMMON=y
+CONFIG_PCI_HOST_GENERIC=y
+CONFIG_PCI_MSI=y
+CONFIG_PCI_MSI_IRQ_DOMAIN=y
+CONFIG_PCI_QUIRKS=y
+CONFIG_PCIE_MICROCHIP_HOST=y
+# CONFIG_PCIEPORTBUS is not set
+CONFIG_SOC_PFSOC=y
 CONFIG_UIO=y
 CONFIG_UIO_PDRV_GENIRQ=y
 CONFIG_UIO_DMEM_GENIRQ=y
