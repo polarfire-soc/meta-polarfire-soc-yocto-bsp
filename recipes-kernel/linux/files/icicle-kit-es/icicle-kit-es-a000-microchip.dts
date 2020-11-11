@@ -223,7 +223,7 @@
 			clocks = <&clkcfg CLK_MMUART3>;
 			status = "okay";
 		};
-		emmc: sdhc@20008000 {
+		emmc: mmc@20008000 {
 			compatible = "cdns,sd4hc";
 			reg = <0x0 0x20008000 0x0 0x1000>;
 			interrupt-parent = <&L1>;
@@ -240,7 +240,7 @@
 			voltage-ranges = <3300 3300>;
 			status = "okay";
 		};
-                sdcard: sdhc@20008000 {
+                sdcard: sd@20008000 {
                         compatible = "cdns,sd4hc";
                         reg = <0x0 0x20008000 0x0 0x1000>;
                         interrupt-parent = <&L1>;
