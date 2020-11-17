@@ -6,10 +6,10 @@
   <remote name="meta-polarfire-soc-yocto-bsp" fetch="https://bitbucket.microchip.com/scm/fpga_pfsoc_es/" />
   <default remote="openembedded" revision="master" />
   <project name="meta-polarfire-soc-yocto-bsp" remote="meta-polarfire-soc-yocto-bsp" path="meta-polarfire-soc-yocto-bsp" revision="develop" />
-  <project name="meta-riscv" remote="riscv" path="meta-riscv" revision="6f495435ed9269030e16b9051b9012ce42038c04" />
-  <project name="openembedded-core" remote="openembedded" path="openembedded-core" revision="38e3d5bd3d05ed00a2fc55e3729cb8a6d4e4132f" />
-  <project name="bitbake" remote="openembedded" path="openembedded-core/bitbake" revision="9a5dd1be63395c76d3fac2c3c7ba6557fe47b442" />
-  <project name="meta-openembedded" remote="openembedded" path="meta-openembedded" revision="f92b959f4a52ec7596aace92c8d37a370a132f30" />
+  <project name="meta-riscv" remote="riscv" path="meta-riscv" revision="9a75ffbb21ebee61782576d524a454d04a9f91e2" />
+  <project name="openembedded-core" remote="openembedded" path="openembedded-core" revision="d3114ca369792201a5316c1ede29eb72f0868d35" />
+  <project name="bitbake" remote="openembedded" path="openembedded-core/bitbake" revision="fec2b85689bba1d26ad6f376bc11cc29bb27cbe5" />
+  <project name="meta-openembedded" remote="openembedded" path="meta-openembedded" revision="ae0d7b3a0ef1611b721276c0821e8299d8d51623" />
 
 </manifest>
 
