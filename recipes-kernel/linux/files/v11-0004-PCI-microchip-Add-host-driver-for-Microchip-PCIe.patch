@@ -1,7 +1,7 @@
-From 428ecbe650a7643e23e7b28c103870a20420a1bb Mon Sep 17 00:00:00 2001
+From dee85f94a8f10494eb61df724bf4ca572e73d1b9 Mon Sep 17 00:00:00 2001
 From: Daire McNamara <daire.mcnamara@microchip.com>
 Date: Wed, 15 Apr 2020 11:23:32 +0100
-Subject: [PATCH v11a 4/4] PCI: microchip: Add host driver for Microchip PCIe
+Subject: [PATCH v11b 4/4] PCI: microchip: Add host driver for Microchip PCIe
  controller
 
 add support for the Microchip PCIe PolarFire PCIe controller when
@@ -11,8 +11,8 @@ Signed-off-by: Daire McNamara <daire.mcnamara@microchip.com>
 ---
  drivers/pci/controller/Kconfig               |   9 +
  drivers/pci/controller/Makefile              |   1 +
- drivers/pci/controller/pcie-microchip-host.c | 730 +++++++++++++++++++
- 3 files changed, 740 insertions(+)
+ drivers/pci/controller/pcie-microchip-host.c | 747 +++++++++++++++++++
+ 3 files changed, 757 insertions(+)
  create mode 100644 drivers/pci/controller/pcie-microchip-host.c
 
 diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
@@ -49,10 +49,10 @@ index 01b2502a5323..f926746e515e 100644
  # pcie-hisi.o quirks are needed even without CONFIG_PCIE_DW
 diff --git a/drivers/pci/controller/pcie-microchip-host.c b/drivers/pci/controller/pcie-microchip-host.c
 new file mode 100644
-index 000000000000..bfb06f711aaa
+index 000000000000..c92de4b8edcf
 --- /dev/null
 +++ b/drivers/pci/controller/pcie-microchip-host.c
-@@ -0,0 +1,730 @@
+@@ -0,0 +1,747 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Microchip AXI PCIe Bridge host controller driver
@@ -225,6 +225,23 @@ index 000000000000..bfb06f711aaa
 +	 */
 +	chained_irq_enter(chip, desc);
 +
++	status = readl_relaxed(pcie->ctrl_base_addr + MC_SEC_ERROR_INT);
++	if (status)
++		writel_relaxed(status, pcie->ctrl_base_addr + MC_SEC_ERROR_INT);
++
++	status = readl_relaxed(pcie->ctrl_base_addr + MC_DED_ERROR_INT);
++	if (status)
++		writel_relaxed(status, pcie->ctrl_base_addr + MC_DED_ERROR_INT);
++
++	/* Acknowledge L2 exit, hot reset exit, and DLUp exit interrrupts */
++	status = readl_relaxed(pcie->ctrl_base_addr + MC_PCIE_EVENT_INT);
++	if (status & GENMASK(15,0))
++		writel_relaxed(status, pcie->ctrl_base_addr + MC_PCIE_EVENT_INT);
++
++	status = readl_relaxed(pcie->bridge_base_addr + MC_ISTATUS_HOST);
++	if (status)
++		writel_relaxed(status, pcie->ctrl_base_addr + MC_ISTATUS_HOST);
++
 +	status = readl_relaxed(pcie->bridge_base_addr + MC_ISTATUS_LOCAL);
 +	while (status & (PCI_INTS | MSI_INT)) {
 +		intx_status = (status & PCI_INTS) >> PM_MSI_INT_SHIFT;
@@ -319,6 +336,7 @@ index 000000000000..bfb06f711aaa
 +	struct mc_msi *msi = &pcie->msi;
 +	struct resource *res;
 +	void __iomem *axi_base_addr;
++	u32 irq;
 +	int ret;
 +
 +	ret = mc_pcie_probe_clocks(pcie);
@@ -334,6 +352,14 @@ index 000000000000..bfb06f711aaa
 +
 +	pcie->bridge_base_addr = axi_base_addr + MC_PCIE1_BRIDGE_ADDR;
 +	pcie->ctrl_base_addr = axi_base_addr + MC_PCIE1_CTRL_ADDR;
++
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		dev_err(dev, "unable to request IRQ%d\n", irq);
++		return -ENODEV;
++	}
++
++	irq_set_chained_handler_and_data(irq, mc_pcie_isr, pcie);
 +
 +	msi->vector_phy = MC_MSI_ADDR;
 +
@@ -634,7 +660,6 @@ index 000000000000..bfb06f711aaa
 +	u32 index;
 +	u32 atr_sz;
 +	u32 val;
-+	u32 irq;
 +
 +	if (!dev->of_node)
 +		return -ENODEV;
@@ -663,14 +688,6 @@ index 000000000000..bfb06f711aaa
 +		dev_err(dev, "failed to initialize host\n");
 +		return ret;
 +	}
-+
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		dev_err(dev, "unable to request IRQ%d\n", irq);
-+		return -ENODEV;
-+	}
-+
-+	irq_set_chained_handler_and_data(irq, mc_pcie_isr, pcie);
 +
 +	/*
 +	 * Configure all inbound and outbound windows and prepare
