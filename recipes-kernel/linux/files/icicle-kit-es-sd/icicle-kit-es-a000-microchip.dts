@@ -230,7 +230,7 @@
 			interrupts = <88 89>;
 			pinctrl-names = "default";
 			clocks = <&clkcfg CLK_MMC>;
-			bus-width = <4>;
+			bus-width = <8>;
 			cap-mmc-highspeed;
 			mmc-ddr-3_3v; 
 			max-frequency = <200000000>;
@@ -247,7 +247,7 @@
                         interrupts = <88>;
                         pinctrl-names = "default";
                         clocks = <&clkcfg CLK_MMC>;         
-                        bus-width = <4>;
+                        bus-width = <8>;
 	                disable-wp;
 	                no-1-8-v;
 	                cap-mmc-highspeed;
