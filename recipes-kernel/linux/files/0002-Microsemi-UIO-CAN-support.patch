@@ -1,18 +1,14 @@
-From ec797b28d8493a7be47b9bd177ef645788b9e403 Mon Sep 17 00:00:00 2001
-From: Lewis Hanly <Lewis.Hanly@microchip.com>
-Date: Fri, 21 Feb 2020 14:37:42 +0000
-Subject: [PATCH] Microchip UIO CAN support for the Polarfire SoC
+From 65ee4cb601ad6616013ecdf2a1490ae24ee6f6c0 Mon Sep 17 00:00:00 2001
+From: m34782 <lewis.hanly@microchip.com>
+Date: Wed, 16 Dec 2020 11:39:28 +0000
+Subject: [PATCH] Microsemi UIO-CAN support
 
-Adding the Microsemi CAN UIO driver for the mpfs platform.
-MSS CAN UIO driver.
-
-
-Signed-off-by: Lewis Hanly <Lewis.Hanly@microchip.com>
+Signed-off-by: Lewis Hanly <lewis.hanly@microchip.com>
 ---
  drivers/uio/Kconfig             |   7 ++
  drivers/uio/Makefile            |   1 +
- drivers/uio/uio-microsemi-can.c | 205 ++++++++++++++++++++++++++++++++
- 3 files changed, 213 insertions(+)
+ drivers/uio/uio-microsemi-can.c | 206 ++++++++++++++++++++++++++++++++
+ 3 files changed, 214 insertions(+)
  create mode 100644 drivers/uio/uio-microsemi-can.c
 
 diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
@@ -42,10 +38,10 @@ index c285dd2a4539..0faf3a0c1ff9 100644
 +obj-$(CONFIG_UIO_MICROSEMI_CAN)	+= uio-microsemi-can.o
 diff --git a/drivers/uio/uio-microsemi-can.c b/drivers/uio/uio-microsemi-can.c
 new file mode 100644
-index 000000000000..66593d0503b6
+index 000000000000..de2ac8db1d4c
 --- /dev/null
 +++ b/drivers/uio/uio-microsemi-can.c
-@@ -0,0 +1,205 @@
+@@ -0,0 +1,206 @@
 +/*
 + * MSS CAN UIO driver (uio_mss_can)
 + *
@@ -251,3 +247,4 @@ index 000000000000..66593d0503b6
 +MODULE_LICENSE("GPL v2");
 +MODULE_VERSION(DRV_VERSION);
 +MODULE_AUTHOR("Daire McNamara <daire.mcnamara@microchip.com>");
++

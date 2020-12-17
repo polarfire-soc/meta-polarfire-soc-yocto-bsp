@@ -20,6 +20,8 @@ SRC_URI_append_icicle-kit-es = " \
     file://v11-0004-PCI-microchip-Add-host-driver-for-Microchip-PCIe.patch \
     file://v1-0002-Add-definition-for-Microchip-PolarFire-SoC.patch \
     file://v1-0001-dt-bindings-CLK-microchip-Add-Microchip-PolarFire.patch \
+    file://0001-Microchip-MPFS-musb-support.patch \
+    file://0002-Microsemi-UIO-CAN-support.patch \
  "
 SRC_URI_append_icicle-kit-es-sd = " \
     file://icicle-kit-es-a000-microchip.dts \
@@ -32,6 +34,8 @@ SRC_URI_append_icicle-kit-es-sd = " \
     file://v11-0004-PCI-microchip-Add-host-driver-for-Microchip-PCIe.patch \
     file://v1-0002-Add-definition-for-Microchip-PolarFire-SoC.patch \
     file://v1-0001-dt-bindings-CLK-microchip-Add-Microchip-PolarFire.patch \
+    file://0001-Microchip-MPFS-musb-support.patch \
+    file://0002-Microsemi-UIO-CAN-support.patch \
  "
  
 SRC_URI_append_mpfs = " \
@@ -46,7 +50,7 @@ SRC_URI_append_mpfs = " \
     file://0002-Microchip-SPI-Support-for-the-Polarfire-SoC.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0004-Microchip-Adding-QSPI-driver-for-Polarfire-SoC.patch \
-    file://0006-Microchip-UIO-CAN-support-for-the-Polarfire-SoC.patch \
+    file://0002-Microsemi-UIO-CAN-support.patch \
 "
 
 SRC_URI_append_lc-mpfs = " \
@@ -59,7 +63,7 @@ SRC_URI_append_lc-mpfs = " \
     file://0002-Microchip-SPI-Support-for-the-Polarfire-SoC.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0004-Microchip-Adding-QSPI-driver-for-Polarfire-SoC.patch \
-    file://0006-Microchip-UIO-CAN-support-for-the-Polarfire-SoC.patch \
+    file://0002-Microsemi-UIO-CAN-support.patch \
 "
 
 do_configure_prepend_icicle-kit-es() {

@@ -346,21 +346,27 @@
 			#gpio-cells = <2>;
 			status = "okay";
 		};
-		mssusb: usb@20201000 {
-			compatible = "microsemi,ms-pf-usb-host";
-			reg = <0x0 0x20201000 0x00000000 0x00001000>;
-			reg-names = "mc", "control";
-			clocks = <&clkcfg CLK_USB>;
-			interrupt-parent = <&L1>;
-			interrupts = <86 87>;
-			interrupt-names = "mc", "dma";
-			dr_mode = "host";
-			multipoint = <1>;
-			num-eps = <8>;
-			ram-bits = <12>;
-			power = <500>;
-			status = "okay";
-		};
+                mssusb: usb@20201000 {
+                        compatible = "microchip,mpfs-usb-host";
+		        reg = <0x0 0x20201000 0x00000000 0x00001000>;
+                        reg-names = "mc","control";
+                        clocks = <&clkcfg CLK_USB>;
+                        interrupt-parent = <&L1>;
+                        interrupts = <87 86>;
+                        interrupt-names = "mc","dma";
+                        dr_mode = "host";
+                        status = "okay";
+               };
+               msscan: can@2010c000 {
+                       #address-cells = <1>;
+                       #size-cells = <0>;
+                       compatible = "microsemi,ms-pf-mss-can-uio";
+                       reg = <0x0 0x2010c000 0x0 0x1000>;
+                       interrupt-parent = <&L1>;
+                       interrupts = <56>;
+                       clocks = <&clkcfg CLK_CAN0>;
+                       status = "okay";
+              };
 	};
 };
 
