@@ -5,6 +5,7 @@ EXTRA_IMAGE_FEATURES += " \
 
 IMAGE_INSTALL = "\
     can-utils \
+    usbutils \
     pciutils \
     pfsocapps \
     collectd \

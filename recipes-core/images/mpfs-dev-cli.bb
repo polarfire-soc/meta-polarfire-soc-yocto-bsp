@@ -36,6 +36,7 @@ IMAGE_INSTALL = "\
     glibc-dev \
     elfutils \
     elfutils-dev \
+    can-utils \
     pciutils \
     usbutils \
     mtd-utils \
