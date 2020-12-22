@@ -128,11 +128,16 @@
 		#size-cells = <2>;
 		compatible = "SiFive,FU540G-soc", "fu540-soc", "sifive-soc", "simple-bus";
 		ranges;
-		L40: memory@80000000 {
+		DDRC_CACHE_LO: memory@80000000 {
 			device_type = "memory";
 			reg = <0x0 0x80000000 0x0 0x40000000>;
 			clocks = <&clkcfg CLK_DDRC>;
 			status = "okay";
+		};
+		DDRC_CACHE_HI: memory@1040000000 {
+			device_type = "memory";
+			reg = <0x10 0x40000000 0x0 0x40000000>;
+			clocks = <&clkcfg 26>;
 		};
 		L0: cache-controller@2010000 {
 			compatible = "sifive,fu540-c000-ccache", "cache";
