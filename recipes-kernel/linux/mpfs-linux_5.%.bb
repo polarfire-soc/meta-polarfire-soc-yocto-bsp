@@ -20,7 +20,7 @@ SRC_URI_append_icicle-kit-es = " \
     file://v11-0004-PCI-microchip-Add-host-driver-for-Microchip-PCIe.patch \
     file://v1-0002-Add-definition-for-Microchip-PolarFire-SoC.patch \
     file://v1-0001-dt-bindings-CLK-microchip-Add-Microchip-PolarFire.patch \
-    file://0001-Microchip-MPFS-musb-support.patch \
+    file://0001-V5-Adding-Microchip-MUSB-Driver.patch \
     file://0002-Microsemi-UIO-CAN-support.patch \
  "
 SRC_URI_append_icicle-kit-es-sd = " \
@@ -34,7 +34,7 @@ SRC_URI_append_icicle-kit-es-sd = " \
     file://v11-0004-PCI-microchip-Add-host-driver-for-Microchip-PCIe.patch \
     file://v1-0002-Add-definition-for-Microchip-PolarFire-SoC.patch \
     file://v1-0001-dt-bindings-CLK-microchip-Add-Microchip-PolarFire.patch \
-    file://0001-Microchip-MPFS-musb-support.patch \
+    file://0001-V5-Adding-Microchip-MUSB-Driver.patch \
     file://0002-Microsemi-UIO-CAN-support.patch \
  "
  

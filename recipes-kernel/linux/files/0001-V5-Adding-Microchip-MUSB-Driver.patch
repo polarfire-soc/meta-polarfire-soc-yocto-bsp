@@ -1,14 +1,14 @@
-From 0ba62f5b2c870a0ff64d31620155560ea1ac7df1 Mon Sep 17 00:00:00 2001
+From ea9a4f7adadd94faf6e17367972b6b6794c70013 Mon Sep 17 00:00:00 2001
 From: m34782 <lewis.hanly@microchip.com>
-Date: Wed, 16 Dec 2020 11:15:10 +0000
-Subject: [PATCH] Microchip MPFS musb support
+Date: Tue, 22 Dec 2020 09:34:06 +0000
+Subject: [PATCH] V5 Adding Microchip MUSB Driver
 
 Signed-off-by: Lewis Hanly <lewis.hanly@microchip.com>
 ---
  drivers/usb/musb/Kconfig     |   7 +-
  drivers/usb/musb/Makefile    |   1 +
- drivers/usb/musb/musb_mpfs.c | 306 +++++++++++++++++++++++++++++++++++
- 3 files changed, 313 insertions(+), 1 deletion(-)
+ drivers/usb/musb/musb_mpfs.c | 326 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 333 insertions(+), 1 deletion(-)
  create mode 100644 drivers/usb/musb/musb_mpfs.c
 
 diff --git a/drivers/usb/musb/Kconfig b/drivers/usb/musb/Kconfig
@@ -50,10 +50,10 @@ index 932247360a9f..350f6adac440 100644
  # possible I/O schemes will be enabled at a time ...
 diff --git a/drivers/usb/musb/musb_mpfs.c b/drivers/usb/musb/musb_mpfs.c
 new file mode 100644
-index 000000000000..8f0e6bae26e0
+index 000000000000..6ccec87787cc
 --- /dev/null
 +++ b/drivers/usb/musb/musb_mpfs.c
-@@ -0,0 +1,306 @@
+@@ -0,0 +1,326 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * MUSB OTG controller driver for Microchip PolarFire SoC
@@ -79,6 +79,7 @@ index 000000000000..8f0e6bae26e0
 +	struct device		*dev;
 +	struct platform_device	*musb;
 +	struct platform_device	*phy;
++	struct clk		*clk;
 +};
 +#define glue_to_musb(g)		platform_get_drvdata(g->musb)
 +
@@ -207,7 +208,7 @@ index 000000000000..8f0e6bae26e0
 +
 +static int pf_probe(struct platform_device *pdev)
 +{
-+       	struct device			*dev = &pdev->dev;
++	struct device			*dev = &pdev->dev;
 +	struct resource                 musb_resources[3];
 +	struct musb_hdrc_platform_data	*pdata = dev_get_platdata(&pdev->dev);
 +	struct platform_device		*musb;
@@ -216,6 +217,8 @@ index 000000000000..8f0e6bae26e0
 +	const char			*mode;
 +	int				strlen;
 +	int				ret = -ENOMEM;
++	struct clk			*clk;
++	dev_info(&pdev->dev, "Registered MPFS MUSB driver\n");
 +
 +	if (!np)
 +		return -ENODEV;
@@ -230,13 +233,27 @@ index 000000000000..8f0e6bae26e0
 +		goto err0;
 +	}
 +
++	clk = devm_clk_get(&pdev->dev, NULL);
++	if (IS_ERR(clk)) {
++		dev_err(&pdev->dev, "failed to get clock\n");
++		ret = PTR_ERR(clk);
++		goto err1;
++	}
++
++	ret = clk_prepare_enable(clk);
++	if (ret) {
++		dev_err(&pdev->dev, "failed to enable clock\n");
++		goto err1;
++	}
++	
 +	musb->dev.parent		= dev;
 +	musb->dev.dma_mask		= &pf_dmamask;
 +	musb->dev.coherent_dma_mask	= pf_dmamask;
 +
 +	glue->dev			= dev;
 +	glue->musb			= musb;
-+
++    glue->clk			= clk;
++        
 +	if (np) {
 +		pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
 +		if (!pdata)
@@ -288,23 +305,25 @@ index 000000000000..8f0e6bae26e0
 +		ARRAY_SIZE(musb_resources));
 +	if (ret) {
 +		dev_err(dev, "failed to add resources\n");
-+		goto err1;
++		goto err2;
 +	}
 +
 +	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
 +	if (ret) {
 +		dev_err(dev, "failed to add platform_data\n");
-+		goto err1;
++		goto err2;
 +	}
 +
 +
 +	ret = platform_device_add(musb);
 +	if (ret) {
 +		dev_err(dev, "failed to register musb device\n");
-+		goto err1;
++		goto err2;
 +	}
 +
 +	return 0;
++err2:
++	clk_disable_unprepare(clk);
 +
 +err1:
 +	usb_phy_generic_unregister(glue->phy);
@@ -338,7 +357,7 @@ index 000000000000..8f0e6bae26e0
 +
 +static SIMPLE_DEV_PM_OPS(pf_pm_ops, pf_suspend, pf_resume);
 +
-+#ifdef CONFIG_OF
++#ifdef IS_ENABLED(CONFIG_OF)
 +static const struct of_device_id pf_id_table[] = {
 +	{ .compatible = "microchip,mpfs-usb-host" },
 +	{ }
@@ -356,7 +375,8 @@ index 000000000000..8f0e6bae26e0
 +	},
 +};
 +
++module_platform_driver(microchip_musb_driver);
++
 +MODULE_DESCRIPTION("PolarFire SoC MUSB Glue Layer");
 +MODULE_AUTHOR("Sagar Khadgi <sagar.khadgi@microchip.com>");
 +MODULE_LICENSE("GPL v2");
-+module_platform_driver(microchip_musb_driver);
