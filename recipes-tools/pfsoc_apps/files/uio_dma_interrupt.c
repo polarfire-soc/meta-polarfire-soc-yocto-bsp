@@ -17,7 +17,7 @@ int uioFd_1;
 volatile uint32_t *ddr_mem,*dma_mem,*lsram_mem;
 
 #define UIO_0_DEVICE    "/dev/uio0"
-#define UIO_1_DEVICE    "/dev/uio1"
+#define UIO_1_DEVICE    "/dev/uio2"
 
 #define MMAP_SIZE     0x10000
 

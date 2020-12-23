@@ -19,7 +19,7 @@ SRC_URI="git://github.com/polarfire-soc/polarfire-soc-linux-examples;branch=${BR
          file://LSRAM_read_write.c \
 	 file://uio_dma_interrupt.c  \
         "
-
+S = "${WORKDIR}"
 do_compile() {
 	${CC} LSRAM_read_write.c ${LDFLAGS} -o LSRAM_read_write
 	${CC} uio_dma_interrupt.c ${LDFLAGS} -o uio_dma_interrupt
@@ -38,8 +38,8 @@ do_install() {
     install -d ${D}/opt/microchip/apps
     ##install -m 0755 led_blinky ${D}/opt/microchip/apps
     install -m 0755 LSRAM_read_write.c ${D}/opt/microchip/apps
-    install -m 0755 LSRAM_read_write ${D}/opt/opt/microchip/apps
-    install -m 0755 uio_dma_interrupt ${D}/opt/opt/microchip/apps
+    install -m 0755 LSRAM_read_write ${D}/opt/microchip/apps
+    install -m 0755 uio_dma_interrupt ${D}/opt/microchip/apps
     install -m 0755 uio_dma_interrupt.c ${D}/opt/microchip/apps
 }
 

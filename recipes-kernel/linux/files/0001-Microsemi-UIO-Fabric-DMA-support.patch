@@ -1,44 +1,43 @@
-From b48e2ccab9b7e0353eb43c3f5bbb06408f434207 Mon Sep 17 00:00:00 2001
+From 70f6723b4e7296ad530dadb61912795e61dfa9e6 Mon Sep 17 00:00:00 2001
 From: praveen kumar <praveen.kumar@microchip.com>
-Date: Thu, 3 Sep 2020 15:39:39 +0530
-Subject: [PATCH] Added support for UIO DMA controller driver
+Date: Wed, 23 Dec 2020 11:45:52 +0530
+Subject: [PATCH] Microsemi UIO Fabric DMA support
 
 Signed-off-by: praveen kumar <praveen.kumar@microchip.com>
 ---
- drivers/uio/Kconfig             |   7 ++
+ drivers/uio/Kconfig             |   6 ++
  drivers/uio/Makefile            |   1 +
  drivers/uio/uio-microsemi-dma.c | 182 ++++++++++++++++++++++++++++++++
- 3 files changed, 190 insertions(+)
+ 3 files changed, 189 insertions(+)
  create mode 100644 drivers/uio/uio-microsemi-dma.c
 
 diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
-index 202ee81cfc2b..1d1f28a059e8 100644
+index b5c593d8e483..9b21863fe549 100644
 --- a/drivers/uio/Kconfig
 +++ b/drivers/uio/Kconfig
-@@ -165,4 +165,11 @@ config UIO_HV_GENERIC
- 	  to network and storage devices from userspace.
+@@ -172,4 +172,10 @@ config UIO_MICROSEMI_CAN
+ 	help
+ 	  Userspace I/O interface for the Microsemi CAN device.
  
- 	  If you compile this as a module, it will be called uio_hv_generic.
-+
 +config UIO_MICROSEMI_DMA
 +	tristate "Generic driver for Microsemi Fabric DMA controller"
 +	depends on UIO
 +	help
-+	  Userspace I/O interface for the Microsemi DMA device.
++	  Userspace I/O interface for the Microsemi Fabric DMA controller.
 +
  endif
 diff --git a/drivers/uio/Makefile b/drivers/uio/Makefile
-index c285dd2a4539..69af6b249b6b 100644
+index 0faf3a0c1ff9..c73684661175 100644
 --- a/drivers/uio/Makefile
 +++ b/drivers/uio/Makefile
-@@ -11,3 +11,4 @@ obj-$(CONFIG_UIO_PRUSS)         += uio_pruss.o
- obj-$(CONFIG_UIO_MF624)         += uio_mf624.o
+@@ -12,3 +12,4 @@ obj-$(CONFIG_UIO_MF624)         += uio_mf624.o
  obj-$(CONFIG_UIO_FSL_ELBC_GPCM)	+= uio_fsl_elbc_gpcm.o
  obj-$(CONFIG_UIO_HV_GENERIC)	+= uio_hv_generic.o
+ obj-$(CONFIG_UIO_MICROSEMI_CAN)	+= uio-microsemi-can.o
 +obj-$(CONFIG_UIO_MICROSEMI_DMA)	+= uio-microsemi-dma.o
 diff --git a/drivers/uio/uio-microsemi-dma.c b/drivers/uio/uio-microsemi-dma.c
 new file mode 100644
-index 000000000000..0e70e115d27c
+index 000000000000..9282250aa5db
 --- /dev/null
 +++ b/drivers/uio/uio-microsemi-dma.c
 @@ -0,0 +1,182 @@
@@ -223,7 +222,7 @@ index 000000000000..0e70e115d27c
 +
 +MODULE_LICENSE("GPL v2");
 +MODULE_VERSION(DRV_VERSION);
-+MODULE_AUTHOR("Praveen <praveen.kumar@microchip.com>");
++MODULE_AUTHOR("Vattipalli Praveen <praveen.kumar@microchip.com>");
 -- 
 2.17.1
 
