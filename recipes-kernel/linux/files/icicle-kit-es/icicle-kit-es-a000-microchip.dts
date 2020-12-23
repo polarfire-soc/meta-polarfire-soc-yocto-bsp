@@ -367,6 +367,21 @@
                        clocks = <&clkcfg CLK_CAN0>;
                        status = "okay";
               };
+              uio_lsram: uio_lpddr4@0xC0000000 {
+                       compatible = "generic-uio";
+                       reg = < 0x0 0x61000000 0x0 0x00010000
+                             0x14 0x00000000 0x0 0x00010000 >;
+                       status = "okay";
+              };
+              dma: dma@0x60020000 {
+                       #address-cells = <1>;
+                       #size-cells = <0>;
+                       compatible = "microsemi,ms-pf-mss-dma-uio";
+                       reg = <0x00 0x60020000 0x0 0x1000>;
+                       interrupt-parent = <&L1>;
+                       interrupts = <120>;
+                       status = "okay";
+              };
 	};
 };
 
