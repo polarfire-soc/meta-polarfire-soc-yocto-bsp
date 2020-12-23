@@ -22,7 +22,7 @@ SRC_URI_append_icicle-kit-es = " \
     file://v1-0001-dt-bindings-CLK-microchip-Add-Microchip-PolarFire.patch \
     file://0001-V5-Adding-Microchip-MUSB-Driver.patch \
     file://0002-Microsemi-UIO-CAN-support.patch \
-    file://0001-Added-support-for-UIO-DMA-controller-driver \
+    file://0001-Added-support-for-UIO-DMA-controller-driver.patch \
  "
 SRC_URI_append_icicle-kit-es-sd = " \
     file://icicle-kit-es-a000-microchip.dts \
@@ -37,7 +37,7 @@ SRC_URI_append_icicle-kit-es-sd = " \
     file://v1-0001-dt-bindings-CLK-microchip-Add-Microchip-PolarFire.patch \
     file://0001-V5-Adding-Microchip-MUSB-Driver.patch \
     file://0002-Microsemi-UIO-CAN-support.patch \
-    file://0001-Added-support-for-UIO-DMA-controller-driver \
+    file://0001-Added-support-for-UIO-DMA-controller-driver.patch \
  "
  
 SRC_URI_append_mpfs = " \
