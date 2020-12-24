@@ -89,7 +89,7 @@
 			i-tlb-size = <32>;
 			mmu-type = "riscv,sv39";
 			reg = <3>;
-			riscv,isa = "rv64imafdc";
+			riscv,isa = "rv64imafdc";dma-ranges = <0x02000000 0x0 0x00000000 0x0 0x00000000 0x1 0x00000000>;
 			tlb-split;
 			status = "okay";
 			L17: interrupt-controller {
@@ -299,6 +299,7 @@
 			interrupts = <119>;
 			ranges = <0x03000000 0x0 0x78000000 0x0 0x78000000 0x0 0x04000000>;
 			reg = <0x0 0x70000000 0x0 0x08000000 0x0 0x43000000 0x0 0x00010000>;
+                        dma-ranges = <0x02000000 0x0 0x00000000 0x0 0x00000000 0x1 0x00000000>;
 			reg-names = "cfg", "apb";
 			interrupt-controller;
 			status = "okay";
