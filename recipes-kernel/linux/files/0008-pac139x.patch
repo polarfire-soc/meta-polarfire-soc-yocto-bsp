@@ -1,8 +1,29 @@
+From eae16a04719917b9d36c53b0e07f0135c4b16b10 Mon Sep 17 00:00:00 2001
+From: Daire McNamara <daire.mcnamara@microchip.com>
+Date: Thu, 31 Dec 2020 10:12:55 +0000
+Subject: [PATCH 01/12] iio: adc: pac193x: add driver support for PAC193x
+
+The PAC193x series contains functionality for general-purpose
+monitoring of analog signals.
+
+Datasheet:
+Link: https://ww1.microchip.com/downloads/en/DeviceDoc/PAC1931-Family-Data-Sheet-DS20005850E.pdf
+
+This commit adds a skeleton driver for the PAC193x series.
+
+Signed-off-by: Daire McNamara <daire.mcnamara@microchip.com>
+---
+ drivers/iio/adc/Kconfig   |   13 +
+ drivers/iio/adc/Makefile  |    1 +
+ drivers/iio/adc/pac193x.c | 1671 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 1685 insertions(+)
+ create mode 100644 drivers/iio/adc/pac193x.c
+
 diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 82e33082958c..d1efd33bba3a 100644
+index 91ae90514aff..f58befa1dbcc 100644
 --- a/drivers/iio/adc/Kconfig
 +++ b/drivers/iio/adc/Kconfig
-@@ -1143,4 +1143,17 @@ config XILINX_XADC
+@@ -1223,4 +1223,17 @@ config XILINX_XADC
  	  The driver can also be build as a module. If so, the module will be called
  	  xilinx-xadc.
  
@@ -21,10 +42,10 @@ index 82e33082958c..d1efd33bba3a 100644
 +
  endmenu
 diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 919228900df9..aea95f018ac9 100644
+index 90f94ada7b30..4b5766cf61f6 100644
 --- a/drivers/iio/adc/Makefile
 +++ b/drivers/iio/adc/Makefile
-@@ -105,3 +105,4 @@ obj-$(CONFIG_VIPERBOARD_ADC) += viperboard_adc.o
+@@ -111,3 +111,4 @@ obj-$(CONFIG_VIPERBOARD_ADC) += viperboard_adc.o
  xilinx-xadc-y := xilinx-xadc-core.o xilinx-xadc-events.o
  obj-$(CONFIG_XILINX_XADC) += xilinx-xadc.o
  obj-$(CONFIG_SD_ADC_MODULATOR) += sd_adc_modulator.o
@@ -1706,3 +1727,11 @@ index 000000000000..2e0b0c232984
 +MODULE_DESCRIPTION("PAC193x");
 +MODULE_LICENSE("GPL v2");
 +MODULE_VERSION("0.0.1");
+
+base-commit: 4d02da974ea85a62074efedf354e82778f910d82
+prerequisite-patch-id: 691739825cbe4478deacdae04e2221ae8e6bb838
+prerequisite-patch-id: af9f6f16ec824004e6aa145aad84a9ae9cf9b320
+prerequisite-patch-id: 2615242a5121e12b499d6993c10afcf86e848ae2
+-- 
+2.25.1
+
