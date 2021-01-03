@@ -15,9 +15,9 @@ diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
 index b5c593d8e483..9b21863fe549 100644
 --- a/drivers/uio/Kconfig
 +++ b/drivers/uio/Kconfig
-@@ -172,4 +172,10 @@ config UIO_MICROSEMI_CAN
+@@ -172,4 +172,10 @@ config UIO_MICROCHIP_CAN
  	help
- 	  Userspace I/O interface for the Microsemi CAN device.
+ 	  Userspace I/O interface for the Microchip CAN device.
  
 +config UIO_MICROSEMI_DMA
 +	tristate "Generic driver for Microsemi Fabric DMA controller"
@@ -33,7 +33,7 @@ index 0faf3a0c1ff9..c73684661175 100644
 @@ -12,3 +12,4 @@ obj-$(CONFIG_UIO_MF624)         += uio_mf624.o
  obj-$(CONFIG_UIO_FSL_ELBC_GPCM)	+= uio_fsl_elbc_gpcm.o
  obj-$(CONFIG_UIO_HV_GENERIC)	+= uio_hv_generic.o
- obj-$(CONFIG_UIO_MICROSEMI_CAN)	+= uio-microsemi-can.o
+ obj-$(CONFIG_UIO_MICROCHIP_CAN)	+= uio-microchip-can.o
 +obj-$(CONFIG_UIO_MICROSEMI_DMA)	+= uio-microsemi-dma.o
 diff --git a/drivers/uio/uio-microsemi-dma.c b/drivers/uio/uio-microsemi-dma.c
 new file mode 100644
