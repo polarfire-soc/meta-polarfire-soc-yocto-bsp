@@ -1,4 +1,4 @@
-From cf595953684703ced7c494cea3485800ead270ea Mon Sep 17 00:00:00 2001
+From 9e2ac6077a9a7c26a8bc44e9159d8f3157f9bdfb Mon Sep 17 00:00:00 2001
 From: Daire McNamara <daire.mcnamara@microchip.com>
 Date: Wed, 16 Dec 2020 11:39:28 +0000
 Subject: [PATCH] uio: can: Microchip PolarFire add CAN support via uio
@@ -9,8 +9,8 @@ Signed-off-by: Daire McNamara <daire.mcnamara@microchip.com>
 ---
  drivers/uio/Kconfig             |   7 ++
  drivers/uio/Makefile            |   1 +
- drivers/uio/uio-microchip-can.c | 206 ++++++++++++++++++++++++++++++++
- 3 files changed, 214 insertions(+)
+ drivers/uio/uio-microchip-can.c | 202 ++++++++++++++++++++++++++++++++
+ 3 files changed, 210 insertions(+)
  create mode 100644 drivers/uio/uio-microchip-can.c
 
 diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
@@ -40,10 +40,10 @@ index c285dd2a4539..020d95eaf9ee 100644
 +obj-$(CONFIG_UIO_MICROCHIP_CAN)	+= uio-microchip-can.o
 diff --git a/drivers/uio/uio-microchip-can.c b/drivers/uio/uio-microchip-can.c
 new file mode 100644
-index 000000000000..21c67d5727a7
+index 000000000000..29ad0ff696c5
 --- /dev/null
 +++ b/drivers/uio/uio-microchip-can.c
-@@ -0,0 +1,206 @@
+@@ -0,0 +1,202 @@
 +/*
 + * MSS CAN UIO driver (uio_mss_can)
 + *
@@ -118,9 +118,7 @@ index 000000000000..21c67d5727a7
 +	}
 +	iounmap(dev_info->mss_can_io_vaddr);
 +	kfree(dev_info->info);
-+#if 0
 +	clk_disable(dev_info->mss_can_clk);
-+#endif
 +	clk_put(dev_info->mss_can_clk);
 +	kfree(dev_info);
 +}
@@ -154,9 +152,8 @@ index 000000000000..21c67d5727a7
 +		kfree(dev_info->info);
 +		kfree(dev_info);
 +		return ret;
-+#if 0
 +	} else {
-+		ret = clk_enable(dev_info->mss_can_clk);
++		ret = clk_prepare_enable(dev_info->mss_can_clk);
 +		if (ret) {
 +			dev_err(dev, "Failed to enable clock\n");
 +			clk_put(dev_info->mss_can_clk);
@@ -164,8 +161,8 @@ index 000000000000..21c67d5727a7
 +			kfree(dev_info);
 +			return ret;
 +		}
-+#endif
 +	}
++	devm_add_action_or_reset(dev, (void (*) (void *))clk_disable_unprepare, dev_info->mss_can_clk);
 +
 +	regs_mss_can_io = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 +	if (!regs_mss_can_io) {
@@ -249,7 +246,6 @@ index 000000000000..21c67d5727a7
 +MODULE_LICENSE("GPL v2");
 +MODULE_VERSION(DRV_VERSION);
 +MODULE_AUTHOR("Daire McNamara <daire.mcnamara@microchip.com>");
-+
 
 base-commit: 61aba373f5708f2aebc3f72078e51949a068aa6f
 prerequisite-patch-id: eda2b1810afbad5d1576d74658dbda9f8a630128
