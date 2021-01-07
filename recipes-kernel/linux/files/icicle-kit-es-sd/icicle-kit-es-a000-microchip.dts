@@ -252,7 +252,7 @@
                         interrupts = <88>;
                         pinctrl-names = "default";
                         clocks = <&clkcfg CLK_MMC>;         
-                        bus-width = <8>;
+                        bus-width = <4>;
 	                disable-wp;
 	                no-1-8-v;
 	                cap-mmc-highspeed;
