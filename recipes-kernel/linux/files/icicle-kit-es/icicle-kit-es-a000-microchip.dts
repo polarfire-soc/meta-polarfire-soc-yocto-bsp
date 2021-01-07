@@ -366,7 +366,7 @@
                msscan: can@2010c000 {
                        #address-cells = <1>;
                        #size-cells = <0>;
-                       compatible = "microsemi,ms-pf-mss-can-uio";
+                       compatible = "microchip,mpfs-can-uio";
                        reg = <0x0 0x2010c000 0x0 0x1000>;
                        interrupt-parent = <&L1>;
                        interrupts = <56>;
