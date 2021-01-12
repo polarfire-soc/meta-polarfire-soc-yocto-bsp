@@ -26,33 +26,16 @@ Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
  create mode 100644 drivers/clk/microchip/clk_pfsoc_periph.c
  create mode 100644 include/dt-bindings/clock/microchip,pfsoc-clock.h
 
-diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-index 8b8b719999..299175ec73 100644
 --- a/drivers/clk/Kconfig
 +++ b/drivers/clk/Kconfig
-@@ -157,6 +157,7 @@ source "drivers/clk/at91/Kconfig"
- source "drivers/clk/exynos/Kconfig"
+@@ -165,6 +165,7 @@ source "drivers/clk/exynos/Kconfig"
  source "drivers/clk/imx/Kconfig"
+ source "drivers/clk/kendryte/Kconfig"
  source "drivers/clk/meson/Kconfig"
 +source "drivers/clk/microchip/Kconfig"
  source "drivers/clk/mvebu/Kconfig"
  source "drivers/clk/owl/Kconfig"
  source "drivers/clk/renesas/Kconfig"
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index e01783391d..8d98d6287a 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -27,6 +27,7 @@ obj-$(CONFIG_CLK_BOSTON) += clk_boston.o
- obj-$(CONFIG_CLK_EXYNOS) += exynos/
- obj-$(CONFIG_$(SPL_TPL_)CLK_INTEL) += intel/
- obj-$(CONFIG_CLK_HSDK) += clk-hsdk-cgu.o
-+obj-$(CONFIG_CLK_MPFS) += microchip/
- obj-$(CONFIG_CLK_MPC83XX) += mpc83xx_clk.o
- obj-$(CONFIG_CLK_OWL) += owl/
- obj-$(CONFIG_CLK_RENESAS) += renesas/
-diff --git a/drivers/clk/microchip/Kconfig b/drivers/clk/microchip/Kconfig
-new file mode 100644
-index 0000000000..b70241559d
 --- /dev/null
 +++ b/drivers/clk/microchip/Kconfig
 @@ -0,0 +1,5 @@
@@ -61,16 +44,10 @@ index 0000000000..b70241559d
 +	depends on CLK && CLK_CCF
 +	help
 +	  This enables support clock driver for Microchip PolarFire SoC platform.
-diff --git a/drivers/clk/microchip/Makefile b/drivers/clk/microchip/Makefile
-new file mode 100644
-index 0000000000..c7f5ad21ae
 --- /dev/null
 +++ b/drivers/clk/microchip/Makefile
 @@ -0,0 +1 @@
 +obj-y += clk_pfsoc.o clk_pfsoc_cfg.o clk_pfsoc_periph.o
-diff --git a/drivers/clk/microchip/clk_pfsoc.c b/drivers/clk/microchip/clk_pfsoc.c
-new file mode 100644
-index 0000000000..dd0e9cacb8
 --- /dev/null
 +++ b/drivers/clk/microchip/clk_pfsoc.c
 @@ -0,0 +1,127 @@
@@ -201,9 +178,6 @@ index 0000000000..dd0e9cacb8
 +	.ops = &pfsoc_clk_ops,
 +	.probe = pfsoc_clk_probe,
 +};
-diff --git a/drivers/clk/microchip/clk_pfsoc.h b/drivers/clk/microchip/clk_pfsoc.h
-new file mode 100644
-index 0000000000..6255e0de2d
 --- /dev/null
 +++ b/drivers/clk/microchip/clk_pfsoc.h
 @@ -0,0 +1,19 @@
@@ -226,9 +200,6 @@ index 0000000000..6255e0de2d
 +		    u8 width, unsigned long flags);
 +
 +#endif	/* __MICROCHIP_PFSOC_CLK_H */
-diff --git a/drivers/clk/microchip/clk_pfsoc_cfg.c b/drivers/clk/microchip/clk_pfsoc_cfg.c
-new file mode 100644
-index 0000000000..ea74311452
 --- /dev/null
 +++ b/drivers/clk/microchip/clk_pfsoc_cfg.c
 @@ -0,0 +1,134 @@
@@ -366,9 +337,6 @@ index 0000000000..ea74311452
 +	.id	= UCLASS_CLK,
 +	.ops	= &pfsoc_cfg_clk_ops,
 +};
-diff --git a/drivers/clk/microchip/clk_pfsoc_periph.c b/drivers/clk/microchip/clk_pfsoc_periph.c
-new file mode 100644
-index 0000000000..74faf61f2c
 --- /dev/null
 +++ b/drivers/clk/microchip/clk_pfsoc_periph.c
 @@ -0,0 +1,173 @@
@@ -545,9 +513,6 @@ index 0000000000..74faf61f2c
 +	.id	= UCLASS_CLK,
 +	.ops	= &pfsoc_periph_clk_ops,
 +};
-diff --git a/include/dt-bindings/clock/microchip,pfsoc-clock.h b/include/dt-bindings/clock/microchip,pfsoc-clock.h
-new file mode 100644
-index 0000000000..527cff1a28
 --- /dev/null
 +++ b/include/dt-bindings/clock/microchip,pfsoc-clock.h
 @@ -0,0 +1,45 @@
@@ -596,6 +561,3 @@ index 0000000000..527cff1a28
 +#define CLK_CFM		32
 +
 +#endif	/* _DT_BINDINGS_CLK_MICROCHIP_PFSOC_H_ */
--- 
-2.17.1
-
