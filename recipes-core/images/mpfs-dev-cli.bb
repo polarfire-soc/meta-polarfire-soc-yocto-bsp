@@ -16,6 +16,11 @@ IMAGE_INSTALL = "\
     libgpiod \
     libgpiod-tools \
     libgpiod-dev \
+    yavta \
+    libuvc \
+    gstd \
+    gstreamer1.0-plugins-good \
+    v4l-utils \
     perl-modules \
     alsa-utils \
     i2c-tools \
