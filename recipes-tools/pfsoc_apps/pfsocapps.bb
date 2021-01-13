@@ -19,12 +19,14 @@ SRC_URI="git://github.com/polarfire-soc/polarfire-soc-linux-examples;branch=${BR
          file://LSRAM_read_write.c \
 	 file://uio_dma_interrupt.c  \
          file://uio_can_example.c \
+         file://led_blinky.c \
         "
 S = "${WORKDIR}"
 do_compile() {
 	${CC} LSRAM_read_write.c ${LDFLAGS} -o LSRAM_read_write
 	${CC} uio_dma_interrupt.c ${LDFLAGS} -o uio_dma_interrupt
         ${CC} uio_can_example.c ${LDFLAGS} -o uio_can_example
+        ${CC} led_blinky.c ${LDFLAGS} -o led_blinky
 }
 
 do_install() {
@@ -38,13 +40,18 @@ do_install() {
 
     ## Microchip Sample Applications, 
     install -d ${D}/opt/microchip/apps
-    ##install -m 0755 led_blinky ${D}/opt/microchip/apps
-    install -m 0755 LSRAM_read_write.c ${D}/opt/microchip/apps
-    install -m 0755 LSRAM_read_write ${D}/opt/microchip/apps
-    install -m 0755 uio_dma_interrupt ${D}/opt/microchip/apps
-    install -m 0755 uio_dma_interrupt.c ${D}/opt/microchip/apps
-    install -m 0755 uio_can_example ${D}/opt/microchip/apps
-    install -m 0755 uio_can_example.c ${D}/opt/microchip/apps
+    install -d ${D}/opt/microchip/apps/lsram
+    install -d ${D}/opt/microchip/apps/uio_dma
+    install -d ${D}/opt/microchip/apps/uio_can
+    install -d ${D}/opt/microchip/apps/blinky
+    install -m 0755 led_blinky.c ${D}/opt/microchip/apps/blinky
+    install -m 0755 led_blinky ${D}/opt/microchip/apps/blinky
+    install -m 0755 LSRAM_read_write.c ${D}/opt/microchip/apps/lsram
+    install -m 0755 LSRAM_read_write ${D}/opt/microchip/apps/lsram
+    install -m 0755 uio_dma_interrupt ${D}/opt/microchip/apps/uio_dma
+    install -m 0755 uio_dma_interrupt.c ${D}/opt/microchip/apps/uio_dma
+    install -m 0755 uio_can_example ${D}/opt/microchip/apps/uio_can
+    install -m 0755 uio_can_example.c ${D}/opt/microchip/apps/uio_can
 }
 
 SYSTEMD_SERVICE_${PN} = "collectdiio.service"
