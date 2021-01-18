@@ -20,6 +20,7 @@ SRC_URI="git://github.com/polarfire-soc/polarfire-soc-linux-examples;branch=${BR
 	 file://uio_dma_interrupt.c  \
          file://uio_can_example.c \
          file://led_blinky.c \
+         file://system-service-example.c \
         "
 S = "${WORKDIR}"
 do_compile() {
@@ -27,6 +28,7 @@ do_compile() {
 	${CC} uio_dma_interrupt.c ${LDFLAGS} -o uio_dma_interrupt
         ${CC} uio_can_example.c ${LDFLAGS} -o uio_can_example
         ${CC} led_blinky.c ${LDFLAGS} -o led_blinky
+        ${CC} system-service-example.c ${LDFLAGS} -o system-service-example
 }
 
 do_install() {
@@ -52,6 +54,8 @@ do_install() {
     install -m 0755 uio_dma_interrupt.c ${D}/opt/microchip/apps/uio_dma
     install -m 0755 uio_can_example ${D}/opt/microchip/apps/uio_can
     install -m 0755 uio_can_example.c ${D}/opt/microchip/apps/uio_can
+    install -m 0755 system-service-example ${D}/opt/microchip/apps/system_services
+    install -m 0755 system-service-example.c ${D}/opt/microchip/apps/system_services
 }
 
 SYSTEMD_SERVICE_${PN} = "collectdiio.service"

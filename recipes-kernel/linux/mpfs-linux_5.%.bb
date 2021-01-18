@@ -23,6 +23,9 @@ SRC_URI_append_icicle-kit-es = " \
     file://0001-V5-Adding-Microchip-MUSB-Driver.patch \
     file://0002-uio-can-Microchip-PolarFire-add-CAN-support-via-uio.patch \
     file://0001-Microsemi-UIO-Fabric-DMA-support.patch \
+    file://0003-mbox-add-polarfire-soc-system-controller-mailbox.patch \
+    file://0002-atish-soc-support.patch \
+    file://0001-rng-add-support-for-rng-on-the-polarfire-soc.patch \
  "
 SRC_URI_append_icicle-kit-es-sd = " \
     file://icicle-kit-es-a000-microchip.dts \
@@ -38,6 +41,9 @@ SRC_URI_append_icicle-kit-es-sd = " \
     file://0001-V5-Adding-Microchip-MUSB-Driver.patch \
     file://0002-uio-can-Microchip-PolarFire-add-CAN-support-via-uio.patch \
     file://0001-Microsemi-UIO-Fabric-DMA-support.patch \
+    file://0003-mbox-add-polarfire-soc-system-controller-mailbox.patch \
+    file://0002-atish-soc-support.patch \
+    file://0001-rng-add-support-for-rng-on-the-polarfire-soc.patch \
  "
  
 SRC_URI_append_mpfs = " \
