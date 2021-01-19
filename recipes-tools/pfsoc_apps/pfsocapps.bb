@@ -46,6 +46,7 @@ do_install() {
     install -d ${D}/opt/microchip/apps/uio_dma
     install -d ${D}/opt/microchip/apps/uio_can
     install -d ${D}/opt/microchip/apps/blinky
+    install -d ${D}/opt/microchip/apps/system_services
     install -m 0755 led_blinky.c ${D}/opt/microchip/apps/blinky
     install -m 0755 led_blinky ${D}/opt/microchip/apps/blinky
     install -m 0755 LSRAM_read_write.c ${D}/opt/microchip/apps/lsram
