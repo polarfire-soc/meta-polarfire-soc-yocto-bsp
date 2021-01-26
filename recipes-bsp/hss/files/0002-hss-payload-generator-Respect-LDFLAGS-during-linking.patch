@@ -1,0 +1,30 @@
+From c3341b9f85e8cfd6c42ddd2bf42575b920d02246 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Tue, 12 Jan 2021 16:12:56 -0800
+Subject: [PATCH 2/2] hss-payload-generator: Respect LDFLAGS during linking
+
+This is to ensure that linker flags are not ignored during linking which
+could be passing library paths etc.
+
+Upstream-Status: Submitted [https://github.com/polarfire-soc/hart-software-services/pull/10]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ tools/hss-payload-generator/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/hss-payload-generator/Makefile b/tools/hss-payload-generator/Makefile
+index 957fa76..c15aca4 100644
+--- a/tools/hss-payload-generator/Makefile
++++ b/tools/hss-payload-generator/Makefile
+@@ -96,7 +96,7 @@ all: $(TARGET)
+ 
+ $(TARGET): $(OBJS)
+ 	@$(ECHO) " LD        $@";
+-	$(CMD_PREFIX)$(CC) $(CFLAGS) -static -o $@ $(OBJS) $(LIBS)
++	$(CMD_PREFIX)$(CC) $(CFLAGS) $(LDFLAGS) -static -o $@ $(OBJS) $(LIBS)
+ 
+ README.docx: README.md
+ 	pandoc -o README.docx README.md
+-- 
+2.30.0
+
