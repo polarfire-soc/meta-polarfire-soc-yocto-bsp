@@ -151,7 +151,7 @@ It should also work with other Linux distributions if the equivalent prerequisit
 
 The BSP uses the Yocto RISCV Architecture Layer, and the Yocto release Dunfell (Revision 3.1)	(Released April 2020).
 
-**Make sure to install the [repo command](https://source.android.com/setup/build/downloading#installing-repo) by Google first.**
+**Make sure to install the [repo command](https://source.android.com/setup/develop#installing-repo) by Google first.**
 
 Detailed instructions for various distributions can be found in the "[Required Packages for the Build Host](https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#required-packages-for-the-build-host)" section in the Yocto Project Reference Manual.
 
