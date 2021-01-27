@@ -14,6 +14,8 @@ PV = "1.0+git${SRCPV}"
 BRANCH = "master"
 SRCREV="76b34dd0212425f9848eed41575db22cd829cecb"
 SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;branch=${BRANCH} \
+           file://0001-hss-payload-generator-Rename-EM_ARC_COMPACT2-to-EM_A.patch \
+           file://0002-hss-payload-generator-Respect-LDFLAGS-during-linking.patch \
            file://uboot.yaml \
           "
 
@@ -28,14 +30,17 @@ do_configure () {
 
 EXTRA_OEMAKE = "CC='${BUILD_CC}' CFLAGS='${BUILD_CFLAGS}' LDFLAGS='${BUILD_LDFLAGS}'"
 do_compile () {
-
 	## Adding u-boot as a payload
 	## Using hss-payload-generator application
-        oe_runmake -C ${S}/tools/hss-payload-generator
+	oe_runmake -C ${S}/tools/hss-payload-generator
 	${S}/tools/hss-payload-generator/hss-payload-generator -c ${S}/tools/hss-payload-generator/uboot.yaml -v payload.bin
 }
 
 do_install() {
+    :
+}
+
+do_deploy() {
 	install -d ${DEPLOY_DIR_IMAGE}
 	install -m 755 ${S}/payload.bin ${DEPLOY_DIR_IMAGE}/
 }
