@@ -21,6 +21,9 @@ SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;branch=${BR
 
 S = "${WORKDIR}/git"
 
+
+
+
 # NOTE: Only using the Payload generator from the HSS
 do_configure () {
 	## taking U-Boot binary and package for HSS
@@ -30,19 +33,14 @@ do_configure () {
 
 EXTRA_OEMAKE = "CC='${BUILD_CC}' CFLAGS='${BUILD_CFLAGS}' LDFLAGS='${BUILD_LDFLAGS}'"
 do_compile () {
+
 	## Adding u-boot as a payload
 	## Using hss-payload-generator application
-	oe_runmake -C ${S}/tools/hss-payload-generator
-	${S}/tools/hss-payload-generator/hss-payload-generator -c ${S}/tools/hss-payload-generator/uboot.yaml -v payload.bin
+	make -C ${WORKDIR}/git/tools/hss-payload-generator
+	${WORKDIR}/git/tools/hss-payload-generator/hss-payload-generator -c ${WORKDIR}/git/tools/hss-payload-generator/uboot.yaml -v payload.bin
 }
 
 do_install() {
-    :
-}
-
-do_deploy() {
 	install -d ${DEPLOY_DIR_IMAGE}
-	install -m 755 ${S}/payload.bin ${DEPLOY_DIR_IMAGE}/
+	install -m 755 ${WORKDIR}/git/payload.bin ${DEPLOY_DIR_IMAGE}/
 }
-
-addtask deploy after do_install
