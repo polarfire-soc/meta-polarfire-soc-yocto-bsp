@@ -18,11 +18,7 @@ SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;branch=${BR
            file://0002-hss-payload-generator-Respect-LDFLAGS-during-linking.patch \
            file://uboot.yaml \
           "
-
 S = "${WORKDIR}/git"
-
-
-
 
 # NOTE: Only using the Payload generator from the HSS
 do_configure () {
@@ -30,14 +26,13 @@ do_configure () {
 	cp -f ${DEPLOY_DIR_IMAGE}/u-boot.bin ${WORKDIR}/git/
 	cp -f ${WORKDIR}/uboot.yaml ${WORKDIR}/git/tools/hss-payload-generator/
 }
-
-EXTRA_OEMAKE += 'HOSTCC="${BUILD_CC} ${BUILD_CFLAGS} ${BUILD_LDFLAGS}"'
+EXTRA_OEMAKE = "CC='${BUILD_CC}' CFLAGS='${BUILD_CFLAGS}' LDFLAGS='${BUILD_LDFLAGS}'"
 do_compile () {
 
 	## Adding u-boot as a payload
 	## Using hss-payload-generator application
-	make -C ${WORKDIR}/git/tools/hss-payload-generator
-	${WORKDIR}/git/tools/hss-payload-generator/hss-payload-generator -c ${WORKDIR}/git/tools/hss-payload-generator/uboot.yaml -v payload.bin
+	oe_runmake -C ${S}/tools/hss-payload-generator
+	${S}/tools/hss-payload-generator/hss-payload-generator -c ${S}/tools/hss-payload-generator/uboot.yaml -v payload.bin
 }
 
 do_install() {
