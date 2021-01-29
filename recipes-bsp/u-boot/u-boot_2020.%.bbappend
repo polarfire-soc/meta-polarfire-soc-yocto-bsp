@@ -37,7 +37,7 @@ do_configure_prepend_mpfs() {
 
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
-            -d ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/boot.scr.uimg
+            -d ${WORKDIR}/${UBOOT_ENV}.txt ${B}/boot.scr.uimg
     fi
 }
 
@@ -47,7 +47,7 @@ do_configure_prepend_lc-mpfs() {
 
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
-            -d ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/boot.scr.uimg
+            -d ${WORKDIR}/${UBOOT_ENV}.txt ${B}/boot.scr.uimg
     fi
 }
 
@@ -55,7 +55,7 @@ do_configure_prepend_icicle-kit-es() {
     sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/${UBOOT_ENV}.txt
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
-            -d ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/boot.scr.uimg
+            -d ${WORKDIR}/${UBOOT_ENV}.txt ${B}/boot.scr.uimg
     fi
 }
 
@@ -63,25 +63,38 @@ do_configure_prepend_icicle-kit-es-sd() {
     sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/${UBOOT_ENV}.txt
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
-            -d ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/boot.scr.uimg
+            -d ${WORKDIR}/${UBOOT_ENV}.txt ${B}/boot.scr.uimg
     fi
+}
+
+do_install_append_mpfs() {
+    install -Dm 755 ${B}/boot.scr.uimg ${D}/boot/boot.scr.uimg
+}
+do_install_append_lc-mpfs() {
+    install -Dm 755 ${B}/boot.scr.uimg ${D}/boot/boot.scr.uimg
+}
+do_install_append_icicle-kit-es() {
+    install -Dm 755 ${B}/boot.scr.uimg ${D}/boot/boot.scr.uimg
+}
+do_install_append_icicle-kit-es-sd() {
+    install -Dm 755 ${B}/boot.scr.uimg ${D}/boot/boot.scr.uimg
 }
 
 do_deploy_append_mpfs() {
     install -d ${DEPLOY_DIR_IMAGE}
-    install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
+    install -m 755  ${D}/boot/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
 }
 do_deploy_append_lc-mpfs() {
     install -d ${DEPLOY_DIR_IMAGE}
-    install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
+    install -m 755 ${D}/boot/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
 }
 do_deploy_append_icicle-kit-es-sd() {
     install -d ${DEPLOY_DIR_IMAGE}
-    install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
+    install -m 755 ${D}/boot/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
 }
 do_deploy_append_icicle-kit-es() {
     install -d ${DEPLOY_DIR_IMAGE}
-    install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
+    install -m 755 ${D}/boot/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
 }
 
-FILES_${PN}_append = " /boot/boot.scr.uimg"
+FILES_${PN}-env += "/boot/boot.scr.uimg"
