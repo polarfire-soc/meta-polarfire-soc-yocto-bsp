@@ -28,6 +28,9 @@ IMAGE_INSTALL = "\
     sqlite3 \
     dtc \
     cmake \
+    tar \
+    wget \
+    zip \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     "
 
