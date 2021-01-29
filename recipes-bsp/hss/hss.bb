@@ -26,9 +26,9 @@ do_configure () {
 	cp -f ${DEPLOY_DIR_IMAGE}/u-boot.bin ${WORKDIR}/git/
 	cp -f ${WORKDIR}/uboot.yaml ${WORKDIR}/git/tools/hss-payload-generator/
 }
+
 EXTRA_OEMAKE = "CC='${BUILD_CC}' CFLAGS='${BUILD_CFLAGS}' LDFLAGS='${BUILD_LDFLAGS}'"
 do_compile () {
-
 	## Adding u-boot as a payload
 	## Using hss-payload-generator application
 	oe_runmake -C ${S}/tools/hss-payload-generator
@@ -36,6 +36,13 @@ do_compile () {
 }
 
 do_install() {
-	install -d ${DEPLOY_DIR_IMAGE}
-	install -m 755 ${WORKDIR}/git/payload.bin ${DEPLOY_DIR_IMAGE}/
+       :
 }
+
+do_deploy() {
+       install -d ${DEPLOY_DIR_IMAGE}
+       install -m 755 ${S}/payload.bin ${DEPLOY_DIR_IMAGE}/
+}
+
+addtask deploy after do_instal
+
