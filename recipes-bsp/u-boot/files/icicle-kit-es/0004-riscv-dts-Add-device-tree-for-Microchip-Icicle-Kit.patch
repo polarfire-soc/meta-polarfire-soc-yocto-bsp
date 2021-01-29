@@ -308,7 +308,7 @@ index 0000000000..67e797255b
 +			interrupts = <88>;
 +			pinctrl-names = "default";
 +			clocks = <&clkcfg CLK_MMC>;
-+			bus-width = <8>;
++			bus-width = <4>;
 +			disable-wp;
 +			cap-sd-highspeed;
 +			card-detect-delay = <200>;
