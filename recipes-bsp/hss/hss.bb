@@ -12,10 +12,8 @@ DEPENDS += "elfutils-native libyaml-native"
 
 PV = "1.0+git${SRCPV}"
 BRANCH = "master"
-SRCREV="76b34dd0212425f9848eed41575db22cd829cecb"
+SRCREV="58b03943834fe34991dc5fa924436b3620e07aa5"
 SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;branch=${BRANCH} \
-           file://0001-hss-payload-generator-Rename-EM_ARC_COMPACT2-to-EM_A.patch \
-           file://0002-hss-payload-generator-Respect-LDFLAGS-during-linking.patch \
            file://uboot.yaml \
           "
 S = "${WORKDIR}/git"
