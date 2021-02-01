@@ -4,7 +4,6 @@ DESCRIPTION = "HSS requires U-Boot to be packaged with header details applied wi
 LICENSE = "MIT & BSD-2-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE.md;md5=2dc9e752dd76827e3a4eebfd5b3c6226"
 
-inherit deploy native
 # Strict dependency
 do_configure[depends] += "u-boot:do_deploy"
 

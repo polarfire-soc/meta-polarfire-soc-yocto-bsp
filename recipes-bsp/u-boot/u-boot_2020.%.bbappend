@@ -67,34 +67,36 @@ do_configure_prepend_icicle-kit-es-sd() {
     fi
 }
 
-do_install_append_mpfs() {
-    install -Dm 755 ${B}/boot.scr.uimg ${D}/boot/boot.scr.uimg
-}
-do_install_append_lc-mpfs() {
-    install -Dm 755 ${B}/boot.scr.uimg ${D}/boot/boot.scr.uimg
-}
-do_install_append_icicle-kit-es() {
-    install -Dm 755 ${B}/boot.scr.uimg ${D}/boot/boot.scr.uimg
-}
-do_install_append_icicle-kit-es-sd() {
-    install -Dm 755 ${B}/boot.scr.uimg ${D}/boot/boot.scr.uimg
-}
-
 do_deploy_append_mpfs() {
-    install -d ${DEPLOY_DIR_IMAGE}
-    install -m 755  ${D}/boot/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
-}
-do_deploy_append_lc-mpfs() {
-    install -d ${DEPLOY_DIR_IMAGE}
-    install -m 755 ${D}/boot/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
-}
-do_deploy_append_icicle-kit-es-sd() {
-    install -d ${DEPLOY_DIR_IMAGE}
-    install -m 755 ${D}/boot/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
-}
-do_deploy_append_icicle-kit-es() {
-    install -d ${DEPLOY_DIR_IMAGE}
-    install -m 755 ${D}/boot/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
+    if [ -f "${WORKDIR}/boot.scr.uimg" ]; then
+        install -d ${DEPLOY_DIR_IMAGE}
+        install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
+    fi
 }
 
-FILES_${PN}-env += "/boot/boot.scr.uimg"
+do_deploy_append_lc-mpfs() {
+    if [ -f "${WORKDIR}/boot.scr.uimg" ]; then
+        install -d ${DEPLOY_DIR_IMAGE}
+        install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
+    fi
+}
+
+do_deploy_append_icicle-kit-es() {
+    if [ -f "${WORKDIR}/boot.scr.uimg" ]; then
+        install -d ${DEPLOY_DIR_IMAGE}
+        install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
+    fi
+}
+
+do_deploy_append_icicle-kit-es-sd() {
+    if [ -f "${WORKDIR}/boot.scr.uimg" ]; then
+        install -d ${DEPLOY_DIR_IMAGE}
+        install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
+    fi
+}
+
+FILES_${PN}_append_icicle-kit-es = " /boot/boot.scr.uimg"
+FILES_${PN}_append_icicle-kit-es-sd = " /boot/boot.scr.uimg"
+FILES_${PN}_append_mpfs = " /boot/boot.scr.uimg"
+FILES_${PN}_append_lc-mpfs = " /boot/boot.scr.uimg"
+
