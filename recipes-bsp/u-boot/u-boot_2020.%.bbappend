@@ -37,7 +37,7 @@ do_configure_prepend_mpfs() {
 
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
-            -d ${WORKDIR}/${UBOOT_ENV}.txt ${B}/boot.scr.uimg
+            -d ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/boot.scr.uimg
     fi
 }
 
@@ -47,15 +47,15 @@ do_configure_prepend_lc-mpfs() {
 
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
-            -d ${WORKDIR}/${UBOOT_ENV}.txt ${B}/boot.scr.uimg
+            -d ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/boot.scr.uimg
     fi
 }
 
 do_configure_prepend_icicle-kit-es() {
     sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/${UBOOT_ENV}.txt
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
-        mkimage -O linux -T script -C none -n "U-Boot boot script" \
-            -d ${WORKDIR}/${UBOOT_ENV}.txt ${B}/boot.scr.uimg
+        mkimage -O linux -T script  -C none -n "U-Boot boot script" \
+            -d ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/boot.scr.uimg
     fi
 }
 
@@ -63,9 +63,10 @@ do_configure_prepend_icicle-kit-es-sd() {
     sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/${UBOOT_ENV}.txt
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
-            -d ${WORKDIR}/${UBOOT_ENV}.txt ${B}/boot.scr.uimg
+            -d ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/boot.scr.uimg
     fi
 }
+
 
 do_deploy_append_mpfs() {
     if [ -f "${WORKDIR}/boot.scr.uimg" ]; then
@@ -73,7 +74,6 @@ do_deploy_append_mpfs() {
         install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOY_DIR_IMAGE}
     fi
 }
-
 do_deploy_append_lc-mpfs() {
     if [ -f "${WORKDIR}/boot.scr.uimg" ]; then
         install -d ${DEPLOY_DIR_IMAGE}
@@ -95,8 +95,4 @@ do_deploy_append_icicle-kit-es-sd() {
     fi
 }
 
-FILES_${PN}_append_icicle-kit-es = " /boot/boot.scr.uimg"
-FILES_${PN}_append_icicle-kit-es-sd = " /boot/boot.scr.uimg"
-FILES_${PN}_append_mpfs = " /boot/boot.scr.uimg"
-FILES_${PN}_append_lc-mpfs = " /boot/boot.scr.uimg"
-
+FILES_${PN}-env += "/boot/boot.scr.uimg"
