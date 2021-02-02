@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.md;md5=2dc9e752dd76827e3a4eebfd5b3c6226"
 # Strict dependency
 do_configure[depends] += "u-boot:do_deploy"
 
-DEPENDS += "elfutils-native libyaml-native"
+DEPENDS += "elfutils libyaml"
 
 PV = "1.0+git${SRCPV}"
 BRANCH = "master"
