@@ -24,16 +24,16 @@ do_compile() {
   :
 }
 
-
 INSANE_SKIP_${PN} += "file-rdeps"
 
 do_install() {
     install -d ${D}/opt/microchip
-    install -d ${D}/opt/microchip/iiohttpserver
     chmod a+x ${D}/opt/microchip
 
     cp -rfd ${S}/* ${D}/opt/microchip/
-    ln -s ${D}/opt/microchip/ethernet/iio-http-server ${D}/opt/microchip/iiohttpserver
+    ## Symbolic Link for iiohttpserver
+    lnr ${D}/opt/microchip/ethernet/iio-http-server ${D}/opt/microchip/iiohttpserver
+    
     rm -f ${D}/opt/microchip/.git
     rm -f ${D}/opt/microchip/Jenkinsfile
     ## Install the iio-http-server

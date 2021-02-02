@@ -162,12 +162,6 @@ For Ubuntu 18.04 (or newer) install python3-distutils:
 ```
 sudo apt install python3-distutils
 ```
-HSS Payload Generator uses libelf and libyaml, as well as zlib (a dependency of libelf).
-
-```
-sudo apt-get install libyaml-dev
-sudo apt-get install libelf-dev
-```
 
 ## Additional Reading
 
