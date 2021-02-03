@@ -260,7 +260,7 @@ index 0000000000..67e797255b
 +			interrupts = <90>;
 +			clock-frequency = <150000000>;
 +			clocks = <&clkcfg CLK_MMUART0>;
-+			status = "okay";
++			status = "disabled"; /* Reserved for the HSS */
 +		};
 +		refclk: refclk {
 +			compatible = "fixed-clock";

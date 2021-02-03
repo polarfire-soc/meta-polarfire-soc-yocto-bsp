@@ -484,7 +484,7 @@ index 0000000000..74faf61f2c
 +	CLK_PERIPH(CLK_MAC1, "clk_periph_mac1", 2, 0),
 +	CLK_PERIPH(CLK_MMC, "clk_periph_mmc", 3, 0),
 +	CLK_PERIPH(CLK_TIMER, "clk_periph_timer", 4, 0),
-+	CLK_PERIPH(CLK_MMUART0, "clk_periph_mmuart0", 5, 0),
++	CLK_PERIPH(CLK_MMUART0, "clk_periph_mmuart0", 5, CLK_IS_CRITICAL),
 +	CLK_PERIPH(CLK_MMUART1, "clk_periph_mmuart1", 6, 0),
 +	CLK_PERIPH(CLK_MMUART2, "clk_periph_mmuart2", 7, 0),
 +	CLK_PERIPH(CLK_MMUART3, "clk_periph_mmuart3", 8, 0),
