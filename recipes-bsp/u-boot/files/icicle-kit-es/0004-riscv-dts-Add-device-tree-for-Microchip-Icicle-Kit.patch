@@ -46,12 +46,12 @@ index 0000000000..67e797255b
 +	compatible = "microchip,polarfire-soc";
 +
 +	aliases {
-+		serial0 = &uart0;
++		serial1 = &uart1;
 +		ethernet0 = &emac1;
 +	};
 +
 +	chosen {
-+		stdout-path = "serial0";
++		stdout-path = "serial1";
 +	};
 +
 +	cpucomplex: cpus {
@@ -339,7 +339,7 @@ index 0000000000..67e797255b
 +			interrupts = <92>;
 +			clock-frequency = <150000000>;
 +			clocks = <&clkcfg CLK_MMUART2>;
-+			status = "okay";
++			status = "disabled";
 +		};
 +		uart3: serial@20104000 {
 +			compatible = "ns16550a";
@@ -350,7 +350,7 @@ index 0000000000..67e797255b
 +			interrupts = <93>;
 +			clock-frequency = <150000000>;
 +			clocks = <&clkcfg CLK_MMUART3>;
-+			status = "okay";
++			status = "disabled";
 +		};
 +		i2c0: i2c@02010a000 {
 +			#address-cells = <1>;
