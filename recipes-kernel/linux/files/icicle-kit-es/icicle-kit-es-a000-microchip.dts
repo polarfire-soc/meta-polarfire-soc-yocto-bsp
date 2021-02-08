@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: (GPL-2.0 OR MIT)
 /* Copyright (c) 2019-2020 Microchip Technology Inc */
 /dts-v1/;
-#include "dt-bindings/clock/microchip,pfsoc-clock.h"
+#include "dt-bindings/clock/microchip,mpfs-clock.h"
 / {
 	#address-cells = <2>;
 	#size-cells = <2>;
@@ -172,7 +172,7 @@
 			clock-output-names = "msspllclk";
 		};
 		clkcfg: clkcfg@20002000 {
-			compatible = "microchip,pfsoc-clkcfg";
+			compatible = "microchip,mpfs-clkcfg";
 			reg = <0x0 0x20002000 0x0 0x1000>;
 			reg-names = "mss_sysreg";
 			clocks = <&refclk>;
