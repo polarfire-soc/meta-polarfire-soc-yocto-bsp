@@ -154,7 +154,7 @@
 			#interrupt-cells = <1>;
 			compatible = "sifive,plic-1.0.0";
 			reg = <0x0 0xc000000 0x0 0x4000000>;
-			riscv,ndev = <53>;
+			riscv,ndev = <186>;
 			interrupt-controller;
 			interrupts-extended = <&L4 11 &L9 11 &L9 9 &L13 11 &L13 9 &L17 11 &L17 9 &L21 11 &L21 9>;
 		};
