@@ -1,4 +1,4 @@
-From 78c0912c50c85af49fbe2ada50500e12f8c9ba08 Mon Sep 17 00:00:00 2001
+From 16580398e80fe7d321511bb81c2d979d5b0d82db Mon Sep 17 00:00:00 2001
 From: Daire McNamara <daire.mcnamara@microchip.com>
 Date: Tue, 2 Feb 2021 08:57:16 +0000
 Subject: [PATCH v1 1/2] dt-bindings: rtc: microchip: Add Microchip PolarFire

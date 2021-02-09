@@ -1,4 +1,4 @@
-From d555aa85a9dc461eb77d75ef8b4cb290eca05800 Mon Sep 17 00:00:00 2001
+From 49e9ddae40e830e2bfbbad09da1c3307dae0a717 Mon Sep 17 00:00:00 2001
 From: Daire McNamara <daire.mcnamara@microchip.com>
 Date: Fri, 29 Jan 2021 13:44:09 +0000
 Subject: [PATCH v1 2/2] rtc: microchip: Add driver for Microchip PolarFire SoC
@@ -14,10 +14,10 @@ Signed-off-by: Daire McNamara <daire.mcnamara@microchip.com>
  create mode 100644 drivers/rtc/rtc-mpfs.c
 
 diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
-index 6123f9f4fbc9..ccd8810779f3 100644
+index 8e503881d9d6..be341d3df664 100644
 --- a/drivers/rtc/Kconfig
 +++ b/drivers/rtc/Kconfig
-@@ -1692,6 +1692,13 @@ config RTC_DRV_MPC5121
+@@ -1669,6 +1669,13 @@ config RTC_DRV_MPC5121
  	  This driver can also be built as a module. If so, the module
  	  will be called rtc-mpc5121.
  
@@ -32,20 +32,20 @@ index 6123f9f4fbc9..ccd8810779f3 100644
  	tristate "Ingenic JZ4740 SoC"
  	depends on MIPS || COMPILE_TEST
 diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
-index bb8f319b09fb..88bb03b2d0fd 100644
+index 4ac8f19fb631..670bc50b7506 100644
 --- a/drivers/rtc/Makefile
 +++ b/drivers/rtc/Makefile
-@@ -103,6 +103,7 @@ obj-$(CONFIG_RTC_DRV_MCP795)	+= rtc-mcp795.o
+@@ -109,6 +109,7 @@ obj-$(CONFIG_RTC_DRV_MCP795)	+= rtc-mcp795.o
  obj-$(CONFIG_RTC_DRV_MESON)	+= rtc-meson.o
  obj-$(CONFIG_RTC_DRV_MOXART)	+= rtc-moxart.o
  obj-$(CONFIG_RTC_DRV_MPC5121)	+= rtc-mpc5121.o
 +obj-$(CONFIG_RTC_DRV_MPFS)	+= rtc-mpfs.o
  obj-$(CONFIG_RTC_DRV_MSM6242)	+= rtc-msm6242.o
- obj-$(CONFIG_RTC_DRV_MT2712)	+= rtc-mt2712.o
  obj-$(CONFIG_RTC_DRV_MT6397)	+= rtc-mt6397.o
+ obj-$(CONFIG_RTC_DRV_MT7622)	+= rtc-mt7622.o
 diff --git a/drivers/rtc/rtc-mpfs.c b/drivers/rtc/rtc-mpfs.c
 new file mode 100644
-index 000000000000..9a311af014f8
+index 000000000000..34a64cce5a7a
 --- /dev/null
 +++ b/drivers/rtc/rtc-mpfs.c
 @@ -0,0 +1,449 @@
@@ -435,7 +435,7 @@ index 000000000000..9a311af014f8
 +
 +	device_init_wakeup(&pdev->dev, 1);
 +
-+	return devm_rtc_register_device(rtcdev->rtc);
++	return rtc_register_device(rtcdev->rtc);
 +}
 +
 +static int mpfs_rtc_remove(struct platform_device *pdev)
