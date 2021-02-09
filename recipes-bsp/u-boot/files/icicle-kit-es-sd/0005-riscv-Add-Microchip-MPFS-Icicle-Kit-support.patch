@@ -17,8 +17,6 @@ Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
  include/configs/microchip_mpfs_icicle.h   | 61 +++++---------
  4 files changed, 146 insertions(+), 46 deletions(-)
 
-diff --git a/board/microchip/mpfs_icicle/Kconfig b/board/microchip/mpfs_icicle/Kconfig
-index bf8e1a13ec..f4e705a07b 100644
 --- a/board/microchip/mpfs_icicle/Kconfig
 +++ b/board/microchip/mpfs_icicle/Kconfig
 @@ -20,7 +20,31 @@ config BOARD_SPECIFIC_OPTIONS # dummy
@@ -53,8 +51,6 @@ index bf8e1a13ec..f4e705a07b 100644
 +	imply MMC_SDHCI_CADENCE
  
  endif
-diff --git a/board/microchip/mpfs_icicle/mpfs_icicle.c b/board/microchip/mpfs_icicle/mpfs_icicle.c
-index 8381361ec3..420ea25ac2 100644
 --- a/board/microchip/mpfs_icicle/mpfs_icicle.c
 +++ b/board/microchip/mpfs_icicle/mpfs_icicle.c
 @@ -6,10 +6,47 @@
@@ -173,14 +169,12 @@ index 8381361ec3..420ea25ac2 100644
 +
 +	return 0;
 +}
-diff --git a/configs/microchip_mpfs_icicle_defconfig b/configs/microchip_mpfs_icicle_defconfig
-index 45edb41876..9abbc18a89 100644
 --- a/configs/microchip_mpfs_icicle_defconfig
 +++ b/configs/microchip_mpfs_icicle_defconfig
-@@ -2,10 +2,14 @@ CONFIG_RISCV=y
+@@ -1,12 +1,15 @@
+ CONFIG_RISCV=y
  CONFIG_ENV_SIZE=0x2000
  CONFIG_TARGET_MICROCHIP_ICICLE=y
- CONFIG_ARCH_RV64I=y
 -CONFIG_NR_CPUS=5
 +CONFIG_RISCV_SMODE=y
 +CONFIG_SBI_V01=y
@@ -188,47 +182,40 @@ index 45edb41876..9abbc18a89 100644
 +CONFIG_DISTRO_DEFAULTS=y
 +CONFIG_DISPLAY_CPUINFO=y
 +CONFIG_DISPLAY_BOARDINFO=y
+ CONFIG_ARCH_RV64I=y
  CONFIG_FIT=y
 -CONFIG_BOOTDELAY=3
  CONFIG_SYS_PROMPT="RISC-V # "
 -CONFIG_OF_PRIOR_STAGE=y
  CONFIG_SYS_RELOC_GD_ENV_ADDR=y
-+CONFIG_BOOTP_SEND_HOSTNAME=y
+ CONFIG_BOOTP_SEND_HOSTNAME=y
  CONFIG_DM_MTD=y
-diff --git a/include/configs/microchip_mpfs_icicle.h b/include/configs/microchip_mpfs_icicle.h
-index 8ddfc6f14d..97547057b9 100644
 --- a/include/configs/microchip_mpfs_icicle.h
 +++ b/include/configs/microchip_mpfs_icicle.h
-@@ -7,54 +7,35 @@
+@@ -7,53 +7,35 @@
  #ifndef __CONFIG_H
  #define __CONFIG_H
  
 -/*
 - * CPU and Board Configuration Options
 - */
--#define CONFIG_BOOTP_SEND_HOSTNAME
-+#include <linux/sizes.h>
- 
+-
 -/*
 - * Miscellaneous configurable options
 - */
 -#define CONFIG_SYS_CBSIZE	1024 /* Console I/O Buffer Size */
-+#define CONFIG_SYS_SDRAM_BASE       0x80000000
-+#define CONFIG_SYS_INIT_SP_ADDR     (CONFIG_SYS_SDRAM_BASE + SZ_2M)
- 
+-
 -/*
 - * Print Buffer Size
 - */
 -#define CONFIG_SYS_PBSIZE	\
 -	(CONFIG_SYS_CBSIZE + sizeof(CONFIG_SYS_PROMPT) + 16)
-+#define CONFIG_SYS_LOAD_ADDR        (CONFIG_SYS_SDRAM_BASE + SZ_2M)
- 
+-
 -/*
 - * max number of command args
 - */
 -#define CONFIG_SYS_MAXARGS	16
-+#define CONFIG_SYS_MALLOC_LEN       SZ_8M
- 
+-
 -/*
 - * Boot Argument Buffer Size
 - */
@@ -239,42 +226,52 @@ index 8ddfc6f14d..97547057b9 100644
 - * 512kB is suggested, (CONFIG_ENV_SIZE + 128 * 1024) was not enough
 - */
 -#define CONFIG_SYS_MALLOC_LEN	(512 << 10)
-+#define CONFIG_SYS_BOOTM_LEN        SZ_64M
- 
+-
 -/*
 - * Physical Memory Map
 - */
 -#define PHYS_SDRAM_0		0x80000000 /* SDRAM Bank #1 */
 -#define PHYS_SDRAM_0_SIZE	0x40000000 /* 1 GB */
 -#define CONFIG_SYS_SDRAM_BASE	PHYS_SDRAM_0
-+#define CONFIG_STANDALONE_LOAD_ADDR 0x80200000
- 
+-
 -/* Init Stack Pointer */
 -#define CONFIG_SYS_INIT_SP_ADDR	(CONFIG_SYS_SDRAM_BASE + 0x200000)
-+/* Environment options */
- 
+-
 -#define CONFIG_SYS_LOAD_ADDR	0x80000000 /* SDRAM */
-+#define BOOT_TARGET_DEVICES(func) \
-+	func(MMC, mmc, 0) \
-+	func(DHCP, dhcp, na)
- 
+-
 -/*
 - * memtest works on DRAM
 - */
-+#include <config_distro_bootcmd.h>
++#include <linux/sizes.h>
  
 -/* When we use RAM as ENV */
++#define CONFIG_SYS_SDRAM_BASE       0x80000000
++#define CONFIG_SYS_INIT_SP_ADDR     (CONFIG_SYS_SDRAM_BASE + SZ_2M)
++
++#define CONFIG_SYS_LOAD_ADDR        (CONFIG_SYS_SDRAM_BASE + SZ_2M)
++
++#define CONFIG_SYS_MALLOC_LEN       SZ_8M
++
++#define CONFIG_SYS_BOOTM_LEN        SZ_64M
++
++#define CONFIG_STANDALONE_LOAD_ADDR 0x80200000
++
++/* Environment options */
++
++#define BOOT_TARGET_DEVICES(func) \
++       func(MMC, mmc, 0) \
++       func(DHCP, dhcp, na)
++
++#include <config_distro_bootcmd.h>
++
 +#define CONFIG_EXTRA_ENV_SETTINGS \
-+	"fdt_high=0xffffffffffffffff\0" \
-+	"initrd_high=0xffffffffffffffff\0" \
-+	"kernel_addr_r=0x84000000\0" \
-+	"fdt_addr_r=0x88000000\0" \
-+	"scriptaddr=0x88100000\0" \
-+	"pxefile_addr_r=0x88200000\0" \
-+	"ramdisk_addr_r=0x88300000\0" \
-+	BOOTENV
++       "fdt_high=0xffffffffffffffff\0" \
++       "initrd_high=0xffffffffffffffff\0" \
++       "kernel_addr_r=0x84000000\0" \
++       "fdt_addr_r=0x88000000\0" \
++       "scriptaddr=0x88100000\0" \
++       "pxefile_addr_r=0x88200000\0" \
++       "ramdisk_addr_r=0x88300000\0" \
++       BOOTENV
  
  #endif /* __CONFIG_H */
--- 
-2.17.1
-

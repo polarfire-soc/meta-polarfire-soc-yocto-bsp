@@ -12,21 +12,6 @@ Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
  2 files changed, 422 insertions(+)
  create mode 100644 arch/riscv/dts/microchip-mpfs-icicle-kit.dts
 
-diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
-index 4f30e6936f..a8ddc7d162 100644
---- a/arch/riscv/dts/Makefile
-+++ b/arch/riscv/dts/Makefile
-@@ -2,6 +2,7 @@
- 
- dtb-$(CONFIG_TARGET_AX25_AE350) += ae350_32.dtb ae350_64.dtb
- dtb-$(CONFIG_TARGET_SIFIVE_FU540) += hifive-unleashed-a00.dtb
-+dtb-$(CONFIG_TARGET_MICROCHIP_ICICLE) += microchip-mpfs-icicle-kit.dtb
- 
- targets += $(dtb-y)
- 
-diff --git a/arch/riscv/dts/microchip-mpfs-icicle-kit.dts b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
-new file mode 100644
-index 0000000000..67e797255b
 --- /dev/null
 +++ b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
 @@ -0,0 +1,421 @@
@@ -451,6 +436,13 @@ index 0000000000..67e797255b
 +		};
 +	};
 +};
--- 
-2.17.1
-
+--- a/arch/riscv/dts/Makefile
++++ b/arch/riscv/dts/Makefile
+@@ -3,6 +3,7 @@
+ dtb-$(CONFIG_TARGET_AX25_AE350) += ae350_32.dtb ae350_64.dtb
+ dtb-$(CONFIG_TARGET_SIFIVE_FU540) += hifive-unleashed-a00.dtb
+ dtb-$(CONFIG_TARGET_SIPEED_MAIX) += k210-maix-bit.dtb
++dtb-$(CONFIG_TARGET_MICROCHIP_ICICLE) += microchip-mpfs-icicle-kit.dtb
+ 
+ targets += $(dtb-y)
+ 
