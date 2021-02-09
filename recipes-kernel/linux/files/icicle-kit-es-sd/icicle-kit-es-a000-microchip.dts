@@ -281,6 +281,16 @@
 				ti,fifo-depth = <0x01>;
 			};
 		};
+		rtc: rtc@20124000 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "microchip,mpfs-rtc";
+			reg = <0x0 0x20124000 0x0 0x1000>;
+			interrupt-parent = <&L1>;
+			interrupts = <80 81>;
+			clocks = <&clkcfg CLK_RTC>;
+			clock-names = "rtc";
+		};
 		pcie: pcie@70000000 {
 			#address-cells = <0x3>;
 			#interrupt-cells = <0x1>;
