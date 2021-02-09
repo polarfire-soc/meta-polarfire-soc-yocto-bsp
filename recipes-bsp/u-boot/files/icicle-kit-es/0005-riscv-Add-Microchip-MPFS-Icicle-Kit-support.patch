@@ -1,6 +1,6 @@
-From 2ec665a74193a95fbfdec66f6771dc0a27a82a0a Mon Sep 17 00:00:00 2001
+From a00df21db42d2fa48f0239ccd28837fe0d235dcb Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Tue, 10 Nov 2020 16:41:13 +0530
+Date: Mon, 7 Dec 2020 15:41:33 +0530
 Subject: [PATCH 5/5] riscv: Add Microchip MPFS Icicle Kit support
 
 This patch adds Microchip MPFS Icicle Kit support. For now, only
@@ -13,9 +13,9 @@ Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
 ---
  board/microchip/mpfs_icicle/Kconfig       | 24 ++++++
  board/microchip/mpfs_icicle/mpfs_icicle.c | 97 ++++++++++++++++++++++-
- configs/microchip_mpfs_icicle_defconfig   | 10 ++-
- include/configs/microchip_mpfs_icicle.h   | 61 +++++---------
- 4 files changed, 146 insertions(+), 46 deletions(-)
+ configs/microchip_mpfs_icicle_defconfig   |  9 ++-
+ include/configs/microchip_mpfs_icicle.h   | 60 +++++---------
+ 4 files changed, 145 insertions(+), 45 deletions(-)
 
 diff --git a/board/microchip/mpfs_icicle/Kconfig b/board/microchip/mpfs_icicle/Kconfig
 index bf8e1a13ec..f4e705a07b 100644
@@ -174,16 +174,17 @@ index 8381361ec3..420ea25ac2 100644
 +	return 0;
 +}
 diff --git a/configs/microchip_mpfs_icicle_defconfig b/configs/microchip_mpfs_icicle_defconfig
-index 45edb41876..9abbc18a89 100644
+index 2977966473..0aec149810 100644
 --- a/configs/microchip_mpfs_icicle_defconfig
 +++ b/configs/microchip_mpfs_icicle_defconfig
-@@ -2,10 +2,14 @@ CONFIG_RISCV=y
+@@ -1,12 +1,15 @@
+ CONFIG_RISCV=y
  CONFIG_ENV_SIZE=0x2000
  CONFIG_TARGET_MICROCHIP_ICICLE=y
- CONFIG_ARCH_RV64I=y
 -CONFIG_NR_CPUS=5
+ CONFIG_ARCH_RV64I=y
 +CONFIG_RISCV_SMODE=y
-+CONFIG_SBI_V01=y
++# CONFIG_SBI_V01=y
 +CONFIG_DEFAULT_DEVICE_TREE="microchip-mpfs-icicle-kit"
 +CONFIG_DISTRO_DEFAULTS=y
 +CONFIG_DISPLAY_CPUINFO=y
@@ -193,20 +194,19 @@ index 45edb41876..9abbc18a89 100644
  CONFIG_SYS_PROMPT="RISC-V # "
 -CONFIG_OF_PRIOR_STAGE=y
  CONFIG_SYS_RELOC_GD_ENV_ADDR=y
-+CONFIG_BOOTP_SEND_HOSTNAME=y
+ CONFIG_BOOTP_SEND_HOSTNAME=y
  CONFIG_DM_MTD=y
 diff --git a/include/configs/microchip_mpfs_icicle.h b/include/configs/microchip_mpfs_icicle.h
-index 8ddfc6f14d..97547057b9 100644
+index 8a7470545b..97547057b9 100644
 --- a/include/configs/microchip_mpfs_icicle.h
 +++ b/include/configs/microchip_mpfs_icicle.h
-@@ -7,54 +7,35 @@
+@@ -7,53 +7,35 @@
  #ifndef __CONFIG_H
  #define __CONFIG_H
  
 -/*
 - * CPU and Board Configuration Options
 - */
--#define CONFIG_BOOTP_SEND_HOSTNAME
 +#include <linux/sizes.h>
  
 -/*

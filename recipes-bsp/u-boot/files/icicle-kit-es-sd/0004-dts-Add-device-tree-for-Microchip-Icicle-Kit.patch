@@ -1,40 +1,62 @@
-From 86c94e30de03d4c77b313eef3a916d7f46d77c5a Mon Sep 17 00:00:00 2001
+From 32068118f653a4e3dd567aec41b1f8a0a6c60d74 Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Tue, 10 Nov 2020 16:36:25 +0530
-Subject: [PATCH 4/5] riscv: dts: Add device tree for Microchip Icicle Kit
+Date: Mon, 7 Dec 2020 15:36:13 +0530
+Subject: [PATCH 4/5] dts: Add device tree for Microchip Icicle Kit
 
 Add device tree for Microchip PolarFire SoC Icicle Kit.
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
 ---
- arch/riscv/dts/Makefile                      |   1 +
- arch/riscv/dts/microchip-mpfs-icicle-kit.dts | 421 +++++++++++++++++++
- 2 files changed, 422 insertions(+)
+ arch/riscv/dts/Makefile                       |   1 +
+ .../dts/microchip-mpfs-icicle-kit-u-boot.dtsi |  14 +
+ arch/riscv/dts/microchip-mpfs-icicle-kit.dts  | 421 ++++++++++++++++++
+ 3 files changed, 436 insertions(+)
+ create mode 100644 arch/riscv/dts/microchip-mpfs-icicle-kit-u-boot.dtsi
  create mode 100644 arch/riscv/dts/microchip-mpfs-icicle-kit.dts
 
 diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
-index 4f30e6936f..a8ddc7d162 100644
+index 3a6f96c67d..01331b0aa1 100644
 --- a/arch/riscv/dts/Makefile
 +++ b/arch/riscv/dts/Makefile
-@@ -2,6 +2,7 @@
- 
+@@ -3,6 +3,7 @@
  dtb-$(CONFIG_TARGET_AX25_AE350) += ae350_32.dtb ae350_64.dtb
  dtb-$(CONFIG_TARGET_SIFIVE_FU540) += hifive-unleashed-a00.dtb
+ dtb-$(CONFIG_TARGET_SIPEED_MAIX) += k210-maix-bit.dtb
 +dtb-$(CONFIG_TARGET_MICROCHIP_ICICLE) += microchip-mpfs-icicle-kit.dtb
  
  targets += $(dtb-y)
  
+diff --git a/arch/riscv/dts/microchip-mpfs-icicle-kit-u-boot.dtsi b/arch/riscv/dts/microchip-mpfs-icicle-kit-u-boot.dtsi
+new file mode 100644
+index 0000000000..f60283fb6b
+--- /dev/null
++++ b/arch/riscv/dts/microchip-mpfs-icicle-kit-u-boot.dtsi
+@@ -0,0 +1,14 @@
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++/*
++ * Copyright (C) 2020 Microchip Technology Inc.
++ * Padmarao Begari <padmarao.begari@microchip.com>
++ */
++
++/ {
++	aliases {
++		cpu1 = &cpu1;
++		cpu2 = &cpu2;
++		cpu3 = &cpu3;
++		cpu4 = &cpu4;
++	};
++};
 diff --git a/arch/riscv/dts/microchip-mpfs-icicle-kit.dts b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
 new file mode 100644
-index 0000000000..67e797255b
+index 0000000000..f5478bf201
 --- /dev/null
 +++ b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
 @@ -0,0 +1,421 @@
-+// SPDX-License-Identifier: GPL-2.0+
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
 +/* Copyright (c) 2020 Microchip Technology Inc */
 +
 +/dts-v1/;
-+#include "dt-bindings/clock/microchip,pfsoc-clock.h"
++#include "dt-bindings/clock/microchip,mpfs-clock.h"
 +
 +/* Clock frequency (in Hz) of the rtcclk */
 +#define RTCCLK_FREQ		1000000
@@ -42,16 +64,16 @@ index 0000000000..67e797255b
 +/ {
 +	#address-cells = <2>;
 +	#size-cells = <2>;
-+	model = "Microchip PolarFire-SoC";
-+	compatible = "microchip,polarfire-soc";
++	model = "Microchip MPFS Icicle Kit";
++	compatible = "microchip,mpfs-icicle-kit";
 +
 +	aliases {
-+		serial1 = &uart1;
++		serial0 = &uart0;
 +		ethernet0 = &emac1;
 +	};
 +
 +	chosen {
-+		stdout-path = "serial1";
++		stdout-path = "serial0";
 +	};
 +
 +	cpucomplex: cpus {
@@ -213,7 +235,7 @@ index 0000000000..67e797255b
 +	soc: soc {
 +		#address-cells = <2>;
 +		#size-cells = <2>;
-+		compatible = "microchip,polarfire-soc", "simple-bus";
++		compatible = "microchip,mpfs-icicle-kit", "simple-bus";
 +		ranges;
 +		clint0: clint@2000000 {
 +			compatible = "riscv,clint0";
@@ -260,7 +282,7 @@ index 0000000000..67e797255b
 +			interrupts = <90>;
 +			clock-frequency = <150000000>;
 +			clocks = <&clkcfg CLK_MMUART0>;
-+			status = "disabled"; /* Reserved for the HSS */
++			status = "okay";
 +		};
 +		refclk: refclk {
 +			compatible = "fixed-clock";
@@ -269,7 +291,7 @@ index 0000000000..67e797255b
 +			clock-output-names = "msspllclk";
 +		};
 +		clkcfg: clkcfg@20002000 {
-+			compatible = "microchip,pfsoc-clkcfg";
++			compatible = "microchip,mpfs-clkcfg";
 +			reg = <0x0 0x20002000 0x0 0x1000>;
 +			reg-names = "mss_sysreg";
 +			clocks = <&refclk>;
@@ -291,7 +313,7 @@ index 0000000000..67e797255b
 +			interrupts = <88 89>;
 +			pinctrl-names = "default";
 +			clocks = <&clkcfg CLK_MMC>;
-+			bus-width = <8>;
++			bus-width = <4>;
 +			cap-mmc-highspeed;
 +			mmc-ddr-3_3v;
 +			max-frequency = <200000000>;
@@ -339,7 +361,7 @@ index 0000000000..67e797255b
 +			interrupts = <92>;
 +			clock-frequency = <150000000>;
 +			clocks = <&clkcfg CLK_MMUART2>;
-+			status = "disabled";
++			status = "okay";
 +		};
 +		uart3: serial@20104000 {
 +			compatible = "ns16550a";
@@ -350,12 +372,12 @@ index 0000000000..67e797255b
 +			interrupts = <93>;
 +			clock-frequency = <150000000>;
 +			clocks = <&clkcfg CLK_MMUART3>;
-+			status = "disabled";
++			status = "okay";
 +		};
 +		i2c0: i2c@02010a000 {
 +			#address-cells = <1>;
 +			#size-cells = <0>;
-+			compatible = "microsemi,ms-pf-mss-i2c";
++			compatible = "microchip,mpfs-mss-i2c";
 +			reg = <0x0 0x2010a000 0x0 0x1000>;
 +			interrupt-parent = <&plic>;
 +			interrupts = <58>;
@@ -365,7 +387,7 @@ index 0000000000..67e797255b
 +		i2c1: i2c@02010b000 {
 +			#address-cells = <1>;
 +			#size-cells = <0>;
-+			compatible = "microsemi,ms-pf-mss-i2c";
++			compatible = "microchip,mpfs-mss-i2c";
 +			reg = <0x0 0x2010b000 0x0 0x1000>;
 +			interrupt-parent = <&plic>;
 +			interrupts = <61>;
@@ -399,11 +421,11 @@ index 0000000000..67e797255b
 +			};
 +		};
 +		emac0: ethernet@20110000 {
-+			compatible = "cdns,macb";
++			compatible = "microchip,mpfs-mss-gem";
 +			reg = <0x0 0x20110000 0x0 0x2000>;
 +			interrupt-parent = <&plic>;
 +			interrupts = <64 65 66 67>;
-+			local-mac-address = [00 00 00 00 00 00];
++			local-mac-address = [56 34 00 FC 00 02];
 +			phy-mode = "sgmii";
 +			clocks = <&clkcfg CLK_MAC0>, <&clkcfg CLK_AXI>;
 +			clock-names = "pclk", "hclk";
@@ -418,7 +440,7 @@ index 0000000000..67e797255b
 +			};
 +		};
 +		emac1: ethernet@20112000 {
-+			compatible = "cdns,macb";
++			compatible = "microchip,mpfs-mss-gem";
 +			reg = <0x0 0x20112000 0x0 0x2000>;
 +			interrupt-parent = <&plic>;
 +			interrupts = <70 71 72 73>;
@@ -437,7 +459,7 @@ index 0000000000..67e797255b
 +			};
 +		};
 +		gpio: gpio@0x20122000 {
-+			compatible = "microsemi,ms-pf-mss-gpio";
++			compatible = "microchip,mpfs-mss-gpio";
 +			interrupt-parent = <&plic>;
 +			interrupts = <13 14 15 16 17 18 19 20 21 22 23 24 25 26
 +					27 28 29 30 31 32 33 34 35 36 37 38 39
