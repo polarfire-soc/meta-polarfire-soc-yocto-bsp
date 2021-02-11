@@ -115,21 +115,9 @@
 			reg = <4>;
 			riscv,isa = "rv64imafdc";
 			tlb-split;
-			status = "okay";	};
-		L20: cpu@3 {
-			compatible = "sifive,rocket0", "riscv";
-			d-cache-block-size = <64>;
-			d-cache-sets = <64>;
-			d-cache-size = <32768>;
-			d-tlb-sets = <1>;
-			d-tlb-size = <32>;
-			device_type = "cpu";
-			i-cache-block-size = <64>;
-			i-cache-sets = <64>;
-			i-cache-size = <32768>;
-			i-tlb-sets = <1>;
-			i-tlb-size = <32>;
-			mmu-type = <1>;
+			status = "okay";
+			L21: interrupt-controller {
+				#interrupt-cells = <1>;
 				compatible = "riscv,cpu-intc";
 				interrupt-controller;
 			};
