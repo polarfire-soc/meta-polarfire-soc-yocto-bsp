@@ -115,9 +115,21 @@
 			reg = <4>;
 			riscv,isa = "rv64imafdc";
 			tlb-split;
-			status = "okay";
-			L21: interrupt-controller {
-				#interrupt-cells = <1>;
+			status = "okay";	};
+		L20: cpu@3 {
+			compatible = "sifive,rocket0", "riscv";
+			d-cache-block-size = <64>;
+			d-cache-sets = <64>;
+			d-cache-size = <32768>;
+			d-tlb-sets = <1>;
+			d-tlb-size = <32>;
+			device_type = "cpu";
+			i-cache-block-size = <64>;
+			i-cache-sets = <64>;
+			i-cache-size = <32768>;
+			i-tlb-sets = <1>;
+			i-tlb-size = <32>;
+			mmu-type = <1>;
 				compatible = "riscv,cpu-intc";
 				interrupt-controller;
 			};
@@ -245,42 +257,58 @@
 			voltage-ranges = <3300 3300>;
 			status = "disabled";
 		};
-                sdcard: sd@20008000 {
-                        compatible = "cdns,sd4hc";
-                        reg = <0x0 0x20008000 0x0 0x1000>;
-                        interrupt-parent = <&L1>;
-                        interrupts = <88>;
-                        pinctrl-names = "default";
-                        clocks = <&clkcfg CLK_MMC>;         
-                        bus-width = <4>;
-	                disable-wp;
-	                no-1-8-v;
-	                cap-mmc-highspeed;
-	                cap-sd-highspeed;
-	                card-detect-delay = <200>;
-                        sd-uhs-sdr12;
-	                sd-uhs-sdr25;
-	                sd-uhs-sdr50;
-	                sd-uhs-sdr104;  
-                        max-frequency = <200000000>;
-	                status = "okay";     
-                };
+        sdcard: sd@20008000 {
+            compatible = "cdns,sd4hc";
+            reg = <0x0 0x20008000 0x0 0x1000>;
+            interrupt-parent = <&L1>;
+            interrupts = <88>;
+            pinctrl-names = "default";
+            clocks = <&clkcfg CLK_MMC>;         
+            bus-width = <4>;
+	        disable-wp;
+	        no-1-8-v;
+	        cap-mmc-highspeed;
+	        cap-sd-highspeed;
+	        card-detect-delay = <200>;
+            sd-uhs-sdr12;
+	        sd-uhs-sdr25;
+	        sd-uhs-sdr50;
+	        sd-uhs-sdr104;  
+            max-frequency = <200000000>;
+	        status = "okay";     
+        };
 		emac1: ethernet@20112000 {
-			compatible = "cdns,macb";
-			reg = <0x0 0x20112000 0x0 0x2000>;
-			interrupt-parent = <&L1>;
-			interrupts = <70 71 72 73>;
-			mac-address = [56 34 12 00 FC 00];
-			phy-mode = "sgmii";
-			clocks = <&clkcfg CLK_MAC1>, <&clkcfg CLK_AHB>;
-			clock-names = "pclk", "hclk";
-			#address-cells = <1>;
-			#size-cells = <0>;
-			phy1: ethernet-phy@9 {
-				reg = <9>;
-				ti,fifo-depth = <0x01>;
-			};
-		};
+            compatible = "cdns,macb";
+            reg = <0x0 0x20112000 0x0 0x2000>;
+            interrupt-parent = <&L1>;
+            interrupts = <70 71 72 73>;
+            mac-address = [56 34 12 00 FC 01];
+            phy-mode = "sgmii";
+            clocks = <&clkcfg CLK_MAC1>, <&clkcfg CLK_AHB>;
+            clock-names = "pclk", "hclk";
+            #address-cells = <1>;
+            #size-cells = <0>;
+            phy-handle = <&phy1>;
+            phy1: ethernet-phy@9 {
+                reg = <9>;
+                ti,fifo-depth = <0x01>;
+            };
+            phy0: ethernet-phy@8 {
+                reg = <8>;
+                ti,fifo-depth = <0x01>;
+            };
+        };
+        emac0: ethernet@20110000 {
+            compatible = "cdns,macb";
+            reg = <0x0 0x20110000 0x0 0x2000>;
+            interrupt-parent = <&L1>;
+            interrupts = <64 65 66 67>;
+            mac-address = [56 34 12 00 FC 02];
+            phy-mode = "sgmii";
+            clocks = <&clkcfg CLK_MAC0>, <&clkcfg CLK_AHB>;
+            clock-names = "pclk", "hclk";
+            phy-handle = <&phy0>;
+        };
 		pcie: pcie@70000000 {
 			#address-cells = <0x3>;
 			#interrupt-cells = <0x1>;
