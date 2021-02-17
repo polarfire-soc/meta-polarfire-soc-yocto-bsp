@@ -12,14 +12,14 @@ SRC_URI = " \
 SRC_URI_append_icicle-kit-es = " \
     file://icicle-kit-es-a000-microchip.dts \
     file://0001-PFSoC-Icicle-kit-Adding-DTS-makefile.patch \
-    file://0001-Microchip-Polarfire-SoC-Clock-Driver.patch \
     file://0002-PFSoC-MAC-Interface-auto-negotiation.patch \
     file://0001-V2-GPIO-Driver-updates.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0008-pac139x.patch \
     file://v11-0004-PCI-microchip-Add-host-driver-for-Microchip-PCIe.patch \
     file://v1-0002-Add-definition-for-Microchip-PolarFire-SoC.patch \
-    file://v1-0001-dt-bindings-CLK-microchip-Add-Microchip-PolarFire.patch \
+    file://v3-0001-dt-bindings-clk-microchip-Add-Microchip-PolarFire.patch \
+    file://v3-0002-clk-microchip-Add-driver-for-Microchip-PolarFire-.patch \
     file://0001-V5-Adding-Microchip-MUSB-Driver.patch \
     file://0002-uio-can-Microchip-PolarFire-add-CAN-support-via-uio.patch \
     file://0001-Microsemi-UIO-Fabric-DMA-support.patch \
@@ -28,20 +28,24 @@ SRC_URI_append_icicle-kit-es = " \
     file://0001-rng-add-support-for-rng-on-the-polarfire-soc.patch \
     file://0005-soc-add-polarfire-soc-system-controller.patch \
     file://0007-sys-serv-fpga-digest-and-serial-num.patch \
+<<<<<<< HEAD
     file://v1-0001-dt-bindings-rtc-microchip-Add-Microchip-PolarFire.patch \
     file://v1-0002-rtc-microchip-Add-driver-for-Microchip-PolarFire-.patch \
+=======
+    file://v1-0001-riscv-add-cpu-frequency-reporting-to-cpuinfo.patch \
+>>>>>>> 64ed5b6da46e7376b839e4750c05baf9ccde73f6
  "
 SRC_URI_append_icicle-kit-es-sd = " \
     file://icicle-kit-es-a000-microchip.dts \
     file://0001-PFSoC-Icicle-kit-Adding-DTS-makefile.patch \
-    file://0001-Microchip-Polarfire-SoC-Clock-Driver.patch \
     file://0002-PFSoC-MAC-Interface-auto-negotiation.patch \
     file://0001-V2-GPIO-Driver-updates.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0008-pac139x.patch \
     file://v11-0004-PCI-microchip-Add-host-driver-for-Microchip-PCIe.patch \
     file://v1-0002-Add-definition-for-Microchip-PolarFire-SoC.patch \
-    file://v1-0001-dt-bindings-CLK-microchip-Add-Microchip-PolarFire.patch \
+    file://v3-0001-dt-bindings-clk-microchip-Add-Microchip-PolarFire.patch \
+    file://v3-0002-clk-microchip-Add-driver-for-Microchip-PolarFire-.patch \
     file://0001-V5-Adding-Microchip-MUSB-Driver.patch \
     file://0002-uio-can-Microchip-PolarFire-add-CAN-support-via-uio.patch \
     file://0001-Microsemi-UIO-Fabric-DMA-support.patch \
@@ -50,8 +54,12 @@ SRC_URI_append_icicle-kit-es-sd = " \
     file://0001-rng-add-support-for-rng-on-the-polarfire-soc.patch \
     file://0005-soc-add-polarfire-soc-system-controller.patch \
     file://0007-sys-serv-fpga-digest-and-serial-num.patch \
+<<<<<<< HEAD
     file://v1-0001-dt-bindings-rtc-microchip-Add-Microchip-PolarFire.patch \
     file://v1-0002-rtc-microchip-Add-driver-for-Microchip-PolarFire-.patch \
+=======
+    file://v1-0001-riscv-add-cpu-frequency-reporting-to-cpuinfo.patch \
+>>>>>>> 64ed5b6da46e7376b839e4750c05baf9ccde73f6
  "
  
 SRC_URI_append_mpfs = " \

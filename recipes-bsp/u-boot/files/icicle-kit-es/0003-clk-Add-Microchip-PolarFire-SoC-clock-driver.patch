@@ -1,6 +1,6 @@
-From feee27d1e281f731cc86f89e5d5c4887d00fe07f Mon Sep 17 00:00:00 2001
+From fb663dc19bea26105d1c1c314b8a8565edffa2d8 Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Tue, 10 Nov 2020 16:33:49 +0530
+Date: Mon, 7 Dec 2020 15:30:05 +0530
 Subject: [PATCH 3/5] clk: Add Microchip PolarFire SoC clock driver
 
 Add clock driver code for the Microchip PolarFire SoC. This driver
@@ -12,44 +12,44 @@ Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
  drivers/clk/Makefile                          |   1 +
  drivers/clk/microchip/Kconfig                 |   5 +
  drivers/clk/microchip/Makefile                |   1 +
- drivers/clk/microchip/clk_pfsoc.c             | 127 +++++++++++++
- drivers/clk/microchip/clk_pfsoc.h             |  19 ++
- drivers/clk/microchip/clk_pfsoc_cfg.c         | 134 ++++++++++++++
- drivers/clk/microchip/clk_pfsoc_periph.c      | 173 ++++++++++++++++++
- .../dt-bindings/clock/microchip,pfsoc-clock.h |  45 +++++
+ drivers/clk/microchip/mpfs_clk.c              | 127 +++++++++++++
+ drivers/clk/microchip/mpfs_clk.h              |  19 ++
+ drivers/clk/microchip/mpfs_clk_cfg.c          | 134 ++++++++++++++
+ drivers/clk/microchip/mpfs_clk_periph.c       | 173 ++++++++++++++++++
+ .../dt-bindings/clock/microchip,mpfs-clock.h  |  45 +++++
  9 files changed, 506 insertions(+)
  create mode 100644 drivers/clk/microchip/Kconfig
  create mode 100644 drivers/clk/microchip/Makefile
- create mode 100644 drivers/clk/microchip/clk_pfsoc.c
- create mode 100644 drivers/clk/microchip/clk_pfsoc.h
- create mode 100644 drivers/clk/microchip/clk_pfsoc_cfg.c
- create mode 100644 drivers/clk/microchip/clk_pfsoc_periph.c
- create mode 100644 include/dt-bindings/clock/microchip,pfsoc-clock.h
+ create mode 100644 drivers/clk/microchip/mpfs_clk.c
+ create mode 100644 drivers/clk/microchip/mpfs_clk.h
+ create mode 100644 drivers/clk/microchip/mpfs_clk_cfg.c
+ create mode 100644 drivers/clk/microchip/mpfs_clk_periph.c
+ create mode 100644 include/dt-bindings/clock/microchip,mpfs-clock.h
 
 diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-index 8b8b719999..299175ec73 100644
+index 6003e140b5..951741e673 100644
 --- a/drivers/clk/Kconfig
 +++ b/drivers/clk/Kconfig
-@@ -157,6 +157,7 @@ source "drivers/clk/at91/Kconfig"
- source "drivers/clk/exynos/Kconfig"
+@@ -165,6 +165,7 @@ source "drivers/clk/exynos/Kconfig"
  source "drivers/clk/imx/Kconfig"
+ source "drivers/clk/kendryte/Kconfig"
  source "drivers/clk/meson/Kconfig"
 +source "drivers/clk/microchip/Kconfig"
  source "drivers/clk/mvebu/Kconfig"
  source "drivers/clk/owl/Kconfig"
  source "drivers/clk/renesas/Kconfig"
 diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index e01783391d..8d98d6287a 100644
+index cda4b4b605..524ac83f5a 100644
 --- a/drivers/clk/Makefile
 +++ b/drivers/clk/Makefile
-@@ -27,6 +27,7 @@ obj-$(CONFIG_CLK_BOSTON) += clk_boston.o
- obj-$(CONFIG_CLK_EXYNOS) += exynos/
+@@ -28,6 +28,7 @@ obj-$(CONFIG_CLK_EXYNOS) += exynos/
  obj-$(CONFIG_$(SPL_TPL_)CLK_INTEL) += intel/
  obj-$(CONFIG_CLK_HSDK) += clk-hsdk-cgu.o
+ obj-$(CONFIG_CLK_K210) += kendryte/
 +obj-$(CONFIG_CLK_MPFS) += microchip/
  obj-$(CONFIG_CLK_MPC83XX) += mpc83xx_clk.o
+ obj-$(CONFIG_CLK_OCTEON) += clk_octeon.o
  obj-$(CONFIG_CLK_OWL) += owl/
- obj-$(CONFIG_CLK_RENESAS) += renesas/
 diff --git a/drivers/clk/microchip/Kconfig b/drivers/clk/microchip/Kconfig
 new file mode 100644
 index 0000000000..b70241559d
@@ -63,16 +63,16 @@ index 0000000000..b70241559d
 +	  This enables support clock driver for Microchip PolarFire SoC platform.
 diff --git a/drivers/clk/microchip/Makefile b/drivers/clk/microchip/Makefile
 new file mode 100644
-index 0000000000..c7f5ad21ae
+index 0000000000..904b345d75
 --- /dev/null
 +++ b/drivers/clk/microchip/Makefile
 @@ -0,0 +1 @@
-+obj-y += clk_pfsoc.o clk_pfsoc_cfg.o clk_pfsoc_periph.o
-diff --git a/drivers/clk/microchip/clk_pfsoc.c b/drivers/clk/microchip/clk_pfsoc.c
++obj-y += mpfs_clk.o mpfs_clk_cfg.o mpfs_clk_periph.o
+diff --git a/drivers/clk/microchip/mpfs_clk.c b/drivers/clk/microchip/mpfs_clk.c
 new file mode 100644
-index 0000000000..dd0e9cacb8
+index 0000000000..1b1b66ef64
 --- /dev/null
-+++ b/drivers/clk/microchip/clk_pfsoc.c
++++ b/drivers/clk/microchip/mpfs_clk.c
 @@ -0,0 +1,127 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
@@ -90,11 +90,11 @@ index 0000000000..dd0e9cacb8
 +#include <malloc.h>
 +#include <linux/err.h>
 +
-+#include "clk_pfsoc.h"
++#include "mpfs_clk.h"
 +
 +/* All methods are delegated to CCF clocks */
 +
-+static ulong pfsoc_clk_get_rate(struct clk *clk)
++static ulong mpfs_clk_get_rate(struct clk *clk)
 +{
 +	struct clk *c;
 +	int err = clk_get_by_id(clk->id, &c);
@@ -104,7 +104,7 @@ index 0000000000..dd0e9cacb8
 +	return clk_get_rate(c);
 +}
 +
-+static ulong pfsoc_clk_set_rate(struct clk *clk, unsigned long rate)
++static ulong mpfs_clk_set_rate(struct clk *clk, unsigned long rate)
 +{
 +	struct clk *c;
 +	int err = clk_get_by_id(clk->id, &c);
@@ -114,7 +114,7 @@ index 0000000000..dd0e9cacb8
 +	return clk_set_rate(c, rate);
 +}
 +
-+static int pfsoc_clk_set_parent(struct clk *clk, struct clk *parent)
++static int mpfs_clk_set_parent(struct clk *clk, struct clk *parent)
 +{
 +	struct clk *c, *p;
 +	int err = clk_get_by_id(clk->id, &c);
@@ -129,7 +129,7 @@ index 0000000000..dd0e9cacb8
 +	return clk_set_parent(c, p);
 +}
 +
-+static int pfsoc_clk_endisable(struct clk *clk, bool enable)
++static int mpfs_clk_endisable(struct clk *clk, bool enable)
 +{
 +	struct clk *c;
 +	int err = clk_get_by_id(clk->id, &c);
@@ -139,17 +139,17 @@ index 0000000000..dd0e9cacb8
 +	return enable ? clk_enable(c) : clk_disable(c);
 +}
 +
-+static int pfsoc_clk_enable(struct clk *clk)
++static int mpfs_clk_enable(struct clk *clk)
 +{
-+	return pfsoc_clk_endisable(clk, true);
++	return mpfs_clk_endisable(clk, true);
 +}
 +
-+static int pfsoc_clk_disable(struct clk *clk)
++static int mpfs_clk_disable(struct clk *clk)
 +{
-+	return pfsoc_clk_endisable(clk, false);
++	return mpfs_clk_endisable(clk, false);
 +}
 +
-+static int pfsoc_clk_probe(struct udevice *dev)
++static int mpfs_clk_probe(struct udevice *dev)
 +{
 +	int ret;
 +	void __iomem *base;
@@ -172,65 +172,65 @@ index 0000000000..dd0e9cacb8
 +	dev_read_u32(clk->dev, "clock-frequency", &clk_rate);
 +	parent_clk_name = clk->dev->name;
 +
-+	ret = pfsoc_clk_register_cfgs(base, clk_rate, parent_clk_name);
++	ret = mpfs_clk_register_cfgs(base, clk_rate, parent_clk_name);
 +	if (ret)
 +		return ret;
 +
-+	ret = pfsoc_clk_register_periphs(base, clk_rate, "clk_ahb");
++	ret = mpfs_clk_register_periphs(base, clk_rate, "clk_ahb");
 +
 +	return ret;
 +}
 +
-+static const struct clk_ops pfsoc_clk_ops = {
-+	.set_rate = pfsoc_clk_set_rate,
-+	.get_rate = pfsoc_clk_get_rate,
-+	.set_parent = pfsoc_clk_set_parent,
-+	.enable = pfsoc_clk_enable,
-+	.disable = pfsoc_clk_disable,
++static const struct clk_ops mpfs_clk_ops = {
++	.set_rate = mpfs_clk_set_rate,
++	.get_rate = mpfs_clk_get_rate,
++	.set_parent = mpfs_clk_set_parent,
++	.enable = mpfs_clk_enable,
++	.disable = mpfs_clk_disable,
 +};
 +
-+static const struct udevice_id pfsoc_of_match[] = {
-+	{ .compatible = "microchip,pfsoc-clkcfg" },
++static const struct udevice_id mpfs_of_match[] = {
++	{ .compatible = "microchip,mpfs-clkcfg" },
 +	{ }
 +};
 +
-+U_BOOT_DRIVER(pfsoc_clk) = {
-+	.name = "pfsoc_clk",
++U_BOOT_DRIVER(mpfs_clk) = {
++	.name = "mpfs_clk",
 +	.id = UCLASS_CLK,
-+	.of_match = pfsoc_of_match,
-+	.ops = &pfsoc_clk_ops,
-+	.probe = pfsoc_clk_probe,
++	.of_match = mpfs_of_match,
++	.ops = &mpfs_clk_ops,
++	.probe = mpfs_clk_probe,
 +};
-diff --git a/drivers/clk/microchip/clk_pfsoc.h b/drivers/clk/microchip/clk_pfsoc.h
+diff --git a/drivers/clk/microchip/mpfs_clk.h b/drivers/clk/microchip/mpfs_clk.h
 new file mode 100644
-index 0000000000..6255e0de2d
+index 0000000000..432547cbf2
 --- /dev/null
-+++ b/drivers/clk/microchip/clk_pfsoc.h
++++ b/drivers/clk/microchip/mpfs_clk.h
 @@ -0,0 +1,19 @@
 +/* SPDX-License-Identifier: GPL-2.0+ */
 +/*
 + * Copyright (C) 2020 Microchip Technology Inc.
 + * Padmarao Begari <padmarao.begari@microchip.com>
 + */
-+#ifndef __MICROCHIP_PFSOC_CLK_H
-+#define __MICROCHIP_PFSOC_CLK_H
++#ifndef __MICROCHIP_MPFS_CLK_H
++#define __MICROCHIP_MPFS_CLK_H
 +
 +#include <linux/clk-provider.h>
 +
-+int pfsoc_clk_register_cfgs(void __iomem *base, u32 clk_rate,
++int mpfs_clk_register_cfgs(void __iomem *base, u32 clk_rate,
 +			    const char *parent_name);
-+int pfsoc_clk_register_periphs(void __iomem *base, u32 clk_rate,
++int mpfs_clk_register_periphs(void __iomem *base, u32 clk_rate,
 +			       const char *parent_name);
 +int divider_get_val(unsigned long rate, unsigned long parent_rate,
 +		    const struct clk_div_table *table,
 +		    u8 width, unsigned long flags);
 +
-+#endif	/* __MICROCHIP_PFSOC_CLK_H */
-diff --git a/drivers/clk/microchip/clk_pfsoc_cfg.c b/drivers/clk/microchip/clk_pfsoc_cfg.c
++#endif	/* __MICROCHIP_MPFS_CLK_H */
+diff --git a/drivers/clk/microchip/mpfs_clk_cfg.c b/drivers/clk/microchip/mpfs_clk_cfg.c
 new file mode 100644
-index 0000000000..ea74311452
+index 0000000000..ac8ed07fff
 --- /dev/null
-+++ b/drivers/clk/microchip/clk_pfsoc_cfg.c
++++ b/drivers/clk/microchip/mpfs_clk_cfg.c
 @@ -0,0 +1,134 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
@@ -245,25 +245,25 @@ index 0000000000..ea74311452
 +#include <dm/uclass.h>
 +#include <asm/io.h>
 +#include <linux/err.h>
-+#include <dt-bindings/clock/microchip,pfsoc-clock.h>
++#include <dt-bindings/clock/microchip,mpfs-clock.h>
 +
-+#include "clk_pfsoc.h"
++#include "mpfs_clk.h"
 +
-+#define PFSOC_CFG_CLOCK "pfsoc_cfg_clock"
++#define MPFS_CFG_CLOCK "mpfs_cfg_clock"
 +
 +#define REG_CLOCK_CONFIG_CR 0x08
 +
-+static const struct clk_div_table pfsoc_div_cpu_axi_table[] = {
++static const struct clk_div_table mpfs_div_cpu_axi_table[] = {
 +	{ 0, 1 }, { 1, 2 }, { 2, 4 }, { 3, 8 },
 +	{ 0, 0 }
 +};
 +
-+static const struct clk_div_table pfsoc_div_ahb_table[] = {
++static const struct clk_div_table mpfs_div_ahb_table[] = {
 +	{ 1, 2 }, { 2, 4}, { 3, 8 },
 +	{ 0, 0 }
 +};
 +
-+struct pfsoc_cfg_clock {
++struct mpfs_cfg_clock {
 +	unsigned int id;
 +	const char *name;
 +	u8 shift;
@@ -272,19 +272,19 @@ index 0000000000..ea74311452
 +	unsigned long flags;
 +};
 +
-+struct pfsoc_cfg_hw_clock {
-+	struct pfsoc_cfg_clock cfg;
++struct mpfs_cfg_hw_clock {
++	struct mpfs_cfg_clock cfg;
 +	void __iomem *sys_base;
 +	u32 prate;
 +	struct clk hw;
 +};
 +
-+#define to_pfsoc_cfg_clk(_hw) container_of(_hw, struct pfsoc_cfg_hw_clock, hw)
++#define to_mpfs_cfg_clk(_hw) container_of(_hw, struct mpfs_cfg_hw_clock, hw)
 +
-+static ulong pfsoc_cfg_clk_recalc_rate(struct clk *hw)
++static ulong mpfs_cfg_clk_recalc_rate(struct clk *hw)
 +{
-+	struct pfsoc_cfg_hw_clock *cfg_hw = to_pfsoc_cfg_clk(hw);
-+	struct pfsoc_cfg_clock *cfg = &cfg_hw->cfg;
++	struct mpfs_cfg_hw_clock *cfg_hw = to_mpfs_cfg_clk(hw);
++	struct mpfs_cfg_clock *cfg = &cfg_hw->cfg;
 +	void __iomem *base_addr = cfg_hw->sys_base;
 +	unsigned long rate;
 +	u32 val;
@@ -297,10 +297,10 @@ index 0000000000..ea74311452
 +	return rate;
 +}
 +
-+static ulong pfsoc_cfg_clk_set_rate(struct clk *hw, ulong rate)
++static ulong mpfs_cfg_clk_set_rate(struct clk *hw, ulong rate)
 +{
-+	struct pfsoc_cfg_hw_clock *cfg_hw = to_pfsoc_cfg_clk(hw);
-+	struct pfsoc_cfg_clock *cfg = &cfg_hw->cfg;
++	struct mpfs_cfg_hw_clock *cfg_hw = to_mpfs_cfg_clk(hw);
++	struct mpfs_cfg_clock *cfg = &cfg_hw->cfg;
 +	void __iomem *base_addr = cfg_hw->sys_base;
 +	u32  val;
 +	int divider_setting;
@@ -327,13 +327,13 @@ index 0000000000..ea74311452
 +		.cfg.flags = _flags,				\
 +	}
 +
-+static struct pfsoc_cfg_hw_clock pfsoc_cfg_clks[] = {
-+	CLK_CFG(CLK_CPU, "clk_cpu", 0, 2, pfsoc_div_cpu_axi_table, 0),
-+	CLK_CFG(CLK_AXI, "clk_axi", 2, 2, pfsoc_div_cpu_axi_table, 0),
-+	CLK_CFG(CLK_AHB, "clk_ahb", 4, 2, pfsoc_div_ahb_table, 0),
++static struct mpfs_cfg_hw_clock mpfs_cfg_clks[] = {
++	CLK_CFG(CLK_CPU, "clk_cpu", 0, 2, mpfs_div_cpu_axi_table, 0),
++	CLK_CFG(CLK_AXI, "clk_axi", 2, 2, mpfs_div_cpu_axi_table, 0),
++	CLK_CFG(CLK_AHB, "clk_ahb", 4, 2, mpfs_div_ahb_table, 0),
 +};
 +
-+int pfsoc_clk_register_cfgs(void __iomem *base, u32 clk_rate,
++int mpfs_clk_register_cfgs(void __iomem *base, u32 clk_rate,
 +			    const char *parent_name)
 +{
 +	int ret;
@@ -341,36 +341,36 @@ index 0000000000..ea74311452
 +	const char *name;
 +	struct clk *hw;
 +
-+	num_clks = ARRAY_SIZE(pfsoc_cfg_clks);
++	num_clks = ARRAY_SIZE(mpfs_cfg_clks);
 +	for (i = 0; i < num_clks; i++) {
-+		hw = &pfsoc_cfg_clks[i].hw;
-+		pfsoc_cfg_clks[i].sys_base = base;
-+		pfsoc_cfg_clks[i].prate = clk_rate;
-+		name = pfsoc_cfg_clks[i].cfg.name;
-+		ret = clk_register(hw, PFSOC_CFG_CLOCK, name, parent_name);
++		hw = &mpfs_cfg_clks[i].hw;
++		mpfs_cfg_clks[i].sys_base = base;
++		mpfs_cfg_clks[i].prate = clk_rate;
++		name = mpfs_cfg_clks[i].cfg.name;
++		ret = clk_register(hw, MPFS_CFG_CLOCK, name, parent_name);
 +		if (ret)
 +			ERR_PTR(ret);
-+		id = pfsoc_cfg_clks[i].cfg.id;
++		id = mpfs_cfg_clks[i].cfg.id;
 +		clk_dm(id, hw);
 +	}
 +	return 0;
 +}
 +
-+const struct clk_ops pfsoc_cfg_clk_ops = {
-+	.set_rate = pfsoc_cfg_clk_set_rate,
-+	.get_rate = pfsoc_cfg_clk_recalc_rate,
++const struct clk_ops mpfs_cfg_clk_ops = {
++	.set_rate = mpfs_cfg_clk_set_rate,
++	.get_rate = mpfs_cfg_clk_recalc_rate,
 +};
 +
-+U_BOOT_DRIVER(pfsoc_cfg_clock) = {
-+	.name	= PFSOC_CFG_CLOCK,
++U_BOOT_DRIVER(mpfs_cfg_clock) = {
++	.name	= MPFS_CFG_CLOCK,
 +	.id	= UCLASS_CLK,
-+	.ops	= &pfsoc_cfg_clk_ops,
++	.ops	= &mpfs_cfg_clk_ops,
 +};
-diff --git a/drivers/clk/microchip/clk_pfsoc_periph.c b/drivers/clk/microchip/clk_pfsoc_periph.c
+diff --git a/drivers/clk/microchip/mpfs_clk_periph.c b/drivers/clk/microchip/mpfs_clk_periph.c
 new file mode 100644
-index 0000000000..74faf61f2c
+index 0000000000..066f60f060
 --- /dev/null
-+++ b/drivers/clk/microchip/clk_pfsoc_periph.c
++++ b/drivers/clk/microchip/mpfs_clk_periph.c
 @@ -0,0 +1,173 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
@@ -385,11 +385,11 @@ index 0000000000..74faf61f2c
 +#include <dm/uclass.h>
 +#include <asm/io.h>
 +#include <linux/err.h>
-+#include <dt-bindings/clock/microchip,pfsoc-clock.h>
++#include <dt-bindings/clock/microchip,mpfs-clock.h>
 +
-+#include "clk_pfsoc.h"
++#include "mpfs_clk.h"
 +
-+#define PFSOC_PERIPH_CLOCK "pfsoc_periph_clock"
++#define MPFS_PERIPH_CLOCK "mpfs_periph_clock"
 +
 +#define REG_CLOCK_CONFIG_CR 0x08
 +#define REG_SUBBLK_CLOCK_CR 0x84
@@ -400,26 +400,26 @@ index 0000000000..74faf61f2c
 +#define CFG_AHB_SHIFT   0x4
 +#define CFG_WIDTH       0x2
 +
-+struct pfsoc_periph_clock {
++struct mpfs_periph_clock {
 +	unsigned int id;
 +	const char *name;
 +	u8 shift;
 +	unsigned long flags;
 +};
 +
-+struct pfsoc_periph_hw_clock {
-+	struct pfsoc_periph_clock periph;
++struct mpfs_periph_hw_clock {
++	struct mpfs_periph_clock periph;
 +	void __iomem *sys_base;
 +	u32 prate;
 +	struct clk hw;
 +};
 +
-+#define to_pfsoc_periph_clk(_hw) container_of(_hw, struct pfsoc_periph_hw_clock, hw)
++#define to_mpfs_periph_clk(_hw) container_of(_hw, struct mpfs_periph_hw_clock, hw)
 +
-+static int pfsoc_periph_clk_enable(struct clk *hw)
++static int mpfs_periph_clk_enable(struct clk *hw)
 +{
-+	struct pfsoc_periph_hw_clock *periph_hw = to_pfsoc_periph_clk(hw);
-+	struct pfsoc_periph_clock *periph = &periph_hw->periph;
++	struct mpfs_periph_hw_clock *periph_hw = to_mpfs_periph_clk(hw);
++	struct mpfs_periph_clock *periph = &periph_hw->periph;
 +	void __iomem *base_addr = periph_hw->sys_base;
 +	u32 reg, val;
 +
@@ -436,10 +436,10 @@ index 0000000000..74faf61f2c
 +	return 0;
 +}
 +
-+static int pfsoc_periph_clk_disable(struct clk *hw)
++static int mpfs_periph_clk_disable(struct clk *hw)
 +{
-+	struct pfsoc_periph_hw_clock *periph_hw = to_pfsoc_periph_clk(hw);
-+	struct pfsoc_periph_clock *periph = &periph_hw->periph;
++	struct mpfs_periph_hw_clock *periph_hw = to_mpfs_periph_clk(hw);
++	struct mpfs_periph_clock *periph = &periph_hw->periph;
 +	void __iomem *base_addr = periph_hw->sys_base;
 +	u32 reg, val;
 +
@@ -456,9 +456,9 @@ index 0000000000..74faf61f2c
 +	return 0;
 +}
 +
-+static ulong pfsoc_periph_clk_recalc_rate(struct clk *hw)
++static ulong mpfs_periph_clk_recalc_rate(struct clk *hw)
 +{
-+	struct pfsoc_periph_hw_clock *periph_hw = to_pfsoc_periph_clk(hw);
++	struct mpfs_periph_hw_clock *periph_hw = to_mpfs_periph_clk(hw);
 +	void __iomem *base_addr = periph_hw->sys_base;
 +	unsigned long rate;
 +	u32 val;
@@ -478,7 +478,7 @@ index 0000000000..74faf61f2c
 +		.periph.flags = _flags,			\
 +	}
 +
-+static struct pfsoc_periph_hw_clock pfsoc_periph_clks[] = {
++static struct mpfs_periph_hw_clock mpfs_periph_clks[] = {
 +	CLK_PERIPH(CLK_ENVM, "clk_periph_envm", 0, CLK_IS_CRITICAL),
 +	CLK_PERIPH(CLK_MAC0, "clk_periph_mac0", 1, 0),
 +	CLK_PERIPH(CLK_MAC1, "clk_periph_mac1", 2, 0),
@@ -510,7 +510,7 @@ index 0000000000..74faf61f2c
 +	CLK_PERIPH(CLK_CFM, "clk_periph_cfm", 29, 0),
 +};
 +
-+int pfsoc_clk_register_periphs(void __iomem *base, u32 clk_rate,
++int mpfs_clk_register_periphs(void __iomem *base, u32 clk_rate,
 +			       const char *parent_name)
 +{
 +	int ret;
@@ -518,38 +518,38 @@ index 0000000000..74faf61f2c
 +	const char *name;
 +	struct clk *hw;
 +
-+	num_clks = ARRAY_SIZE(pfsoc_periph_clks);
++	num_clks = ARRAY_SIZE(mpfs_periph_clks);
 +	for (i = 0; i < num_clks; i++)  {
-+		hw = &pfsoc_periph_clks[i].hw;
-+		pfsoc_periph_clks[i].sys_base = base;
-+		pfsoc_periph_clks[i].prate = clk_rate;
-+		name = pfsoc_periph_clks[i].periph.name;
-+		ret = clk_register(hw, PFSOC_PERIPH_CLOCK, name, parent_name);
++		hw = &mpfs_periph_clks[i].hw;
++		mpfs_periph_clks[i].sys_base = base;
++		mpfs_periph_clks[i].prate = clk_rate;
++		name = mpfs_periph_clks[i].periph.name;
++		ret = clk_register(hw, MPFS_PERIPH_CLOCK, name, parent_name);
 +		if (ret)
 +			ERR_PTR(ret);
-+		id = pfsoc_periph_clks[i].periph.id;
++		id = mpfs_periph_clks[i].periph.id;
 +		clk_dm(id, hw);
 +	}
 +
 +	return 0;
 +}
 +
-+const struct clk_ops pfsoc_periph_clk_ops = {
-+	.enable = pfsoc_periph_clk_enable,
-+	.disable = pfsoc_periph_clk_disable,
-+	.get_rate = pfsoc_periph_clk_recalc_rate,
++const struct clk_ops mpfs_periph_clk_ops = {
++	.enable = mpfs_periph_clk_enable,
++	.disable = mpfs_periph_clk_disable,
++	.get_rate = mpfs_periph_clk_recalc_rate,
 +};
 +
-+U_BOOT_DRIVER(pfsoc_periph_clock) = {
-+	.name	= PFSOC_PERIPH_CLOCK,
++U_BOOT_DRIVER(mpfs_periph_clock) = {
++	.name	= MPFS_PERIPH_CLOCK,
 +	.id	= UCLASS_CLK,
-+	.ops	= &pfsoc_periph_clk_ops,
++	.ops	= &mpfs_periph_clk_ops,
 +};
-diff --git a/include/dt-bindings/clock/microchip,pfsoc-clock.h b/include/dt-bindings/clock/microchip,pfsoc-clock.h
+diff --git a/include/dt-bindings/clock/microchip,mpfs-clock.h b/include/dt-bindings/clock/microchip,mpfs-clock.h
 new file mode 100644
-index 0000000000..527cff1a28
+index 0000000000..80ee086474
 --- /dev/null
-+++ b/include/dt-bindings/clock/microchip,pfsoc-clock.h
++++ b/include/dt-bindings/clock/microchip,mpfs-clock.h
 @@ -0,0 +1,45 @@
 +/* SPDX-License-Identifier: GPL-2.0+ */
 +/*
@@ -557,8 +557,8 @@ index 0000000000..527cff1a28
 + * Padmarao Begari <padmarao.begari@microchip.com>
 + */
 +
-+#ifndef _DT_BINDINGS_CLK_MICROCHIP_PFSOC_H_
-+#define _DT_BINDINGS_CLK_MICROCHIP_PFSOC_H_
++#ifndef _DT_BINDINGS_CLK_MICROCHIP_MPFS_H_
++#define _DT_BINDINGS_CLK_MICROCHIP_MPFS_H_
 +
 +#define CLK_CPU		0
 +#define CLK_AXI		1
@@ -595,7 +595,7 @@ index 0000000000..527cff1a28
 +#define CLK_ATHENA	31
 +#define CLK_CFM		32
 +
-+#endif	/* _DT_BINDINGS_CLK_MICROCHIP_PFSOC_H_ */
++#endif	/* _DT_BINDINGS_CLK_MICROCHIP_MPFS_H_ */
 -- 
 2.17.1
 

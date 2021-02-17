@@ -1,23 +1,19 @@
-From 69f0b1fb225b799adfdab3178fa3b4b04517f4b4 Mon Sep 17 00:00:00 2001
+From 178291459d39c0922e666338286d1b01087d57e0 Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Tue, 10 Nov 2020 16:26:00 +0530
+Date: Mon, 7 Dec 2020 15:21:39 +0530
 Subject: [PATCH 2/5] net: macb: Add DMA 64-bit address support for macb
 
-Enable 32-bit or 64-bit DMA in the macb driver based on the design
-config debug6 register of MACB hardware which supports 32-bit or
-64-bit DMA.
-
-Read phy address from device tree and use it to find the phy device
-if not found then search in the range of 0 to 31.
+Enable 32-bit or 64-bit DMA in the macb driver based on the macb
+compatible string of the device tree node.
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
 ---
- drivers/net/macb.c | 138 +++++++++++++++++++++++++++++++++++++++------
+ drivers/net/macb.c | 144 +++++++++++++++++++++++++++++++++++++++------
  drivers/net/macb.h |   6 ++
- 2 files changed, 127 insertions(+), 17 deletions(-)
+ 2 files changed, 133 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 424ca59707..06142fc198 100644
+index b80a259ff7..16d1597b10 100644
 --- a/drivers/net/macb.c
 +++ b/drivers/net/macb.c
 @@ -83,7 +83,16 @@ struct macb_dma_desc {
@@ -219,20 +215,15 @@ index 424ca59707..06142fc198 100644
  	gem_writel(macb, DMACFG, dmacfg);
  }
  
-@@ -775,6 +854,12 @@ static int _macb_init(struct macb_device *macb, const char *name)
+@@ -775,6 +854,7 @@ static int _macb_init(struct macb_device *macb, const char *name)
  	unsigned long paddr;
  	int ret;
  	int i;
 +	int count;
-+
-+	if (GEM_BFEXT(DAW64, gem_readl(macb, DCFG6)))
-+		macb->hw_dma_cap = HW_DMA_CAP_64B;
-+	else
-+		macb->hw_dma_cap = HW_DMA_CAP_32B;
  
  	/*
  	 * macb_halt should have been called at some point before now,
-@@ -786,20 +871,28 @@ static int _macb_init(struct macb_device *macb, const char *name)
+@@ -786,20 +866,28 @@ static int _macb_init(struct macb_device *macb, const char *name)
  	for (i = 0; i < MACB_RX_RING_SIZE; i++) {
  		if (i == (MACB_RX_RING_SIZE - 1))
  			paddr |= MACB_BIT(RX_WRAP);
@@ -266,7 +257,7 @@ index 424ca59707..06142fc198 100644
  	}
  	macb_flush_ring_desc(macb, TX);
  
-@@ -812,8 +905,12 @@ static int _macb_init(struct macb_device *macb, const char *name)
+@@ -812,8 +900,12 @@ static int _macb_init(struct macb_device *macb, const char *name)
  	gem_writel(macb, DMACFG, MACB_ZYNQ_GEM_DMACR_INIT);
  #endif
  
@@ -281,12 +272,13 @@ index 424ca59707..06142fc198 100644
  
  	if (macb_is_gem(macb)) {
  		/* Initialize DMA properties */
-@@ -1224,11 +1321,12 @@ static int macb_eth_probe(struct udevice *dev)
+@@ -1224,11 +1316,13 @@ static int macb_eth_probe(struct udevice *dev)
  {
  	struct eth_pdata *pdata = dev_get_platdata(dev);
  	struct macb_device *macb = dev_get_priv(dev);
 +	struct ofnode_phandle_args phandle_args;
  	const char *phy_mode;
++	const char *compatible;
  	int ret;
  
 -	phy_mode = fdt_getprop(gd->fdt_blob, dev_of_offset(dev), "phy-mode",
@@ -296,7 +288,7 @@ index 424ca59707..06142fc198 100644
  	if (phy_mode)
  		macb->phy_interface = phy_get_interface_by_name(phy_mode);
  	if (macb->phy_interface == -1) {
-@@ -1236,6 +1334,12 @@ static int macb_eth_probe(struct udevice *dev)
+@@ -1236,6 +1330,21 @@ static int macb_eth_probe(struct udevice *dev)
  		return -EINVAL;
  	}
  
@@ -306,9 +298,26 @@ index 424ca59707..06142fc198 100644
 +		macb->phy_addr = ofnode_read_u32_default(phandle_args.node,
 +							"reg", -1);
 +
++	compatible = dev_read_prop(dev, "compatible", NULL);
++
++	if (compatible) {
++		if (!strcmp(compatible, "microchip,mpfs-mss-gem"))
++			macb->hw_dma_cap = HW_DMA_CAP_64B;
++		else
++			macb->hw_dma_cap = HW_DMA_CAP_32B;
++	}
++
  	macb->regs = (void *)pdata->iobase;
  
  	macb->is_big_endian = (cpu_to_be32(0x12345678) == 0x12345678);
+@@ -1324,6 +1433,7 @@ static const struct udevice_id macb_eth_ids[] = {
+ 	{ .compatible = "cdns,zynq-gem" },
+ 	{ .compatible = "sifive,fu540-c000-gem",
+ 	  .data = (ulong)&sifive_config },
++	{ .compatible = "microchip,mpfs-mss-gem" },
+ 	{ }
+ };
+ 
 diff --git a/drivers/net/macb.h b/drivers/net/macb.h
 index 9b16383eba..72b84ae96e 100644
 --- a/drivers/net/macb.h

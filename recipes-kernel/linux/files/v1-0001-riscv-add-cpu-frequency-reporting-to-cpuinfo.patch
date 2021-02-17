@@ -1,0 +1,45 @@
+From 008b8ff88d8a05aa650c20c0db24f5fa05a57aff Mon Sep 17 00:00:00 2001
+From: Daire McNamara <daire.mcnamara@microchip.com>
+Date: Thu, 4 Feb 2021 15:38:46 +0000
+Subject: [PATCH v1 1/1] riscv: add cpu frequency reporting to cpuinfo
+
+<Signed-off-by: Daire McNamara daire.mcnamara@microchip.com>
+---
+ arch/riscv/kernel/cpu.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
+index 6d59e6906fdd..91dec2a11469 100644
+--- a/arch/riscv/kernel/cpu.c
++++ b/arch/riscv/kernel/cpu.c
+@@ -4,6 +4,7 @@
+  */
+ 
+ #include <linux/init.h>
++#include <linux/cpufreq.h>
+ #include <linux/seq_file.h>
+ #include <linux/of.h>
+ #include <asm/smp.h>
+@@ -107,6 +108,11 @@ static int c_show(struct seq_file *m, void *v)
+ 	unsigned long cpu_id = (unsigned long)v - 1;
+ 	struct device_node *node = of_get_cpu_node(cpu_id, NULL);
+ 	const char *compat, *isa, *mmu;
++	unsigned long proc_freq;
++
++	proc_freq = cpufreq_quick_get(cpu_id);
++	if (!proc_freq)
++		proc_freq = 0;
+ 
+ 	seq_printf(m, "processor\t: %lu\n", cpu_id);
+ 	seq_printf(m, "hart\t\t: %lu\n", cpuid_to_hartid_map(cpu_id));
+@@ -117,6 +123,7 @@ static int c_show(struct seq_file *m, void *v)
+ 	if (!of_property_read_string(node, "compatible", &compat)
+ 	    && strcmp(compat, "riscv"))
+ 		seq_printf(m, "uarch\t\t: %s\n", compat);
++	seq_printf(m, "cpu MHz\t\t: %lu.%02lu\n", proc_freq / 1000, proc_freq % 1000);
+ 	seq_puts(m, "\n");
+ 	of_node_put(node);
+ 
+-- 
+2.25.1
+
