@@ -68,12 +68,12 @@ index 0000000000..f5478bf201
 +	compatible = "microchip,mpfs-icicle-kit";
 +
 +	aliases {
-+		serial0 = &uart0;
++		serial1 = &uart1;
 +		ethernet0 = &emac1;
 +	};
 +
 +	chosen {
-+		stdout-path = "serial0";
++		stdout-path = "serial1";
 +	};
 +
 +	cpucomplex: cpus {
@@ -282,7 +282,7 @@ index 0000000000..f5478bf201
 +			interrupts = <90>;
 +			clock-frequency = <150000000>;
 +			clocks = <&clkcfg CLK_MMUART0>;
-+			status = "okay";
++			status = "disabled";
 +		};
 +		refclk: refclk {
 +			compatible = "fixed-clock";
