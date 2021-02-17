@@ -8,7 +8,6 @@ SRCREV = "v5.6.16"
 SRC_URI = " \
     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git;branch=${BRANCH} \
 "
-
 SRC_URI_append_icicle-kit-es = " \
     file://icicle-kit-es-a000-microchip.dts \
     file://0001-PFSoC-Icicle-kit-Adding-DTS-makefile.patch \
