@@ -28,12 +28,9 @@ SRC_URI_append_icicle-kit-es = " \
     file://0001-rng-add-support-for-rng-on-the-polarfire-soc.patch \
     file://0005-soc-add-polarfire-soc-system-controller.patch \
     file://0007-sys-serv-fpga-digest-and-serial-num.patch \
-<<<<<<< HEAD
     file://v1-0001-dt-bindings-rtc-microchip-Add-Microchip-PolarFire.patch \
     file://v1-0002-rtc-microchip-Add-driver-for-Microchip-PolarFire-.patch \
-=======
     file://v1-0001-riscv-add-cpu-frequency-reporting-to-cpuinfo.patch \
->>>>>>> 64ed5b6da46e7376b839e4750c05baf9ccde73f6
  "
 SRC_URI_append_icicle-kit-es-sd = " \
     file://icicle-kit-es-a000-microchip.dts \
@@ -54,12 +51,9 @@ SRC_URI_append_icicle-kit-es-sd = " \
     file://0001-rng-add-support-for-rng-on-the-polarfire-soc.patch \
     file://0005-soc-add-polarfire-soc-system-controller.patch \
     file://0007-sys-serv-fpga-digest-and-serial-num.patch \
-<<<<<<< HEAD
     file://v1-0001-dt-bindings-rtc-microchip-Add-Microchip-PolarFire.patch \
     file://v1-0002-rtc-microchip-Add-driver-for-Microchip-PolarFire-.patch \
-=======
     file://v1-0001-riscv-add-cpu-frequency-reporting-to-cpuinfo.patch \
->>>>>>> 64ed5b6da46e7376b839e4750c05baf9ccde73f6
  "
  
 SRC_URI_append_mpfs = " \
