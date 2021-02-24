@@ -43,3 +43,5 @@ do_deploy() {
 
 addtask deploy after do_install
 
+COMPATIBLE_MACHINE = "(icicle-kit-es|icicle-kit-es-sd|lc-mpfs|mpfs)"
+
