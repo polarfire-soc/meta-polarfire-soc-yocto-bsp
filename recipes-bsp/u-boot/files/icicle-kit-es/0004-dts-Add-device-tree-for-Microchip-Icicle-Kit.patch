@@ -314,16 +314,16 @@ index 0000000000..f08f3ff105
 +			pinctrl-names = "default";
 +			clocks = <&clkcfg CLK_MMC>;
 +			bus-width = <4>;
-+			cap-mmc-highspeed;
-+			mmc-ddr-3_3v;
++			cap-mmc-highspeed;cap-sd-highspeed;
++			/* mmc-ddr-3_3v; */
 +			max-frequency = <200000000>;
-+			non-removable;
-+			no-sd;
-+			no-sdio;
-+			voltage-ranges = <3300 3300>;
++			/* non-removable; */
++			no-1-8v;
++			disable-wp;
++			/*voltage-ranges = <3300 3300>;*/
 +			status = "okay";
 +		};
-+		sdcard: sd@20008000 {
++		/*sdcard: sd@20008000 {
 +			compatible = "cdns,sd4hc";
 +			reg = <0x0 0x20008000 0x0 0x1000>;
 +			interrupt-parent = <&plic>;
@@ -340,7 +340,7 @@ index 0000000000..f08f3ff105
 +			sd-uhs-sdr104;
 +			max-frequency = <200000000>;
 +			status = "disabled";
-+		};
++		};*/
 +		uart1: serial@20100000 {
 +			compatible = "ns16550a";
 +			reg = <0x0 0x20100000 0x0 0x400>;
