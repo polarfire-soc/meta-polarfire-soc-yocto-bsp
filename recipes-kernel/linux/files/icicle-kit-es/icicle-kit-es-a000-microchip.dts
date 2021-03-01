@@ -228,43 +228,21 @@
 			clocks = <&clkcfg CLK_MMUART3>;
 			status = "okay";
 		};
-		emmc: mmc@20008000 {
-			compatible = "cdns,sd4hc";
-			reg = <0x0 0x20008000 0x0 0x1000>;
-			interrupt-parent = <&L1>;
-			interrupts = <88 89>;
-			pinctrl-names = "default";
-			clocks = <&clkcfg CLK_MMC>;
-			bus-width = <8>;
-			cap-mmc-highspeed;
-			mmc-ddr-3_3v;
-			max-frequency = <200000000>;
-			non-removable;
-			no-sd;
-			no-sdio;
-			voltage-ranges = <3300 3300>;
-			status = "okay";
+		emmc: mmc@20008000 { /* Common node entry for emmc/sd */
+		    compatible = "cdns,sd4hc";
+		    reg = <0x0 0x20008000 0x0 0x1000>;
+		    interrupt-parent = <&L1>;
+		    interrupts = <88 89>;
+		    pinctrl-names = "default";
+		    clocks = <&clkcfg CLK_MMC>;
+		    bus-width = <4>;
+		    cap-mmc-highspeed;
+		    cap-sd-highspeed;
+		    no-1-8-v;
+		    disable-wp;
+		    max-frequency = <200000000>;
+		    status = "okay";
 		};
-        sdcard: sd@20008000 {
-            compatible = "cdns,sd4hc";
-            reg = <0x0 0x20008000 0x0 0x1000>;
-            interrupt-parent = <&L1>;
-            interrupts = <88>;
-            pinctrl-names = "default";
-            clocks = <&clkcfg CLK_MMC>;
-            bus-width = <4>;
-	        disable-wp;
-	        no-1-8-v;
-	        cap-mmc-highspeed;
-	        cap-sd-highspeed;
-	        card-detect-delay = <200>;
-            sd-uhs-sdr12;
-	        sd-uhs-sdr25;
-	        sd-uhs-sdr50;
-	        sd-uhs-sdr104;
-            max-frequency = <200000000>;
-	        status = "disabled";
-         };
 		emac1: ethernet@20112000 {
             compatible = "cdns,macb";
             reg = <0x0 0x20112000 0x0 0x2000>;
