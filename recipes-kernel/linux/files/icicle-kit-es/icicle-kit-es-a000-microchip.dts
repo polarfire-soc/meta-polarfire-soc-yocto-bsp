@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: (GPL-2.0 OR MIT)
 /* Copyright (c) 2019-2020 Microchip Technology Inc */
 /dts-v1/;
-#include "dt-bindings/clock/microchip,pfsoc-clock.h"
+#include "dt-bindings/clock/microchip,mpfs-clock.h"
 / {
 	#address-cells = <2>;
 	#size-cells = <2>;
@@ -154,7 +154,7 @@
 			#interrupt-cells = <1>;
 			compatible = "sifive,plic-1.0.0";
 			reg = <0x0 0xc000000 0x0 0x4000000>;
-			riscv,ndev = <53>;
+			riscv,ndev = <186>;
 			interrupt-controller;
 			interrupts-extended = <&L4 11 &L9 11 &L9 9 &L13 11 &L13 9 &L17 11 &L17 9 &L21 11 &L21 9>;
 		};
@@ -172,7 +172,7 @@
 			clock-output-names = "msspllclk";
 		};
 		clkcfg: clkcfg@20002000 {
-			compatible = "microchip,pfsoc-clkcfg";
+			compatible = "microchip,mpfs-clkcfg";
 			reg = <0x0 0x20002000 0x0 0x1000>;
 			reg-names = "mss_sysreg";
 			clocks = <&refclk>;
@@ -237,7 +237,7 @@
 			clocks = <&clkcfg CLK_MMC>;
 			bus-width = <8>;
 			cap-mmc-highspeed;
-			mmc-ddr-3_3v; 
+			mmc-ddr-3_3v;
 			max-frequency = <200000000>;
 			non-removable;
 			no-sd;
@@ -251,7 +251,7 @@
             interrupt-parent = <&L1>;
             interrupts = <88>;
             pinctrl-names = "default";
-            clocks = <&clkcfg CLK_MMC>;         
+            clocks = <&clkcfg CLK_MMC>;
             bus-width = <4>;
 	        disable-wp;
 	        no-1-8-v;
@@ -261,9 +261,9 @@
             sd-uhs-sdr12;
 	        sd-uhs-sdr25;
 	        sd-uhs-sdr50;
-	        sd-uhs-sdr104;  
+	        sd-uhs-sdr104;
             max-frequency = <200000000>;
-	        status = "disabled";     
+	        status = "disabled";
          };
 		emac1: ethernet@20112000 {
             compatible = "cdns,macb";
@@ -306,7 +306,7 @@
 			clocks = <&clkcfg CLK_FIC0>, <&clkcfg CLK_FIC1>, <&clkcfg CLK_FIC3>;
 			clock-names = "fic0", "fic1", "fic3";
 			bus-range = <0x00 0x7f>;
-			interrupt-map = <0 0 0 1 &pcie 0>, 
+			interrupt-map = <0 0 0 1 &pcie 0>,
 					<0 0 0 2 &pcie 1>,
 					<0 0 0 3 &pcie 2>,
 					<0 0 0 4 &pcie 3>;
@@ -408,9 +408,9 @@
                         compatible = "microchip,polarfire-soc-mailbox";
                         reg = <0x0 0x37020000 0x0 0x1000>, <0x0 0x2000318C 0x0 0x40>;
                         interrupt-parent = <&L1>;
-                        interrupts = <96>;		
+                        interrupts = <96>;
                         #mbox-cells = <1>;
-               };    
+               };
                syscontroller: syscontroller {
                         compatible = "microchip,polarfire-soc-sys-controller";
                         #address-cells = <1>;
@@ -437,4 +437,3 @@
                 };
 	};
 };
-

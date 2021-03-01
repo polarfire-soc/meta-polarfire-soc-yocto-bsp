@@ -1,23 +1,23 @@
-From 006ae574dfe4f790fa90b1bc3d73775d6c4e7eba Mon Sep 17 00:00:00 2001
+From 49e9ddae40e830e2bfbbad09da1c3307dae0a717 Mon Sep 17 00:00:00 2001
 From: Daire McNamara <daire.mcnamara@microchip.com>
 Date: Fri, 29 Jan 2021 13:44:09 +0000
 Subject: [PATCH v1 2/2] rtc: microchip: Add driver for Microchip PolarFire SoC
 
 Add support for built-in RTC on Microchip PolarFire SoC
 
-Signed-off-by: Lewis Hanly <lewis.hanly@microchip.com>
+Signed-off-by: Daire McNamara <daire.mcnamara@microchip.com>
 ---
  drivers/rtc/Kconfig    |   7 +
  drivers/rtc/Makefile   |   1 +
- drivers/rtc/rtc-mpfs.c | 447 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 455 insertions(+)
+ drivers/rtc/rtc-mpfs.c | 449 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 457 insertions(+)
  create mode 100644 drivers/rtc/rtc-mpfs.c
 
 diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
-index 6123f9f4fbc9..ccd8810779f3 100644
+index 8e503881d9d6..be341d3df664 100644
 --- a/drivers/rtc/Kconfig
 +++ b/drivers/rtc/Kconfig
-@@ -1692,6 +1692,13 @@ config RTC_DRV_MPC5121
+@@ -1669,6 +1669,13 @@ config RTC_DRV_MPC5121
  	  This driver can also be built as a module. If so, the module
  	  will be called rtc-mpc5121.
  
@@ -32,30 +32,30 @@ index 6123f9f4fbc9..ccd8810779f3 100644
  	tristate "Ingenic JZ4740 SoC"
  	depends on MIPS || COMPILE_TEST
 diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
-index bb8f319b09fb..88bb03b2d0fd 100644
+index 4ac8f19fb631..670bc50b7506 100644
 --- a/drivers/rtc/Makefile
 +++ b/drivers/rtc/Makefile
-@@ -103,6 +103,7 @@ obj-$(CONFIG_RTC_DRV_MCP795)	+= rtc-mcp795.o
+@@ -109,6 +109,7 @@ obj-$(CONFIG_RTC_DRV_MCP795)	+= rtc-mcp795.o
  obj-$(CONFIG_RTC_DRV_MESON)	+= rtc-meson.o
  obj-$(CONFIG_RTC_DRV_MOXART)	+= rtc-moxart.o
  obj-$(CONFIG_RTC_DRV_MPC5121)	+= rtc-mpc5121.o
 +obj-$(CONFIG_RTC_DRV_MPFS)	+= rtc-mpfs.o
  obj-$(CONFIG_RTC_DRV_MSM6242)	+= rtc-msm6242.o
- obj-$(CONFIG_RTC_DRV_MT2712)	+= rtc-mt2712.o
  obj-$(CONFIG_RTC_DRV_MT6397)	+= rtc-mt6397.o
+ obj-$(CONFIG_RTC_DRV_MT7622)	+= rtc-mt7622.o
 diff --git a/drivers/rtc/rtc-mpfs.c b/drivers/rtc/rtc-mpfs.c
 new file mode 100644
-index 000000000000..7f380a72016b
+index 000000000000..34a64cce5a7a
 --- /dev/null
 +++ b/drivers/rtc/rtc-mpfs.c
-@@ -0,0 +1,447 @@
+@@ -0,0 +1,449 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Microchip MPFS RTC driver
 + *
 + * Copyright (c) 2021 Microchip Corporation. All rights reserved.
 + *
-+ * Author: Lewis Hanly <lewis.hanly@microchip.com>
++ * Author: Daire McNamara <daire.mcnamara@microchip.com>
 + *
 + */
 +#include <linux/clk.h>
@@ -263,19 +263,17 @@ index 000000000000..7f380a72016b
 +
 +	/* Set alarm and compare lower registers. */
 +	val = alrm->time.tm_sec |
-+	      alrm->time.tm_min >> 8 |
-+	      alrm->time.tm_hour >> 16 |
-+	      alrm->time.tm_mday >> 24;
-+	// TODO - remove HACK mask = 0xffffffff;
-+	mask = 0xff;
++	      alrm->time.tm_min << 8 |
++	      alrm->time.tm_hour << 16 |
++	      alrm->time.tm_mday << 24;
++	mask = 0xffffffff;
 +
 +	writel(val, rtcdev->base + ALARM_LOWER_REG);
 +	writel(mask, rtcdev->base + COMPARE_LOWER_REG);
++
 +	val = (alrm->time.tm_mon + 1) |
-+	      (alrm->time.tm_year - YEAR_OFFSET) |
-+	      (alrm->time.tm_wday + 1);
-+	//TODO - remove hack mask = 0x00ffffff; /* don't use week - tm doesn't use it */
-+	mask = 0;
++	      (alrm->time.tm_year - YEAR_OFFSET) << 8;
++	mask = 0x000ffff;
 +
 +	writel(val, rtcdev->base + ALARM_UPPER_REG);
 +	writel(mask, rtcdev->base + COMPARE_UPPER_REG);
@@ -437,7 +435,7 @@ index 000000000000..7f380a72016b
 +
 +	device_init_wakeup(&pdev->dev, 1);
 +
-+	return devm_rtc_register_device(rtcdev->rtc);
++	return rtc_register_device(rtcdev->rtc);
 +}
 +
 +static int mpfs_rtc_remove(struct platform_device *pdev)
@@ -448,10 +446,12 @@ index 000000000000..7f380a72016b
 +	return 0;
 +}
 +
-+static int __maybe_unused mpfs_rtc_suspend(struct device *dev)
++#ifdef CONFIG_PM_SLEEP
++static int mpfs_rtc_suspend(struct device *dev)
 +{
 +	struct mpfs_rtc_dev *rtcdev = dev_get_drvdata(dev);
 +
++	/* leave the alarm on as a wake source */
 +	if (device_may_wakeup(dev))
 +		enable_irq_wake(rtcdev->wakeup_irq);
 +	else
@@ -460,10 +460,11 @@ index 000000000000..7f380a72016b
 +	return 0;
 +}
 +
-+static int __maybe_unused mpfs_rtc_resume(struct device *dev)
++static int mpfs_rtc_resume(struct device *dev)
 +{
 +	struct mpfs_rtc_dev *rtcdev = dev_get_drvdata(dev);
 +
++	/* alarms were left on as a wake source, turn them off */
 +	if (device_may_wakeup(dev))
 +		disable_irq_wake(rtcdev->wakeup_irq);
 +	else
@@ -471,6 +472,7 @@ index 000000000000..7f380a72016b
 +
 +	return 0;
 +}
++#endif
 +
 +static SIMPLE_DEV_PM_OPS(mpfs_rtc_pm_ops, mpfs_rtc_suspend, mpfs_rtc_resume);
 +
@@ -494,7 +496,7 @@ index 000000000000..7f380a72016b
 +module_platform_driver(mpfs_rtc_driver);
 +
 +MODULE_DESCRIPTION("Real time clock for Microchip Polarfire SoC");
-+MODULE_AUTHOR("Lewis Hanly <Lewis.Hanly@microchip.com>");
++MODULE_AUTHOR("Daire McNamara <daire.mcnamara@microchip.com>");
 +MODULE_LICENSE("GPL");
 -- 
 2.25.1

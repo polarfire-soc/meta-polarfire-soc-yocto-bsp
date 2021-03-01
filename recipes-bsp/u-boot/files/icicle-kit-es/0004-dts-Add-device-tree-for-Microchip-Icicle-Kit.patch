@@ -23,9 +23,9 @@ index 3a6f96c67d..01331b0aa1 100644
  dtb-$(CONFIG_TARGET_SIFIVE_FU540) += hifive-unleashed-a00.dtb
  dtb-$(CONFIG_TARGET_SIPEED_MAIX) += k210-maix-bit.dtb
 +dtb-$(CONFIG_TARGET_MICROCHIP_ICICLE) += microchip-mpfs-icicle-kit.dtb
- 
+
  targets += $(dtb-y)
- 
+
 diff --git a/arch/riscv/dts/microchip-mpfs-icicle-kit-u-boot.dtsi b/arch/riscv/dts/microchip-mpfs-icicle-kit-u-boot.dtsi
 new file mode 100644
 index 0000000000..f60283fb6b
@@ -473,6 +473,5 @@ index 0000000000..f08f3ff105
 +		};
 +	};
 +};
--- 
+--
 2.17.1
-
