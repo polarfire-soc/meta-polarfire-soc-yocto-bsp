@@ -1,6 +1,6 @@
-From 1f69ace24aa111b6f9bc4b2f92c9fe2a095b75c5 Mon Sep 17 00:00:00 2001
+From b99ea727e69c67f7d857f32eec89ea9c0ca929e8 Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Fri, 12 Feb 2021 20:37:29 +0530
+Date: Mon, 1 Mar 2021 19:25:06 +0530
 Subject: [PATCH 3/5] clk: Add Microchip PolarFire SoC clock driver
 
 Add clock driver code for the Microchip PolarFire SoC. This driver
@@ -70,7 +70,7 @@ index 0000000000..904b345d75
 +obj-y += mpfs_clk.o mpfs_clk_cfg.o mpfs_clk_periph.o
 diff --git a/drivers/clk/microchip/mpfs_clk.c b/drivers/clk/microchip/mpfs_clk.c
 new file mode 100644
-index 0000000000..722c79b7c0
+index 0000000000..2dd55ee557
 --- /dev/null
 +++ b/drivers/clk/microchip/mpfs_clk.c
 @@ -0,0 +1,123 @@
