@@ -48,4 +48,4 @@ addtask deploy after do_install
 FILES_${PN} += "/platform/${MACHINE}/firmware/fsbl.bin"
 FILES_${PN} += "/platform/${MACHINE}/firmware/zsbl.bin"
 
-COMPATIBLE_HOST = "(riscv64|riscv32).*"
+COMPATIBLE_HOST = "(lc-mpfs|mpfs).*"

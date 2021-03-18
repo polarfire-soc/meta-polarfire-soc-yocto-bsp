@@ -54,8 +54,7 @@ The following table details the available targets:
 
 | `MACHINE`                  | Board Name                                                            |
 | -------------------------- | --------------------------------------------------------------------- |
-| `MACHINE=icicle-kit-es`    | ICICLE-KIT-ES, Icicle Kit engineering samples (supports emmc boot)    |
-| `MACHINE=icicle-kit-es-sd` | ICICLE-KIT-ES, Icicle Kit engineering samples (supports SD card boot) |
+| `MACHINE=icicle-kit-es`    | ICICLE-KIT-ES, Icicle Kit engineering samples                         |
 | `MACHINE=mpfs`             | MPFS-DEV-KIT, HiFive Unleashed Expansion Board                        |
 | `MACHINE=lc-mpfs`          | LC-MPFS-DEV-KIT, Low cost HiFive Unleashed Expansion Board            |
 | `MACHINE=qemuriscv64`      | Simulation                                                            |
