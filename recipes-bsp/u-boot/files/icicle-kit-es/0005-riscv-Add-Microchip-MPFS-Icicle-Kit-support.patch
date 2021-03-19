@@ -1,27 +1,27 @@
-From 241715759af6f51754528d9bca750323fa29de96 Mon Sep 17 00:00:00 2001
+From a00df21db42d2fa48f0239ccd28837fe0d235dcb Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Mon, 1 Mar 2021 19:31:07 +0530
+Date: Mon, 7 Dec 2020 15:41:33 +0530
 Subject: [PATCH 5/5] riscv: Add Microchip MPFS Icicle Kit support
 
 This patch adds Microchip MPFS Icicle Kit support. For now, only
 NS16550 Serial, Microchip clock, Cadence eMMC and MACB drivers are
-enabled. The Microchip MPFS Icicle defconfig by default builds
+only enabled. The Microchip MPFS Icicle defconfig by default builds
 U-Boot for S-Mode because U-Boot on Microchip PolarFire SoC will run
 in S-Mode as payload of HSS + OpenSBI.
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
 ---
- board/microchip/mpfs_icicle/Kconfig       |  23 +++++
- board/microchip/mpfs_icicle/mpfs_icicle.c | 114 +++++++++++++++++++++-
- configs/microchip_mpfs_icicle_defconfig   |   9 +-
- include/configs/microchip_mpfs_icicle.h   |  59 ++++-------
- 4 files changed, 160 insertions(+), 45 deletions(-)
+ board/microchip/mpfs_icicle/Kconfig       | 24 ++++++
+ board/microchip/mpfs_icicle/mpfs_icicle.c | 97 ++++++++++++++++++++++-
+ configs/microchip_mpfs_icicle_defconfig   |  9 ++-
+ include/configs/microchip_mpfs_icicle.h   | 60 +++++---------
+ 4 files changed, 145 insertions(+), 45 deletions(-)
 
 diff --git a/board/microchip/mpfs_icicle/Kconfig b/board/microchip/mpfs_icicle/Kconfig
-index bf8e1a13ec..4678462378 100644
+index bf8e1a13ec..f4e705a07b 100644
 --- a/board/microchip/mpfs_icicle/Kconfig
 +++ b/board/microchip/mpfs_icicle/Kconfig
-@@ -20,7 +20,30 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+@@ -20,7 +20,31 @@ config BOARD_SPECIFIC_OPTIONS # dummy
  	def_bool y
  	select GENERIC_RISCV
  	select BOARD_EARLY_INIT_F
@@ -44,6 +44,7 @@ index bf8e1a13ec..4678462378 100644
 +	imply ISO_PARTITION
 +	imply MACB
 +	imply MII
++	imply NET_RANDOM_ETHADDR
 +	imply PHY_LIB
 +	imply PHY_VITESSE
 +	imply MMC
@@ -53,10 +54,10 @@ index bf8e1a13ec..4678462378 100644
  
  endif
 diff --git a/board/microchip/mpfs_icicle/mpfs_icicle.c b/board/microchip/mpfs_icicle/mpfs_icicle.c
-index 8381361ec3..45674ae76e 100644
+index 8381361ec3..420ea25ac2 100644
 --- a/board/microchip/mpfs_icicle/mpfs_icicle.c
 +++ b/board/microchip/mpfs_icicle/mpfs_icicle.c
-@@ -6,10 +6,49 @@
+@@ -6,10 +6,47 @@
  
  #include <common.h>
  #include <dm.h>
@@ -65,8 +66,6 @@ index 8381361ec3..45674ae76e 100644
  #include <asm/io.h>
  
 -#define MPFS_SYSREG_SOFT_RESET	((unsigned int *)0x20002088)
-+DECLARE_GLOBAL_DATA_PTR;
-+
 +#define MPFS_SYSREG_SOFT_RESET		((unsigned int *)0x20002088)
 +#define MPFS_SYS_SERVICE_CR		((unsigned int *)0x37020050)
 +#define MPFS_SYS_SERVICE_SR		((unsigned int *)0x37020054)
@@ -107,7 +106,7 @@ index 8381361ec3..45674ae76e 100644
  
  int board_init(void)
  {
-@@ -22,10 +61,79 @@ int board_early_init_f(void)
+@@ -22,10 +59,64 @@ int board_early_init_f(void)
  {
  	unsigned int val;
  
@@ -170,27 +169,12 @@ index 8381361ec3..45674ae76e 100644
 +		if (icicle_mac_addr[idx] == ':')
 +			icicle_mac_addr[idx] = ' ';
 +	}
-+	env_set("icicle_mac_addr0", icicle_mac_addr);
-+
-+	mac_addr[5] = device_serial_number[0] + 1;
-+
-+	icicle_mac_addr[0] = '[';
-+
-+	sprintf(&icicle_mac_addr[1], "%pM", mac_addr);
-+
-+	icicle_mac_addr[18] = ']';
-+	icicle_mac_addr[19] = '\0';
-+
-+	for (idx = 0; idx < 20; idx++) {
-+		if (icicle_mac_addr[idx] == ':')
-+			icicle_mac_addr[idx] = ' ';
-+	}
-+	env_set("icicle_mac_addr1", icicle_mac_addr);
++	env_set("icicle_mac_addr", icicle_mac_addr);
 +
 +	return 0;
 +}
 diff --git a/configs/microchip_mpfs_icicle_defconfig b/configs/microchip_mpfs_icicle_defconfig
-index 2977966473..9abbc18a89 100644
+index 2977966473..0aec149810 100644
 --- a/configs/microchip_mpfs_icicle_defconfig
 +++ b/configs/microchip_mpfs_icicle_defconfig
 @@ -1,12 +1,15 @@
@@ -213,10 +197,10 @@ index 2977966473..9abbc18a89 100644
  CONFIG_BOOTP_SEND_HOSTNAME=y
  CONFIG_DM_MTD=y
 diff --git a/include/configs/microchip_mpfs_icicle.h b/include/configs/microchip_mpfs_icicle.h
-index 8a7470545b..24990370cf 100644
+index 8a7470545b..97547057b9 100644
 --- a/include/configs/microchip_mpfs_icicle.h
 +++ b/include/configs/microchip_mpfs_icicle.h
-@@ -7,53 +7,34 @@
+@@ -7,53 +7,35 @@
  #ifndef __CONFIG_H
  #define __CONFIG_H
  
@@ -281,7 +265,8 @@ index 8a7470545b..24990370cf 100644
  
 -/* When we use RAM as ENV */
 +#define CONFIG_EXTRA_ENV_SETTINGS \
-+	"bootm_size=0x10000000\0" \
++	"fdt_high=0xffffffffffffffff\0" \
++	"initrd_high=0xffffffffffffffff\0" \
 +	"kernel_addr_r=0x84000000\0" \
 +	"fdt_addr_r=0x88000000\0" \
 +	"scriptaddr=0x88100000\0" \

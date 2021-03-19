@@ -1,6 +1,6 @@
-From b99ea727e69c67f7d857f32eec89ea9c0ca929e8 Mon Sep 17 00:00:00 2001
+From fb663dc19bea26105d1c1c314b8a8565edffa2d8 Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Mon, 1 Mar 2021 19:25:06 +0530
+Date: Mon, 7 Dec 2020 15:30:05 +0530
 Subject: [PATCH 3/5] clk: Add Microchip PolarFire SoC clock driver
 
 Add clock driver code for the Microchip PolarFire SoC. This driver
@@ -12,19 +12,19 @@ Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
  drivers/clk/Makefile                          |   1 +
  drivers/clk/microchip/Kconfig                 |   5 +
  drivers/clk/microchip/Makefile                |   1 +
- drivers/clk/microchip/mpfs_clk.c              | 123 ++++++++++++
- drivers/clk/microchip/mpfs_clk.h              |  44 +++++
- drivers/clk/microchip/mpfs_clk_cfg.c          | 152 ++++++++++++++
- drivers/clk/microchip/mpfs_clk_periph.c       | 187 ++++++++++++++++++
- .../dt-bindings/clock/microchip-mpfs-clock.h  |  45 +++++
- 9 files changed, 559 insertions(+)
+ drivers/clk/microchip/mpfs_clk.c              | 127 +++++++++++++
+ drivers/clk/microchip/mpfs_clk.h              |  19 ++
+ drivers/clk/microchip/mpfs_clk_cfg.c          | 134 ++++++++++++++
+ drivers/clk/microchip/mpfs_clk_periph.c       | 173 ++++++++++++++++++
+ .../dt-bindings/clock/microchip,mpfs-clock.h  |  45 +++++
+ 9 files changed, 506 insertions(+)
  create mode 100644 drivers/clk/microchip/Kconfig
  create mode 100644 drivers/clk/microchip/Makefile
  create mode 100644 drivers/clk/microchip/mpfs_clk.c
  create mode 100644 drivers/clk/microchip/mpfs_clk.h
  create mode 100644 drivers/clk/microchip/mpfs_clk_cfg.c
  create mode 100644 drivers/clk/microchip/mpfs_clk_periph.c
- create mode 100644 include/dt-bindings/clock/microchip-mpfs-clock.h
+ create mode 100644 include/dt-bindings/clock/microchip,mpfs-clock.h
 
 diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
 index 6003e140b5..951741e673 100644
@@ -39,17 +39,17 @@ index 6003e140b5..951741e673 100644
  source "drivers/clk/owl/Kconfig"
  source "drivers/clk/renesas/Kconfig"
 diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index cda4b4b605..f316263d73 100644
+index cda4b4b605..524ac83f5a 100644
 --- a/drivers/clk/Makefile
 +++ b/drivers/clk/Makefile
-@@ -29,6 +29,7 @@ obj-$(CONFIG_$(SPL_TPL_)CLK_INTEL) += intel/
+@@ -28,6 +28,7 @@ obj-$(CONFIG_CLK_EXYNOS) += exynos/
+ obj-$(CONFIG_$(SPL_TPL_)CLK_INTEL) += intel/
  obj-$(CONFIG_CLK_HSDK) += clk-hsdk-cgu.o
  obj-$(CONFIG_CLK_K210) += kendryte/
- obj-$(CONFIG_CLK_MPC83XX) += mpc83xx_clk.o
 +obj-$(CONFIG_CLK_MPFS) += microchip/
+ obj-$(CONFIG_CLK_MPC83XX) += mpc83xx_clk.o
  obj-$(CONFIG_CLK_OCTEON) += clk_octeon.o
  obj-$(CONFIG_CLK_OWL) += owl/
- obj-$(CONFIG_CLK_RENESAS) += renesas/
 diff --git a/drivers/clk/microchip/Kconfig b/drivers/clk/microchip/Kconfig
 new file mode 100644
 index 0000000000..b70241559d
@@ -70,10 +70,10 @@ index 0000000000..904b345d75
 +obj-y += mpfs_clk.o mpfs_clk_cfg.o mpfs_clk_periph.o
 diff --git a/drivers/clk/microchip/mpfs_clk.c b/drivers/clk/microchip/mpfs_clk.c
 new file mode 100644
-index 0000000000..2dd55ee557
+index 0000000000..1b1b66ef64
 --- /dev/null
 +++ b/drivers/clk/microchip/mpfs_clk.c
-@@ -0,0 +1,123 @@
+@@ -0,0 +1,127 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2020 Microchip Technology Inc.
@@ -87,6 +87,7 @@ index 0000000000..2dd55ee557
 +#include <dm/device.h>
 +#include <dm/devres.h>
 +#include <dm/uclass.h>
++#include <malloc.h>
 +#include <linux/err.h>
 +
 +#include "mpfs_clk.h"
@@ -153,12 +154,16 @@ index 0000000000..2dd55ee557
 +	int ret;
 +	void __iomem *base;
 +	u32 clk_rate;
++	struct clk *clk;
 +	const char *parent_clk_name;
-+	struct clk *clk = dev_get_priv(dev);
 +
 +	base = dev_read_addr_ptr(dev);
 +	if (!base)
-+		return -EINVAL;
++		return -ENODEV;
++
++	clk = kzalloc(sizeof(*clk), GFP_KERNEL);
++	if (!clk)
++		return -ENOMEM;
 +
 +	ret = clk_get_by_index(dev, 0, clk);
 +	if (ret)
@@ -195,14 +200,13 @@ index 0000000000..2dd55ee557
 +	.of_match = mpfs_of_match,
 +	.ops = &mpfs_clk_ops,
 +	.probe = mpfs_clk_probe,
-+	.priv_auto_alloc_size = sizeof(struct clk),
 +};
 diff --git a/drivers/clk/microchip/mpfs_clk.h b/drivers/clk/microchip/mpfs_clk.h
 new file mode 100644
-index 0000000000..8e3fc55ae3
+index 0000000000..432547cbf2
 --- /dev/null
 +++ b/drivers/clk/microchip/mpfs_clk.h
-@@ -0,0 +1,44 @@
+@@ -0,0 +1,19 @@
 +/* SPDX-License-Identifier: GPL-2.0+ */
 +/*
 + * Copyright (C) 2020 Microchip Technology Inc.
@@ -212,36 +216,11 @@ index 0000000000..8e3fc55ae3
 +#define __MICROCHIP_MPFS_CLK_H
 +
 +#include <linux/clk-provider.h>
-+/**
-+ * mpfs_clk_register_cfgs() - register configuration clocks
-+ *
-+ * @base: base address of the mpfs system register.
-+ * @clk_rate: the mpfs pll clock rate.
-+ * @parent_name: a pointer to parent clock name.
-+ * @return zero on success, or a negative error code.
-+ */
++
 +int mpfs_clk_register_cfgs(void __iomem *base, u32 clk_rate,
-+			   const char *parent_name);
-+/**
-+ * mpfs_clk_register_periphs() - register peripheral clocks
-+ *
-+ * @base: base address of the mpfs system register.
-+ * @clk_rate: the mpfs pll clock rate.
-+ * @parent_name: a pointer to parent clock name.
-+ * @return zero on success, or a negative error code.
-+ */
++			    const char *parent_name);
 +int mpfs_clk_register_periphs(void __iomem *base, u32 clk_rate,
-+			      const char *parent_name);
-+/**
-+ * divider_get_val() - get the clock divider value
-+ *
-+ * @rate: requested clock rate.
-+ * @parent_rate: parent clock rate.
-+ * @table: a pointer to clock divider table.
-+ * @width: width of the divider bit field.
-+ * @flags: common clock framework flags.
-+ * @return divider value on success, or a negative error code.
-+ */
++			       const char *parent_name);
 +int divider_get_val(unsigned long rate, unsigned long parent_rate,
 +		    const struct clk_div_table *table,
 +		    u8 width, unsigned long flags);
@@ -249,10 +228,10 @@ index 0000000000..8e3fc55ae3
 +#endif	/* __MICROCHIP_MPFS_CLK_H */
 diff --git a/drivers/clk/microchip/mpfs_clk_cfg.c b/drivers/clk/microchip/mpfs_clk_cfg.c
 new file mode 100644
-index 0000000000..fefddd1413
+index 0000000000..ac8ed07fff
 --- /dev/null
 +++ b/drivers/clk/microchip/mpfs_clk_cfg.c
-@@ -0,0 +1,152 @@
+@@ -0,0 +1,134 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2020 Microchip Technology Inc.
@@ -261,12 +240,12 @@ index 0000000000..fefddd1413
 +#include <common.h>
 +#include <clk.h>
 +#include <clk-uclass.h>
-+#include <asm/io.h>
 +#include <dm/device.h>
 +#include <dm/devres.h>
 +#include <dm/uclass.h>
-+#include <dt-bindings/clock/microchip-mpfs-clock.h>
++#include <asm/io.h>
 +#include <linux/err.h>
++#include <dt-bindings/clock/microchip,mpfs-clock.h>
 +
 +#include "mpfs_clk.h"
 +
@@ -274,27 +253,16 @@ index 0000000000..fefddd1413
 +
 +#define REG_CLOCK_CONFIG_CR 0x08
 +
-+/* CPU and AXI clock divisors */
 +static const struct clk_div_table mpfs_div_cpu_axi_table[] = {
 +	{ 0, 1 }, { 1, 2 }, { 2, 4 }, { 3, 8 },
 +	{ 0, 0 }
 +};
 +
-+/* AHB clock divisors */
 +static const struct clk_div_table mpfs_div_ahb_table[] = {
 +	{ 1, 2 }, { 2, 4}, { 3, 8 },
 +	{ 0, 0 }
 +};
 +
-+/**
-+ * struct mpfs_cfg_clock - per instance of configuration clock
-+ * @id: index of a configuration clock
-+ * @name: name of a configuration clock
-+ * @shift: shift to the divider bit field of a configuration clock
-+ * @width: width of the divider bit field of a configation clock
-+ * @table: clock divider table instance
-+ * @flags: common clock framework flags
-+ */
 +struct mpfs_cfg_clock {
 +	unsigned int id;
 +	const char *name;
@@ -304,13 +272,6 @@ index 0000000000..fefddd1413
 +	unsigned long flags;
 +};
 +
-+/**
-+ * struct mpfs_cfg_hw_clock - hardware configuration clock (cpu, axi, ahb)
-+ * @cfg: configuration clock instance
-+ * @sys_base: base address of the mpfs system register
-+ * @prate: the pll clock rate
-+ * @hw: clock instance
-+ */
 +struct mpfs_cfg_hw_clock {
 +	struct mpfs_cfg_clock cfg;
 +	void __iomem *sys_base;
@@ -373,7 +334,7 @@ index 0000000000..fefddd1413
 +};
 +
 +int mpfs_clk_register_cfgs(void __iomem *base, u32 clk_rate,
-+			   const char *parent_name)
++			    const char *parent_name)
 +{
 +	int ret;
 +	int i, id, num_clks;
@@ -407,10 +368,10 @@ index 0000000000..fefddd1413
 +};
 diff --git a/drivers/clk/microchip/mpfs_clk_periph.c b/drivers/clk/microchip/mpfs_clk_periph.c
 new file mode 100644
-index 0000000000..61d90eb4a8
+index 0000000000..066f60f060
 --- /dev/null
 +++ b/drivers/clk/microchip/mpfs_clk_periph.c
-@@ -0,0 +1,187 @@
+@@ -0,0 +1,173 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2020 Microchip Technology Inc.
@@ -419,12 +380,12 @@ index 0000000000..61d90eb4a8
 +#include <common.h>
 +#include <clk.h>
 +#include <clk-uclass.h>
-+#include <asm/io.h>
 +#include <dm/device.h>
 +#include <dm/devres.h>
 +#include <dm/uclass.h>
-+#include <dt-bindings/clock/microchip-mpfs-clock.h>
++#include <asm/io.h>
 +#include <linux/err.h>
++#include <dt-bindings/clock/microchip,mpfs-clock.h>
 +
 +#include "mpfs_clk.h"
 +
@@ -439,13 +400,6 @@ index 0000000000..61d90eb4a8
 +#define CFG_AHB_SHIFT   0x4
 +#define CFG_WIDTH       0x2
 +
-+/**
-+ * struct mpfs_periph_clock - per instance of peripheral clock
-+ * @id: index of a peripheral clock
-+ * @name: name of a peripheral clock
-+ * @shift: shift to a peripheral clock bit field
-+ * @flags: common clock framework flags
-+ */
 +struct mpfs_periph_clock {
 +	unsigned int id;
 +	const char *name;
@@ -453,13 +407,6 @@ index 0000000000..61d90eb4a8
 +	unsigned long flags;
 +};
 +
-+/**
-+ * struct mpfs_periph_hw_clock - hardware peripheral clock
-+ * @periph: peripheral clock instance
-+ * @sys_base: base address of the mpfs system register
-+ * @prate: the pll clock rate
-+ * @hw: clock instance
-+ */
 +struct mpfs_periph_hw_clock {
 +	struct mpfs_periph_clock periph;
 +	void __iomem *sys_base;
@@ -537,7 +484,7 @@ index 0000000000..61d90eb4a8
 +	CLK_PERIPH(CLK_MAC1, "clk_periph_mac1", 2, 0),
 +	CLK_PERIPH(CLK_MMC, "clk_periph_mmc", 3, 0),
 +	CLK_PERIPH(CLK_TIMER, "clk_periph_timer", 4, 0),
-+	CLK_PERIPH(CLK_MMUART0, "clk_periph_mmuart0", 5, 0),
++	CLK_PERIPH(CLK_MMUART0, "clk_periph_mmuart0", 5, CLK_IS_CRITICAL),
 +	CLK_PERIPH(CLK_MMUART1, "clk_periph_mmuart1", 6, 0),
 +	CLK_PERIPH(CLK_MMUART2, "clk_periph_mmuart2", 7, 0),
 +	CLK_PERIPH(CLK_MMUART3, "clk_periph_mmuart3", 8, 0),
@@ -555,16 +502,16 @@ index 0000000000..61d90eb4a8
 +	CLK_PERIPH(CLK_GPIO1, "clk_periph_gpio1", 21, 0),
 +	CLK_PERIPH(CLK_GPIO2, "clk_periph_gpio2", 22, 0),
 +	CLK_PERIPH(CLK_DDRC, "clk_periph_ddrc", 23, CLK_IS_CRITICAL),
-+	CLK_PERIPH(CLK_FIC0, "clk_periph_fic0", 24, 0),
-+	CLK_PERIPH(CLK_FIC1, "clk_periph_fic1", 25, 0),
-+	CLK_PERIPH(CLK_FIC2, "clk_periph_fic2", 26, 0),
-+	CLK_PERIPH(CLK_FIC3, "clk_periph_fic3", 27, 0),
++	CLK_PERIPH(CLK_FIC0, "clk_periph_fic0", 24, CLK_IS_CRITICAL),
++	CLK_PERIPH(CLK_FIC1, "clk_periph_fic1", 25, CLK_IS_CRITICAL),
++	CLK_PERIPH(CLK_FIC2, "clk_periph_fic2", 26, CLK_IS_CRITICAL),
++	CLK_PERIPH(CLK_FIC3, "clk_periph_fic3", 27, CLK_IS_CRITICAL),
 +	CLK_PERIPH(CLK_ATHENA, "clk_periph_athena", 28, 0),
 +	CLK_PERIPH(CLK_CFM, "clk_periph_cfm", 29, 0),
 +};
 +
 +int mpfs_clk_register_periphs(void __iomem *base, u32 clk_rate,
-+			      const char *parent_name)
++			       const char *parent_name)
 +{
 +	int ret;
 +	int i, id, num_clks;
@@ -598,13 +545,13 @@ index 0000000000..61d90eb4a8
 +	.id	= UCLASS_CLK,
 +	.ops	= &mpfs_periph_clk_ops,
 +};
-diff --git a/include/dt-bindings/clock/microchip-mpfs-clock.h b/include/dt-bindings/clock/microchip-mpfs-clock.h
+diff --git a/include/dt-bindings/clock/microchip,mpfs-clock.h b/include/dt-bindings/clock/microchip,mpfs-clock.h
 new file mode 100644
-index 0000000000..55fe64693f
+index 0000000000..80ee086474
 --- /dev/null
-+++ b/include/dt-bindings/clock/microchip-mpfs-clock.h
++++ b/include/dt-bindings/clock/microchip,mpfs-clock.h
 @@ -0,0 +1,45 @@
-+/* SPDX-License-Identifier: (GPL-2.0 OR MIT) */
++/* SPDX-License-Identifier: GPL-2.0+ */
 +/*
 + * Copyright (C) 2020 Microchip Technology Inc.
 + * Padmarao Begari <padmarao.begari@microchip.com>
