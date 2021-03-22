@@ -1,6 +1,6 @@
-From 9d40d254928395ab2784aee73ba13ebdf7a0ed86 Mon Sep 17 00:00:00 2001
+From 241715759af6f51754528d9bca750323fa29de96 Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Fri, 12 Feb 2021 20:47:59 +0530
+Date: Mon, 1 Mar 2021 19:31:07 +0530
 Subject: [PATCH 5/5] riscv: Add Microchip MPFS Icicle Kit support
 
 This patch adds Microchip MPFS Icicle Kit support. For now, only

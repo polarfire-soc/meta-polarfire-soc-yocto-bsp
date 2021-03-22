@@ -1,6 +1,6 @@
-From 5624fbc3dc4871fa97cffd9c6597d3cd4f6f0ebd Mon Sep 17 00:00:00 2001
+From 24908a1c8e5e28f32077d87b5c224b996099b5fe Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Fri, 12 Feb 2021 20:41:32 +0530
+Date: Mon, 1 Mar 2021 19:26:44 +0530
 Subject: [PATCH 4/5] dts: Add device tree for Microchip Icicle Kit
 
 Add device tree for Microchip PolarFire SoC Icicle Kit.
@@ -9,8 +9,8 @@ Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
 ---
  arch/riscv/dts/Makefile                       |   1 +
  .../dts/microchip-mpfs-icicle-kit-u-boot.dtsi |  14 +
- arch/riscv/dts/microchip-mpfs-icicle-kit.dts  | 421 ++++++++++++++++++
- 3 files changed, 436 insertions(+)
+ arch/riscv/dts/microchip-mpfs-icicle-kit.dts  | 401 ++++++++++++++++++
+ 3 files changed, 416 insertions(+)
  create mode 100644 arch/riscv/dts/microchip-mpfs-icicle-kit-u-boot.dtsi
  create mode 100644 arch/riscv/dts/microchip-mpfs-icicle-kit.dts
 
@@ -48,10 +48,10 @@ index 0000000000..f60283fb6b
 +};
 diff --git a/arch/riscv/dts/microchip-mpfs-icicle-kit.dts b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
 new file mode 100644
-index 0000000000..f08f3ff105
+index 0000000000..569fce86f0
 --- /dev/null
 +++ b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
-@@ -0,0 +1,421 @@
+@@ -0,0 +1,401 @@
 +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
 +/* Copyright (c) 2020 Microchip Technology Inc */
 +
@@ -314,33 +314,13 @@ index 0000000000..f08f3ff105
 +			pinctrl-names = "default";
 +			clocks = <&clkcfg CLK_MMC>;
 +			bus-width = <4>;
-+			cap-mmc-highspeed;cap-sd-highspeed;
++			cap-mmc-highspeed;
++			cap-sd-highspeed;
 +			no-1-8-v;
++			disable-wp;
 +			max-frequency = <200000000>;
-+			disable_wp;
-+			/*no-sd;
-+			no-sdio;
-+			voltage-ranges = <3300 3300>;*/
 +			status = "okay";
 +		};
-+		/*sdcard: sd@20008000 {
-+			compatible = "cdns,sd4hc";
-+			reg = <0x0 0x20008000 0x0 0x1000>;
-+			interrupt-parent = <&plic>;
-+			interrupts = <88>;
-+			pinctrl-names = "default";
-+			clocks = <&clkcfg CLK_MMC>;
-+			bus-width = <4>;
-+			disable-wp;
-+			cap-sd-highspeed;
-+			card-detect-delay = <200>;
-+			sd-uhs-sdr12;
-+			sd-uhs-sdr25;
-+			sd-uhs-sdr50;
-+			sd-uhs-sdr104;
-+			max-frequency = <200000000>;
-+			status = "disabled";
-+		};*/
 +		uart1: serial@20100000 {
 +			compatible = "ns16550a";
 +			reg = <0x0 0x20100000 0x0 0x400>;

@@ -1,6 +1,6 @@
-From d407f2e7343f768d1664843bda77be34fe3598c6 Mon Sep 17 00:00:00 2001
+From 107a07ec0c6e03492526ab13df5b94f8941d9722 Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Fri, 12 Feb 2021 20:31:18 +0530
+Date: Mon, 1 Mar 2021 19:20:11 +0530
 Subject: [PATCH 2/5] net: macb: Add DMA 64-bit address support for macb
 
 Enable 32-bit or 64-bit DMA in the macb driver based on the macb
