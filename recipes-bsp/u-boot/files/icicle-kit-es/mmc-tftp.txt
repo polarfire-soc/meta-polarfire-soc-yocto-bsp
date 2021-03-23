@@ -5,7 +5,7 @@
 #  3. TFTP boot a uImage
 
 # Try to boot a fitImage from the MMC
-if load ${devtype} ${devnum}:${distro_bootpart} ${ramdisk_addr_r} fitImage; then
+if load ${devtype} ${devnum}:${distro_bootpart} ${ramdisk_addr_r} fitImage; then 
  imxtract ${ramdisk_addr_r} fdt@microchip_icicle-kit-es-a000-microchip.dtb ${fdt_addr_r}
  fdt addr ${fdt_addr_r}
  fdt set /soc/ethernet@20112000 mac-address ${icicle_mac_addr0}
@@ -19,7 +19,7 @@ dhcp
 
 # Fallback to a TFTP fitImage
 # Try to boot a fitImage from the TFTP server
-if tftpboot ${ramdisk_addr_r} fitImage; then
+if tftpboot ${ramdisk_addr_r} fitImage; then 
   imxtract ${ramdisk_addr_r} fdt@microchip_icicle-kit-es-a000-microchip.dtb ${fdt_addr_r}
   fdt addr ${fdt_addr_r}
   fdt set /soc/ethernet@20112000 mac-address ${icicle_mac_addr0}
@@ -29,6 +29,6 @@ fi;
 
 
 # Fallback to a TFTP uImage
-if tftpboot ${kernel_addr_r} uImage; then
+if tftpboot ${kernel_addr_r} uImage; then 
   bootm ${kernel_addr_r} - ${fdt_addr_r}
 fi;
