@@ -184,16 +184,16 @@
 					     "ddrc", "fic0", "fic1", "fic2", "fic3", "athena",
 					     "cfm";
 		};
-               rtc: rtc@20124000 {
-                       #address-cells = <1>;
-                       #size-cells = <0>;
-                       compatible = "microchip,mpfs-rtc";
-                       reg = <0x0 0x20124000 0x0 0x1000>;
-                       interrupt-parent = <&L1>;
-                       interrupts = <80 81>;
-                       clocks = <&clkcfg CLK_RTC>;
-                       clock-names = "rtc";
-               };	
+		rtc: rtc@20124000 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "microchip,mpfs-rtc";
+			reg = <0x0 0x20124000 0x0 0x1000>;
+			interrupt-parent = <&L1>;
+			interrupts = <80 81>;
+			clocks = <&clkcfg CLK_RTC>;
+			clock-names = "rtc";
+		};	
 		serial0: serial@20000000 {
 			compatible = "ns16550a";
 			reg = <0x0 0x20000000 0x0 0x400>;
@@ -356,72 +356,72 @@
 			#gpio-cells = <2>;
 			status = "okay";
 		};
-                mssusb: usb@20201000 {
-                        compatible = "microchip,mpfs-usb-host";
-		        reg = <0x0 0x20201000 0x00000000 0x00001000>;
-                        reg-names = "mc","control";
-                        clocks = <&clkcfg CLK_USB>;
-                        interrupt-parent = <&L1>;
-                        interrupts = <87 86>;
-                        interrupt-names = "mc","dma";
-                        dr_mode = "host";
-                        status = "okay";
-               };
-               msscan: can@2010c000 {
-                       #address-cells = <1>;
-                       #size-cells = <0>;
-                       compatible = "microchip,mpfs-can-uio";
-                       reg = <0x0 0x2010c000 0x0 0x1000>;
-                       interrupt-parent = <&L1>;
-                       interrupts = <56>;
-                       clocks = <&clkcfg CLK_CAN0>;
-                       status = "okay";
-              };
-              uio_lsram: uio_lpddr4@0xC0000000 {
-                       compatible = "generic-uio";
-                       reg = < 0x0 0x61000000 0x0 0x00010000
-                             0x14 0x00000000 0x0 0x00010000 >;
-                       status = "okay";
-              };
-              dma: dma@0x60020000 {
-                       #address-cells = <1>;
-                       #size-cells = <0>;
-                       compatible = "microsemi,ms-pf-mss-dma-uio";
-                       reg = <0x00 0x60020000 0x0 0x1000>;
-                       interrupt-parent = <&L1>;
-                       interrupts = <120>;
-                       status = "okay";
-              };
-              mbox: mailbox@37020000 {
-                        compatible = "microchip,polarfire-soc-mailbox";
-                        reg = <0x0 0x37020000 0x0 0x1000>, <0x0 0x2000318C 0x0 0x40>;
-                        interrupt-parent = <&L1>;
-                        interrupts = <96>;
-                        #mbox-cells = <1>;
-               };
-               syscontroller: syscontroller {
-                        compatible = "microchip,polarfire-soc-sys-controller";
-                        #address-cells = <1>;
-                        #size-cells = <1>;
-                        mboxes = <&mbox 0>;
-               };
-               hwrandom: hwrandom {
-                        compatible = "microchip,polarfire-soc-rng";
-                        #address-cells = <1>;
-                        #size-cells = <1>;
-                        syscontroller = <&syscontroller>;
-                };
-                serialnum: serialnum {
-                        compatible = "microchip,polarfire-soc-serial-number";
-                        #address-cells = <1>;
-                        #size-cells = <1>;
-                        syscontroller = <&syscontroller>;
-                };
-                fpgadigest: fpgadigest {
-                        compatible = "microchip,polarfire-soc-digest";
-                        #address-cells = <1>;
-                        #size-cells = <1>;
-                        syscontroller = <&syscontroller>;
-                };
+		mssusb: usb@20201000 {
+			compatible = "microchip,mpfs-usb-host";
+			reg = <0x0 0x20201000 0x00000000 0x00001000>;
+			reg-names = "mc","control";
+			clocks = <&clkcfg CLK_USB>;
+			interrupt-parent = <&L1>;
+			interrupts = <87 86>;
+			interrupt-names = "mc","dma";
+			dr_mode = "host";
+			status = "okay";
+		};
+		msscan: can@2010c000 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "microchip,mpfs-can-uio";
+			reg = <0x0 0x2010c000 0x0 0x1000>;
+			interrupt-parent = <&L1>;
+			interrupts = <56>;
+			clocks = <&clkcfg CLK_CAN0>;
+			status = "okay";
+		};
+		uio_lsram: uio_lpddr4@0xC0000000 {
+			compatible = "generic-uio";
+			reg = < 0x0 0x61000000 0x0 0x00010000
+					0x14 0x00000000 0x0 0x00010000 >;
+			status = "okay";
+		};
+		dma: dma@0x60020000 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "microsemi,ms-pf-mss-dma-uio";
+			reg = <0x00 0x60020000 0x0 0x1000>;
+			interrupt-parent = <&L1>;
+			interrupts = <120>;
+			status = "okay";
+		};
+		mbox: mailbox@37020000 {
+			compatible = "microchip,polarfire-soc-mailbox";
+			reg = <0x0 0x37020000 0x0 0x1000>, <0x0 0x2000318C 0x0 0x40>;
+			interrupt-parent = <&L1>;
+			interrupts = <96>;
+			#mbox-cells = <1>;
+		};
+		syscontroller: syscontroller {
+			compatible = "microchip,polarfire-soc-sys-controller";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			mboxes = <&mbox 0>;
+		};
+		hwrandom: hwrandom {
+			compatible = "microchip,polarfire-soc-rng";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			syscontroller = <&syscontroller>;
+		};
+		serialnum: serialnum {
+			compatible = "microchip,polarfire-soc-serial-number";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			syscontroller = <&syscontroller>;
+		};
+		fpgadigest: fpgadigest {
+			compatible = "microchip,polarfire-soc-digest";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			syscontroller = <&syscontroller>;
+		};
 	};
 };
