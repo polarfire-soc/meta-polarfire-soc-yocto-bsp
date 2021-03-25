@@ -184,6 +184,16 @@
 					     "ddrc", "fic0", "fic1", "fic2", "fic3", "athena",
 					     "cfm";
 		};
+               rtc: rtc@20124000 {
+                       #address-cells = <1>;
+                       #size-cells = <0>;
+                       compatible = "microchip,mpfs-rtc";
+                       reg = <0x0 0x20124000 0x0 0x1000>;
+                       interrupt-parent = <&L1>;
+                       interrupts = <80 81>;
+                       clocks = <&clkcfg CLK_RTC>;
+                       clock-names = "rtc";
+               };	
 		serial0: serial@20000000 {
 			compatible = "ns16550a";
 			reg = <0x0 0x20000000 0x0 0x400>;
