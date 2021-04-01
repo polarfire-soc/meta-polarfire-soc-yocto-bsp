@@ -179,8 +179,8 @@
 			interrupt-controller;
 			interrupts-extended = <&L4 11 &L9 11 &L9 9 &L13 11 &L13 9 &L17 11 &L17 9 &L21 11 &L21 9>;
 		};
-		L27: dma@3000000 {
-			compatible = "sifive,fu540-c000-pdma";
+		pdma: pdma@3000000 {
+			compatible = "microchip,mpfs-pdma-uio";
 			reg = <0x0 0x3000000 0x0 0x8000>;
 			interrupt-parent = <&L1>;
 			interrupts = <5 6 7 8 9 10 11 12>;
