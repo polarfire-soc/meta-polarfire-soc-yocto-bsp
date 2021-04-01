@@ -30,6 +30,7 @@ SRC_URI_append_icicle-kit-es = " \
     file://v1-0001-dt-bindings-rtc-microchip-Add-Microchip-PolarFire.patch \
     file://v1-0002-rtc-microchip-Add-driver-for-Microchip-PolarFire-.patch \
     file://v1-0001-riscv-add-cpu-frequency-reporting-to-cpuinfo.patch \
+    file://v1-0001-dmabuf-u-dma-buf-add-u-dma-buf-to-v5.6.x.patch \
  "
 
 SRC_URI_append_mpfs = " \
