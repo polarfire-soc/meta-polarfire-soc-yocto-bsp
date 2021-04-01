@@ -29,6 +29,8 @@ SRC_URI_append_icicle-kit-es = " \
     file://0007-sys-serv-fpga-digest-and-serial-num.patch \
     file://v1-0001-dt-bindings-rtc-microchip-Add-Microchip-PolarFire.patch \
     file://v1-0002-rtc-microchip-Add-driver-for-Microchip-PolarFire-.patch \
+    file://v1-0001-dt-bindings-dma-microchip-Add-Microchip-PolarFire.patch \
+    file://v1-0002-uio-pdma-microchip-Add-uio-driver-for-Microchip-P.patch \
     file://v1-0001-riscv-add-cpu-frequency-reporting-to-cpuinfo.patch \
  "
 
