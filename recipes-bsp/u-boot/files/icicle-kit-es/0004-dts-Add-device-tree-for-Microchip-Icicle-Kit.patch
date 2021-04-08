@@ -316,7 +316,7 @@ index 0000000000..569fce86f0
 +			bus-width = <4>;
 +			cap-mmc-highspeed;
 +			cap-sd-highspeed;
-+			no-1-8-v;
++			/*no-1-8-v;*/
 +			disable-wp;
 +			max-frequency = <200000000>;
 +			status = "okay";
