@@ -25,4 +25,4 @@ index 000000000000..817ac4efc99d
 +++ b/arch/riscv/boot/dts/microchip/Makefile
 @@ -0,0 +1,2 @@
 +# SPDX-License-Identifier: GPL-2.0
-+dtb-$(CONFIG_PFSoC_ICICLE_KIT_ES) += icicle-kit-es-a000-microchip.dtb
++dtb-$(CONFIG_PFSoC_ICICLE_KIT_ES) += icicle-kit-es-microchip.dtb

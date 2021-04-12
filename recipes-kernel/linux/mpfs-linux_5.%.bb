@@ -9,7 +9,7 @@ SRC_URI = " \
     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git;branch=${BRANCH} \
 "
 SRC_URI_append_icicle-kit-es = " \
-    file://icicle-kit-es-a000-microchip.dts \
+    file://icicle-kit-es-microchip.dts \
     file://0001-PFSoC-Icicle-kit-Adding-DTS-makefile.patch \
     file://0002-PFSoC-MAC-Interface-auto-negotiation.patch \
     file://0001-V2-GPIO-Driver-updates.patch \
@@ -64,7 +64,7 @@ SRC_URI_append_lc-mpfs = " \
 "
 
 do_configure_prepend_icicle-kit-es() {
-    cp -f ${WORKDIR}/icicle-kit-es-a000-microchip.dts ${S}/arch/riscv/boot/dts/microchip
+    cp -f ${WORKDIR}/icicle-kit-es-microchip.dts ${S}/arch/riscv/boot/dts/microchip
 }
 do_configure_prepend_mpfs() {
     cp -f ${WORKDIR}/mpfs.dts ${S}/arch/riscv/boot/dts/sifive
