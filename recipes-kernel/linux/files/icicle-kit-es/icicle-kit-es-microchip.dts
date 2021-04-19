@@ -224,11 +224,11 @@
 			clocks = <&refclk>;
 			#clock-cells = <1>;
 			clock-output-names = "cpu", "axi", "ahb", "envm", "mac0", "mac1", "mmc",
-					     "timer", "uart0", "uart1", "uart2", "uart3", "uart4",
-					     "spi0", "spi1", "i2c0", "i2c1", "can0", "can1", "usb",
-					     "rsvd", "rtc", "qspi", "gpio0", "gpio1", "gpio2",
-					     "ddrc", "fic0", "fic1", "fic2", "fic3", "athena",
-					     "cfm";
+						 "timer", "uart0", "uart1", "uart2", "uart3", "uart4",
+						 "spi0", "spi1", "i2c0", "i2c1", "can0", "can1", "usb",
+						 "rsvd", "rtc", "qspi", "gpio0", "gpio1", "gpio2",
+						 "ddrc", "fic0", "fic1", "fic2", "fic3", "athena",
+						 "cfm";
 		};
 		rtc: rtc@20124000 {
 			#address-cells = <1>;
@@ -285,52 +285,52 @@
 			status = "okay";
 		};
 		emmc: mmc@20008000 { /* Common node entry for emmc/sd */
-		    compatible = "cdns,sd4hc";
-		    reg = <0x0 0x20008000 0x0 0x1000>;
-		    interrupt-parent = <&L1>;
-		    interrupts = <88 89>;
-		    pinctrl-names = "default";
-		    clocks = <&clkcfg CLK_MMC>;
-		    bus-width = <4>;
-		    cap-mmc-highspeed;
-		    cap-sd-highspeed;
-		    no-1-8-v;
-		    disable-wp;
-		    max-frequency = <200000000>;
-		    status = "okay";
+			compatible = "cdns,sd4hc";
+			reg = <0x0 0x20008000 0x0 0x1000>;
+			interrupt-parent = <&L1>;
+			interrupts = <88 89>;
+			pinctrl-names = "default";
+			clocks = <&clkcfg CLK_MMC>;
+			bus-width = <4>;
+			cap-mmc-highspeed;
+			cap-sd-highspeed;
+			no-1-8-v;
+			disable-wp;
+			max-frequency = <200000000>;
+			status = "okay";
 		};
 		emac1: ethernet@20112000 {
-            compatible = "cdns,macb";
-            reg = <0x0 0x20112000 0x0 0x2000>;
-            interrupt-parent = <&L1>;
-            interrupts = <70 71 72 73>;
-            mac-address = [56 34 12 00 FC 01];
-            phy-mode = "sgmii";
-            clocks = <&clkcfg CLK_MAC1>, <&clkcfg CLK_AHB>;
-            clock-names = "pclk", "hclk";
-            #address-cells = <1>;
-            #size-cells = <0>;
-            phy-handle = <&phy1>;
-            phy1: ethernet-phy@9 {
-                reg = <9>;
-                ti,fifo-depth = <0x01>;
-            };
-            phy0: ethernet-phy@8 {
-                reg = <8>;
-                ti,fifo-depth = <0x01>;
-            };
-        };
-        emac0: ethernet@20110000 {
-            compatible = "cdns,macb";
-            reg = <0x0 0x20110000 0x0 0x2000>;
-            interrupt-parent = <&L1>;
-            interrupts = <64 65 66 67>;
-            mac-address = [56 34 12 00 FC 02];
-            phy-mode = "sgmii";
-            clocks = <&clkcfg CLK_MAC0>, <&clkcfg CLK_AHB>;
-            clock-names = "pclk", "hclk";
-            phy-handle = <&phy0>;
-        };
+			compatible = "cdns,macb";
+			reg = <0x0 0x20112000 0x0 0x2000>;
+			interrupt-parent = <&L1>;
+			interrupts = <70 71 72 73>;
+			mac-address = [56 34 12 00 FC 01];
+			phy-mode = "sgmii";
+			clocks = <&clkcfg CLK_MAC1>, <&clkcfg CLK_AHB>;
+			clock-names = "pclk", "hclk";
+			#address-cells = <1>;
+			#size-cells = <0>;
+			phy-handle = <&phy1>;
+			phy1: ethernet-phy@9 {
+				reg = <9>;
+				ti,fifo-depth = <0x01>;
+			};
+			phy0: ethernet-phy@8 {
+				reg = <8>;
+				ti,fifo-depth = <0x01>;
+			};
+		};
+		emac0: ethernet@20110000 {
+			compatible = "cdns,macb";
+			reg = <0x0 0x20110000 0x0 0x2000>;
+			interrupt-parent = <&L1>;
+			interrupts = <64 65 66 67>;
+			mac-address = [56 34 12 00 FC 02];
+			phy-mode = "sgmii";
+			clocks = <&clkcfg CLK_MAC0>, <&clkcfg CLK_AHB>;
+			clock-names = "pclk", "hclk";
+			phy-handle = <&phy0>;
+		};
 		pcie: pcie@70000000 {
 			#address-cells = <0x3>;
 			#interrupt-cells = <0x1>;
@@ -349,7 +349,7 @@
 			interrupts = <119>;
 			ranges = <0x03000000 0x0 0x78000000 0x0 0x78000000 0x0 0x04000000>;
 			reg = <0x0 0x70000000 0x0 0x08000000 0x0 0x43000000 0x0 0x00010000>;
-                        dma-ranges = <0x02000000 0x0 0x00000000 0x0 0x00000000 0x1 0x00000000>;
+						dma-ranges = <0x02000000 0x0 0x00000000 0x0 0x00000000 0x1 0x00000000>;
 			reg-names = "cfg", "apb";
 			interrupt-controller;
 			status = "okay";
@@ -423,16 +423,16 @@
 			clocks = <&clkcfg CLK_CAN0>;
 			status = "okay";
 		};
-		uio_lsram: uio_lpddr4@0xC0000000 {
+		fpgalsram: fpga_lpddr4@0xC0000000 {
 			compatible = "generic-uio";
 			reg = < 0x0 0x61000000 0x0 0x00010000
 					0x14 0x00000000 0x0 0x00010000 >;
 			status = "okay";
 		};
-		dma: dma@0x60020000 {
+		fpgadma: dma@0x60020000 {
 			#address-cells = <1>;
 			#size-cells = <0>;
-			compatible = "microsemi,ms-pf-mss-dma-uio";
+			compatible = "microchip,mpfs-fpga-dma-uio";
 			reg = <0x00 0x60020000 0x0 0x1000>;
 			interrupt-parent = <&L1>;
 			interrupts = <120>;

@@ -204,8 +204,8 @@ MACHINE=icicle-kit-es bitbake hss -c install
   ```
 If u-boot or boot.src.uimg missing
 ```bash
-MACHINE=icickle-kit-es bitbake u-boot -c clean
-MACHINE=icickle-kit-es bitbake u-boot -c install
+MACHINE=icicle-kit-es bitbake u-boot -c clean
+MACHINE=icicle-kit-es bitbake u-boot -c install
 ```
 And finally a complete build:
 ```bash

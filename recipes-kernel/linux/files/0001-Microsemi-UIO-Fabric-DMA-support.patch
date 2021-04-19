@@ -169,7 +169,7 @@ index 000000000000..9282250aa5db
 +
 +	p->mem[1].size = 0;
 +
-+	p->name = kasprintf(GFP_KERNEL, "mss_dma%d", cnt);
++	p->name = kasprintf(GFP_KERNEL, "fpga_dma%d", cnt);
 +	p->version = DRV_VERSION;
 +
 +	/* Register MSS DMA IRQ lines */
@@ -202,7 +202,7 @@ index 000000000000..9282250aa5db
 +
 +#if defined(CONFIG_OF)
 +static const struct of_device_id mss_dma_dt_ids[] = {
-+	{ .compatible = "microsemi,ms-pf-mss-dma-uio" },
++	{ .compatible = "microchip,mpfs-fpga-dma-uio" },
 +	{ /*sentinel */ }
 +};
 +#endif
