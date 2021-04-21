@@ -423,7 +423,7 @@
 			clocks = <&clkcfg CLK_CAN0>;
 			status = "okay";
 		};
-		fpgalsram: fpga_lpddr4@0xC0000000 {
+		fpgalsram: fpga_lsram@0x61000000 {
 			compatible = "generic-uio";
 			reg = < 0x0 0x61000000 0x0 0x00010000
 					0x14 0x00000000 0x0 0x00010000 >;
