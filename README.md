@@ -177,10 +177,12 @@ sudo apt-get install libelf-dev
 [Yocto Bitbake User Manual](https://www.yoctoproject.org/docs/3.1/bitbake-user-manual/bitbake-user-manual.html)
  
 [PolarFire SoC Buildroot BSP](https://github.com/polarfire-soc/polarfire-soc-buildroot-sdk) 
- 
-[MPFS-DEV-KIT User Guide](doc/MPFS-DEV-KIT_user_guide.md) 
 
-[LC-MPFS-DEV-KIT User Guide](doc/LC-MPFS-DEV-KIT_user_guide.md) 
+[ICICLE-KIT-ES Developer Guide](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-icicle-kit-es/icicle-kit-sw-developer-guide/icicle-kit-sw-developer-guide.md)
+ 
+[MPFS-DEV-KIT User Guide](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-dev-kit/MPFS-DEV-KIT_user_guide.md)
+
+[LC-MPFS-DEV-KIT User Guide](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md)
 
 [U-Boot Documentation](https://www.denx.de/wiki/U-Boot/Documentation) 
 
