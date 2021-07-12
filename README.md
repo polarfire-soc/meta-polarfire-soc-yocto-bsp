@@ -54,12 +54,9 @@ The following table details the available targets:
 
  - 'mpfs-dev-cli' A console image with development tools.
 ```
-     *You can login with `root` account. The password is `microchip`.
+     *You can login with `root` account, there is no password set.
 ```
 
-```     
-    * With the OE core-image-*  you can login with `root` account, there is no password set.
-```
  - 'core-image-minimal' A small console image to allow you to boot.
  - 'core-image-full-cmdline' A console only image with more full Featured Linux support.
 
