@@ -73,7 +73,7 @@ This needs to be done every time you want a clean setup based on the latest laye
 
 ```bash
 mkdir mpfs-yocto && cd mpfs-yocto
-repo init -u https://github.com/polarfire-soc/meta-polarfire-soc-yocto-bsp -b master -m tools/manifests/riscv-yocto.xml
+repo init -u https://github.com/polarfire-soc/meta-polarfire-soc-yocto-bsp -b mpfs-dev-kit -m tools/manifests/riscv-yocto.xml
 repo sync
 ```
 
