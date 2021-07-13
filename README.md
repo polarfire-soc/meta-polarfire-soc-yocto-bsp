@@ -109,7 +109,7 @@ build/tmp-glibc/deploy/images/{MACHINE}
 
 Compressed Disk images files use `<image>-<machine>.wic.gz` format, for example,
 
-`mpfs-dev-cli-lc-mpfs.wic.gz`. We are interested in `.wic.gz` disk images for writing to uSD card.
+`mpfs-dev-cli-mpfs.wic.gz`. We are interested in `.wic.gz` disk images for writing to uSD card.
 
 > Be very careful while picking /dev/sdX device! Look at dmesg, lsblk, blkid, GNOME Disks, etc. before and after plugging in your uSD card to find a proper device. Double check it to avoid overwriting any of system disks/partitions!
 > 
@@ -120,7 +120,7 @@ Compressed Disk images files use `<image>-<machine>.wic.gz` format, for example,
 Example write the disk image to the uSD card:
 
 ```bash
-zcat mpfs-dev-cli-lc-mpfs.wic.gz | sudo dd of=/dev/sdX bs=512K iflag=fullblock oflag=direct conv=fsync status=progress
+zcat tmp-glibc/deploy/images/mpfs/mpfs-dev-cli-mpfs.wic.gz | sudo dd of=/dev/sdX bs=4096 iflag=fullblock oflag=direct conv=fsync status=progress
 ```
 
 ## Run in Simulation (QEMU)
