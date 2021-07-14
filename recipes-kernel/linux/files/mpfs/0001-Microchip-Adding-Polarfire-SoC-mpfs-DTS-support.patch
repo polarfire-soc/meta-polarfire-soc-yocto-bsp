@@ -24,7 +24,7 @@ index a2e3d54e830c..2d9fafafae95 100644
 +		pci@2030000000 {
 +			#address-cells = <3>;
 +			#size-cells = <2>;
-+			compatible = "microsemi,ms-pf-axi-pcie-host";
++			compatible = "microchip,pf-axi-pcie-host-1.0";
 +			device_type = "pci";
 +			bus-range = <0x01 0x7f>;
 +			interrupt-map = <0 0 0 1 &pcie_intc 1>,
