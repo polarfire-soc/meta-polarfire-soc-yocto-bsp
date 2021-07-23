@@ -2,14 +2,13 @@
 <manifest>
   <remote name="openembedded" fetch="git://github.com/openembedded/" />
   <remote name="riscv" fetch="git://github.com/riscv/" />
-  <remote name="yocto" fetch="git://git.yoctoproject.org/" />
   <remote name="meta-polarfire-soc-yocto-bsp" fetch="https://github.com/polarfire-soc/" />
   <default remote="openembedded" revision="master" />
   <project name="meta-polarfire-soc-yocto-bsp" remote="meta-polarfire-soc-yocto-bsp" path="meta-polarfire-soc-yocto-bsp" revision="master" />
-  <project name="meta-riscv" remote="riscv" path="meta-riscv" revision="94ec885cec6f15bab5bc3bc617b8250b9aaf1b45" />
-  <project name="openembedded-core" remote="openembedded" path="openembedded-core" revision="ea6f27e35b6cac4db9e1ab0d9a888d15daba6c09" />
-  <project name="bitbake" remote="openembedded" path="openembedded-core/bitbake" revision="efd026c26a377b826a49b945a8212bf7de8a480a" />
-  <project name="meta-openembedded" remote="openembedded" path="meta-openembedded" revision="69bae2a2360643805de2ae1cd9ebc4202cd5a2fb" />
+  <project name="meta-riscv" remote="riscv" path="meta-riscv" revision="35d1d5849294ff9f2fb98b90657bbf7a1e532d0d" />
+  <project name="openembedded-core" remote="openembedded" path="openembedded-core" revision="14795ee305f3c11fcc31cc7ca815b8ff1020e29a" />
+  <project name="bitbake" remote="openembedded" path="openembedded-core/bitbake" revision="9dc77266085c605b108641a9d76ac4dbdc064c34" />
+  <project name="meta-openembedded" remote="openembedded" path="meta-openembedded" revision="dcb9ecc1e5720c9614b1cd27575e1e4886dff5c1" />
 
 </manifest>
 
