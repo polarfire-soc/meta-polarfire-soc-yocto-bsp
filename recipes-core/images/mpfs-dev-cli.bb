@@ -8,6 +8,7 @@ IMAGE_FEATURES += " ssh-server-openssh \
                   "
 
 IMAGE_INSTALL = "\
+    iperf3 \
     packagegroup-core-boot \
     packagegroup-core-full-cmdline \
     pfsocapps \

@@ -12,10 +12,7 @@ Using Yocto 'Openembedded' you will build the following:
 The complete User Guides for each development platform, containing board and boot instructions, are available for the following supported platforms:
 
   - [ICICLE-KIT-ES](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-icicle-kit-es/icicle-kit-sw-developer-guide/icicle-kit-sw-developer-guide.md) (Icicle Kit Engineering Sample) (Requires minimum Design Tag 2020.11 )
-  - [MPFS-DEV-KIT](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-dev-kit/MPFS-DEV-KIT_user_guide.md) (HiFive Unleashed Expansion Board)
-  - [LC-MPFS-DEV-KIT](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/lc-mpfs-dev-kit/LC-MPFS-DEV-KIT_user_guide.md)
-
-
+  
 ## Build Instructions 
 Before continuing, ensure that the prerequisite packages are present on your system. Please see the [Host PC setup for Yocto section](#Dependencies) for further details.
 
@@ -55,8 +52,6 @@ The following table details the available targets:
 | `MACHINE`                  | Board Name                                                            |
 | -------------------------- | --------------------------------------------------------------------- |
 | `MACHINE=icicle-kit-es`    | ICICLE-KIT-ES, Icicle Kit engineering samples                         |
-| `MACHINE=mpfs`             | MPFS-DEV-KIT, HiFive Unleashed Expansion Board                        |
-| `MACHINE=lc-mpfs`          | LC-MPFS-DEV-KIT, Low cost HiFive Unleashed Expansion Board            |
 | `MACHINE=qemuriscv64`      | Simulation                                                            |
 
 When building for different 'Machines' or want a 'clean' build, we recommend deleting the 'build' directory when switching.
@@ -178,10 +173,6 @@ sudo apt-get install libelf-dev
  
 [PolarFire SoC Buildroot BSP](https://github.com/polarfire-soc/polarfire-soc-buildroot-sdk) 
  
-[MPFS-DEV-KIT User Guide](doc/MPFS-DEV-KIT_user_guide.md) 
-
-[LC-MPFS-DEV-KIT User Guide](doc/LC-MPFS-DEV-KIT_user_guide.md) 
-
 [U-Boot Documentation](https://www.denx.de/wiki/U-Boot/Documentation) 
 
 [Kernel Documentation for v5.4](https://www.kernel.org/doc/html/v5.4/) 
