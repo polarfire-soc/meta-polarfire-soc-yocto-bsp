@@ -5,6 +5,7 @@ EXTRA_IMAGE_FEATURES += " \
 
 IMAGE_INSTALL = "\
     iperf3 \
+    devmem2 \
     can-utils \
     usbutils \
     pciutils \
