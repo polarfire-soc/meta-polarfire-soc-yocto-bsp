@@ -8,6 +8,7 @@ SRC_URI = "git://git.denx.de/u-boot.git \
           "
 SRC_URI_append_icicle-kit-es = " \
     file://microchip-mpfs-icicle-kit.dts \
+    file://0001-riscv-icicle-kit-add-i2c-support.patch \
 "
 
 SRC_URI_append_icicle-kit-es-amp = " \

@@ -317,12 +317,12 @@
 			interrupt-parent = <&plic>;
 			interrupts = <61>;
 			clocks = <&clkcfg CLK_I2C1>;
-			status = "disabled";
+			status = "okay";
 			pac193x@10 {
 				compatible = "microchip,pac1934";
 				reg = <0x10>;
 				samp-rate = <64>;
-				status = "disabled";
+				status = "okay";
 				ch1: channel0 {
 					uohms-shunt-res = <10000>;
 					rail-name = "VDD";
