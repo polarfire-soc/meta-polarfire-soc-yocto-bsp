@@ -13,6 +13,7 @@ SRC_URI_append_icicle-kit-es = " \
 
 SRC_URI_append_icicle-kit-es-amp = " \
     file://microchip-mpfs-icicle-kit-context-a.dts \
+    file://0001-riscv-icicle-kit-add-i2c-support.patch \
 "
 
 SRCREV = "b46dd116ce03e235f2a7d4843c6278e1da44b5e1"
