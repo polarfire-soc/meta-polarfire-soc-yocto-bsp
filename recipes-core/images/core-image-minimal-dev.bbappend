@@ -4,6 +4,8 @@ EXTRA_IMAGE_FEATURES += " \
       tools-sdk"
 
 IMAGE_INSTALL = "\
+    mtd-utils \
+    mtd-utils-misc \
     iperf3 \
     devmem2 \
     can-utils \
