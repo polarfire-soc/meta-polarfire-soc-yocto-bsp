@@ -429,6 +429,42 @@
 			clocks = <&clkcfg CLK_CAN0>;
 			status = "okay";
 		};
+		mssspi0: spi@20108000 {
+		    compatible = "microsemi,ms-pf-mss-spi";
+		    interrupt-parent = <&L1>;
+		    interrupts = <54>;
+		    reg = <0x0 0x20108000 0 0x1000>;
+		    clocks = <&clkcfg CLK_SPI0>;
+		    spi-max-frequency = <25000000>;
+		    #address-cells = <1>;
+		    #size-cells = <0>;
+		    num-cs = <1>;
+		    status = "okay";
+		};
+		mssspi1: spi@20109000 {
+		    compatible = "microsemi,ms-pf-mss-spi";
+		    interrupt-parent = <&L1>;
+		    interrupts = <55>;
+		    reg = <0x0 0x20109000 0 0x1000>;
+		    clocks = <&clkcfg CLK_SPI1>;
+		    spi-max-frequency = <25000000>;
+		    #address-cells = <1>;
+		    #size-cells = <0>;
+		    num-cs = <1>;
+		    status = "disabled";
+		};
+		mssqspi: qspi@21000000 {
+			compatible = "microsemi,ms-pf-mss-qspi";
+			interrupt-parent = <&L1>;
+			interrupts = <85>;
+			reg = <0x20 0x21000000 0 0x1000>;
+			clocks = <&clkcfg CLK_QSPI>;
+			spi-max-frequency = <25000000>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			num-cs = <1>;
+			status = "okay";
+		};
 		fpgalsram: fpga_lsram@0x61000000 {
 			compatible = "generic-uio";
 			reg = < 0x0 0x61000000 0x0 0x00010000
