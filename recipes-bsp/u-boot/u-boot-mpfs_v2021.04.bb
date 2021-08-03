@@ -5,15 +5,15 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI = "git://git.denx.de/u-boot.git \
 	       file://${UBOOT_ENV}.txt \
+	       file://0001-riscv-icicle-kit-add-i2c-support.patch \
+	       file://0001-Update-the-second-mac-address.patch \
           "
 SRC_URI_append_icicle-kit-es = " \
     file://microchip-mpfs-icicle-kit.dts \
-    file://0001-riscv-icicle-kit-add-i2c-support.patch \
 "
 
 SRC_URI_append_icicle-kit-es-amp = " \
     file://microchip-mpfs-icicle-kit-context-a.dts \
-    file://0001-riscv-icicle-kit-add-i2c-support.patch \
 "
 
 SRCREV = "b46dd116ce03e235f2a7d4843c6278e1da44b5e1"

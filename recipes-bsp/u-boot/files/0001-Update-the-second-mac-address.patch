@@ -1,0 +1,38 @@
+From ec211ca70022bc6da2990ead05fe2830d5d5b709 Mon Sep 17 00:00:00 2001
+From: Lewis Hanly <lewis.hanly@microchip.com>
+Date: Tue, 3 Aug 2021 15:44:46 +0100
+Subject: [PATCH] Update the second mac address
+
+Signed-off-by: Lewis Hanly <lewis.hanly@microchip.com>
+---
+ board/microchip/mpfs_icicle/mpfs_icicle.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/board/microchip/mpfs_icicle/mpfs_icicle.c b/board/microchip/mpfs_icicle/mpfs_icicle.c
+index afef719dff..a5f8b49c40 100644
+--- a/board/microchip/mpfs_icicle/mpfs_icicle.c
++++ b/board/microchip/mpfs_icicle/mpfs_icicle.c
+@@ -119,7 +119,22 @@ int board_late_init(void)
+ 		if (icicle_mac_addr[idx] == ':')
+ 			icicle_mac_addr[idx] = ' ';
+ 	}
+-	env_set("icicle_mac_addr", icicle_mac_addr);
++	env_set("icicle_mac_addr0", icicle_mac_addr);
++	
++	mac_addr[5] = device_serial_number[0] + 1;
++
++	icicle_mac_addr[0] = '[';
++
++	sprintf(&icicle_mac_addr[1], "%pM", mac_addr);
++
++	icicle_mac_addr[18] = ']';
++	icicle_mac_addr[19] = '\0';
++
++	for (idx = 0; idx < 20; idx++) {
++		if (icicle_mac_addr[idx] == ':')
++			icicle_mac_addr[idx] = ' ';
++	}
++	env_set("icicle_mac_addr1", icicle_mac_addr);	
+ 
+ 	return 0;
+ }
