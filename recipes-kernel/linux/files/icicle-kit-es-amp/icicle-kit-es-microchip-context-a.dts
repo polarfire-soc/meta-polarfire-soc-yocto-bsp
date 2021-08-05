@@ -363,7 +363,7 @@
 		i2c1: i2c@2010b000 {
 			#address-cells = <1>;
 			#size-cells = <0>;
-			compatible = "microsemi,ms-pf-mss-i2c";
+			compatible = "microchip,mpfs-i2c";
 			reg = <0x0 0x2010b000 0x0 0x1000>;
 			interrupt-parent = <&L1>;
 			interrupts = <61>;
