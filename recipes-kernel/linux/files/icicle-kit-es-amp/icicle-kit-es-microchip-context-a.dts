@@ -511,5 +511,17 @@
 			#size-cells = <1>;
 			syscontroller = <&syscontroller>;
 		};
+		devicecert: cert {
+			compatible = "microchip,polarfire-soc-device-cert";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			syscontroller = <&syscontroller>;
+		};
+		signature: signature {
+			compatible = "microchip,polarfire-soc-signature";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			syscontroller = <&syscontroller>;
+		};
 	};
 };
