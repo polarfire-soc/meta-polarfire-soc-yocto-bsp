@@ -55,7 +55,7 @@ The following table details the available targets:
 | `MACHINE=icicle-kit-es-amp`| ICICLE-KIT-ES, Icicle Kit engineering samples in AMP mode             |
 | `MACHINE=qemuriscv64`      | Simulation                                                            |
 
-The `icicle-kit-es-amp` machine can be used to build the Icicle Kit engineering sample with AMP support. Please see the [Asymmetric Multiprocessing (AMP)](https://bitbucket.microchip.com/projects/FPGA_PFSOC_ES/repos/polarfire-soc-documentation/browse/asymmetric-multiprocessing/amp.md?at=refs%2Fheads%2Fdevelop-amp) documentation for further details.
+The `icicle-kit-es-amp` machine can be used to build the Icicle Kit engineering sample with AMP support. Please see the [Asymmetric Multiprocessing (AMP)](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/asymmetric-multiprocessing/amp.md) documentation for further details.
 
 When building for different 'Machines' or want a 'clean' build, we recommend deleting the 'build' directory when switching.
 This will delete all cache / configurations and downloads. 
