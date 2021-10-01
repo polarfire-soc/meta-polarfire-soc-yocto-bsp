@@ -1,7 +1,13 @@
 #!/bin/bash
 
-DIR="build"
-MACHINE="icicle-kit-es"
+if [ "$#" -gt 0 ]; then
+  DIR=$1
+else
+  DIR="build"
+fi
+if [ -z "$MACHINE" ]; then
+  MACHINE="icicle-kit-es"
+fi
 CONFFILE="conf/auto.conf"
 INITRAMFS_CONF="conf/initramfs.conf"
 BITBAKEIMAGE="mpfs-dev-cli"
@@ -15,6 +21,10 @@ BITBAKEIMAGE="mpfs-dev-cli"
 #mkdir -p ~/sstate/$MACHINE
 
 echo $(pwd)
+
+if [ -d "$DIR" ]; then
+    dir_exists="y"
+fi
 
 # Reconfigure dash on debian-like systems
 which aptitude > /dev/null 2>&1
@@ -30,6 +40,8 @@ fi
 echo "Init OE"
 export BASH_SOURCE="openembedded-core/oe-init-build-env"
 . ./openembedded-core/oe-init-build-env $DIR
+
+if [ ! "$dir_exists" = "y" ]; then
 
 # Symlink the cache
 #echo "Setup symlink for sstate"
@@ -109,6 +121,8 @@ echo "* core-image-minimal-dev: OE console-only image, with some additional deve
 echo "* core-image-minimal: OE console-only image"
 echo "* core-image-full-cmdline: OE console-only image with more full-featured Linux system functionality installed."
 echo "---------------------------------------------------"
+
+fi
 
 # start build
 #echo "Starting build"
