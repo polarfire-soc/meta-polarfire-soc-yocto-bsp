@@ -1,5 +1,5 @@
-DESCRIPTION = "initramfs image to be used together with MPFS board \
-as the board currently supports booting from a ramdisk image"
+DESCRIPTION = "initramfs image to be used together with SiFive Unleashed board \
+as the board currently only supports booting from a ramdisk image"
 
 # Do not pollute the initrd image with rootfs features
 IMAGE_FEATURES = ""
@@ -19,4 +19,4 @@ BAD_RECOMMENDATIONS += "busybox-syslog"
 
 # WIC is not compatible with an initramfs image, also enabling WIC would cause
 # an circular dependency.
-IMAGE_FSTYPES_remove = " wic wic.gz"
+IMAGE_FSTYPES:remove = " wic wic.gz"

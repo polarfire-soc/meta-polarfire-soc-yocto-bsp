@@ -68,15 +68,11 @@ USER_CLASSES ?= "buildstats buildhistory buildstats-summary image-prelink"
 require conf/distro/include/no-static-libs.inc
 require conf/distro/include/yocto-uninative.inc
 require conf/distro/include/security_flags.inc
-
 INHERIT += "uninative"
-
-
-DISTRO_FEATURES_append = " largefile opengl ptest multiarch wayland pam  systemd "
+DISTRO_FEATURES:append = " largefile opengl ptest multiarch wayland pam  systemd "
 DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
 VIRTUAL-RUNTIME_init_manager = "systemd"
-HOSTTOOLS_NONFATAL_append = " ssh"
-#DEBUG_BUILD = "1"
+HOSTTOOLS_NONFATAL:append = " ssh"
 EOF
 
 
