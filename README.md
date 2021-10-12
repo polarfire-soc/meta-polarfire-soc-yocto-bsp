@@ -92,6 +92,16 @@ To work with individual recipes:
 ```bash
 MACHINE=<MACHINE> bitbake <recipe> -c <command>
 ```
+View/Edit the Kernel menuconfig:
+```bash
+MACHINE=<MACHINE> bitbake mpfs-linux -c menuconfig
+```
+Run the diffconfig command to prepare a configuration fragment. 
+The resulting file fragment.cfg will be placed in the recipes-kernel/linux/files directory:
+```bash
+MACHINE=<MACHINE> bitbake mpfs-linux -c diffconfig
+```
+
 **Available BSP recipes:**
  
   - hss (Microchip Hart Software Services) payload generator
@@ -173,6 +183,8 @@ sudo apt-get install libelf-dev
 [Yocto Development Task Manual](https://www.yoctoproject.org/docs/3.1/dev-manual/dev-manual.html) 
  
 [Yocto Bitbake User Manual](https://www.yoctoproject.org/docs/3.1/bitbake-user-manual/bitbake-user-manual.html)
+
+[Yocto Application Development and Extensible Software Development Kit (sSDK)](ttps://www.yoctoproject.org/docs/3.1/sdk-manual/sdk-manual.html) 
  
 [PolarFire SoC Buildroot BSP](https://github.com/polarfire-soc/polarfire-soc-buildroot-sdk) 
  
