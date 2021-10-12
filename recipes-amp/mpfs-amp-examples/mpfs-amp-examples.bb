@@ -31,7 +31,7 @@ do_deploy() {
     :
 }
 
-do_deploy_append_icicle-kit-es-amp() {
+do_deploy:append:icicle-kit-es-amp() {
     install -d ${DEPLOY_DIR_IMAGE}
     install -m 755 ${S}/Default/mpfs-amp-freertos.elf ${DEPLOY_DIR_IMAGE}
     ln -sf ${DEPLOY_DIR_IMAGE}/mpfs-amp-freertos.elf ${DEPLOY_DIR_IMAGE}/amp-application.elf 
