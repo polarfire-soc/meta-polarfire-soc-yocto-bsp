@@ -196,7 +196,7 @@ sudo apt-get install libelf-dev
 
 ### Issue 001: Required binaries not available before creating the disk image
 We sometimes get dependencies not building correctly.
-During the process do_wic_install payload may not be present for hss or opensbi.
+During the process do_wic_install payload may not be present for hss
 
 For example after requesting a complete build:
 
