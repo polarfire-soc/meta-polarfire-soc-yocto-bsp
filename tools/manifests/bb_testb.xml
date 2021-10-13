@@ -6,9 +6,9 @@
   <default remote="openembedded" revision="master" />
 
   <project name="meta-polarfire-soc-yocto-bsp" remote="meta-polarfire-soc-yocto-bsp" path="meta-polarfire-soc-yocto-bsp" revision="feature/pre-release_updates" />
-  <project name="meta-riscv" remote="riscv" path="meta-riscv" revision="47faa008327abc388c52246b24a8a458b30b6f0d" />
-  <project name="openembedded-core" remote="openembedded" path="openembedded-core" revision="d7fac573f1e1c9cd93181bce60df5666f5b5b03f" />
-  <project name="bitbake" remote="openembedded" path="openembedded-core/bitbake" revision="32fa31e8b6461bebd019de837dedc59f1fcaa24c" />
-  <project name="meta-openembedded" remote="openembedded" path="meta-openembedded" revision="037f38cc68aabb9e36e92862af258f46874e0c13" />
+  <project name="meta-riscv" remote="riscv" path="meta-riscv" revision="master" />
+  <project name="openembedded-core" remote="openembedded" path="openembedded-core" revision="master" />
+  <project name="bitbake" remote="openembedded" path="openembedded-core/bitbake" revision="master" />
+  <project name="meta-openembedded" remote="openembedded" path="meta-openembedded" revision="master" />
 
 </manifest>
