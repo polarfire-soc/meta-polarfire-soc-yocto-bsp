@@ -53,6 +53,7 @@ if [ -e $CONFFILE ]; then
 fi
 cat <<EOF > $CONFFILE
 MACHINE ?= "${MACHINE}"
+BBMASK += "opensbi_0.9.bb"
 #IMAGE_FEATURES += "tools-debug"
 #IMAGE_FEATURES += "tools-tweaks"
 #IMAGE_FEATURES += "dbg-pkgs"

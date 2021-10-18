@@ -17,17 +17,18 @@ SRCREV="58b03943834fe34991dc5fa924436b3620e07aa5"
 SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;branch=${BRANCH} \
            file://${HSS_PAYLOAD}.yaml \
           "
+
 S = "${WORKDIR}/git"
 
 # NOTE: Only using the Payload generator from the HSS
-do_configure_icicle-kit-es () {
+do_configure:icicle-kit-es () {
 	## taking U-Boot binary and package for HSS
 	cp -f ${DEPLOY_DIR_IMAGE}/u-boot.bin ${WORKDIR}/git/
 	cp -f ${WORKDIR}/${HSS_PAYLOAD}.yaml ${WORKDIR}/git/tools/hss-payload-generator/
 }
 
 # NOTE: Only using the Payload generator from the HSS
-do_configure_icicle-kit-es-amp () {
+do_configure:icicle-kit-es-amp () {
 	## taking U-Boot binary and package for HSS
 	cp -f ${DEPLOY_DIR_IMAGE}/u-boot.bin ${WORKDIR}/git/
    cp -L ${DEPLOY_DIR_IMAGE}/amp-application.elf ${WORKDIR}/git/

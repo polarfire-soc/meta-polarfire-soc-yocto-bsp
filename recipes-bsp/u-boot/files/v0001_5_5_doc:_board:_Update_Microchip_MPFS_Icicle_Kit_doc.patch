@@ -1,0 +1,48 @@
+UART0 is reserved for Hart Software Services(HSS).
+UART1 uses for U-BOOT and Linux console.
+
+Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
+---
+ doc/board/microchip/mpfs_icicle.rst | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/doc/board/microchip/mpfs_icicle.rst b/doc/board/microchip/mpfs_icicle.rst
+index c71c2f3cab..55b1299bea 100644
+--- a/doc/board/microchip/mpfs_icicle.rst
++++ b/doc/board/microchip/mpfs_icicle.rst
+@@ -18,8 +18,9 @@ The support for following drivers are already enabled:
+ 
+ 1. NS16550 UART Driver.
+ 2. Microchip Clock Driver.
+-3. Cadence MACB ethernet driver for networking support.
+-4. Cadence MMC Driver for eMMC/SD support.
++3. Microchip I2C Driver.
++4. Cadence MACB ethernet driver for networking support.
++5. Cadence MMC Driver for eMMC/SD support.
+ 
+ Booting from eMMC using HSS
+ ---------------------------
+@@ -214,7 +215,8 @@ GPT partition.
+ Booting
+ ~~~~~~~
+ 
+-You should see the U-Boot prompt on UART0.
++You should see the U-Boot prompt on UART1.
++(Note: UART0 reserved for HSS)
+ 
+ Sample boot log from MPFS Icicle Kit
+ ''''''''''''''''''''''''''''''''''''
+@@ -451,7 +453,8 @@ copied payload and Linux image.
+ 
+     sudo dd if=<payload_binary> of=/dev/sdX2 bs=512
+ 
+-You should see the U-Boot prompt on UART0.
++You should see the U-Boot prompt on UART1.
++(Note: UART0 reserved for HSS)
+ 
+ GUID type
+ ~~~~~~~~~
+-- 
+2.25.1
+
+
