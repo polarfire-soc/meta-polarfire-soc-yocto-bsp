@@ -14,7 +14,7 @@ index 2217e1d..1b0abd2 100755
 +++ b/ethernet/iio-http-server/collection/collectdiio.busybox
 @@ -1,4 +1,4 @@
 -#! /bin/ash
-+#! /bin/bash
++#!/bin/sh
  
  case "$1" in
    start)
