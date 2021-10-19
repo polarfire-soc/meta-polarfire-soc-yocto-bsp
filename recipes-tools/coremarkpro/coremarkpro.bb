@@ -22,6 +22,4 @@ do_install() {
     cp ${WORKDIR}/git/README.md ${D}/opt/microchip/coremark-pro
 }
 
-PACKAGES += "coremarkpro"
-FILES_${PN} += "/opt/microchip/coremark-pro/"
-FILES_${PN}-dev += "/opt/microchip/coremark-pro/ ${includedir}"
+FILES:${PN} += "/opt/microchip/coremark-pro/"

@@ -43,5 +43,5 @@ do_install() {
 }
 
 SYSTEMD_SERVICE_${PN} = "collectdiio.service"
-FILES_${PN} += "/opt/microchip/"
+FILES:${PN} += "/opt/microchip/"
 
