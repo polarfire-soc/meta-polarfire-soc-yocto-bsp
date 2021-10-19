@@ -4,6 +4,7 @@ EXTRA_IMAGE_FEATURES += " \
       tools-sdk"
 
 IMAGE_INSTALL = "\
+    linuxptp \
     mtd-utils \
     mtd-utils-misc \
     iperf3 \

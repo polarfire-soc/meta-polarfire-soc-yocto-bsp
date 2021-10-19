@@ -8,6 +8,7 @@ IMAGE_FEATURES += " ssh-server-openssh \
                   "
 
 IMAGE_INSTALL = "\
+    linuxptp \
     mtd-utils \
     mtd-utils-misc \
     iperf3 \
