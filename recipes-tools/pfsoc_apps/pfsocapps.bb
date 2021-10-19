@@ -42,6 +42,6 @@ do_install() {
     install -m 0644 ${S}/ethernet/iio-http-server/collection/collectdiio.service ${D}${systemd_unitdir}/system
 }
 
-SYSTEMD_SERVICE_${PN} = "collectdiio.service"
+SYSTEMD_SERVICE:${PN} = "collectdiio.service"
 FILES:${PN} += "/opt/microchip/"
 

@@ -1,7 +1,11 @@
-UART0 is reserved for Hart Software Services(HSS).
-UART1 uses for U-BOOT and Linux console.
+From c3feeb877ace0d96d2154863f0b4a481d0beb674 Mon Sep 17 00:00:00 2001
+From: Padmarao Begari <padmarao.begari@microchip.com>
+Date: Tue, 19 Oct 2021 20:56:03 +0000
+Subject: [PATCH] UART0 is reserved for Hart Software Services(HSS). UART1 uses
+ for U-BOOT and Linux console.
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
+
 ---
  doc/board/microchip/mpfs_icicle.rst | 11 +++++++----
  1 file changed, 7 insertions(+), 4 deletions(-)
@@ -42,7 +46,3 @@ index c71c2f3cab..55b1299bea 100644
  
  GUID type
  ~~~~~~~~~
--- 
-2.25.1
-
-

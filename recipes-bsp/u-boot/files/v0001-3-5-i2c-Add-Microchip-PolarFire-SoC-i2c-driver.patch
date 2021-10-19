@@ -1,6 +1,10 @@
-Add i2c driver code for the Microchip PolarFire SoC.
+From be474f06e5cc246e8697380b30fa59fbf35a459a Mon Sep 17 00:00:00 2001
+From: Padmarao Begari <padmarao.begari@microchip.com>
+Date: Tue, 19 Oct 2021 20:56:02 +0000
+Subject: [PATCH] Add i2c driver code for the Microchip PolarFire SoC.
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
+
 ---
  drivers/i2c/Kconfig         |   6 +
  drivers/i2c/Makefile        |   1 +
@@ -9,10 +13,10 @@ Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
  create mode 100644 drivers/i2c/i2c-microchip.c
 
 diff --git a/drivers/i2c/Kconfig b/drivers/i2c/Kconfig
-index 57cac4483f..430e664b15 100644
+index 57a4efb88e..e71ed4fdae 100644
 --- a/drivers/i2c/Kconfig
 +++ b/drivers/i2c/Kconfig
-@@ -250,6 +250,12 @@ config SYS_I2C_MESON
+@@ -180,6 +180,12 @@ config SYS_I2C_MESON
  	  internal buffer holding up to 8 bytes for transfers and supports
  	  both 7-bit and 10-bit addresses.
  
@@ -26,7 +30,7 @@ index 57cac4483f..430e664b15 100644
  	bool "NXP MXC I2C driver"
  	help
 diff --git a/drivers/i2c/Makefile b/drivers/i2c/Makefile
-index 67841bf3e0..80eb3fa9b9 100644
+index 8c9f1fcd8b..477bd209b1 100644
 --- a/drivers/i2c/Makefile
 +++ b/drivers/i2c/Makefile
 @@ -29,6 +29,7 @@ obj-$(CONFIG_SYS_I2C_IPROC) += iproc_i2c.o
@@ -504,7 +508,3 @@ index 0000000000..145d4b734e
 +	.probe = mpfs_i2c_probe,
 +	.priv_auto = sizeof(struct mpfs_i2c_bus),
 +};
--- 
-2.25.1
-
-

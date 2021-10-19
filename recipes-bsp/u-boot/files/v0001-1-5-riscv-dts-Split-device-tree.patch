@@ -1,7 +1,11 @@
-The device tree split into .dtsi and .dts files and UART1
-uses for console.
+From b18823def800b3c393c8460209c310877db0abe0 Mon Sep 17 00:00:00 2001
+From: Padmarao Begari <padmarao.begari@microchip.com>
+Date: Tue, 19 Oct 2021 20:56:02 +0000
+Subject: [PATCH] The device tree split into .dtsi and .dts files and UART1
+ uses for console.
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
+
 ---
  arch/riscv/dts/microchip-mpfs-icicle-kit.dts  | 518 ++++------------
  arch/riscv/dts/microchip-mpfs.dtsi            | 571 ++++++++++++++++++
@@ -1368,7 +1372,3 @@ index 0000000000..d640ec3bf9
 +
 +#endif /* _DT_BINDINGS_INTERRUPT_CONTROLLER_RISCV_HART_H */
 +
--- 
-2.25.1
-
-

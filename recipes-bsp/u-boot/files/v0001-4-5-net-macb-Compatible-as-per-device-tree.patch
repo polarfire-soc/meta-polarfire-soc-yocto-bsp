@@ -1,13 +1,17 @@
-Update compatible as per Microchip PolarFire SoC ethernet
-device node compatible.
+From effa3db380930cc50d68da16975a7b0bee9decc6 Mon Sep 17 00:00:00 2001
+From: Padmarao Begari <padmarao.begari@microchip.com>
+Date: Tue, 19 Oct 2021 20:56:02 +0000
+Subject: [PATCH] Update compatible as per Microchip PolarFire SoC ethernet
+ device node compatible.
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
+
 ---
  drivers/net/macb.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 8151104acf..94f6755490 100644
+index 57ea45e2dc..4d3d321a4c 100644
 --- a/drivers/net/macb.c
 +++ b/drivers/net/macb.c
 @@ -1507,7 +1507,7 @@ static const struct udevice_id macb_eth_ids[] = {
@@ -19,7 +23,3 @@ index 8151104acf..94f6755490 100644
  	  .data = (ulong)&microchip_config },
  	{ }
  };
--- 
-2.25.1
-
-

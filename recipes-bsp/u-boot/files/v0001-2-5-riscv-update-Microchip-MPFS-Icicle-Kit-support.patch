@@ -1,8 +1,12 @@
-This patch updates Microchip MPFS Icicle Kit support. For now,
-added Microchip I2C driver, set environment variables for
-mac addesses and default build for SBI_V02.
+From 073ab688c29522f46456019da0f40d909de3cc13 Mon Sep 17 00:00:00 2001
+From: Padmarao Begari <padmarao.begari@microchip.com>
+Date: Tue, 19 Oct 2021 20:56:02 +0000
+Subject: [PATCH] This patch updates Microchip MPFS Icicle Kit support. For
+ now, added Microchip I2C driver, set environment variables for mac addesses
+ and default build for SBI_V02.
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
+
 ---
  board/microchip/mpfs_icicle/Kconfig       |  4 ++++
  board/microchip/mpfs_icicle/mpfs_icicle.c | 17 ++++++++++++++++-
@@ -24,7 +28,7 @@ index 4678462378..676effcb99 100644
  
  endif
 diff --git a/board/microchip/mpfs_icicle/mpfs_icicle.c b/board/microchip/mpfs_icicle/mpfs_icicle.c
-index afef719dff..2a7fda1fdb 100644
+index afef719dff..e74c9fb03c 100644
 --- a/board/microchip/mpfs_icicle/mpfs_icicle.c
 +++ b/board/microchip/mpfs_icicle/mpfs_icicle.c
 @@ -119,7 +119,22 @@ int board_late_init(void)
@@ -52,18 +56,14 @@ index afef719dff..2a7fda1fdb 100644
  	return 0;
  }
 diff --git a/configs/microchip_mpfs_icicle_defconfig b/configs/microchip_mpfs_icicle_defconfig
-index 90ae76cc12..b3c7e6db8f 100644
+index 1cb29201b4..4ddf2b1784 100644
 --- a/configs/microchip_mpfs_icicle_defconfig
 +++ b/configs/microchip_mpfs_icicle_defconfig
-@@ -6,7 +6,6 @@ CONFIG_DEFAULT_DEVICE_TREE="microchip-mpfs-icicle-kit"
+@@ -5,7 +5,6 @@ CONFIG_DEFAULT_DEVICE_TREE="microchip-mpfs-icicle-kit"
  CONFIG_TARGET_MICROCHIP_ICICLE=y
  CONFIG_ARCH_RV64I=y
  CONFIG_RISCV_SMODE=y
 -CONFIG_SBI_V01=y
  CONFIG_DISTRO_DEFAULTS=y
- CONFIG_SYS_LOAD_ADDR=0x80200000
  CONFIG_FIT=y
--- 
-2.25.1
-
-
+ CONFIG_DISPLAY_CPUINFO=y
