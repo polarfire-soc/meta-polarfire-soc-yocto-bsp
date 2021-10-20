@@ -1,7 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI:append = " \
-            file://tftp-mmc-boot.txt \
+            file://${UBOOT_ENV}.txt \
             file://v0001-1-5-riscv-dts-Split-device-tree.patch \
             file://v0001-2-5-riscv-update-Microchip-MPFS-Icicle-Kit-support.patch \
             file://v0001-3-5-i2c-Add-Microchip-PolarFire-SoC-i2c-driver.patch \
@@ -17,7 +17,7 @@ DEPENDS:append = " u-boot-tools-native"
 TFTP_SERVER_IP ?= "127.0.0.1"
 
 do_configure:prepend:icicle-kit-es() {
-    sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/tftp-mmc-boot.txt
+    sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/${UBOOT_ENV}.txt
 
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
@@ -26,7 +26,8 @@ do_configure:prepend:icicle-kit-es() {
 }
 do_configure:prepend:icicle-kit-es-amp() {
     cp -f ${WORKDIR}/microchip-mpfs-icicle-kit-context-a.dts ${S}/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
-    sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/tftp-mmc-boot.txt
+    sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/${UBOOT_ENV}.txt
+        
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
             -d ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/boot.scr.uimg
