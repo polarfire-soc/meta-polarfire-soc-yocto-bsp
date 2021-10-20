@@ -27,6 +27,10 @@ do_configure:prepend:icicle-kit-es() {
 do_configure:prepend:icicle-kit-es-amp() {
     cp -f ${WORKDIR}/microchip-mpfs-icicle-kit-context-a.dts ${S}/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
     sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/tftp-mmc-boot.txt
+    if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
+        mkimage -O linux -T script -C none -n "U-Boot boot script" \
+            -d ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/boot.scr.uimg
+    fi    
 }
 
 do_deploy:append() {
