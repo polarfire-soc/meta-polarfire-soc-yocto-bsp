@@ -190,7 +190,7 @@ sudo apt-get install libelf-dev
  
 [U-Boot Documentation](https://www.denx.de/wiki/U-Boot/Documentation) 
 
-[Kernel Documentation for v5.4](https://www.kernel.org/doc/html/v5.4/) 
+[Kernel Documentation for v5.12](https://www.kernel.org/doc/html/v5.12/) 
 
 ## Known issues
 
