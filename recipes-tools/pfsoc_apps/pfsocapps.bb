@@ -14,10 +14,9 @@ inherit systemd
 
 
 PV = "1.0+git${SRCPV}"
-BRANCH = "master"
+BRANCH = "develop"
 SRCREV="${AUTOREV}"
-SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-linux-examples.git;branch=${BRANCH} \
-           file://0001-Change-script-from-ash-to-bash.patch \
+SRC_URI = "git://git@bitbucket.microchip.com/fpga_pfsoc_es/polarfire-soc-linux-examples.git;protocol=ssh;branch=${BRANCH} \
           "
 S = "${WORKDIR}/git"
 
