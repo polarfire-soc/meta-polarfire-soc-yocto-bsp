@@ -1,22 +1,25 @@
-From be474f06e5cc246e8697380b30fa59fbf35a459a Mon Sep 17 00:00:00 2001
+From 4aced135a98d3219ba9344ce0ce6085cbd0ea525 Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Tue, 19 Oct 2021 20:56:02 +0000
-Subject: [PATCH] Add i2c driver code for the Microchip PolarFire SoC.
+Date: Fri, 22 Oct 2021 12:55:29 +0530
+Subject: [PATCH v1 3/5] i2c: Add Microchip PolarFire SoC I2C driver
+
+Add I2C driver code for the Microchip PolarFire SoC.
+This driver supports I2C data transfer and probe for I2C
+slave addresses.
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
-
 ---
  drivers/i2c/Kconfig         |   6 +
  drivers/i2c/Makefile        |   1 +
- drivers/i2c/i2c-microchip.c | 461 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 468 insertions(+)
+ drivers/i2c/i2c-microchip.c | 482 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 489 insertions(+)
  create mode 100644 drivers/i2c/i2c-microchip.c
 
 diff --git a/drivers/i2c/Kconfig b/drivers/i2c/Kconfig
-index 57a4efb88e..e71ed4fdae 100644
+index 7c447a8aa0..5482a4a470 100644
 --- a/drivers/i2c/Kconfig
 +++ b/drivers/i2c/Kconfig
-@@ -180,6 +180,12 @@ config SYS_I2C_MESON
+@@ -250,6 +250,12 @@ config SYS_I2C_MESON
  	  internal buffer holding up to 8 bytes for transfers and supports
  	  both 7-bit and 10-bit addresses.
  
@@ -30,23 +33,23 @@ index 57a4efb88e..e71ed4fdae 100644
  	bool "NXP MXC I2C driver"
  	help
 diff --git a/drivers/i2c/Makefile b/drivers/i2c/Makefile
-index 8c9f1fcd8b..477bd209b1 100644
+index fca6b157f8..9d41f379bb 100644
 --- a/drivers/i2c/Makefile
 +++ b/drivers/i2c/Makefile
-@@ -29,6 +29,7 @@ obj-$(CONFIG_SYS_I2C_IPROC) += iproc_i2c.o
+@@ -28,6 +28,7 @@ obj-$(CONFIG_SYS_I2C_IPROC) += iproc_i2c.o
  obj-$(CONFIG_SYS_I2C_KONA) += kona_i2c.o
  obj-$(CONFIG_SYS_I2C_LPC32XX) += lpc32xx_i2c.o
  obj-$(CONFIG_SYS_I2C_MESON) += meson_i2c.o
 +obj-$(CONFIG_SYS_I2C_MICROCHIP) += i2c-microchip.o
+ obj-$(CONFIG_SYS_I2C_MV) += mv_i2c.o
  obj-$(CONFIG_SYS_I2C_MVTWSI) += mvtwsi.o
  obj-$(CONFIG_SYS_I2C_MXC) += mxc_i2c.o
- obj-$(CONFIG_SYS_I2C_NEXELL) += nx_i2c.o
 diff --git a/drivers/i2c/i2c-microchip.c b/drivers/i2c/i2c-microchip.c
 new file mode 100644
-index 0000000000..145d4b734e
+index 0000000000..12f65d0af7
 --- /dev/null
 +++ b/drivers/i2c/i2c-microchip.c
-@@ -0,0 +1,461 @@
+@@ -0,0 +1,482 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Microchip I2C controller driver
@@ -66,62 +69,61 @@ index 0000000000..145d4b734e
 +
 +#define	MICROCHIP_I2C_TIMEOUT	(1000 * 60)
 +
-+#define	MPFS_I2C_CTRL		(0x00)
-+#define		CTRL_CR0		(0x00)
-+#define		CTRL_CR1		(0x01)
-+#define		CTRL_AA			BIT(2)
-+#define		CTRL_SI			BIT(3)
-+#define		CTRL_STO		BIT(4)
-+#define		CTRL_STA		BIT(5)
-+#define		CTRL_ENS1		BIT(6)
-+#define		CTRL_CR2		(0x07)
++#define MPFS_I2C_CTRL	(0x00)
++#define	CTRL_CR0		(0x00)
++#define	CTRL_CR1		(0x01)
++#define	CTRL_AA			BIT(2)
++#define	CTRL_SI			BIT(3)
++#define	CTRL_STO		BIT(4)
++#define	CTRL_STA		BIT(5)
++#define	CTRL_ENS1		BIT(6)
++#define	CTRL_CR2		(0x07)
++#define MPFS_I2C_STATUS							(0x04)
++#define	STATUS_BUS_ERROR						(0x00)
++#define	STATUS_M_START_SENT						(0x08)
++#define	STATUS_M_REPEATED_START_SENT			(0x10)
++#define	STATUS_M_SLAW_ACK						(0x18)
++#define	STATUS_M_SLAW_NACK						(0x20)
++#define	STATUS_M_TX_DATA_ACK					(0x28)
++#define	STATUS_M_TX_DATA_NACK					(0x30)
++#define	STATUS_M_ARB_LOST						(0x38)
++#define	STATUS_M_SLAR_ACK						(0x40)
++#define	STATUS_M_SLAR_NACK						(0x48)
++#define	STATUS_M_RX_DATA_ACKED					(0x50)
++#define	STATUS_M_RX_DATA_NACKED					(0x58)
++#define	STATUS_S_SLAW_ACKED						(0x60)
++#define	STATUS_S_ARB_LOST_SLAW_ACKED			(0x68)
++#define	STATUS_S_GENERAL_CALL_ACKED				(0x70)
++#define	STATUS_S_ARB_LOST_GENERAL_CALL_ACKED	(0x78)
++#define	STATUS_S_RX_DATA_ACKED					(0x80)
++#define	STATUS_S_RX_DATA_NACKED					(0x88)
++#define	STATUS_S_GENERAL_CALL_RX_DATA_ACKED		(0x90)
++#define	STATUS_S_GENERAL_CALL_RX_DATA_NACKED	(0x98)
++#define	STATUS_S_RX_STOP						(0xA0)
++#define	STATUS_S_SLAR_ACKED						(0xA8)
++#define	STATUS_S_ARB_LOST_SLAR_ACKED			(0xB0)
++#define	STATUS_S_TX_DATA_ACK					(0xb8)
++#define	STATUS_S_TX_DATA_NACK					(0xC0)
++#define	STATUS_LAST_DATA_ACK					(0xC8)
++#define	STATUS_M_SMB_MASTER_RESET				(0xD0)
++#define	STATUS_S_SCL_LOW_TIMEOUT				(0xD8)
++#define	STATUS_NO_STATE_INFO					(0xF8)
++#define MPFS_I2C_DATA			(0x08)
++#define MPFS_I2C_SLAVE0_ADDR	(0x0c)
++#define MPFS_I2C_SMBUS			(0x10)
++#define MPFS_I2C_FREQ			(0x14)
++#define MPFS_I2C_GLITCHREG		(0x18)
++#define MPFS_I2C_SLAVE1_ADDR	(0x1c)
 +
-+#define	MPFS_I2C_STATUS								(0x04)
-+#define		STATUS_BUS_ERROR						(0x00)
-+#define		STATUS_M_START_SENT						(0x08)
-+#define		STATUS_M_REPEATED_START_SENT			(0x10)
-+#define		STATUS_M_SLAW_ACK						(0x18)
-+#define		STATUS_M_SLAW_NACK						(0x20)
-+#define		STATUS_M_TX_DATA_ACK					(0x28)
-+#define		STATUS_M_TX_DATA_NACK					(0x30)
-+#define		STATUS_M_ARB_LOST						(0x38)
-+#define		STATUS_M_SLAR_ACK						(0x40)
-+#define		STATUS_M_SLAR_NACK						(0x48)
-+#define		STATUS_M_RX_DATA_ACKED					(0x50)
-+#define		STATUS_M_RX_DATA_NACKED					(0x58)
-+#define		STATUS_S_SLAW_ACKED						(0x60)
-+#define		STATUS_S_ARB_LOST_SLAW_ACKED			(0x68)
-+#define		STATUS_S_GENERAL_CALL_ACKED				(0x70)
-+#define		STATUS_S_ARB_LOST_GENERAL_CALL_ACKED	(0x78)
-+#define		STATUS_S_RX_DATA_ACKED					(0x80)
-+#define		STATUS_S_RX_DATA_NACKED					(0x88)
-+#define		STATUS_S_GENERAL_CALL_RX_DATA_ACKED		(0x90)
-+#define		STATUS_S_GENERAL_CALL_RX_DATA_NACKED	(0x98)
-+#define		STATUS_S_RX_STOP						(0xA0)
-+#define		STATUS_S_SLAR_ACKED						(0xA8)
-+#define		STATUS_S_ARB_LOST_SLAR_ACKED			(0xB0)
-+#define		STATUS_S_TX_DATA_ACK					(0xb8)
-+#define		STATUS_S_TX_DATA_NACK					(0xC0)
-+#define		STATUS_LAST_DATA_ACK					(0xC8)
-+#define		STATUS_M_SMB_MASTER_RESET				(0xD0)
-+#define		STATUS_S_SCL_LOW_TIMEOUT				(0xD8)
-+#define		STATUS_NO_STATE_INFO					(0xF8)
-+#define	MPFS_I2C_DATA			(0x08)
-+#define	MPFS_I2C_SLAVE0_ADDR	(0x0c)
-+#define	MPFS_I2C_SMBUS			(0x10)
-+#define	MPFS_I2C_FREQ			(0x14)
-+#define	MPFS_I2C_GLITCHREG		(0x18)
-+#define	MPFS_I2C_SLAVE1_ADDR	(0x1c)
-+
-+#define	PCLK_DIV_256	((0 << CTRL_CR0) | (0 << CTRL_CR1) | (0 << CTRL_CR2))
-+#define	PCLK_DIV_224	((1 << CTRL_CR0) | (0 << CTRL_CR1) | (0 << CTRL_CR2))
-+#define	PCLK_DIV_192	((0 << CTRL_CR0) | (1 << CTRL_CR1) | (0 << CTRL_CR2))
-+#define	PCLK_DIV_160	((1 << CTRL_CR0) | (1 << CTRL_CR1) | (0 << CTRL_CR2))
-+#define	PCLK_DIV_960	((0 << CTRL_CR0) | (0 << CTRL_CR1) | (1 << CTRL_CR2))
-+#define	PCLK_DIV_120	((1 << CTRL_CR0) | (0 << CTRL_CR1) | (1 << CTRL_CR2))
-+#define	PCLK_DIV_60		((0 << CTRL_CR0) | (1 << CTRL_CR1) | (1 << CTRL_CR2))
-+#define	BCLK_DIV_8		((1 << CTRL_CR0) | (1 << CTRL_CR1) | (1 << CTRL_CR2))
-+#define	CLK_MASK		((1 << CTRL_CR0) | (1 << CTRL_CR1) | (1 << CTRL_CR2))
++#define PCLK_DIV_256	((0 << CTRL_CR0) | (0 << CTRL_CR1) | (0 << CTRL_CR2))
++#define PCLK_DIV_224	((1 << CTRL_CR0) | (0 << CTRL_CR1) | (0 << CTRL_CR2))
++#define PCLK_DIV_192	((0 << CTRL_CR0) | (1 << CTRL_CR1) | (0 << CTRL_CR2))
++#define PCLK_DIV_160	((1 << CTRL_CR0) | (1 << CTRL_CR1) | (0 << CTRL_CR2))
++#define PCLK_DIV_960	((0 << CTRL_CR0) | (0 << CTRL_CR1) | (1 << CTRL_CR2))
++#define PCLK_DIV_120	((1 << CTRL_CR0) | (0 << CTRL_CR1) | (1 << CTRL_CR2))
++#define PCLK_DIV_60		((0 << CTRL_CR0) | (1 << CTRL_CR1) | (1 << CTRL_CR2))
++#define BCLK_DIV_8		((1 << CTRL_CR0) | (1 << CTRL_CR1) | (1 << CTRL_CR2))
++#define CLK_MASK		((1 << CTRL_CR0) | (1 << CTRL_CR1) | (1 << CTRL_CR2))
 +
 +/*
 + * mpfs_i2c_bus - I2C bus context
@@ -294,9 +296,6 @@ index 0000000000..145d4b734e
 +	u32 status;
 +	u8 ctrl;
 +
-+	if (!bus->buf)
-+		return 0;
-+
 +	status = bus->isr_status;
 +
 +	switch (status)	{
@@ -306,31 +305,8 @@ index 0000000000..145d4b734e
 +		ctrl &= ~CTRL_STA;
 +		writel(bus->addr, bus->base + MPFS_I2C_DATA);
 +		writel(ctrl, bus->base + MPFS_I2C_CTRL);
-+		if (bus->msg_len <= 0)
-+			finish = true;
-+		break;
-+	case STATUS_M_ARB_LOST:
-+		/* Handle Lost Arbitration */
-+		bus->msg_err = -EAGAIN;
-+		finish = true;
 +		break;
 +	case STATUS_M_SLAW_ACK:
-+		if (bus->msg_len > 0) {
-+			mpfs_i2c_fill_tx(bus);
-+		} else {
-+			/* On the last byte to be transmitted, send STOP */
-+			mpfs_i2c_stop(bus);
-+			finish = true;
-+		}
-+		break;
-+	case STATUS_M_TX_DATA_NACK:
-+	case STATUS_M_RX_DATA_NACKED:
-+	case STATUS_M_SLAR_NACK:
-+	case STATUS_M_SLAW_NACK:
-+		bus->msg_err = -ENXIO;
-+		mpfs_i2c_stop(bus);
-+		finish = true;
-+		break;
 +	case STATUS_M_TX_DATA_ACK:
 +		if (bus->msg_len > 0) {
 +			mpfs_i2c_fill_tx(bus);
@@ -357,6 +333,20 @@ index 0000000000..145d4b734e
 +			mpfs_i2c_stop(bus);
 +			finish = true;
 +		}
++		break;
++	case STATUS_M_TX_DATA_NACK:
++	case STATUS_M_RX_DATA_NACKED:
++	case STATUS_M_SLAR_NACK:
++	case STATUS_M_SLAW_NACK:
++		bus->msg_err = -ENXIO;
++		mpfs_i2c_stop(bus);
++		finish = true;
++		break;
++
++	case STATUS_M_ARB_LOST:
++		/* Handle Lost Arbitration */
++		bus->msg_err = -EAGAIN;
++		finish = true;
 +		break;
 +	default:
 +		break;
@@ -427,7 +417,7 @@ index 0000000000..145d4b734e
 +	u8 ctrl;
 +	int ret;
 +
-+	if (msg->len == 0)
++	if (!msg->len || !msg->buf)
 +		return -EINVAL;
 +
 +	bus->addr = i2c_8bit_addr_from_msg(msg);
@@ -455,6 +445,9 @@ index 0000000000..145d4b734e
 +	struct mpfs_i2c_bus *bus = dev_get_priv(dev);
 +	int idx, ret;
 +
++	if (!msgs || !num_msgs)
++		return -EINVAL;
++
 +	for (idx = 0; idx < num_msgs; idx++) {
 +		ret = mpfs_i2c_xfer_msg(bus, msgs++);
 +		if (ret)
@@ -462,6 +455,36 @@ index 0000000000..145d4b734e
 +	}
 +
 +	return ret;
++}
++
++static int mpfs_i2c_probe_chip(struct udevice *dev, uint addr, uint flags)
++{
++	struct mpfs_i2c_bus *bus = dev_get_priv(dev);
++	int ret;
++	u8 ctrl, reg = 0;
++
++	/*
++	 * Send the chip address and verify that the
++	 * address was <ACK>ed.
++	 */
++	bus->addr = addr << 1 | I2C_M_RD;
++	bus->buf = &reg;
++	bus->msg_len = 0;
++	bus->msg_err = 0;
++
++	mpfs_i2c_core_enable(bus);
++
++	ctrl = readl(bus->base + MPFS_I2C_CTRL);
++
++	ctrl |= CTRL_STA;
++
++	writel(ctrl, bus->base + MPFS_I2C_CTRL);
++
++	ret = mpfs_i2c_poll_device(bus);
++	if (ret)
++		return ret;
++
++	return bus->msg_err;
 +}
 +
 +static int mpfs_i2c_probe(struct udevice *dev)
@@ -493,6 +516,7 @@ index 0000000000..145d4b734e
 +
 +static const struct dm_i2c_ops mpfs_i2c_ops = {
 +	.xfer = mpfs_i2c_xfer,
++	.probe_chip = mpfs_i2c_probe_chip,
 +};
 +
 +static const struct udevice_id mpfs_i2c_ids[] = {
@@ -508,3 +532,6 @@ index 0000000000..145d4b734e
 +	.probe = mpfs_i2c_probe,
 +	.priv_auto = sizeof(struct mpfs_i2c_bus),
 +};
+-- 
+2.25.1
+

@@ -2,11 +2,11 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI:append = " \
             file://${UBOOT_ENV}.txt \
-            file://v0001-1-5-riscv-dts-Split-device-tree.patch \
-            file://v0001-2-5-riscv-update-Microchip-MPFS-Icicle-Kit-support.patch \
-            file://v0001-3-5-i2c-Add-Microchip-PolarFire-SoC-i2c-driver.patch \
-            file://v0001-4-5-net-macb-Compatible-as-per-device-tree.patch \
-            file://v0001-5-5-doc-board-Update-Microchip-MPFS-Icicle-Kit-doc.patch \
+            file://0001-riscv-dts-Split-Microchip-device-tree.patch \
+            file://0002-riscv-Update-Microchip-MPFS-Icicle-Kit-support.patch \
+            file://0003-i2c-Add-Microchip-PolarFire-SoC-I2C-driver.patch \
+            file://0004-net-macb-Compatible-as-per-device-tree.patch \
+            file://0005-doc-board-Update-Microchip-MPFS-Icicle-Kit-doc.patch \
            "
 SRC_URI:append:icicle-kit-es-amp = "file://microchip-mpfs-icicle-kit-context-a.dts"
 

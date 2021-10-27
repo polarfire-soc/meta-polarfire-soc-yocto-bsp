@@ -1,17 +1,18 @@
-From c3feeb877ace0d96d2154863f0b4a481d0beb674 Mon Sep 17 00:00:00 2001
+From 95d9e3807907d58c809d6605f6860eee0f936087 Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Tue, 19 Oct 2021 20:56:03 +0000
-Subject: [PATCH] UART0 is reserved for Hart Software Services(HSS). UART1 uses
- for U-BOOT and Linux console.
+Date: Fri, 22 Oct 2021 12:58:29 +0530
+Subject: [PATCH v1 5/5] doc: board: Update Microchip MPFS Icicle Kit doc
+
+UART1 uses for U-BOOT and Linux console instead of UART0 and
+UART0 is reserved for Hart Software Services(HSS).
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
-
 ---
  doc/board/microchip/mpfs_icicle.rst | 11 +++++++----
  1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/doc/board/microchip/mpfs_icicle.rst b/doc/board/microchip/mpfs_icicle.rst
-index c71c2f3cab..55b1299bea 100644
+index c71c2f3cab..d7af542c0e 100644
 --- a/doc/board/microchip/mpfs_icicle.rst
 +++ b/doc/board/microchip/mpfs_icicle.rst
 @@ -18,8 +18,9 @@ The support for following drivers are already enabled:
@@ -32,7 +33,7 @@ index c71c2f3cab..55b1299bea 100644
  
 -You should see the U-Boot prompt on UART0.
 +You should see the U-Boot prompt on UART1.
-+(Note: UART0 reserved for HSS)
++(Note: UART0 is reserved for HSS)
  
  Sample boot log from MPFS Icicle Kit
  ''''''''''''''''''''''''''''''''''''
@@ -42,7 +43,10 @@ index c71c2f3cab..55b1299bea 100644
  
 -You should see the U-Boot prompt on UART0.
 +You should see the U-Boot prompt on UART1.
-+(Note: UART0 reserved for HSS)
++(Note: UART0 is reserved for HSS)
  
  GUID type
  ~~~~~~~~~
+-- 
+2.25.1
+

@@ -1,20 +1,21 @@
-From effa3db380930cc50d68da16975a7b0bee9decc6 Mon Sep 17 00:00:00 2001
+From d395e86c2512c038bf9a7f3b33c9180691edafeb Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Tue, 19 Oct 2021 20:56:02 +0000
-Subject: [PATCH] Update compatible as per Microchip PolarFire SoC ethernet
- device node compatible.
+Date: Fri, 22 Oct 2021 12:56:50 +0530
+Subject: [PATCH v1 4/5] net: macb: Compatible as per device tree
+
+Update compatible as per Microchip PolarFire SoC ethernet
+device node.
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
-
 ---
  drivers/net/macb.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 57ea45e2dc..4d3d321a4c 100644
+index 8c6461e717..1b867bd5c2 100644
 --- a/drivers/net/macb.c
 +++ b/drivers/net/macb.c
-@@ -1507,7 +1507,7 @@ static const struct udevice_id macb_eth_ids[] = {
+@@ -1502,7 +1502,7 @@ static const struct udevice_id macb_eth_ids[] = {
  	{ .compatible = "cdns,zynq-gem" },
  	{ .compatible = "sifive,fu540-c000-gem",
  	  .data = (ulong)&sifive_config },
@@ -23,3 +24,6 @@ index 57ea45e2dc..4d3d321a4c 100644
  	  .data = (ulong)&microchip_config },
  	{ }
  };
+-- 
+2.25.1
+

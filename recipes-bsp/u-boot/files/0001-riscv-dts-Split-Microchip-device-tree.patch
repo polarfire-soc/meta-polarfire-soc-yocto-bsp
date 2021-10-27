@@ -1,28 +1,32 @@
-From b18823def800b3c393c8460209c310877db0abe0 Mon Sep 17 00:00:00 2001
+From ceb0dfdd79203b150c807b6fafa07dea5003217b Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Tue, 19 Oct 2021 20:56:02 +0000
-Subject: [PATCH] The device tree split into .dtsi and .dts files and UART1
- uses for console.
+Date: Fri, 22 Oct 2021 12:50:10 +0530
+Subject: [PATCH v1 1/5] riscv: dts: Split Microchip device tree
+
+The device tree split into .dtsi and .dts files, common
+device node for eMMC/SD, enable I2C1, UART1 for console
+instead of UART0, enable the DDR 2GB memory and in
+that 288MB memory is reserved for fabric buffer.
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
-
 ---
  arch/riscv/dts/microchip-mpfs-icicle-kit.dts  | 518 ++++------------
  arch/riscv/dts/microchip-mpfs.dtsi            | 571 ++++++++++++++++++
  .../microchip-mpfs-plic.h                     | 195 ++++++
  .../interrupt-controller/riscv-hart.h         |  18 +
- 4 files changed, 916 insertions(+), 386 deletions(-)
+ 4 files changed, 913 insertions(+), 389 deletions(-)
  create mode 100644 arch/riscv/dts/microchip-mpfs.dtsi
  create mode 100644 include/dt-bindings/interrupt-controller/microchip-mpfs-plic.h
  create mode 100644 include/dt-bindings/interrupt-controller/riscv-hart.h
 
 diff --git a/arch/riscv/dts/microchip-mpfs-icicle-kit.dts b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
-index 89c4cf5fb2..0686366cd2 100644
+index 89c4cf5fb2..287ef3d23b 100644
 --- a/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
 +++ b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
-@@ -1,417 +1,163 @@
- // SPDX-License-Identifier: (GPL-2.0 OR MIT)
+@@ -1,417 +1,157 @@
+-// SPDX-License-Identifier: (GPL-2.0 OR MIT)
 -/* Copyright (c) 2020 Microchip Technology Inc */
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (C) 2021 Microchip Technology Inc.
 + * Padmarao Begari <padmarao.begari@microchip.com>
@@ -45,12 +49,10 @@ index 89c4cf5fb2..0686366cd2 100644
 +	compatible = "microchip,mpfs-icicle-kit", "microchip,mpfs";
  
  	aliases {
- 		serial0 = &uart0;
+-		serial0 = &uart0;
+-		ethernet0 = &emac1;
 +		serial1 = &uart1;
-+		serial2 = &uart2;
-+		serial3 = &uart3;
-+		serial4 = &uart4;
- 		ethernet0 = &emac1;
++		ethernet0 = &mac1;
  	};
  
  	chosen {
@@ -244,8 +246,7 @@ index 89c4cf5fb2..0686366cd2 100644
 +		size = <0x0 0x2000000>;
 +		memory-region = <&fabricbuf0>;
 +		sync-mode = <3>;
- 	};
--	ddr: memory@80000000 {
++	};
 +
 +	udmabuf1 {
 +		compatible = "ikwzm,u-dma-buf";
@@ -263,7 +264,8 @@ index 89c4cf5fb2..0686366cd2 100644
 +		size = <0x0 0x8000000>;
 +		memory-region = <&fabricbuf2>;
 +		sync-mode = <3>;
-+	};
+ 	};
+-	ddr: memory@80000000 {
 +
 +	ddrc_cache_lo: memory@80000000 {
  		device_type = "memory";
@@ -507,10 +509,6 @@ index 89c4cf5fb2..0686366cd2 100644
 -			reg-names = "control";
 -			#gpio-cells = <2>;
 -			status = "disabled";
-+&clint {
-+	clock-frequency = <RTCCLK_FREQ>;
-+};
-+
 +&uart1 {
 +	status = "okay";
 +};
@@ -523,6 +521,8 @@ index 89c4cf5fb2..0686366cd2 100644
 +	cap-mmc-highspeed;
 +	cap-sd-highspeed;
 +	card-detect-delay = <200>;
++	mmc-ddr-1_8v;
++	mmc-hs200-1_8v;
 +	sd-uhs-sdr12;
 +	sd-uhs-sdr25;
 +	sd-uhs-sdr50;
@@ -561,7 +561,7 @@ index 89c4cf5fb2..0686366cd2 100644
  	};
  };
 +
-+&emac1 {
++&mac1 {
 +	status = "okay";
 +	phy-mode = "sgmii";
 +	phy-handle = <&phy1>;
@@ -572,11 +572,11 @@ index 89c4cf5fb2..0686366cd2 100644
 +};
 diff --git a/arch/riscv/dts/microchip-mpfs.dtsi b/arch/riscv/dts/microchip-mpfs.dtsi
 new file mode 100644
-index 0000000000..bf4c2cf116
+index 0000000000..0204bea767
 --- /dev/null
 +++ b/arch/riscv/dts/microchip-mpfs.dtsi
 @@ -0,0 +1,571 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/* Copyright (c) 2020-2021 Microchip Technology Inc */
 +
 +#include "dt-bindings/clock/microchip-mpfs-clock.h"
@@ -826,7 +826,7 @@ index 0000000000..bf4c2cf116
 +				"fic1", "fic2", "fic3", "athena", "cfm";	/* 28-32 */
 +		};
 +
-+		/* Common node entry for emmc/sd */
++		/* Common node entry for eMMC/SD */
 +		mmc: mmc@20008000 {
 +			compatible = "microchip,mpfs-sd4hc","cdns,sd4hc";
 +			reg = <0x0 0x20008000 0x0 0x1000>;
@@ -960,7 +960,7 @@ index 0000000000..bf4c2cf116
 +			status = "disabled";
 +		};
 +
-+		emac0: ethernet@20110000 {
++		mac0: ethernet@20110000 {
 +			compatible = "microchip,mpfs-gem";
 +			reg = <0x0 0x20110000 0x0 0x2000>;
 +			clocks = <&clkcfg CLK_MAC0>, <&clkcfg CLK_AHB>;
@@ -978,7 +978,7 @@ index 0000000000..bf4c2cf116
 +			#size-cells = <0>;
 +		};
 +
-+		emac1: ethernet@20112000 {
++		mac1: ethernet@20112000 {
 +			compatible = "microchip,mpfs-gem";
 +			reg = <0x0 0x20112000 0x0 0x2000>;
 +			clocks = <&clkcfg CLK_MAC1>, <&clkcfg CLK_AHB>;
@@ -1149,11 +1149,11 @@ index 0000000000..bf4c2cf116
 +};
 diff --git a/include/dt-bindings/interrupt-controller/microchip-mpfs-plic.h b/include/dt-bindings/interrupt-controller/microchip-mpfs-plic.h
 new file mode 100644
-index 0000000000..a799bfbb27
+index 0000000000..a379cb651e
 --- /dev/null
 +++ b/include/dt-bindings/interrupt-controller/microchip-mpfs-plic.h
 @@ -0,0 +1,195 @@
-+/* SPDX-License-Identifier: (GPL-2.0 OR MIT) */
++/* SPDX-License-Identifier: (GPL-2.0+ OR MIT) */
 +/* Copyright (c) 2020-2021 Microchip Technology Inc */
 +
 +#ifndef _DT_BINDINGS_INTERRUPT_CONTROLLER_MICROCHIP_MPFS_PLIC_H
@@ -1350,11 +1350,11 @@ index 0000000000..a799bfbb27
 +#endif /* _DT_BINDINGS_INTERRUPT_CONTROLLER_MICROCHIP_MPFS_PLIC_H */
 diff --git a/include/dt-bindings/interrupt-controller/riscv-hart.h b/include/dt-bindings/interrupt-controller/riscv-hart.h
 new file mode 100644
-index 0000000000..d640ec3bf9
+index 0000000000..35f5a96c75
 --- /dev/null
 +++ b/include/dt-bindings/interrupt-controller/riscv-hart.h
 @@ -0,0 +1,18 @@
-+/* SPDX-License-Identifier: (GPL-2.0 OR MIT) */
++/* SPDX-License-Identifier: (GPL-2.0+ OR MIT) */
 +/* Copyright (c) 2020-2021 Microchip Technology Inc */
 +
 +#ifndef _DT_BINDINGS_INTERRUPT_CONTROLLER_RISCV_HART_H
@@ -1372,3 +1372,6 @@ index 0000000000..d640ec3bf9
 +
 +#endif /* _DT_BINDINGS_INTERRUPT_CONTROLLER_RISCV_HART_H */
 +
+-- 
+2.25.1
+
