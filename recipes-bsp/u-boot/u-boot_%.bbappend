@@ -8,7 +8,8 @@ SRC_URI:append = " \
             file://0004-net-macb-Compatible-as-per-device-tree.patch \
             file://0005-doc-board-Update-Microchip-MPFS-Icicle-Kit-doc.patch \
            "
-SRC_URI:append:icicle-kit-es-amp = "file://microchip-mpfs-icicle-kit-context-a.dts"
+
+SRC_URI:append:icicle-kit-es-amp = "file://0006-riscv-icicle-kit-change-to-amp-dts.patch"
 
 DEPENDS:append = " u-boot-tools-native"
 
@@ -25,7 +26,6 @@ do_configure:prepend:icicle-kit-es() {
     fi
 }
 do_configure:prepend:icicle-kit-es-amp() {
-    cp -f ${WORKDIR}/microchip-mpfs-icicle-kit-context-a.dts ${S}/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
     sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/${UBOOT_ENV}.txt
         
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then

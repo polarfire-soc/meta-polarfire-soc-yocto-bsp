@@ -36,6 +36,7 @@ IMAGE_INSTALL = "\
     tar \
     wget \
     zip \
+    kernel-modules \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     "
 

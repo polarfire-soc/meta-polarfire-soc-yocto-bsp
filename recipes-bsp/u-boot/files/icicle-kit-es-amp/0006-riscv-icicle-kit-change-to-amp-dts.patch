@@ -1,0 +1,52 @@
+From 3e2636f09b750e106dbceb932359e83a653b18ee Mon Sep 17 00:00:00 2001
+From: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
+Date: Fri, 29 Oct 2021 13:01:27 +0100
+Subject: [PATCH] riscv : icicle kit: change to amp dts
+
+---
+ arch/riscv/dts/microchip-mpfs-icicle-kit.dts | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/arch/riscv/dts/microchip-mpfs-icicle-kit.dts b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
+index 287ef3d23b..efe3799593 100644
+--- a/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
++++ b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
+@@ -35,7 +35,7 @@
+ 
+ 		fabricbuf0: fabricbuf@0 {
+ 			compatible = "shared-dma-pool";
+-			reg = <0x0 0xae000000 0x0 0x2000000>;
++			reg = <0x0 0xa0000000 0x0 0x2000000>;
+ 			label = "fabricbuf0-ddr-c";
+ 		};
+ 
+@@ -81,7 +81,7 @@
+ 
+ 	ddrc_cache_lo: memory@80000000 {
+ 		device_type = "memory";
+-		reg = <0x0 0x80000000 0x0 0x2e000000>;
++		reg = <0x0 0x80000000 0x0 0x20000000>;
+ 		clocks = <&clkcfg CLK_DDRC>;
+ 		status = "okay";
+ 	};
+@@ -94,10 +94,18 @@
+ 	};
+ };
+ 
++&cpu4 {
++	status = "disabled"; // in use by context b
++};
++
+ &uart1 {
+ 	status = "okay";
+ };
+ 
++&uart3 {
++	status = "disabled"; // in use by context b
++};
++
+ &mmc {
+ 	status = "okay";
+ 
+-- 
+2.25.1
