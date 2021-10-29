@@ -1,6 +1,6 @@
-From ceb0dfdd79203b150c807b6fafa07dea5003217b Mon Sep 17 00:00:00 2001
+From 0c81f1a8d3682ef51a00e215f1baa5126e4905a7 Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Fri, 22 Oct 2021 12:50:10 +0530
+Date: Wed, 27 Oct 2021 15:35:13 +0530
 Subject: [PATCH v1 1/5] riscv: dts: Split Microchip device tree
 
 The device tree split into .dtsi and .dts files, common

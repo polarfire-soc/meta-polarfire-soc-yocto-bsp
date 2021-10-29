@@ -1,6 +1,6 @@
-From a0d65e99f6db90b8aa8654b6f4168ba42dfe32a0 Mon Sep 17 00:00:00 2001
+From d00e1e5f26d351061f9a5290e838fc73adb3541e Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Fri, 22 Oct 2021 12:53:15 +0530
+Date: Wed, 27 Oct 2021 15:43:18 +0530
 Subject: [PATCH v1 2/5] riscv: Update Microchip MPFS Icicle Kit support
 
 This patch updates Microchip MPFS Icicle Kit support. For now,
@@ -58,17 +58,17 @@ index afef719dff..e74c9fb03c 100644
  	return 0;
  }
 diff --git a/configs/microchip_mpfs_icicle_defconfig b/configs/microchip_mpfs_icicle_defconfig
-index 90ae76cc12..b3c7e6db8f 100644
+index 1cb29201b4..4ddf2b1784 100644
 --- a/configs/microchip_mpfs_icicle_defconfig
 +++ b/configs/microchip_mpfs_icicle_defconfig
-@@ -6,7 +6,6 @@ CONFIG_DEFAULT_DEVICE_TREE="microchip-mpfs-icicle-kit"
+@@ -5,7 +5,6 @@ CONFIG_DEFAULT_DEVICE_TREE="microchip-mpfs-icicle-kit"
  CONFIG_TARGET_MICROCHIP_ICICLE=y
  CONFIG_ARCH_RV64I=y
  CONFIG_RISCV_SMODE=y
 -CONFIG_SBI_V01=y
  CONFIG_DISTRO_DEFAULTS=y
- CONFIG_SYS_LOAD_ADDR=0x80200000
  CONFIG_FIT=y
+ CONFIG_DISPLAY_CPUINFO=y
 -- 
 2.25.1
 

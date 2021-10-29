@@ -1,6 +1,6 @@
-From 95d9e3807907d58c809d6605f6860eee0f936087 Mon Sep 17 00:00:00 2001
+From db0b760754e03cf5a10da84083ff3f55cda5ce41 Mon Sep 17 00:00:00 2001
 From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Fri, 22 Oct 2021 12:58:29 +0530
+Date: Wed, 27 Oct 2021 15:55:46 +0530
 Subject: [PATCH v1 5/5] doc: board: Update Microchip MPFS Icicle Kit doc
 
 UART1 uses for U-BOOT and Linux console instead of UART0 and

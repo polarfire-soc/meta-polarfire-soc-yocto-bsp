@@ -4,7 +4,7 @@ SRC_URI:append = " \
             file://${UBOOT_ENV}.txt \
             file://0001-riscv-dts-Split-Microchip-device-tree.patch \
             file://0002-riscv-Update-Microchip-MPFS-Icicle-Kit-support.patch \
-            file://v0001-3-5-i2c-Add-Microchip-PolarFire-SoC-i2c-driver.patch \
+            file://0003-i2c-Add-Microchip-PolarFire-SoC-I2C-driver.patch \
             file://0004-net-macb-Compatible-as-per-device-tree.patch \
             file://0005-doc-board-Update-Microchip-MPFS-Icicle-Kit-doc.patch \
            "
