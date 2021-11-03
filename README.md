@@ -72,7 +72,7 @@ The table below summarizes the most common Linux images that can be built using 
 | `core-image-minimal-dev`   | A small console image with some development tools. |
 | `mpfs-dev-cli`             | A console image with development tools.            |
 
-For more information on available images refer to [Yocto reference manual](https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#ref-images)
+For more information on available images refer to [Yocto reference manual](https://docs.yoctoproject.org/ref-manual/images.html)
 
 #### Target machine Linux login
 Login with `root` account, there is no password set.
@@ -160,7 +160,11 @@ The BSP uses the Yocto RISCV Architecture Layer, and the Yocto release Dunfell (
 
 **Make sure to install the [repo command](https://source.android.com/setup/develop#installing-repo) by Google first.**
 
-Detailed instructions for various distributions can be found in the "[Required Packages for the Build Host](https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#required-packages-for-the-build-host)" section in the Yocto Project Reference Manual.
+Detailed instructions for various distributions can be found in the "[Required Packages for the Build Host](https://docs.yoctoproject.org/ref-manual/system-requirements.html#required-packages-for-the-build-host)" section in the Yocto Project Reference Manual.
+
+```bash
+**Note: Some extra packages are requried to support this Yocto 3.4 Release (codename “honister”) from the prior release.**
+```
 
 <a name="OtherDeps"></a>
 ### Other Dependencies
@@ -178,13 +182,13 @@ sudo apt-get install libelf-dev
 
 ## Additional Reading
 
-[Yocto User Manual](https://www.yoctoproject.org/docs/3.1/mega-manual/mega-manual.html) 
+[Yocto Overview Manual](https://docs.yoctoproject.org/overview-manual/index.html) 
 
-[Yocto Development Task Manual](https://www.yoctoproject.org/docs/3.1/dev-manual/dev-manual.html) 
+[Yocto Development Task Manual](https://docs.yoctoproject.org/dev-manual/index.html) 
  
-[Yocto Bitbake User Manual](https://www.yoctoproject.org/docs/3.1/bitbake-user-manual/bitbake-user-manual.html)
+[Yocto Bitbake User Manual](https://docs.yoctoproject.org/bitbake/index.html)
 
-[Yocto Application Development and Extensible Software Development Kit (sSDK)](ttps://www.yoctoproject.org/docs/3.1/sdk-manual/sdk-manual.html) 
+[Yocto Application Development and Extensible Software Development Kit (sSDK)](https://docs.yoctoproject.org/sdk-manual/index.html) 
  
 [PolarFire SoC Buildroot BSP](https://github.com/polarfire-soc/polarfire-soc-buildroot-sdk) 
  
