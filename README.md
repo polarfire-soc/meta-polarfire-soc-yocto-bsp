@@ -152,15 +152,15 @@ MACHINE=qemuriscv64 runqemu nographic
 <a name="Dependencies"></a>
 ## Host PC setup for Yocto
 
-### Yocto Dependancies
+### Yocto Dependencies
 This document assumes you are running on a modern Linux system. The process documented here was tested using Ubuntu 18.04 LTS. 
 It should also work with other Linux distributions if the equivalent prerequisite packages are installed.
 
-The BSP uses the Yocto RISCV Architecture Layer, and the Yocto release Dunfell (Revision 3.1)	(Released April 2020).
+The BSP uses the Yocto RISCV Architecture Layer, and the Yocto release Honister (Revision 3.4)	(Released April 2020).
 
 **Make sure to install the [repo command](https://source.android.com/setup/develop#installing-repo) by Google first.**
 
-Detailed instructions for various distributions can be found in the "[Required Packages for the Build Host](https://docs.yoctoproject.org/ref-manual/system-requirements.html#required-packages-for-the-build-host)" section in the Yocto Project Reference Manual.
+Detailed instructions for various distributions can be found in the "[Required Packages for the Build Host](https://docs.yoctoproject.org/3.4/ref-manual/system-requirements.html#required-packages-for-the-build-host)" section in the Yocto Project Reference Manual.
 
 ```bash
 **Note: Some extra packages are requried to support this Yocto 3.4 Release (codename “honister”) from the prior release.**
