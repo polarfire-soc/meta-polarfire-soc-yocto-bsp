@@ -1,10 +1,10 @@
 # Microchip PolarFire SoC Yocto BSP
 
-Microchip Polarfire-SoC Yocto 'Board Support Package' (BSP) is based on OpenEmbedded (OE). The 'Polarfire SoC Yocto BSP' layer is build on top of the RISC-V Architectural layer (meta-riscv) to provide hardware specific features and additional disk images. 
+Microchip Polarfire-SoC Yocto 'Board Support Package' (BSP) is based on OpenEmbedded (OE). The 'Polarfire SoC Yocto BSP' layer is build on top of the RISC-V Architectural layer (meta-riscv) to provide hardware specific features and additional disk images.
 Using Yocto 'Openembedded' you will build the following:
 
   - RISC-V Toolchain
-  - Predefined Disk Images 
+  - Predefined Disk Images
   - Bootloader Binaries (FSBL / U-Boot)
   - Device Tree Binary (DTB)
   - Linux Kernel Images
@@ -12,8 +12,8 @@ Using Yocto 'Openembedded' you will build the following:
 The complete User Guides for each development platform, containing board and boot instructions, are available for the following supported platforms:
 
   - [ICICLE-KIT-ES](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-icicle-kit-es/icicle-kit-sw-developer-guide/icicle-kit-sw-developer-guide.md) (Icicle Kit Engineering Sample) (Requires minimum Design Tag 2020.11 )
-  
-## Build Instructions 
+
+## Build Instructions
 Before continuing, ensure that the prerequisite packages are present on your system. Please see the [Host PC setup for Yocto section](#Dependencies) for further details.
 
 ### Create the Workspace
@@ -39,7 +39,7 @@ MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 ### Copy the created Disk Image to flash device (USB mmc flash/SD/uSD)
 
 > Be very careful while picking /dev/sdX device! Look at dmesg, lsblk, GNOME Disks, etc. before and after plugging in your usb flash device/uSD/SD to find a proper device. Double check it to avoid overwriting any of system disks/partitions!
-> 
+>
 
 We recommend using the `bmaptool` utility to program the storage device. `bmaptool` is a generic tool for creating the block map (bmap) for a file and copying files using this block map. Raw system image files can be flashed a lot faster with bmaptool than with traditional tools, like "dd" or "cp".
 
@@ -56,7 +56,11 @@ The wic image uses a GUID Partition Table (GPT). GPT stores its primary GPT head
 
 ```bash
 fdisk /dev/sdX
+```
 
+This will output something like the following:
+
+```bash
 Welcome to fdisk (util-linux 2.34).
 Changes will remain in memory only, until you decide to write them.
 Be careful before using the write command.
@@ -77,9 +81,8 @@ Calling ioctl() to re-read partition table.
 Syncing disks.
 ```
 
-
 ### Supported Machine Targets
-The `MACHINE` (board) option can be used to set the target board for which linux is built, and if left blank it will default to `MACHINE=icicle-kit-es`.           
+The `MACHINE` (board) option can be used to set the target board for which linux is built, and if left blank it will default to `MACHINE=icicle-kit-es`.
 The following table details the available targets:
 
 | `MACHINE`                  | Board Name                                                            |
@@ -91,7 +94,7 @@ The following table details the available targets:
 The `icicle-kit-es-amp` machine can be used to build the Icicle Kit engineering sample with AMP support. Please see the [Asymmetric Multiprocessing (AMP)](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/asymmetric-multiprocessing/amp.md) documentation for further details.
 
 When building for different 'Machines' or want a 'clean' build, we recommend deleting the 'build' directory when switching.
-This will delete all cache / configurations and downloads. 
+This will delete all cache / configurations and downloads.
 ```
 cd yocto-dev
 rm -rf build
@@ -129,19 +132,19 @@ View/Edit the Kernel menuconfig:
 ```bash
 MACHINE=<MACHINE> bitbake mpfs-linux -c menuconfig
 ```
-Run the diffconfig command to prepare a configuration fragment. 
+Run the diffconfig command to prepare a configuration fragment.
 The resulting file fragment.cfg will be placed in the recipes-kernel/linux/files directory:
 ```bash
 MACHINE=<MACHINE> bitbake mpfs-linux -c diffconfig
 ```
 
 **Available BSP recipes:**
- 
+
   - hss (Microchip Hart Software Services) payload generator
   - u540-c000-bootloader (Sifive FSBL)
-  - u-boot 
+  - u-boot
   - mpfs-linux (BSP kernel)
-  
+
 **Available commands:**
 
   - clean
@@ -168,7 +171,7 @@ MACHINE=qemuriscv64 runqemu nographic
 ## Host PC setup for Yocto
 
 ### Yocto Dependencies
-This document assumes you are running on a modern Linux system. The process documented here was tested using Ubuntu 18.04 LTS. 
+This document assumes you are running on a modern Linux system. The process documented here was tested using Ubuntu 18.04 LTS.
 It should also work with other Linux distributions if the equivalent prerequisite packages are installed.
 
 The BSP uses the Yocto RISCV Architecture Layer, and the Yocto release Honister (Revision 3.4)	(Released April 2020).
@@ -202,19 +205,15 @@ sudo apt-get install bmap-tools
 
 ## Additional Reading
 
-[Yocto Overview Manual](https://docs.yoctoproject.org/overview-manual/index.html) 
+[Yocto Overview Manual](https://docs.yoctoproject.org/overview-manual/index.html)
 
-[Yocto Development Task Manual](https://docs.yoctoproject.org/dev-manual/index.html) 
- 
+[Yocto Development Task Manual](https://docs.yoctoproject.org/dev-manual/index.html)
+
 [Yocto Bitbake User Manual](https://docs.yoctoproject.org/bitbake/index.html)
 
-[Yocto Application Development and Extensible Software Development Kit (sSDK)](https://docs.yoctoproject.org/sdk-manual/index.html) 
- 
-[PolarFire SoC Buildroot BSP](https://github.com/polarfire-soc/polarfire-soc-buildroot-sdk) 
- 
-[U-Boot Documentation](https://www.denx.de/wiki/U-Boot/Documentation) 
+[Yocto Application Development and Extensible Software Development Kit (sSDK)](https://docs.yoctoproject.org/sdk-manual/index.html)
 
-[Kernel Documentation for v5.12](https://www.kernel.org/doc/html/v5.12/) 
+[PolarFire SoC Buildroot BSP](https://github.com/polarfire-soc/polarfire-soc-buildroot-sdk)
 
 [U-Boot Documentation](https://www.denx.de/wiki/U-Boot/Documentation)
 
