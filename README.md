@@ -40,10 +40,43 @@ MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 
 > Be very careful while picking /dev/sdX device! Look at dmesg, lsblk, GNOME Disks, etc. before and after plugging in your usb flash device/uSD/SD to find a proper device. Double check it to avoid overwriting any of system disks/partitions!
 > 
+
+We recommend using the `bmaptool` utility to program the storage device. `bmaptool` is a generic tool for creating the block map (bmap) for a file and copying files using this block map. Raw system image files can be flashed a lot faster with bmaptool than with traditional tools, like "dd" or "cp".
+
+The created disk image is a 'wic' file, and is located in `yocto-dev/build/tmp-glibc/deploy/images/<MACHINE>/` directory,
+ - e.g., for mpfs-dev-cli image and machine icicle-kit-es, it will be located in 
+`yocto-dev/build/tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic`.
+
 ```bash
-cd yocto-dev/build
-zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdX bs=4096 iflag=fullblock oflag=direct conv=fsync status=progress
+
+bmaptool copy yocto-dev/build/tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic /dev/sdX
 ```
+
+The wic image uses a GUID Partition Table (GPT). GPT stores its primary GPT header at the start of the storage device, and a secondary GPT header at the end of the device.  The wic creation scripts do not correctly place this secondary GPT header at the current time.  To avoid later warnings about the GPT secondary header location, open the device with fdisk at this stage and rewrite the partition table:
+
+```bash
+fdisk /dev/sdX
+
+Welcome to fdisk (util-linux 2.34).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+GPT PMBR size mismatch (13569937 != 15273599) will be corrected by write.
+The backup GPT table is not on the end of the device. This problem will be corrected by write.
+
+Command (m for help):
+```
+
+Press `w` to write the partition table and exit `fdisk`:
+
+```bash
+Command (m for help): w
+
+The partition table has been altered.
+Calling ioctl() to re-read partition table.
+Syncing disks.
+```
+
 
 ### Supported Machine Targets
 The `MACHINE` (board) option can be used to set the target board for which linux is built, and if left blank it will default to `MACHINE=icicle-kit-es`.           
@@ -125,24 +158,6 @@ For Example the following is the path for the Icicle-kit-es
 build/tmp-glibc/deploy/images/icicle-kit-es
 ```
 
-### Running wic.gz image on hardware
-
-Compressed Disk images files use `<image>-<machine>.wic.gz` format, for example,
-
-`mpfs-dev-cli-<machine>.wic.gz`. We are interested in `.wic.gz` disk images for writing to emmc/uSD/SD card.
-
-> Be very careful while picking /dev/sdX device! Look at dmesg, lsblk, GNOME Disks, etc. before and after plugging in your usb flash device/uSD/SD to find a proper device. Double check it to avoid overwriting any of system disks/partitions!
-> 
-> Unmount any mounted partitions from uSD card before writing!
-> 
-> We advice to use 16GB or 32GB uSD cards. 8GB cards (shipped with HiFive Unleashed) can still be used with CLI images.
-
-Example write the disk image to the SD card for the icicle kit:
-
-```bash
-cd yocto-dev/build
-zcat tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic.gz | sudo dd of=/dev/sdX bs=4096 iflag=fullblock oflag=direct conv=fsync status=progress
-```
 ## Run in Simulation (QEMU)
 
 ```bash
@@ -179,6 +194,11 @@ HSS Payload Generator uses libelf and libyaml, as well as zlib (a dependency of 
 sudo apt-get install libyaml-dev
 sudo apt-get install libelf-dev
 ```
+You can install the bmap-tools package using the following command:
+
+```
+sudo apt-get install bmap-tools
+```
 
 ## Additional Reading
 
@@ -195,6 +215,12 @@ sudo apt-get install libelf-dev
 [U-Boot Documentation](https://www.denx.de/wiki/U-Boot/Documentation) 
 
 [Kernel Documentation for v5.12](https://www.kernel.org/doc/html/v5.12/) 
+
+[U-Boot Documentation](https://www.denx.de/wiki/U-Boot/Documentation)
+
+[Kernel Documentation for v5.12](https://www.kernel.org/doc/html/v5.12/)
+
+[Yocto Flashing images using bmaptool](https://www.yoctoproject.org/docs/current/mega-manual/mega-manual.html#flashing-images-using-bmaptool)
 
 ## Known issues
 
