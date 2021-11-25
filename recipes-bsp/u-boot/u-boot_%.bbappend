@@ -7,6 +7,7 @@ SRC_URI:append = " \
             file://0003-i2c-Add-Microchip-PolarFire-SoC-I2C-driver.patch \
             file://0004-net-macb-Compatible-as-per-device-tree.patch \
             file://0005-doc-board-Update-Microchip-MPFS-Icicle-Kit-doc.patch \
+            file://0007-stm32mp-stm32prog-Normalise-newlines.patch \
            "
 
 SRC_URI:append:icicle-kit-es-amp = "file://0006-riscv-icicle-kit-change-to-amp-dts.patch"

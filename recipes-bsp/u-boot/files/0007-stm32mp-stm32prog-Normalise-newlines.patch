@@ -1,0 +1,31 @@
+From 471d01dc0a6b6d8a8841088f9c19d24220ab59c0 Mon Sep 17 00:00:00 2001
+From: William Grant <wgrant@ubuntu.com>
+Date: Wed, 13 Oct 2021 20:56:58 +1100
+Subject: [PATCH] stm32mp: stm32prog: Normalise newlines
+
+The missing trailing newline could confuse check-config.sh if the
+definition of an option was on the first line of the next file that
+find(1) happened to return.
+
+Signed-off-by: William Grant <wgrant@ubuntu.com>
+Reviewed-by: Patrick Delaunay <patrick.delaunay@foss.st.com>
+---
+ arch/arm/mach-stm32mp/cmd_stm32prog/Kconfig | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/arch/arm/mach-stm32mp/cmd_stm32prog/Kconfig b/arch/arm/mach-stm32mp/cmd_stm32prog/Kconfig
+index f4c0d18d4d..dd166a1f91 100644
+--- a/arch/arm/mach-stm32mp/cmd_stm32prog/Kconfig
++++ b/arch/arm/mach-stm32mp/cmd_stm32prog/Kconfig
+@@ -1,4 +1,3 @@
+-
+ config CMD_STM32PROG
+ 	bool "command stm32prog for STM32CudeProgrammer"
+ 	select DFU
+@@ -31,4 +30,4 @@ config CMD_STM32PROG_SERIAL
+ 	help
+ 		activate the command "stm32prog serial" for STM32MP soc family
+ 		with the tools STM32CubeProgrammer using U-Boot serial device
+-		and UART protocol.
+\ No newline at end of file
++		and UART protocol.
