@@ -201,7 +201,7 @@ sudo apt-get install libelf-dev
 ### Issue 001: Data Transfer issues using M.2 PCIe NVMe 
 PCIe device is detected/enumerated correctly and transfer of small files (< ~50Mb>) operate correctly. When trying to transfer larger files it appears to lock up the device.
 
-While some NVMe drives have being shown to work, they will not all operate correctly. Issue is currently under investigation.
+While some NVMe drives have been shown to work, they will not all operate correctly. This issue is currently under investigation.
 
 ### Issue 002 fs.inotify.max_user_watches
 
