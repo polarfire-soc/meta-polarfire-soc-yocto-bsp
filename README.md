@@ -198,29 +198,10 @@ sudo apt-get install libelf-dev
 
 ## Known issues
 
-### Issue 001: Required binaries not available before creating the disk image
-We sometimes get dependencies not building correctly.
-During the process do_wic_install payload may not be present for hss
+### Issue 001: Data Transfer issues using M.2 PCIe NVMe 
+PCIe device is detected/enumerated correctly and transfer of small files (< ~50Mb>) operate correctly. When trying to transfer larger files it appears to lock up the device.
 
-For example after requesting a complete build:
-
-```bash
-MACHINE=icicle-kit-es bitbake mpfs-dev-cli
-```
-If payload is missing execute the following:
-```bash
-MACHINE=icicle-kit-es bitbake hss -c clean
-MACHINE=icicle-kit-es bitbake hss -c install
-  ```
-If u-boot or boot.src.uimg missing
-```bash
-MACHINE=icicle-kit-es bitbake u-boot -c clean
-MACHINE=icicle-kit-es bitbake u-boot -c install
-```
-And finally a complete build:
-```bash
-MACHINE=icicle-kit-es bitbake mpfs-dev-cli
-```
+While some NVMe drives have being shown to work, they will not all operate correctly. Issue is currently under investigation.
 
 ### Issue 002 fs.inotify.max_user_watches
 
