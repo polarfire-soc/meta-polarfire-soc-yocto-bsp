@@ -42,5 +42,6 @@ do_install() {
 }
 
 SYSTEMD_SERVICE:${PN} = "collectdiio.service"
+SYSTEMD_AUTO_ENABLE:${PN} = "disable"
 FILES:${PN} += "/opt/microchip/"
 
