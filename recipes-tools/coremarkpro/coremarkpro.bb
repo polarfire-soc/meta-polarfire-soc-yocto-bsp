@@ -4,7 +4,7 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE.md;md5=c84d8f508b20d579641ad151a79a8bf3"
 
 SRCREV="d5b4f2ba7ba31e37a5aa93423831e7d5eb933868"
-SRC_URI = "git://github.com/eembc/coremark-pro.git;branch=master"        
+SRC_URI = "git://github.com/eembc/coremark-pro.git;branch=main"
 
 
 
