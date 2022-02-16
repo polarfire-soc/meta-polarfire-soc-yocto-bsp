@@ -15,7 +15,7 @@ do_compile[depends] += "virtual/kernel:do_deploy"
 PV = "git${SRCPV}"
 BRANCH = "master"
 SRCREV = "128f282d177d0e43c9c449fb98462f453cc47258"
-SRC_URI = "git://github.com/sifive/freedom-u540-c000-bootloader.git;branch=${BRANCH} \
+SRC_URI = "git://github.com/sifive/freedom-u540-c000-bootloader.git;protocol=https;branch=${BRANCH} \
            file://import-detect-null.patch \
            file://use-oe-default-cmd.patch \
            file://drop-gnu-build-id.patch \

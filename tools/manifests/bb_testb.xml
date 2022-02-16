@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
-  <remote name="openembedded" fetch="git://github.com/openembedded/" />
-  <remote name="riscv" fetch="git://github.com/riscv/" />
-  <remote name="yocto" fetch="git://git.yoctoproject.org/" />
+  <remote name="openembedded" fetch="https://github.com/openembedded/" />
+  <remote name="riscv" fetch="https://github.com/riscv/" />
+  <remote name="yocto" fetch="https://git.yoctoproject.org/" />
   <remote name="meta-polarfire-soc-yocto-bsp" fetch="https://bitbucket.microchip.com/scm/fpga_pfsoc_es/" />
   <default remote="openembedded" revision="master" />
 
