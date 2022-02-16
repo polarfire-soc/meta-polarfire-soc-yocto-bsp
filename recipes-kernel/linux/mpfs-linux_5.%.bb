@@ -6,7 +6,7 @@ KERNEL_VERSION_SANITY_SKIP="1"
 BRANCH = "mpfs-linux-5.12.x"
 SRCREV = "05e2f4d5f13c29b8e73a2cdd7e682f28a51962c2"
 SRC_URI = " \
-    git://github.com/polarfire-soc/linux.git;branch=${BRANCH} \
+    git://github.com/polarfire-soc/linux.git;protocol=https;branch=${BRANCH} \
 "
 
 SRC_URI_append_icicle-kit-es = " \

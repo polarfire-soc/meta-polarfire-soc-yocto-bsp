@@ -9,7 +9,7 @@ DEPENDS = "makedepend-native"
 
 BRANCH = "main"
 SRCREV="83d430636703ef330a7dca55207874fc85a7f1ff"
-SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-amp-examples.git;branch=${BRANCH}"
+SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-amp-examples.git;protocol=https;branch=${BRANCH}"
 
 S = "${WORKDIR}/git/mpfs-amp-freertos"
 
