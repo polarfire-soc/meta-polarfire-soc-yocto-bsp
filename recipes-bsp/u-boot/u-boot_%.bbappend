@@ -2,15 +2,10 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI:append = " \
             file://${UBOOT_ENV}.txt \
-            file://0001-riscv-dts-Split-Microchip-device-tree.patch \
-            file://0002-riscv-Update-Microchip-MPFS-Icicle-Kit-support.patch \
-            file://0003-i2c-Add-Microchip-PolarFire-SoC-I2C-driver.patch \
-            file://0004-net-macb-Compatible-as-per-device-tree.patch \
-            file://0005-doc-board-Update-Microchip-MPFS-Icicle-Kit-doc.patch \
-            file://0007-stm32mp-stm32prog-Normalise-newlines.patch \
+            file://0001-U-Boot-v2022.01-with-high-memory-0x1000000000.patch \
            "
 
-SRC_URI:append:icicle-kit-es-amp = "file://0006-riscv-icicle-kit-change-to-amp-dts.patch"
+SRC_URI:append:icicle-kit-es-amp = "file://0002-riscv-icicle-kit-change-to-amp-dts.patch"
 
 DEPENDS:append = " u-boot-tools-native"
 
