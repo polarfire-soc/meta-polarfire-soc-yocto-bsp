@@ -5,8 +5,6 @@ EXTRA_IMAGE_FEATURES += " \
 
 IMAGE_INSTALL = "\
     rng-tools \
-    linux-firmware-rtl8168 \
-    linuxptp \
     mtd-utils \
     mtd-utils-misc \
     iperf3 \

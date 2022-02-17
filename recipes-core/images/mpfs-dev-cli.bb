@@ -8,17 +8,12 @@ IMAGE_FEATURES += " ssh-server-openssh \
                   "
 
 IMAGE_INSTALL = "\
-    linux-firmware-rtl8168 \
-    linuxptp \
-    mtd-utils \
-    mtd-utils-misc \
     iperf3 \
     devmem2 \
     packagegroup-core-boot \
     packagegroup-core-full-cmdline \
     polarfire-soc-linux-examples \
     coremarkpro \
-    collectd \
     libgpiod \
     libgpiod-tools \
     libgpiod-dev \
