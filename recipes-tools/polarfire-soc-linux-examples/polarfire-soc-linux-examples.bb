@@ -32,7 +32,7 @@ do_install() {
 
     cp -rfd ${S}/* ${D}/opt/microchip/
     ## Symbolic Link for iiohttpserver
-    lnr ${D}/opt/microchip/ethernet/iio-http-server ${D}/opt/microchip/iiohttpserver
+    ln -s -r ${D}/opt/microchip/ethernet/iio-http-server ${D}/opt/microchip/iiohttpserver
     
     rm -f ${D}/opt/microchip/.git
     rm -f ${D}/opt/microchip/Jenkinsfile
