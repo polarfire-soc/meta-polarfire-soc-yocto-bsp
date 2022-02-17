@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE.md;md5=4396bf71d143500c4d9fa09
 DEPENDS = "makedepend-native"
 
 BRANCH = "main"
-SRCREV="${AUTOREV}"
+SRCREV="216e1665f2feb2b32ba8647f9755324117ae7e10"
 SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-amp-examples.git;protocol=https;branch=${BRANCH}"
 
 S = "${WORKDIR}/git/mpfs-rpmsg-freertos"

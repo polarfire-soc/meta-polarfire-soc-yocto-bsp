@@ -13,7 +13,7 @@ DEPENDS += "elfutils-native libyaml-native"
 
 PV = "1.0+git${SRCPV}"
 BRANCH = "master"
-SRCREV="ae14baa0b4a26de2063a610ac54a883a91db7646"
+SRCREV="01e82e3e05b5b00a22920eba811d95ed885ff16d"
 SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;protocol=https;branch=${BRANCH} \
            file://${HSS_PAYLOAD}.yaml \
           "
