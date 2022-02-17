@@ -11,8 +11,8 @@ DEPENDS += "elfutils-native libyaml-native"
 
 PV = "1.0+git${SRCPV}"
 BRANCH = "master"
-SRCREV="58b03943834fe34991dc5fa924436b3620e07aa5"
-SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;branch=${BRANCH} \
+SRCREV="7383f7e186ca9484f5d0d9c95cf33a5eeee7c1cf"
+SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;protocol=https;branch=${BRANCH} \
            file://uboot.yaml \
           "
 S = "${WORKDIR}/git"
