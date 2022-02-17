@@ -2,7 +2,7 @@ SUMMARY = "Microchip Polarfire SoC Hart Software Services (HSS) Payload Generato
 DESCRIPTION = "HSS requires U-Boot to be packaged with header details applied with hss payload generator"
 
 LICENSE = "MIT & BSD-2-Clause"
-LIC_FILES_CHKSUM = "file://LICENSE.md;md5=2dc9e752dd76827e3a4eebfd5b3c6226"
+LIC_FILES_CHKSUM = "file://LICENSE.md;md5=2cd3c5e5cf4de899b2ed773b471011f2"
 
 # Strict dependency
 do_configure[depends] += "u-boot-mpfs:do_deploy mpfs-amp-examples:do_deploy"
@@ -11,8 +11,8 @@ DEPENDS += "elfutils-native libyaml-native"
 
 PV = "1.0+git${SRCPV}"
 BRANCH = "master"
-SRCREV="58b03943834fe34991dc5fa924436b3620e07aa5"
-SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;branch=${BRANCH} \
+SRCREV="70bf9c4b1bd484161f67116f0f3e2109785e358a"
+SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;protocol=https;branch=${BRANCH} \
            file://${HSS_PAYLOAD}.yaml \
           "
 S = "${WORKDIR}/git"

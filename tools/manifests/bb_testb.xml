@@ -5,7 +5,7 @@
   <remote name="meta-polarfire-soc-yocto-bsp" fetch="https://bitbucket.microchip.com/scm/fpga_pfsoc_es/" />
   <default remote="openembedded" revision="master" />
 
-  <project name="meta-polarfire-soc-yocto-bsp" remote="meta-polarfire-soc-yocto-bsp" path="meta-polarfire-soc-yocto-bsp" revision="rc-2021-07-00-pfsoc-bsp" />
+  <project name="meta-polarfire-soc-yocto-bsp" remote="meta-polarfire-soc-yocto-bsp" path="meta-polarfire-soc-yocto-bsp" revision="2021.08" />
   <project name="meta-riscv" remote="riscv" path="meta-riscv" revision="35d1d5849294ff9f2fb98b90657bbf7a1e532d0d" />
   <project name="openembedded-core" remote="openembedded" path="openembedded-core" revision="14795ee305f3c11fcc31cc7ca815b8ff1020e29a" />
   <project name="bitbake" remote="openembedded" path="openembedded-core/bitbake" revision="9dc77266085c605b108641a9d76ac4dbdc064c34" />
