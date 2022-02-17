@@ -14,7 +14,7 @@ IMAGE_INSTALL = "\
     can-utils \
     usbutils \
     pciutils \
-    pfsocapps \
+    polarfire-soc-linux-examples \
     collectd \
     libgpiod \
     libgpiod-tools \

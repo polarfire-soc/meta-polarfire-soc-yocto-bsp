@@ -16,7 +16,7 @@ IMAGE_INSTALL = "\
     devmem2 \
     packagegroup-core-boot \
     packagegroup-core-full-cmdline \
-    pfsocapps \
+    polarfire-soc-linux-examples \
     coremarkpro \
     collectd \
     libgpiod \
@@ -61,11 +61,9 @@ IMAGE_INSTALL = "\
     python3-werkzeug \
     git \
     swig \
-    boost \
     orc \
     libudev \
     glib-2.0 \
-    evtest devmem2 iperf3 memtester lmbench \
     tcpdump \
     iw \
     libudev \
@@ -75,9 +73,7 @@ IMAGE_INSTALL = "\
     openssh-sftp \
     openssh-sftp-server \
     procps \
-    protobuf \
     libsodium \
-    sqlite3 \
     tar \
     wget \
     zip \
@@ -85,7 +81,7 @@ IMAGE_INSTALL = "\
     rsync \
     dtc \
     cmake \
-    kernel-modules kernel-devsrc kernel-dev \
+    kernel-modules kernel-dev \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     "
 
