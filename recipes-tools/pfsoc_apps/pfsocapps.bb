@@ -15,8 +15,8 @@ inherit systemd
 
 PV = "1.0+git${SRCPV}"
 BRANCH = "master"
-SRCREV="${AUTOREV}"
-SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-linux-examples.git;branch=${BRANCH} \
+SRCREV="a6a6ddb437b6de24ddd195d60713a78c1c5dd8e3"
+SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-linux-examples.git;protocol=https;branch=${BRANCH} \
           "
 S = "${WORKDIR}/git"
 
