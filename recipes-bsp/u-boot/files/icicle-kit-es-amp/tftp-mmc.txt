@@ -8,6 +8,7 @@
 if load ${devtype} ${devnum}:${distro_bootpart} ${ramdisk_addr_r} fitImage; then 
  imxtract ${ramdisk_addr_r} fdt-microchip_microchip-mpfs-icicle-kit-context-a.dtb ${fdt_addr_r}
  fdt addr ${fdt_addr_r}
+ fdt resize
  fdt set /soc/ethernet@20112000 mac-address ${icicle_mac_addr0}
  fdt set /soc/ethernet@20110000 mac-address ${icicle_mac_addr1}
  bootm ${ramdisk_addr_r} - ${fdt_addr_r}
@@ -22,6 +23,7 @@ dhcp
 if tftpboot ${ramdisk_addr_r} fitImage; then 
   imxtract ${ramdisk_addr_r} fdt-microchip_microchip-mpfs-icicle-kit-context-a.dtb ${fdt_addr_r}
   fdt addr ${fdt_addr_r}
+  fdt resize
   fdt set /soc/ethernet@20112000 mac-address ${icicle_mac_addr0}
   fdt set /soc/ethernet@20110000 mac-address ${icicle_mac_addr1}
   bootm ${ramdisk_addr_r} - ${fdt_addr_r}
