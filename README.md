@@ -1,6 +1,6 @@
 # Microchip PolarFire SoC Yocto BSP
 
-Microchip Polarfire-SoC Yocto 'Board Support Package' (BSP) is based on OpenEmbedded (OE). The 'Polarfire SoC Yocto BSP' layer is build on top of the RISC-V Architectural layer (meta-riscv) to provide hardware specific features and additional disk images.
+Microchip Polarfire-SoC Yocto 'Board Support Package' (BSP) is based on OpenEmbedded (OE). The 'Polarfire SoC Yocto BSP' layer is build on top of the RISC-V Architectural layer (meta-riscv) to provide hardware specific features and additional disk images. 
 Using Yocto 'Openembedded' you will build the following:
 
   - RISC-V Toolchain
@@ -133,7 +133,8 @@ View/Edit the Kernel menuconfig:
 MACHINE=<MACHINE> bitbake mpfs-linux -c menuconfig
 ```
 Run the diffconfig command to prepare a configuration fragment.
-The resulting file fragment.cfg will be placed in the recipes-kernel/linux/files directory:
+The resulting file fragment.cfg should be copied to meta-polarfire-soc-yocto-bsp/recipes-kernel/linux/files directory:
+Afterwards the mpfs-linux.bb src_uri should be updated to include the <fragment>.cfg,
 ```bash
 MACHINE=<MACHINE> bitbake mpfs-linux -c diffconfig
 ```

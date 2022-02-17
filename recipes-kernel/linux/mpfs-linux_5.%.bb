@@ -9,8 +9,8 @@ SRC_URI = " \
     git://github.com/polarfire-soc/linux.git;branch=${BRANCH} \
 "
 
-SRC_URI:append:icicle-kit-es = " file://defconfig"
-SRC_URI:append:icicle-kit-es-amp = " file://defconfig"
+SRC_URI:append:icicle-kit-es = " file://bsp_cmdline.cfg"
+SRC_URI:append:icicle-kit-es-amp = " file://bsp_cmdline.cfg"
 
 
 
