@@ -8,10 +8,8 @@ DESCRIPTION = "Linux Example applications, includes the following \
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE;md5=06ec214e9fafe6d4515883d77674a453"
 
-DEPENDS = "collectd"
+DEPENDS = "collectd libgpiod"
 inherit systemd
-
-
 
 PV = "1.0+git${SRCPV}"
 BRANCH = "master"
@@ -20,11 +18,31 @@ SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-linux-examples.git;proto
           "
 S = "${WORKDIR}/git"
 
+EXAMPLE_FILES = "\
+    can \
+    dma \
+    fpga-fabric-interfaces/lsram \
+    gpio \
+    pdma \
+    system-services \
+    "
+
+EXAMPLE_FILES:append:icicle-kit-es-amp = "\
+    amp/rpmsg-pingpong \
+    amp/rpmsg-tty-example \
+    "
+
 do_compile() {
-  :
+  for i in ${EXAMPLE_FILES}; do
+    oe_runmake -C ${S}/$i
+  done
 }
 
 INSANE_SKIP_${PN} += "file-rdeps"
+INSANE_SKIP:${PN} = "ldflags"
+INSANE_SKIP:${PN}-dev = "ldflags"
+
+SECURITY_CFLAGS = ""
 
 do_install() {
     install -d ${D}/opt/microchip
