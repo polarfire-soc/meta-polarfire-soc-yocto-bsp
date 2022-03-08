@@ -11,7 +11,7 @@ BRANCH = "main"
 SRCREV="216e1665f2feb2b32ba8647f9755324117ae7e10"
 SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-amp-examples.git;protocol=https;branch=${BRANCH}"
 
-S = "${WORKDIR}/git/mpfs-rpmsg-freertos"
+S = "${WORKDIR}/git"
 
 EXT_CFLAGS += "--sysroot=${STAGING_DIR_TARGET}"
 EXT_CFLAGS += "-DMPFS_HAL_FIRST_HART=4 -DMPFS_HAL_LAST_HART=4"
@@ -20,7 +20,7 @@ PARALLEL_MAKE = ""
 EXTRA_OEMAKE = "REMOTE=1 CROSS_COMPILE=${TARGET_PREFIX} EXT_CFLAGS='${EXT_CFLAGS}'"
 
 do_compile() {
-   oe_runmake
+   oe_runmake -C ${S}/mpfs-rpmsg-${AMP_DEMO}
 }
 
 do_install() {
@@ -33,9 +33,10 @@ do_deploy() {
 
 do_deploy:append:icicle-kit-es-amp() {
     install -d ${DEPLOY_DIR_IMAGE}
-    install -m 755 ${S}/Remote-Default/mpfs-rpmsg-remote.elf ${DEPLOY_DIR_IMAGE}
+    install -m 755 ${S}/mpfs-rpmsg-${AMP_DEMO}/Remote-Default/mpfs-rpmsg-remote.elf ${DEPLOY_DIR_IMAGE}
     ln -sf ${DEPLOY_DIR_IMAGE}/mpfs-rpmsg-remote.elf ${DEPLOY_DIR_IMAGE}/amp-application.elf 
 }
 
 addtask deploy after do_install
 
+COMPATIBLE_MACHINE = "(icicle-kit-es-amp)"
