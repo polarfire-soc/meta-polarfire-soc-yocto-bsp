@@ -3,6 +3,7 @@
 DIR="build"
 MACHINE="icicle-kit-es"
 CONFFILE="conf/auto.conf"
+INITRAMFS_CONF="conf/initramfs.conf"
 BITBAKEIMAGE="mpfs-dev-cli"
 
 # clean up the output dir
@@ -74,6 +75,15 @@ DISTRO_FEATURES:append = " largefile opengl ptest multiarch wayland pam  systemd
 DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
 VIRTUAL-RUNTIME_init_manager = "systemd"
 HOSTTOOLS_NONFATAL:append = " ssh"
+EOF
+
+echo "Creating initramfs.conf"
+
+if [ -e $INITRAMFS_CONF ]; then
+    rm -rf $INITRAMFS_CONF
+fi
+cat <<EOF > $INITRAMFS_CONF
+INITRAMFS_IMAGE = "mpfs-initramfs-base"
 EOF
 
 

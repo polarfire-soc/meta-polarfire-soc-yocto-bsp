@@ -32,9 +32,19 @@ repo rebase
 . ./meta-polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh
 ```
 ### Building board Disk Image
-Using yocto bitbake command and setting the MACHINE and image requried.
+
+#### Building a Linux Image with a root file system (RootFS)
+
+Using Yocto bitbake command and setting the MACHINE and image required.
 ```bash
 MACHINE=icicle-kit-es bitbake mpfs-dev-cli
+```
+#### Building a RAM-based Root Filesystem (initramfs)
+
+Using Yocto bitbake command and setting the initramfs configuration file (conf/initramfs.conf) and the mpfs-initramfs-image
+
+```bash
+MACHINE=icicle-kit-es -R conf/initramfs.conf bitbake mpfs-initramfs-image
 ```
 ### Copy the created Disk Image to flash device (USB mmc flash/SD/uSD)
 
@@ -107,6 +117,7 @@ The table below summarizes the most common Linux images that can be built using 
 | -------------------------- | -------------------------------------------------- |
 | `core-image-minimal-dev`   | A small console image with some development tools. |
 | `mpfs-dev-cli`             | A console image with development tools.            |
+| `mpfs-initramfs-image`     | A small RAM-based Root Filesystem (initramfs) image |
 
 For more information on available images refer to [Yocto reference manual](https://docs.yoctoproject.org/ref-manual/images.html)
 
