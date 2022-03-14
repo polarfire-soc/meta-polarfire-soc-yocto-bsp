@@ -11,6 +11,7 @@ IMAGE_INSTALL = "\
     usbutils \
     pciutils \
     polarfire-soc-linux-examples \
+    dt-overlay-mchp \
     libgpiod \
     libgpiod-tools \
     libgpiod-dev \
