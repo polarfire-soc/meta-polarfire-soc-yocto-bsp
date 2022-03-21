@@ -45,7 +45,6 @@ IMAGE_INSTALL = "\
     can-utils \
     pciutils \
     usbutils \
-    mtd-utils \
     sysfsutils \
     htop \
     iw \

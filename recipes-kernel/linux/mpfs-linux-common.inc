@@ -14,7 +14,7 @@ PV = "${LINUX_VERSION}+git${SRCPV}"
 
 KCONFIG_MODE="--alldefconfig"
 
-COMPATIBLE_MACHINE = "(qemuriscv32|qemuriscv64|icicle-kit-es)"
+COMPATIBLE_MACHINE = "(icicle-kit-es|icicle-kit-es-amp|m100pfsev)"
 
 KERNEL_FEATURES:remove = "features/debug/printk.scc"
 KERNEL_FEATURES:remove = "features/kernel-sample/kernel-sample.scc"

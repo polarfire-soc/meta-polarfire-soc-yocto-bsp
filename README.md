@@ -89,7 +89,7 @@ The following table details the available targets:
 | -------------------------- | --------------------------------------------------------------------- |
 | `MACHINE=icicle-kit-es`    | ICICLE-KIT-ES, Icicle Kit engineering samples                         |
 | `MACHINE=icicle-kit-es-amp`| ICICLE-KIT-ES, Icicle Kit engineering samples in AMP mode             |
-| `MACHINE=qemuriscv64`      | Simulation                                                            |
+| `MACHINE=m100pfsevp`       | Aries Embedded M100PFSEVP PolarFire SoC-FPGA Evaluation Platform      |
 
 The `icicle-kit-es-amp` machine can be used to build the Icicle Kit engineering sample with AMP support. Please see the [Asymmetric Multiprocessing (AMP)](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/asymmetric-multiprocessing/amp.md) documentation for further details.
 

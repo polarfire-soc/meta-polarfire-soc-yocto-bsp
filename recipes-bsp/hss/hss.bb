@@ -27,6 +27,12 @@ do_configure:icicle-kit-es () {
 	cp -f ${WORKDIR}/${HSS_PAYLOAD}.yaml ${WORKDIR}/git/tools/hss-payload-generator/
 }
 
+do_configure:m100pfsevp () {
+	## taking U-Boot binary and package for HSS
+	cp -f ${DEPLOY_DIR_IMAGE}/u-boot.bin ${WORKDIR}/git/
+	cp -f ${WORKDIR}/${HSS_PAYLOAD}.yaml ${WORKDIR}/git/tools/hss-payload-generator/
+}
+
 # NOTE: Only using the Payload generator from the HSS
 do_configure:icicle-kit-es-amp () {
 	## taking U-Boot binary and package for HSS

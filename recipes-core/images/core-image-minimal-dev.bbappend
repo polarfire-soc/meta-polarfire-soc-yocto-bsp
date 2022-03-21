@@ -5,8 +5,6 @@ EXTRA_IMAGE_FEATURES += " \
 
 IMAGE_INSTALL = "\
     rng-tools \
-    mtd-utils \
-    mtd-utils-misc \
     iperf3 \
     devmem2 \
     can-utils \
