@@ -10,7 +10,7 @@ SRC_URI:append:icicle-kit-es-amp = "file://0002-riscv-icicle-kit-change-to-amp-d
                                     file://0001-U-Boot-v2022.01-with-high-memory-0x1000000000.patch \
                                    "
 
-SRC_URI += "file://0001-Aries-board-m100pfsevp-u-boot-support.patch"
+SRC_URI:append:m100pfsevp = "file://0001-Aries-board-m100pfsevp-u-boot-support.patch"
 
 DEPENDS:append = " u-boot-tools-native"
 
