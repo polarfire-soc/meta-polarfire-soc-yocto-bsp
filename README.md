@@ -39,13 +39,21 @@ Using Yocto bitbake command and setting the MACHINE and image required.
 ```bash
 MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 ```
-#### Building a RAM-based Root Filesystem (initramfs)
+#### Building a RAM-based Root Filesystem (Initramfs)
 
 Using Yocto bitbake command and setting the initramfs configuration file (conf/initramfs.conf) and the mpfs-initramfs-image
 
 ```bash
 MACHINE=icicle-kit-es -R conf/initramfs.conf bitbake mpfs-initramfs-image
 ```
+
+The image generated frome the command above can be used to boot Linux with a RAM-based root filesystem from the on-board eMMC, an SD card,
+or an external QSPI flash memory device.
+
+For instructions on how to copy the image to the eMMC refer [here](#Copy-the-created-Disk-Image-to-flash-device), for instructions on how to transfer the image to the external QSPI flash memory refer [here](#Copy-the-created-Disk-Image-to-an-external-QSPI-flash-memory).
+
+<a name="Copy-the-created-Disk-Image-to-flash-device"></a>
+
 ### Copy the created Disk Image to flash device (USB mmc flash/SD/uSD)
 
 > Be very careful while picking /dev/sdX device! Look at dmesg, lsblk, GNOME Disks, etc. before and after plugging in your usb flash device/uSD/SD to find a proper device. Double check it to avoid overwriting any of system disks/partitions!
@@ -90,6 +98,55 @@ The partition table has been altered.
 Calling ioctl() to re-read partition table.
 Syncing disks.
 ```
+
+<a name="Copy-the-created-Disk-Image-to-an-external-QSPI-flash-memory"></a>
+
+### Copy the created Disk Image to an external QSPI flash memory
+
+The Icicle Kit supports booting Linux from an external QSPI flash memory connected to the Raspberry Pi 4 Interface (J26) on an Icicle Kit.
+
+For more information on QSPI support on the Icicle Kit, please refer to the [booting from QSPI](https://github.com/polarfire-soc/polarfire-soc-documentation/tree/master/boards/mpfs-icicle-kit-es/booting-from-qspi/booting-from-qspi.md) documentation.
+
+The `mpfs-initramfs-image` generates a Linux image with a `.mtdimg` file extension in the deploy directory. This image is suitable for programming to a flash memory device.
+
+Connect to UART0 (J11), and power on the board. Settings are 115200 baud, 8 data bits, 1 stop bit, no parity, and no flow control.
+
+Press a key to stop automatic boot.  In the HSS console, type `qspi` to select the QSPI interface and then type `usbdmsc` to expose the QSPI flash memory device as a block device.
+
+Connect the board to your host PC using J16, located beside the SD card slot.
+
+Once this is complete, on the host PC, use `dmesg` to check what the drive identifier for the QSPI flash memory device is.
+
+```bash
+$ dmesg | egrep "sd"
+```
+
+The output should contain a line similar to one of the following lines:
+
+```bash
+[114353.477108] sd 11:0:0:0: [sdX] 65536 2048-byte logical blocks: (134 MB/128 MiB)
+[114353.477111] sd 11:0:0:0: [sdX] Write Protect is off
+[114353.477471] sd 11:0:0:0: [sdX] Mode Sense: 00 00 00 00
+```
+
+`sdX` is the drive identifier that should be used in the following commands, where `X` should be replaced with the specific character from the output of the previous command.
+
+> Be very careful while picking /dev/sdX device! Look at dmesg, lsblk, GNOME Disks, etc. before and after plugging in your usb flash device/uSD/SD to find a proper device. Double check it to avoid overwriting any of system disks/partitions!
+>
+
+Once sure of the drive identifier, use the following command to copy your Linux image to the external QSPI flash memory device, replacing the X as appropriate:
+
+```bash
+$ sudo dd if=tmp-glibc/deploy/images/icicle-kit-es/mpfs-initramfs-image-icicle-kit-es.mtdimg of=/dev/sdX
+```
+
+When the transfer has completed, press CTRL+C in the HSS serial console to return to the HSS console.
+
+Wait for the image transfer to complete. A progress bar will be shown in the HSS serial console.
+
+To boot into Linux, type boot in the HSS console. U-Boot and Linux will use UART1. When Linux boots, log in with the username root. There is no password required.
+
+If you are using the icicle-kit-es-amp machine, attach to UART3 to observe its output.
 
 ### Supported Machine Targets
 The `MACHINE` (board) option can be used to set the target board for which linux is built, and if left blank it will default to `MACHINE=icicle-kit-es`.

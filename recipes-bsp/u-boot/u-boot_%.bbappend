@@ -4,10 +4,15 @@ SRC_URI:append = " \
             file://${UBOOT_ENV}.txt \
            "
 
-SRC_URI:append:icicle-kit-es = "file://0001-U-Boot-v2022.01-with-high-memory-0x1000000000.patch "
+SRC_URI:append:icicle-kit-es = "file://0001-U-Boot-v2022.01-with-high-memory-0x1000000000.patch \
+                                file://0002-spi-Add-Microchip-PolarFire-SoC-QSPI-driver.patch \
+                                file://0003-spi-pt-2-add-Microchip-PolarFire-SoC-QSPI-support.patch \
+"
 
 SRC_URI:append:icicle-kit-es-amp = "file://0002-riscv-icicle-kit-change-to-amp-dts.patch \
                                     file://0001-U-Boot-v2022.01-with-high-memory-0x1000000000.patch \
+                                    file://0002-spi-Add-Microchip-PolarFire-SoC-QSPI-driver.patch \
+                                    file://0003-spi-pt-2-add-Microchip-PolarFire-SoC-QSPI-support.patch \
                                    "
 
 SRC_URI:append:m100pfsevp = "file://0001-Aries-board-m100pfsevp-u-boot-support.patch"

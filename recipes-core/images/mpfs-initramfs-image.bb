@@ -19,6 +19,10 @@ WKS_FILE = "mpfs-initramfs.wks"
 
 IMAGE_INSTALL = ""
 
+IMAGE_FSTYPES:append:icicle-kit-es = " mtd"
+IMAGE_FSTYPES:append:icicle-kit-es-amp = " mtd"
+IMAGE_FSTYPES:remove = " ext4"
+
 do_rootfs[depends] += "mpfs-initramfs-base:do_image_complete"
 
 inherit core-image

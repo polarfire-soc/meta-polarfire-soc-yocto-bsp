@@ -1,0 +1,633 @@
+From d97d2f131f133899eeb290fd50d9328932912434 Mon Sep 17 00:00:00 2001
+From: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
+Date: Thu, 7 Apr 2022 14:58:07 +0100
+Subject: [PATCH] spi: Add Microchip PolarFire SoC QSPI driver
+
+Add QSPI driver code for the Microchip PolarFire SoC.
+This driver supports the qspi standard, dual and quad
+interface with mode0 or mode3.
+
+Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
+---
+ arch/riscv/dts/microchip-mpfs-icicle-kit.dts |  15 +
+ board/microchip/mpfs_icicle/Kconfig          |   7 +
+ cmd/mtd.c                                    |   4 +-
+ drivers/spi/Kconfig                          |   6 +
+ drivers/spi/Makefile                         |   1 +
+ drivers/spi/microchip_qspi.c                 | 512 +++++++++++++++++++
+ 6 files changed, 543 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/spi/microchip_qspi.c
+
+diff --git a/arch/riscv/dts/microchip-mpfs-icicle-kit.dts b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
+index 616019dc8d..e9ab840920 100644
+--- a/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
++++ b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
+@@ -18,6 +18,7 @@
+ 	aliases {
+ 		serial1 = &uart1;
+ 		ethernet0 = &mac1;
++		spi0 = &qspi;
+ 	};
+ 
+ 	chosen {
+@@ -148,3 +149,17 @@
+ 		ti,fifo-depth = <0x1>;
+ 	};
+ };
++
++&qspi {
++	status = "okay";
++	num-cs = <1>;
++	flash0: spi-nand@0 {
++		compatible = "spi-nand";
++		reg = <0x0>;
++		spi-tx-bus-width = <4>;
++		spi-rx-bus-width = <4>;
++		spi-max-frequency = <20000000>;
++		spi-cpol;
++		spi-cpha;
++	};
++};
+diff --git a/board/microchip/mpfs_icicle/Kconfig b/board/microchip/mpfs_icicle/Kconfig
+index 4f2a236fbb..a445062101 100644
+--- a/board/microchip/mpfs_icicle/Kconfig
++++ b/board/microchip/mpfs_icicle/Kconfig
+@@ -50,5 +50,12 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	imply CMD_I2C
+ 	imply DM_I2C
+ 	imply SYS_I2C_MICROCHIP
++	imply SPI
++	imply DM_SPI
++	imply MICROCHIP_QSPI
++	imply MTD_SPI_NAND
++	imply CMD_MTD
++	imply MTD_PARTITIONS
++	imply CMD_MTDPARTS
+ 
+ endif
+diff --git a/cmd/mtd.c b/cmd/mtd.c
+index ad5cc9827d..77a07e2e46 100644
+--- a/cmd/mtd.c
++++ b/cmd/mtd.c
+@@ -251,9 +251,9 @@ static int do_mtd_io(struct cmd_tbl *cmdtp, int flag, int argc,
+ 		     char *const argv[])
+ {
+ 	bool dump, read, raw, woob, write_empty_pages, has_pages = false;
+-	u64 start_off, off, len, remaining, default_len;
++	u64 start_off, off, len, remaining, default_len, user_addr = 0;
+ 	struct mtd_oob_ops io_op = {};
+-	uint user_addr = 0, npages;
++	uint npages;
+ 	const char *cmd = argv[0];
+ 	struct mtd_info *mtd;
+ 	u32 oob_len;
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index d07e9a28af..5ae618dc43 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -192,6 +192,12 @@ config MESON_SPIFC
+ 	  This driver can be used to access the SPI NOR flash chips on
+ 	  Amlogic Meson SoCs.
+ 
++config MICROCHIP_QSPI
++	bool "Microchip Quad SPI driver"
++	help
++	  Enable the Microchip Quad SPI controller driver. This driver can be
++	  used on Polarfire SoCs.
++
+ config MPC8XX_SPI
+ 	bool "MPC8XX SPI Driver"
+ 	depends on MPC8xx
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index d2f24bccef..9198055b30 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -35,6 +35,7 @@ obj-$(CONFIG_SYNQUACER_SPI) += spi-synquacer.o
+ obj-$(CONFIG_ICH_SPI) +=  ich.o
+ obj-$(CONFIG_KIRKWOOD_SPI) += kirkwood_spi.o
+ obj-$(CONFIG_MESON_SPIFC) += meson_spifc.o
++obj-$(CONFIG_MICROCHIP_QSPI) += microchip_qspi.o
+ obj-$(CONFIG_MPC8XX_SPI) += mpc8xx_spi.o
+ obj-$(CONFIG_MPC8XXX_SPI) += mpc8xxx_spi.o
+ obj-$(CONFIG_MTK_SNFI_SPI) += mtk_snfi_spi.o
+diff --git a/drivers/spi/microchip_qspi.c b/drivers/spi/microchip_qspi.c
+new file mode 100644
+index 0000000000..98234831f7
+--- /dev/null
++++ b/drivers/spi/microchip_qspi.c
+@@ -0,0 +1,512 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2022 Microchip Technology Inc.
++ * Padmarao Begari <padmarao.begari@microchip.com>
++ */
++
++#include <common.h>
++#include <clk.h>
++#include <dm.h>
++#include <log.h>
++#include <malloc.h>
++#include <spi.h>
++#include <asm/io.h>
++#include <linux/bitops.h>
++#include <linux/delay.h>
++#include <linux/types.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++
++#define QSPI_ENABLE			0x01u
++#define QSPI_DISABLE			0x00u
++#define QSPI_CLK_DIV_30			0xFu
++
++#define QSPI_NORMAL			0u
++#define QSPI_DUAL_EX_RO			2u
++#define QSPI_DUAL_EX_RW			4u
++#define QSPI_QUAD_EX_RO			3u
++#define QSPI_QUAD_EX_RW			5u
++#define QSPI_DUAL_FULL			6u
++#define QSPI_QUAD_FULL			7u
++#define QSPI_MODE_MASK			0xEu
++
++#define QSPI_MODE0			0x0u
++#define QSPI_MODE3			0x1u
++
++#define CTRL_EN				0u
++#define CTRL_XIP			2u
++#define CTRL_XIPADDR			3u
++#define CTRL_CLKIDL			10u
++#define CTRL_SAMPLE			11u
++#define CTRL_QMODE0			13u
++#define CTRL_QMODE12			14u
++#define CTRL_FLAGSX4			16u
++#define CTRL_CLKRATE			24u
++
++#define CTRL_EN_MASK			BIT(0)
++#define CTRL_XIP_MASK			BIT(2)
++#define CTRL_XIPADDR_MASK		BIT(3)
++#define CTRL_CLKIDL_MASK		BIT(10)
++#define CTRL_SAMPLE_MASK		(0x3u << CTRL_SAMPLE)
++#define CTRL_QMODE0_MASK		BIT(13)
++#define CTRL_QMODE12_MASK		(0x3u << CTRL_QMODE12)
++#define CTRL_FLAGSX4_MASK		BIT(16)
++#define CTRL_CLKRATE_MASK		(0xFu << CTRL_CLKRATE)
++
++#define CTRL_SAMPLE_SCK			(0x0u << CTRL_SAMPLE)
++#define CTRL_SAMPLE_HCLKF		(0x1u << CTRL_SAMPLE)
++#define CTRL_SAMPLE_HCLKR		(0x2u << CTRL_SAMPLE)
++
++#define FRMS_TBYTES			0u
++#define FRMS_CBYTES			16u
++#define FRMS_QSPI			25u
++#define FRMS_IDLE			26u
++
++#define FRMS_TBYTES_MASK		(0xFFFFu << FRMS_TBYTES)
++#define FRMS_CBYTES_MASK		(0x1FFu << FRMS_CBYTES)
++#define FRMS_QSPI_MASK			BIT(25)
++#define FRMS_FBYTE_MASK			BIT(30)
++#define FRMS_FWORD_MASK			BIT(31)
++#define FRMSUP_BYTESUP_MASK		0xFFFF0000u
++
++#define STTS_TDONE_MASK			BIT(0)
++#define STTS_RDONE_MASK			BIT(1)
++#define STTS_RAVLB_MASK			BIT(2)
++#define STTS_TAVLB_MASK			BIT(3)
++#define STTS_RFEMPTY_MASK		BIT(4)
++#define STTS_TFFULL_MASK		BIT(5)
++#define STTS_READY_MASK			BIT(7)
++#define STTS_FLAGSX4_MASK		BIT(8)
++
++#define DRCT_IDLE			BIT(23)
++
++#define PREV_DATA_SIZE			2064u
++#define RD_SIZE				64u
++#define IDLE_CYCLES			0u
++
++#define DATA_LOAD			0x02u
++#define QUAD_DATA_LOAD			0x32u
++#define RANDOM_DATA_LOAD		0x84u /* Random Program Data load */
++#define QUAD_RANDOM_DATA_LOAD		0x34u /* Random Quad Program Data load */
++#define FAST_READ_QUAD_IO		0xEB
++#define FAST_READ_QUAD			0x6B
++#define SIZE_512			512u
++#define SIZE_256			256u
++#define MASK_8BIT			0xFFu
++
++#define QSPI_TX_RX			1
++/* mpfs qspi register set */
++struct mpfs_qspi_regs {
++	u32 control;
++	u32 frames;
++	u32 reserved1;
++	u32 intenable;
++	u32 status;
++	u32 direct;
++	u8 addrup;
++	u8 addrup_r1;
++	u8 addrup_r2;
++	u8 addrup_r3;
++	u32 reserved2[9];
++	u8 rxdatax1;
++	u8 rxdatax1_r1;
++	u8 rxdatax1_r2;
++	u8 rxdatax1_r3;
++	u8 txdatax1;
++	u8 txdatax1_r1;
++	u8 txdatax1_r2;
++	u8 txdatax1_r3;
++	u32 rxdatax4;
++	u32 txdatax4;
++	u32 framesup;
++};
++
++/* mpfs qspi priv */
++struct mpfs_qspi_priv {
++	struct mpfs_qspi_regs *regs;
++	u32 freq; /* input frequency */
++};
++
++static u8 prev_data[PREV_DATA_SIZE];
++static u8 prev_din;
++static u16 prev_len;
++static u8 qspi_mode;
++static u8 qspi_ex_ro_rw;
++
++static void mpfs_qspi_init_hw(struct mpfs_qspi_priv *priv)
++{
++	struct mpfs_qspi_regs *regs = priv->regs;
++	u32 ctrl;
++
++	ctrl = (u32)((CTRL_SAMPLE_SCK) | (QSPI_NORMAL << CTRL_QMODE0) |
++		    (QSPI_CLK_DIV_30 << CTRL_CLKRATE) |
++		    (QSPI_DISABLE << CTRL_XIP) |
++		    (QSPI_MODE3 << CTRL_CLKIDL) | CTRL_EN_MASK);
++
++	writel(ctrl, &regs->control);
++}
++
++static void mpfs_qspi_poll(struct mpfs_qspi_priv *priv,
++			   const void * const tx_buffer,
++			   u32 tx_byte_size,
++			   const void * const rd_buffer,
++			   u32 rd_byte_size)
++{
++	u32 idx, ctrl, skips, cbytes, total_byte_cnt, words;
++	u32 *buf32 = (u32 *)tx_buffer;
++	u8 *buf8 = (u8 *)tx_buffer;
++	u8 num_idle_cycles;
++	struct mpfs_qspi_regs *regs = priv->regs;
++
++	cbytes =  tx_byte_size;
++	total_byte_cnt = tx_byte_size + rd_byte_size;
++
++	/* Disable interrupts */
++	writel(0, &regs->intenable);
++
++	while (!(readl(&regs->status) & STTS_READY_MASK))
++		;
++
++	writel(total_byte_cnt & FRMSUP_BYTESUP_MASK, &regs->framesup);
++
++	if (rd_byte_size >= RD_SIZE)
++		num_idle_cycles = IDLE_CYCLES;
++	else
++		num_idle_cycles = false;
++
++	/* Normal mode */
++	ctrl = readl(&regs->control);
++
++	ctrl &= ~(QSPI_MODE_MASK << CTRL_QMODE0);
++	ctrl |= (QSPI_NORMAL << CTRL_QMODE0);
++
++	skips  = (total_byte_cnt & FRMS_TBYTES_MASK);
++	skips |= ((cbytes << FRMS_CBYTES) & FRMS_CBYTES_MASK);
++
++	if (qspi_mode != QSPI_NORMAL) {
++		if ((qspi_ex_ro_rw == QSPI_QUAD_EX_RW) ||
++		   (qspi_ex_ro_rw == QSPI_QUAD_EX_RO)) {
++
++			/* QSPI_QUAD_EX_RW fast read quad i/o 0xEB 1-cmd, 4 - addr/data
++			   QSPI_QUAD_EX_RO fast read quad 0x6B 1-cmd/addr, 4 - data */
++			ctrl &= ~(QSPI_MODE_MASK << CTRL_QMODE0);
++			ctrl |= (qspi_ex_ro_rw << CTRL_QMODE0);
++
++			skips |= FRMS_QSPI_MASK;
++		}
++	}
++
++	skips |= ((u32)num_idle_cycles) << FRMS_IDLE;
++	skips |= FRMS_FWORD_MASK;
++
++	writel(ctrl, &regs->control);
++	writel(skips, &regs->frames);
++
++	if (cbytes) {
++
++		if (qspi_mode == QSPI_NORMAL) {
++
++			skips = readl(&regs->control);
++			skips |= CTRL_FLAGSX4_MASK;
++			writel(skips, &regs->control);
++
++			words = cbytes / 4u;
++
++			for (idx = 0u; idx < words; ++idx) {
++				while (readl(&regs->status) & STTS_TFFULL_MASK)
++					;
++
++				writel(buf32[idx], &regs->txdatax4);
++			}
++		}
++
++		skips = readl(&regs->control);
++		skips &= ~CTRL_FLAGSX4_MASK;
++		writel(skips, &regs->control);
++
++		if (qspi_mode == QSPI_NORMAL)
++			idx = (cbytes - (cbytes % 4u));
++		else
++			idx = 0;
++
++		for (; idx < cbytes; ++idx) {
++			while (readl(&regs->status) & STTS_TFFULL_MASK)
++				;
++
++			writeb(buf8[idx], &regs->txdatax1);
++		}
++	}
++
++	buf32 = (u32 *)rd_buffer;
++	buf8 = (u8 *)rd_buffer;
++
++	if (rd_byte_size) {
++
++		words = rd_byte_size / 4u;
++
++		skips = readl(&regs->control);
++		skips |= CTRL_FLAGSX4_MASK;
++		writel(skips, &regs->control);
++
++		for (idx = 0u; idx < words; ++idx) {
++
++			while (readl(&regs->status) & STTS_RFEMPTY_MASK)
++				;
++			buf32[idx] = readl(&regs->rxdatax4);
++		}
++
++		skips = readl(&regs->control);
++		skips &= ~CTRL_FLAGSX4_MASK;
++		writel(skips, &regs->control);
++
++		idx = (rd_byte_size - (rd_byte_size % 4u));
++		for (; idx < rd_byte_size; ++idx) {
++			while (readl(&regs->status) & STTS_RFEMPTY_MASK)
++				;
++			buf8[idx] = readb(&regs->rxdatax1);
++		}
++
++		while (!(readl(&regs->status) & STTS_RDONE_MASK)) {
++			if (readl(&regs->status) & STTS_FLAGSX4_MASK)
++				skips = readl(&regs->rxdatax4);
++			else
++				skips = readb(&regs->rxdatax1);
++		}
++
++		if (qspi_mode != QSPI_NORMAL)
++			while (!(readl(&regs->status) & STTS_READY_MASK))
++				;
++	}
++}
++
++static void mpfs_qspi_write_xfer(struct mpfs_qspi_priv *priv,
++				 const void *txp,  u32 bytelen)
++{
++	u8 pcmd, data;
++	u16 i, cnt, caddr;
++
++	if (prev_data[0] == DATA_LOAD ||
++	    prev_data[0] == QUAD_DATA_LOAD) {
++
++		/* Page size 256 bytes */
++		if (bytelen < SIZE_512) {
++			for (cnt = 0; cnt < bytelen; cnt++)
++				prev_data[prev_len + cnt] = *(u8 *)(txp + cnt);
++			mpfs_qspi_poll(priv, prev_data,
++				       prev_len + bytelen, (u8 *)0, 0);
++		} else {
++			/* Page size 2048 bytes */
++			caddr = 0;
++
++			if (prev_data[0] == DATA_LOAD)
++				pcmd = RANDOM_DATA_LOAD;
++			else if (prev_data[0] == QUAD_DATA_LOAD)
++				pcmd = RANDOM_DATA_LOAD;//QUAD_RANDOM_DATA_LOAD;
++			else
++				pcmd = prev_data[0];
++
++			for (i = 0; i < bytelen / SIZE_256; i++) {
++				prev_data[0] = pcmd;
++				prev_data[1] = (caddr >> 8) & MASK_8BIT;
++				prev_data[2] = caddr & MASK_8BIT;
++
++				for (cnt = 0; cnt < SIZE_256; cnt++) {
++					data = *(u8 *)(txp + cnt + caddr);
++					prev_data[3 + cnt] = data;
++				}
++
++				mpfs_qspi_poll(priv, prev_data,
++					       SIZE_256 + 3, (u8 *)0, 0);
++
++				caddr += SIZE_256;
++			}
++		}
++	} else {
++		/* Write status reg */
++		for (i = 0; i < bytelen; i++)
++			prev_data[prev_len++] = *(u8 *)(txp + i);
++		mpfs_qspi_poll(priv, prev_data, prev_len, (u8 *)0, 0);
++	}
++}
++
++static int mpfs_qspi_xfer(struct udevice *dev, unsigned int bitlen,
++			  const void *dout, void *din, unsigned long flags)
++{
++	struct udevice *bus = dev->parent;
++	struct mpfs_qspi_priv *priv = dev_get_priv(bus);
++	unsigned int bytelen = bitlen >> 3;
++	const u8 *txp = dout;
++	u8 *rxp = din;
++	u16 idx;
++
++	if (bitlen == 0)
++		/* Finish any previously submitted transfers */
++		goto out;
++
++	if (bitlen % 8) {
++		/* Errors always terminate an ongoing transfer */
++		flags |= SPI_XFER_END;
++		goto out;
++	}
++
++	if (!din) {
++		if (flags & SPI_XFER_END) {
++			/* Write data */
++			if (prev_din) {
++				prev_din = false;
++				mpfs_qspi_write_xfer(priv, txp, bytelen);
++			} else {
++				/* Write command */
++				prev_din = false;
++				mpfs_qspi_poll(priv, txp, bytelen, rxp, 0);
++			}
++		} else {
++			/* Store data */
++			for (idx = 0; idx < bytelen; idx++)
++				prev_data[idx] = txp[idx];
++
++			prev_len = bytelen;
++			prev_din = true;
++		}
++	} else if (!dout) {
++		/* Read data */
++		prev_din = false;
++		if (prev_data[0] == FAST_READ_QUAD_IO) {
++			qspi_mode = QSPI_QUAD_FULL;
++			qspi_ex_ro_rw = QSPI_QUAD_EX_RW;
++		} else if (prev_data[0] == FAST_READ_QUAD) {
++			qspi_mode = QSPI_QUAD_FULL;
++			qspi_ex_ro_rw = QSPI_QUAD_EX_RO;
++		}
++		mpfs_qspi_poll(priv, prev_data, prev_len, rxp, bytelen);
++	}
++
++	if (qspi_mode != QSPI_NORMAL) {
++		qspi_mode = QSPI_NORMAL;
++		qspi_ex_ro_rw = QSPI_NORMAL;
++	}
++
++out:
++	return 0;
++}
++
++static int mpfs_qspi_set_speed(struct udevice *dev, uint speed)
++{
++	struct mpfs_qspi_priv *priv = dev_get_priv(dev);
++	struct mpfs_qspi_regs *regs = priv->regs;
++	u8 idx, val = 0;
++	u32 ctrl, clkrate;
++
++	if (speed > priv->freq)
++		speed = priv->freq / 2;
++
++	for (idx = 1; idx < 16; idx++) {
++		clkrate = priv->freq / (2 * idx);
++		if (clkrate <= speed) {
++			val = idx;
++			break;
++		}
++	}
++
++	if (val) {
++		ctrl = readl(&regs->control);
++		ctrl &= ~CTRL_CLKRATE_MASK;
++		ctrl |= (val << CTRL_CLKRATE);
++		writel(ctrl, &regs->control);
++	} else {
++		return -1;
++	}
++
++	return 0;
++}
++
++static int mpfs_qspi_set_mode(struct udevice *dev, uint mode)
++{
++	struct mpfs_qspi_priv *priv = dev_get_priv(dev);
++	struct mpfs_qspi_regs *regs = priv->regs;
++	u32 ctrl;
++
++	ctrl = readl(&regs->control);
++
++	if ((mode & SPI_CPHA) && (mode & SPI_CPOL)) {
++		/* mode 3 */
++		ctrl &= ~CTRL_CLKIDL_MASK;
++		ctrl |= (QSPI_MODE3 << CTRL_CLKIDL);
++	} else if (!(mode & SPI_CPHA) && !(mode & SPI_CPOL)) {
++		/* mode 0 */
++		ctrl &= ~CTRL_CLKRATE_MASK;
++		ctrl |= (QSPI_MODE0 << CTRL_CLKRATE);
++	} else {
++		return -1;
++	}
++	/* Normal mode */
++	ctrl &= ~(QSPI_MODE_MASK << CTRL_QMODE0);
++	ctrl |= (QSPI_NORMAL << CTRL_QMODE0);
++	writel(ctrl, &regs->control);
++
++	qspi_mode = QSPI_NORMAL;
++	qspi_ex_ro_rw = QSPI_NORMAL;
++
++
++	return 0;
++}
++
++static int mpfs_qspi_claim_bus(struct udevice *dev)
++{
++	return 0;
++}
++
++static int mpfs_qspi_release_bus(struct udevice *dev)
++{
++	return 0;
++}
++
++static int mpfs_qspi_probe(struct udevice *dev)
++{
++	struct mpfs_qspi_priv *priv = dev_get_priv(dev);
++	struct clk clk;
++	ulong clk_rate;
++	int ret;
++
++	ret = clk_get_by_index(dev, 0, &clk);
++	if (ret)
++		return -EINVAL;
++
++	ret = clk_enable(&clk);
++	if (ret)
++		return ret;
++
++	clk_rate = clk_get_rate(&clk);
++	if (!clk_rate)
++		return -EINVAL;
++
++	priv->regs = (struct mpfs_qspi_regs *)dev_read_addr(dev);
++
++	priv->freq = clk_rate;
++	/* Init the mpfs qspi hw */
++	mpfs_qspi_init_hw(priv);
++
++	return 0;
++}
++
++static const struct dm_spi_ops mpfs_qspi_ops = {
++	.claim_bus      = mpfs_qspi_claim_bus,
++	.release_bus    = mpfs_qspi_release_bus,
++	.xfer           = mpfs_qspi_xfer,
++	.set_speed      = mpfs_qspi_set_speed,
++	.set_mode       = mpfs_qspi_set_mode,
++};
++
++static const struct udevice_id mpfs_qspi_ids[] = {
++	{ .compatible = "microchip,mpfs-qspi" },
++	{ }
++};
++
++U_BOOT_DRIVER(mpfs_qspi) = {
++	.name   = "mpfs_qspi",
++	.id     = UCLASS_SPI,
++	.of_match = mpfs_qspi_ids,
++	.ops    = &mpfs_qspi_ops,
++	.priv_auto = sizeof(struct mpfs_qspi_priv),
++	.probe  = mpfs_qspi_probe,
++};
+-- 
+2.25.1
+
