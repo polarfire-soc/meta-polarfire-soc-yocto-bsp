@@ -969,7 +969,7 @@ index 0000000000..fe643593fb
 +		"${gatewayip}:${netmask}:${hostname}:${netdev}:off\0" \
 +	"addmisc=setenv bootargs ${bootargs} ${miscargs}\0" \
 +	"bootfile=fitImage\0" \
-+	"consdev=ttyS0\0" \
++	"consdev=ttyS1\0" \
 +	"fdtextract=imxtract ${kernel_addr_r} " \
 +		"fdt-${fdt_file} ${fdt_addr_r}\0" \
 +	"fdtselect=if test ! -e aries_m100pfsevp-sdcard.dtb; then " \
