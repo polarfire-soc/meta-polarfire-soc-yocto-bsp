@@ -979,15 +979,15 @@ index 0000000000..fe643593fb
 +	"hostname=m100pfsevp\0"	\
 +	"miscargs=earlycon=sbi uio_pdrv_genirq.of_id=generic-uio " \
 +		"pci-hpmemsize=0M libata.force=noncq\0" \
-+	"mmc_mmc=run mmcload fdtselect fdtextract " \
++	"mmc_mmc=run mmcload fdtselect " \
 +		"mmcargs addcons addmisc; " \
-+	"bootm ${kernel_addr_r} - ${fdt_addr_r}\0" \
++	"bootm start ${kernel_addr_r}#conf-${fdt_file}; bootm loados ${kernel_addr_r}; bootm ramdisk; bootm prep; bootm go; \0" \
 +	"mmcargs=setenv bootargs root=${rootdev} rw rootwait\0" \
 +	"mmcload=mmc rescan; " \
 +		"load mmc 0:1 ${kernel_addr_r} ${bootfile}\0" \
-+	"net_nfs=run netload fdtselect fdtextract " \
++	"net_nfs=run netload fdtselect " \
 +		"nfsargs addcons addip addmisc; " \
-+		"bootm ${kernel_addr_r} - ${fdt_addr_r}\0" \
++		"bootm start ${kernel_addr_r}#conf-${fdt_file}; bootm loados ${kernel_addr_r}; bootm ramdisk; bootm prep; bootm go; \0" \
 +	"netdev=eth0\0" \
 +	"netload=tftp ${kernel_addr_r} ${hostname}/${bootfile}\0" \
 +	"nfsargs=setenv bootargs root=/dev/nfs rw " \
