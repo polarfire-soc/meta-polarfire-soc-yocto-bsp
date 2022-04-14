@@ -13,8 +13,9 @@ inherit autotools
 
 DEPENDS += "virtual/kernel dtc-native"
 
+BRANCH = "master"
 SRCREV="${AUTOREV}"
-SRC_URI="git://git@bitbucket.microchip.com/fpga_pfsoc_es/dt-overlay-polarfire-soc.git;protocol=ssh;branch=develop-rpi_sense_hat \
+SRC_URI="git://github.com/linux4microchip/dt-overlay-mchp.git;protocol=https;branch=${BRANCH} \
 "
 
 S = "${WORKDIR}/git"
