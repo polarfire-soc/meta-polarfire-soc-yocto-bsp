@@ -4,7 +4,7 @@ LINUX_VERSION ?= "5.12.19"
 KERNEL_VERSION_SANITY_SKIP="1"
 
 BRANCH = "mpfs-linux-5.12.x"
-SRCREV = "38627e0d6caf47f92b483f6be9ec32f49f8d172d"
+SRCREV="402a0b093d31e09d356e938ae48c6567b2432bb2"
 SRC_URI = " \
     git://github.com/polarfire-soc/linux.git;protocol=https;branch=${BRANCH} \
 "
