@@ -47,8 +47,7 @@ Using Yocto bitbake command and setting the initramfs configuration file (conf/i
 MACHINE=icicle-kit-es -R conf/initramfs.conf bitbake mpfs-initramfs-image
 ```
 
-The image generated frome the command above can be used to boot Linux with a RAM-based root filesystem from the on-board eMMC, an SD card,
-or an external QSPI flash memory device.
+The image generated from the command above can be used to boot Linux with a RAM-based root filesystem from the eMMC, an SD card, or an external QSPI flash memory device.
 
 For instructions on how to copy the image to the eMMC refer [here](#Copy-the-created-Disk-Image-to-flash-device), for instructions on how to transfer the image to the external QSPI flash memory refer [here](#Copy-the-created-Disk-Image-to-an-external-QSPI-flash-memory).
 
@@ -66,8 +65,8 @@ The created disk image is a 'wic' file, and is located in `yocto-dev/build/tmp-g
 `yocto-dev/build/tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic`.
 
 ```bash
-
-bmaptool copy yocto-dev/build/tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic /dev/sdX
+cd yocto-dev/build
+bmaptool copy tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic /dev/sdX
 ```
 
 The wic image uses a GUID Partition Table (GPT). GPT stores its primary GPT header at the start of the storage device, and a secondary GPT header at the end of the device.  The wic creation scripts do not correctly place this secondary GPT header at the current time.  To avoid later warnings about the GPT secondary header location, open the device with fdisk at this stage and rewrite the partition table:
@@ -103,7 +102,7 @@ Syncing disks.
 
 ### Copy the created Disk Image to an external QSPI flash memory
 
-The Icicle Kit supports booting Linux from an external QSPI flash memory connected to the Raspberry Pi 4 Interface (J26) on an Icicle Kit.
+The Icicle Kit supports booting Linux from an external Winbond W25N01GV QSPI NAND flash memory connected to the Raspberry Pi 4 Interface (J26) on an Icicle Kit.
 
 For more information on QSPI support on the Icicle Kit, please refer to the [booting from QSPI](https://github.com/polarfire-soc/polarfire-soc-documentation/tree/master/boards/mpfs-icicle-kit-es/booting-from-qspi/booting-from-qspi.md) documentation.
 
@@ -227,12 +226,6 @@ build/tmp-glibc/deploy/images/{MACHINE}
 For Example the following is the path for the Icicle-kit-es
 ```
 build/tmp-glibc/deploy/images/icicle-kit-es
-```
-
-## Run in Simulation (QEMU)
-
-```bash
-MACHINE=qemuriscv64 runqemu nographic
 ```
 
 <a name="Dependencies"></a>
