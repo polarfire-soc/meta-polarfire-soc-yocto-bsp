@@ -1,5 +1,5 @@
 #
-# HSS Payload Generator - buildroot configuration file
+# HSS Payload Generator
 #
 
 # First, we can optionally set a name for our image, otherwise one will be created dynamically

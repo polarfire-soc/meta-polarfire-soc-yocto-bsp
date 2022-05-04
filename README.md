@@ -252,12 +252,7 @@ For Ubuntu 18.04 (or newer) install python3-distutils:
 ```
 sudo apt install python3-distutils
 ```
-HSS Payload Generator uses libelf and libyaml, as well as zlib (a dependency of libelf).
 
-```
-sudo apt-get install libyaml-dev
-sudo apt-get install libelf-dev
-```
 You can install the bmap-tools package using the following command:
 
 ```
@@ -286,19 +281,15 @@ sudo apt-get install bmap-tools
 
 ### Issue 001: Required binaries not available before creating the disk image
 We sometimes get dependencies not building correctly.
-During the process do_wic_install payload may not be present for hss
+During the process do_wic_install payload may not be present.
 
 For example after requesting a complete build:
 
 ```bash
 MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 ```
-If payload is missing execute the following:
-```bash
-MACHINE=icicle-kit-es bitbake hss -c clean
-MACHINE=icicle-kit-es bitbake hss -c install
-  ```
-If u-boot or boot.src.uimg missing
+If u-boot or boot.src.uimg or payload.bin is missing,
+execute the following:
 ```bash
 MACHINE=icicle-kit-es bitbake u-boot -c clean
 MACHINE=icicle-kit-es bitbake u-boot -c install

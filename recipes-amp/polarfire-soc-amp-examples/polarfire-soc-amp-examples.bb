@@ -2,10 +2,14 @@ SUMMARY = "Polarfire SoC AMP example applications"
 DESCRIPTION = "Example FreeRTOS application to run in AMP build \
 along with a Linux context"
 
+PACKAGE_ARCH = "${MACHINE_ARCH}"
+
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE.md;md5=4396bf71d143500c4d9fa09c02527700"
 
 DEPENDS = "makedepend-native"
+
+inherit deploy
 
 BRANCH = "main"
 SRCREV="216e1665f2feb2b32ba8647f9755324117ae7e10"
@@ -23,18 +27,8 @@ do_compile() {
    oe_runmake -C ${S}/mpfs-rpmsg-${AMP_DEMO}
 }
 
-do_install() {
-    :
-}
-
 do_deploy() {
-    :
-}
-
-do_deploy:append:icicle-kit-es-amp() {
-    install -d ${DEPLOY_DIR_IMAGE}
-    install -m 755 ${S}/mpfs-rpmsg-${AMP_DEMO}/Remote-Default/mpfs-rpmsg-remote.elf ${DEPLOY_DIR_IMAGE}
-    ln -sf ${DEPLOY_DIR_IMAGE}/mpfs-rpmsg-remote.elf ${DEPLOY_DIR_IMAGE}/amp-application.elf 
+    install -m 755 ${S}/mpfs-rpmsg-${AMP_DEMO}/Remote-Default/mpfs-rpmsg-remote.elf ${DEPLOYDIR}/amp-application.elf
 }
 
 addtask deploy after do_install
