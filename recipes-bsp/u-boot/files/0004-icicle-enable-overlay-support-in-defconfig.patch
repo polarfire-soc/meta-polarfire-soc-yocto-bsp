@@ -1,0 +1,22 @@
+From 84f5e538ac5d92daada2457ce504e981d1f3e6c1 Mon Sep 17 00:00:00 2001
+From: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
+Date: Fri, 6 May 2022 15:04:04 +0100
+Subject: [PATCH] icicle: enable overlay support in defconfig
+
+Signed-off-by: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
+---
+ configs/microchip_mpfs_icicle_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configs/microchip_mpfs_icicle_defconfig b/configs/microchip_mpfs_icicle_defconfig
+index 1a4a428255..62c3dec277 100644
+--- a/configs/microchip_mpfs_icicle_defconfig
++++ b/configs/microchip_mpfs_icicle_defconfig
+@@ -19,3 +19,4 @@ CONFIG_CMD_MTDPARTS=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=spi-nand0:8m(payload),128k(env),48m(fitimage)"
+ CONFIG_USE_BOOTCOMMAND=y
+ CONFIG_BOOTCOMMAND="setenv mmcbootpart 1; setenv scriptname boot.scr.uimg; run nandbootenv;run mmcbootenv; run dhcpbootenv"
++CONFIG_OF_LIBFDT_OVERLAY=y
+-- 
+2.25.1
+
