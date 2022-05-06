@@ -9,22 +9,27 @@ LIC_FILES_CHKSUM = " \
 		"
 PR = "r0"
 
-inherit autotools
+inherit devicetree
 
-DEPENDS += "virtual/kernel dtc-native"
+COMPATIBLE_MACHINE = "(icicle-kit-es|icicle-kit-es-amp|m100pfsev)"
+
+S = "${WORKDIR}/git"
+
+DT_FILES_PATH = "${WORKDIR}/git/mpfs-icicle"
 
 BRANCH = "master"
 SRCREV="${AUTOREV}"
 SRC_URI="git://github.com/linux4microchip/dt-overlay-mchp.git;protocol=https;branch=${BRANCH} \
 "
 
-S = "${WORKDIR}/git"
-
-EXTRA_OEMAKE = 'icicle_kit_dtbos -C ${S} DTC=dtc ARCH=riscv KERNEL_DIR=${STAGING_KERNEL_DIR}'
-
 do_install() {
-	install -d ${D}/boot
-	install ${S}/mpfs-icicle/*.dtbo ${D}/boot
+    install -d ${D}/boot
+    install ${B}/*.dtbo ${D}/boot
+}
+
+devicetree_do_deploy() {
+	install -d ${DEPLOYDIR}/overlays
+	install -m 0644 ${B}/*.dtbo ${DEPLOYDIR}/overlays/
 }
 
 FILES:${PN} += "/boot/*.dtbo"
