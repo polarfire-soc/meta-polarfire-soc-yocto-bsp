@@ -65,4 +65,5 @@ do_deploy:append () {
     fi
 }
 
-FILES:${PN} += "/boot/boot.scr.uimg"
+FILES:${PN}:append:icicle-kit-es = " /boot/boot.scr.uimg"
+FILES:${PN}:append:icicle-kit-es-amp = " /boot/boot.scr.uimg"
