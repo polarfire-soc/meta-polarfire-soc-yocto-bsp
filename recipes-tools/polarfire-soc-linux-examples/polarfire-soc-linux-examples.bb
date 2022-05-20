@@ -23,7 +23,6 @@ EXAMPLE_FILES = "\
     dma \
     fpga-fabric-interfaces/lsram \
     gpio \
-    pdma \
     system-services \
     "
 
