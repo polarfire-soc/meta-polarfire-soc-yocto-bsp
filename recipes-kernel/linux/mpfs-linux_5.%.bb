@@ -16,6 +16,8 @@ SRC_URI:append:icicle-kit-es-amp = " file://bsp_cmdline.cfg \
     file://rpi_sense_hat.cfg \
 "
 
+SRC_URI:append:m100pfsevp = "file://m100pfsevp_configs.cfg"
+
 do_deploy:append() {
 
     if [ -n "${INITRAMFS_IMAGE}" ]; then

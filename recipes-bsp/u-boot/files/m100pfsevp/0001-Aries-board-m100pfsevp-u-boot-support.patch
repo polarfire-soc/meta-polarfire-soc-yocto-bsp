@@ -972,10 +972,10 @@ index 0000000000..fe643593fb
 +	"consdev=ttyS1\0" \
 +	"fdtextract=imxtract ${kernel_addr_r} " \
 +		"fdt-${fdt_file} ${fdt_addr_r}\0" \
-+	"fdtselect=if test ! -e aries_m100pfsevp-sdcard.dtb; then " \
++	"fdtselect=if test ! -e microchip_mpfs-m100pfsevp-sdcard.dtb; then " \
 +		"if selsd; then " \
-+		"setenv fdt_file aries_m100pfsevp-sdcard.dtb; else " \
-+		"setenv fdt_file aries_m100pfsevp-emmc.dtb; fi; fi\0" \
++		"setenv fdt_file microchip_mpfs-m100pfsevp-sdcard.dtb; else " \
++		"setenv fdt_file microchip_mpfs-m100pfsevp-emmc.dtb; fi; fi\0" \
 +	"hostname=m100pfsevp\0"	\
 +	"miscargs=earlycon=sbi uio_pdrv_genirq.of_id=generic-uio " \
 +		"pci-hpmemsize=0M libata.force=noncq\0" \
