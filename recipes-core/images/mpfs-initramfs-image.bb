@@ -6,11 +6,6 @@ do_image_wic[depends] += "mpfs-initramfs-base:do_image_complete"
 
 LICENSE = "MIT"
 
-IMAGE_BOOT_FILES = " \
-    fitImage \
-    boot.scr.uimg \
-"
-
 WKS_FILE_DEPENDS:append ?= " \
     mpfs-initramfs-base \
 "
