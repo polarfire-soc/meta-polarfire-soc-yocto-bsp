@@ -11,7 +11,7 @@ Using Yocto 'Openembedded' you will build the following:
 
 The complete User Guides for each development platform, containing board and boot instructions, are available for the following supported platforms:
 
-  - [ICICLE-KIT-ES](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-icicle-kit-es/icicle-kit-sw-developer-guide/icicle-kit-sw-developer-guide.md) (Icicle Kit Engineering Sample) (Requires minimum Design Tag 2020.11 )
+  - [ICICLE-KIT-ES](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/boards/mpfs-icicle-kit-es/icicle-kit-sw-developer-guide/icicle-kit-sw-developer-guide.md) (Icicle Kit Engineering Sample) (Requires minimum Design Tag 2022.03 )
 
 ## Build Instructions
 Before continuing, ensure that the prerequisite packages are present on your system. Please see the [Host PC setup for Yocto section](#Dependencies) for further details.
@@ -20,7 +20,7 @@ Before continuing, ensure that the prerequisite packages are present on your sys
 This needs to be done every time you want a clean setup based on the latest BSP.
 ```bash
 mkdir yocto-dev && cd yocto-dev
-repo init -u https://github.com/polarfire-soc/meta-polarfire-soc-yocto-bsp.git -b master -m tools/manifests/riscv-yocto.xml
+repo init -u https://github.com/polarfire-soc/meta-polarfire-soc-yocto-bsp.git -b 2022.05 -m tools/manifests/riscv-yocto.xml
 ```
 ### Update the repo workspace
 ```bash
