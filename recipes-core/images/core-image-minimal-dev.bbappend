@@ -18,7 +18,6 @@ IMAGE_INSTALL = "\
     i2c-tools \
     vim vim-vimrc \
     net-tools \
-    dhcpcd \
     htop \
     iw \
     python3 \
