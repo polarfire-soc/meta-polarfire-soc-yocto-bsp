@@ -22,6 +22,11 @@ SRC_URI:append:icicle-kit-es-amp = "file://0001-U-Boot-v2022.01-with-high-memory
 SRC_URI:append:m100pfsevp = "file://0001-Aries-board-m100pfsevp-u-boot-support.patch \
                              file://${HSS_PAYLOAD}.yaml \
                             "
+SRC_URI:append:sev-kit-es = "file://0001-U-Boot-v2022.01-with-high-memory-0x1000000000.patch \
+                             file://0001-Support-Microchip-PolarFire-SoC-SEV-Kit.patch \
+                             file://${UBOOT_ENV}.txt \
+                             file://${HSS_PAYLOAD}.yaml \
+                             "
 
 DEPENDS:append = " u-boot-tools-native hss-payload-generator-native"
 DEPENDS:append:icicle-kit-es-amp = " polarfire-soc-amp-examples"
@@ -67,3 +72,4 @@ do_deploy:append () {
 
 FILES:${PN}:append:icicle-kit-es = " /boot/boot.scr.uimg"
 FILES:${PN}:append:icicle-kit-es-amp = " /boot/boot.scr.uimg"
+FILES:${PN}:append:sev-kit-es = " /boot/boot.scr.uimg"

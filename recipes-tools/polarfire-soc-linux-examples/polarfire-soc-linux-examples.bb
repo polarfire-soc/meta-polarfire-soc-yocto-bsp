@@ -58,7 +58,13 @@ do_install() {
     install -m 0644 ${S}/ethernet/iio-http-server/collection/collectdiio.service ${D}${systemd_unitdir}/system
 }
 
-SYSTEMD_SERVICE:${PN} = "collectdiio.service"
-SYSTEMD_AUTO_ENABLE:${PN} = "disable"
+do_install:sev-kit-es() {
+	:
+}
+
+SYSTEMD_SERVICE:icicle-kit-es:${PN} = "collectdiio.service"
+SYSTEMD_SERVICE:icicle-kit-es-amp:${PN} = "collectdiio.service"
+SYSTEMD_AUTO_ENABLE:icicle-kit-es:${PN} = "disable"
+SYSTEMD_AUTO_ENABLE:icicle-kit-es-amp:${PN} = "disable"
 FILES:${PN} += "/opt/microchip/"
 

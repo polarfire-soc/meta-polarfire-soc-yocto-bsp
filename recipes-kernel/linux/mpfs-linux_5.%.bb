@@ -18,6 +18,8 @@ SRC_URI:append:icicle-kit-es-amp = " file://bsp_cmdline.cfg \
 
 SRC_URI:append:m100pfsevp = "file://m100pfsevp_configs.cfg"
 
+SRC_URI:append:sev-kit-es = " file://bsp_cmdline.cfg "
+
 do_deploy:append() {
 
     if [ -n "${INITRAMFS_IMAGE}" ]; then
