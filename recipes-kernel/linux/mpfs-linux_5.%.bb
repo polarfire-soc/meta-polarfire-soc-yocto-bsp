@@ -6,7 +6,7 @@ KERNEL_VERSION_SANITY_SKIP="1"
 BRANCH = "linux-5.15-mchp+fpga"
 SRCREV="29c2077400e2614da14e8e5b31f7bec041f3f4be"
 SRC_URI = " \
-    git://github.com/linux4microchip/linux.git;protocol=https;branch=${BRANCH} \
+    git://git@bitbucket.microchip.com/fpga_pfsoc_es/linux.git;protocol=ssh;branch=${BRANCH}  \
 "
 
 SRC_URI:append:icicle-kit-es = " file://bsp_cmdline.cfg \
