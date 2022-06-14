@@ -3,8 +3,8 @@ require recipes-kernel/linux/mpfs-linux-common.inc
 LINUX_VERSION ?= "5.15"
 KERNEL_VERSION_SANITY_SKIP="1"
 
-BRANCH = "linux-5.15-mchp+fpga"
-SRCREV="29c2077400e2614da14e8e5b31f7bec041f3f4be"
+BRANCH = "mpfs-linux-5.15-next"
+SRCREV="${AUTOREV}"
 SRC_URI = " \
     git://git@bitbucket.microchip.com/fpga_pfsoc_es/linux.git;protocol=ssh;branch=${BRANCH}  \
 "
