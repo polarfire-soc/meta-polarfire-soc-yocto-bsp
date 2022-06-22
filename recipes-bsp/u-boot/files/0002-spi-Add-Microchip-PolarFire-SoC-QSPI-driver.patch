@@ -1,7 +1,7 @@
-From d97d2f131f133899eeb290fd50d9328932912434 Mon Sep 17 00:00:00 2001
+From 59daae11c32b39763fc3e727e5b73836d6dc124a Mon Sep 17 00:00:00 2001
 From: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
 Date: Thu, 7 Apr 2022 14:58:07 +0100
-Subject: [PATCH] spi: Add Microchip PolarFire SoC QSPI driver
+Subject: [PATCH 3/9] spi: Add Microchip PolarFire SoC QSPI driver
 
 Add QSPI driver code for the Microchip PolarFire SoC.
 This driver supports the qspi standard, dual and quad
@@ -19,7 +19,7 @@ Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
  create mode 100644 drivers/spi/microchip_qspi.c
 
 diff --git a/arch/riscv/dts/microchip-mpfs-icicle-kit.dts b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
-index 616019dc8d..e9ab840920 100644
+index 1da1d5139a..199aa1bdcf 100644
 --- a/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
 +++ b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
 @@ -18,6 +18,7 @@
@@ -30,7 +30,7 @@ index 616019dc8d..e9ab840920 100644
  	};
  
  	chosen {
-@@ -148,3 +149,17 @@
+@@ -147,3 +148,17 @@
  		ti,fifo-depth = <0x1>;
  	};
  };
@@ -278,7 +278,7 @@ index 0000000000..98234831f7
 +
 +	cbytes =  tx_byte_size;
 +	total_byte_cnt = tx_byte_size + rd_byte_size;
-+
++		
 +	/* Disable interrupts */
 +	writel(0, &regs->intenable);
 +
@@ -297,22 +297,22 @@ index 0000000000..98234831f7
 +
 +	ctrl &= ~(QSPI_MODE_MASK << CTRL_QMODE0);
 +	ctrl |= (QSPI_NORMAL << CTRL_QMODE0);
-+
++	
 +	skips  = (total_byte_cnt & FRMS_TBYTES_MASK);
 +	skips |= ((cbytes << FRMS_CBYTES) & FRMS_CBYTES_MASK);
 +
 +	if (qspi_mode != QSPI_NORMAL) {
 +		if ((qspi_ex_ro_rw == QSPI_QUAD_EX_RW) ||
 +		   (qspi_ex_ro_rw == QSPI_QUAD_EX_RO)) {
-+
++		   
 +			/* QSPI_QUAD_EX_RW fast read quad i/o 0xEB 1-cmd, 4 - addr/data
 +			   QSPI_QUAD_EX_RO fast read quad 0x6B 1-cmd/addr, 4 - data */
 +			ctrl &= ~(QSPI_MODE_MASK << CTRL_QMODE0);
 +			ctrl |= (qspi_ex_ro_rw << CTRL_QMODE0);
-+
++		
 +			skips |= FRMS_QSPI_MASK;
 +		}
-+	}
++	}	
 +
 +	skips |= ((u32)num_idle_cycles) << FRMS_IDLE;
 +	skips |= FRMS_FWORD_MASK;
@@ -391,7 +391,7 @@ index 0000000000..98234831f7
 +				skips = readb(&regs->rxdatax1);
 +		}
 +
-+		if (qspi_mode != QSPI_NORMAL)
++		if (qspi_mode != QSPI_NORMAL) 	
 +			while (!(readl(&regs->status) & STTS_READY_MASK))
 +				;
 +	}
@@ -404,7 +404,7 @@ index 0000000000..98234831f7
 +	u16 i, cnt, caddr;
 +
 +	if (prev_data[0] == DATA_LOAD ||
-+	    prev_data[0] == QUAD_DATA_LOAD) {
++	    prev_data[0] == QUAD_DATA_LOAD) {	    
 +
 +		/* Page size 256 bytes */
 +		if (bytelen < SIZE_512) {
@@ -439,7 +439,7 @@ index 0000000000..98234831f7
 +				caddr += SIZE_256;
 +			}
 +		}
-+	} else {
++	} else {	
 +		/* Write status reg */
 +		for (i = 0; i < bytelen; i++)
 +			prev_data[prev_len++] = *(u8 *)(txp + i);
@@ -489,7 +489,7 @@ index 0000000000..98234831f7
 +	} else if (!dout) {
 +		/* Read data */
 +		prev_din = false;
-+		if (prev_data[0] == FAST_READ_QUAD_IO) {
++		if (prev_data[0] == FAST_READ_QUAD_IO) {		
 +			qspi_mode = QSPI_QUAD_FULL;
 +			qspi_ex_ro_rw = QSPI_QUAD_EX_RW;
 +		} else if (prev_data[0] == FAST_READ_QUAD) {
@@ -561,10 +561,10 @@ index 0000000000..98234831f7
 +	ctrl &= ~(QSPI_MODE_MASK << CTRL_QMODE0);
 +	ctrl |= (QSPI_NORMAL << CTRL_QMODE0);
 +	writel(ctrl, &regs->control);
-+
++	
 +	qspi_mode = QSPI_NORMAL;
 +	qspi_ex_ro_rw = QSPI_NORMAL;
-+
++	
 +
 +	return 0;
 +}

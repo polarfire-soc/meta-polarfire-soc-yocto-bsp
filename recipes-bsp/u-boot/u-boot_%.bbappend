@@ -1,32 +1,18 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI:append = " "
-
-SRC_URI:append:icicle-kit-es = "file://0001-U-Boot-v2022.01-with-high-memory-0x1000000000.patch \
-                                file://0002-spi-Add-Microchip-PolarFire-SoC-QSPI-driver.patch \
-                                file://0003-spi-pt-2-add-Microchip-PolarFire-SoC-QSPI-support.patch \
-                                file://0004-icicle-enable-overlay-support-in-defconfig.patch \
-                                file://${UBOOT_ENV}.txt \
-                                file://${HSS_PAYLOAD}.yaml \
-                               "
-
-SRC_URI:append:icicle-kit-es-amp = "file://0001-U-Boot-v2022.01-with-high-memory-0x1000000000.patch \
-                                    file://0002-riscv-icicle-kit-change-to-amp-dts.patch \
-                                    file://0002-spi-Add-Microchip-PolarFire-SoC-QSPI-driver.patch \
-                                    file://0003-spi-pt-2-add-Microchip-PolarFire-SoC-QSPI-support.patch \
-                                    file://0004-icicle-enable-overlay-support-in-defconfig.patch \
-                                    file://${UBOOT_ENV}.txt \
-                                    file://${HSS_PAYLOAD}.yaml \
-                                   "
-
-SRC_URI:append:m100pfsevp = "file://0001-Aries-board-m100pfsevp-u-boot-support.patch \
-                             file://${HSS_PAYLOAD}.yaml \
-                            "
-SRC_URI:append:sev-kit-es = "file://0001-U-Boot-v2022.01-with-high-memory-0x1000000000.patch \
-                             file://0001-Support-Microchip-PolarFire-SoC-SEV-Kit.patch \
-                             file://${UBOOT_ENV}.txt \
-                             file://${HSS_PAYLOAD}.yaml \
-                             "
+SRC_URI:append = " file://0001-U-Boot-v2022.01-with-high-memory-0x1000000000.patch \
+                  file://0002-spi-Add-Microchip-PolarFire-SoC-QSPI-driver.patch \
+                  file://0003-icicle-add-support-for-booting-from-QSPI-flash.patch \
+                  file://0004-riscv-dts-microchip-add-dts-for-icicle-kit-amp.patch \
+                  file://0005-riscv-Add-support-for-Aries-m100pfsevp.patch \
+                  file://0006-riscv-dts-add-devicetree-for-Aries-m100pfsevp.patch \
+                  file://0007-riscv-Add-support-for-PolarFire-SoC-SEV-Kit.patch \
+                  file://0008-icicle-enable-overlay-support-in-defconfig.patch \
+                  file://${UBOOT_ENV}.txt \
+                  file://${HSS_PAYLOAD}.yaml \
+"
+# Aries m100pfsevp machine uses built-in U-boot env
+SRC_URI:remove:m100pfsevp = "file://${UBOOT_ENV}.txt"
 
 DEPENDS:append = " u-boot-tools-native hss-payload-generator-native"
 DEPENDS:append:icicle-kit-es-amp = " polarfire-soc-amp-examples"
@@ -70,6 +56,4 @@ do_deploy:append () {
     fi
 }
 
-FILES:${PN}:append:icicle-kit-es = " /boot/boot.scr.uimg"
-FILES:${PN}:append:icicle-kit-es-amp = " /boot/boot.scr.uimg"
-FILES:${PN}:append:sev-kit-es = " /boot/boot.scr.uimg"
+FILES:${PN}:append = " /boot/boot.scr.uimg"

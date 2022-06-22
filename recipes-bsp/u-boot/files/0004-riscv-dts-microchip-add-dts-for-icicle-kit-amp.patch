@@ -1,0 +1,242 @@
+From aad5247aef8662d778e12301e99118e856f2fede Mon Sep 17 00:00:00 2001
+From: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
+Date: Tue, 24 May 2022 15:01:42 +0100
+Subject: [PATCH 4/8] riscv: dts: microchip: add device tree for icicle kit in
+ AMP mode
+
+Create a dts file for the Icicle Kit to be used in AMP mode
+
+- Disable peripherals in U-boot that are used in context B (BM/RTOS)
+- Decrease general DDR size to acommodate rpmsg ring buffers
+
+Signed-off-by: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
+---
+ arch/riscv/dts/Makefile                       |   3 +-
+ .../dts/microchip-mpfs-icicle-kit-amp.dts     | 172 ++++++++++++++++++
+ configs/microchip_mpfs_icicle_amp_defconfig   |  21 +++
+ 3 files changed, 195 insertions(+), 1 deletion(-)
+ create mode 100644 arch/riscv/dts/microchip-mpfs-icicle-kit-amp.dts
+ create mode 100644 configs/microchip_mpfs_icicle_amp_defconfig
+
+diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
+index b6e9166767..311a31f2fd 100644
+--- a/arch/riscv/dts/Makefile
++++ b/arch/riscv/dts/Makefile
+@@ -1,7 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0+
+ 
+ dtb-$(CONFIG_TARGET_AX25_AE350) += ae350_32.dtb ae350_64.dtb
+-dtb-$(CONFIG_TARGET_MICROCHIP_ICICLE) += microchip-mpfs-icicle-kit.dtb
++dtb-$(CONFIG_TARGET_MICROCHIP_ICICLE) += microchip-mpfs-icicle-kit.dtb \
++microchip-mpfs-icicle-kit-amp.dtb
+ dtb-$(CONFIG_TARGET_QEMU_VIRT) += qemu-virt.dtb
+ dtb-$(CONFIG_TARGET_OPENPITON_RISCV64) += openpiton-riscv64.dtb
+ dtb-$(CONFIG_TARGET_SIFIVE_UNLEASHED) += hifive-unleashed-a00.dtb
+diff --git a/arch/riscv/dts/microchip-mpfs-icicle-kit-amp.dts b/arch/riscv/dts/microchip-mpfs-icicle-kit-amp.dts
+new file mode 100644
+index 0000000000..3b8d450869
+--- /dev/null
++++ b/arch/riscv/dts/microchip-mpfs-icicle-kit-amp.dts
+@@ -0,0 +1,172 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (C) 2021 Microchip Technology Inc.
++ * Padmarao Begari <padmarao.begari@microchip.com>
++ */
++
++/dts-v1/;
++
++#include "microchip-mpfs.dtsi"
++
++/* Clock frequency (in Hz) of the rtcclk */
++#define RTCCLK_FREQ		1000000
++
++/ {
++	model = "Microchip PolarFire-SoC Icicle Kit";
++	compatible = "microchip,mpfs-icicle-kit", "microchip,mpfs";
++
++	aliases {
++		serial1 = &uart1;
++		ethernet0 = &mac1;
++		spi0 = &qspi;
++	};
++
++	chosen {
++		stdout-path = "serial1";
++	};
++
++	cpus {
++		timebase-frequency = <RTCCLK_FREQ>;
++	};
++
++	reserved-memory {
++		ranges;
++		#size-cells = <2>;
++		#address-cells = <2>;
++
++		fabricbuf0: fabricbuf@0 {
++			compatible = "shared-dma-pool";
++			reg = <0x0 0xae000000 0x0 0x2000000>;
++			label = "fabricbuf0-ddr-c";
++		};
++
++		fabricbuf1: fabricbuf@1 {
++			compatible = "shared-dma-pool";
++			reg = <0x0 0xc0000000 0x0 0x8000000>;
++			label = "fabricbuf1-ddr-nc";
++		};
++
++		fabricbuf2: fabricbuf@2 {
++			compatible = "shared-dma-pool";
++			reg = <0x0 0xd8000000 0x0 0x8000000>;
++			label = "fabricbuf2-ddr-nc-wcb";
++		};
++	};
++
++	udmabuf0 {
++		compatible = "ikwzm,u-dma-buf";
++		device-name = "udmabuf-ddr-c0";
++		minor-number = <0>;
++		size = <0x0 0x2000000>;
++		memory-region = <&fabricbuf0>;
++		sync-mode = <3>;
++	};
++
++	udmabuf1 {
++		compatible = "ikwzm,u-dma-buf";
++		device-name = "udmabuf-ddr-nc0";
++		minor-number = <1>;
++		size = <0x0 0x8000000>;
++		memory-region = <&fabricbuf1>;
++		sync-mode = <3>;
++	};
++
++	udmabuf2 {
++		compatible = "ikwzm,u-dma-buf";
++		device-name = "udmabuf-ddr-nc-wcb0";
++		minor-number = <2>;
++		size = <0x0 0x8000000>;
++		memory-region = <&fabricbuf2>;
++		sync-mode = <3>;
++	};
++
++	ddrc_cache: memory@1000000000 {
++		device_type = "memory";
++		reg = <0x10 0x0 0x0 0x75BB0000>;
++		clocks = <&clkcfg CLK_DDRC>;
++		status = "okay";
++	};
++};
++
++&cpu4 {
++	status = "disabled"; // in use by context b
++};
++
++&uart1 {
++	status = "okay";
++};
++
++&uart3 {
++	status = "disabled";
++};
++
++&mmc {
++	status = "okay";
++	bus-width = <4>;
++	disable-wp;
++	cap-mmc-highspeed;
++	cap-sd-highspeed;
++	card-detect-delay = <200>;
++	mmc-ddr-1_8v;
++	mmc-hs200-1_8v;
++	sd-uhs-sdr12;
++	sd-uhs-sdr25;
++	sd-uhs-sdr50;
++	sd-uhs-sdr104;
++};
++
++&i2c1 {
++	status = "okay";
++	clock-frequency = <100000>;
++
++	pac193x: pac193x@10 {
++		compatible = "microchip,pac1934";
++		reg = <0x10>;
++		samp-rate = <64>;
++		status = "okay";
++		ch1: channel0 {
++			uohms-shunt-res = <10000>;
++			rail-name = "VDDREG";
++			channel_enabled;
++		};
++		ch2: channel1 {
++			uohms-shunt-res = <10000>;
++			rail-name = "VDDA25";
++			channel_enabled;
++		};
++		ch3: channel2 {
++			uohms-shunt-res = <10000>;
++			rail-name = "VDD25";
++			channel_enabled;
++		};
++		ch4: channel3 {
++			uohms-shunt-res = <10000>;
++			rail-name = "VDDA_REG";
++			channel_enabled;
++		};
++	};
++};
++
++&mac1 {
++	status = "okay";
++	phy-mode = "sgmii";
++	phy-handle = <&phy1>;
++	phy1: ethernet-phy@9 {
++		reg = <9>;
++		ti,fifo-depth = <0x1>;
++	};
++};
++
++&qspi {
++	status = "okay";
++	num-cs = <1>;
++	flash0: spi-nand@0 {
++		compatible = "spi-nand";
++		reg = <0x0>;
++		spi-tx-bus-width = <4>;
++		spi-rx-bus-width = <4>;
++		spi-max-frequency = <20000000>;
++		spi-cpol;
++		spi-cpha;
++	};
++};
+diff --git a/configs/microchip_mpfs_icicle_amp_defconfig b/configs/microchip_mpfs_icicle_amp_defconfig
+new file mode 100644
+index 0000000000..920b8bbc14
+--- /dev/null
++++ b/configs/microchip_mpfs_icicle_amp_defconfig
+@@ -0,0 +1,21 @@
++CONFIG_RISCV=y
++CONFIG_SYS_MALLOC_LEN=0x800000
++CONFIG_SYS_MALLOC_F_LEN=0x2000
++CONFIG_ENV_SIZE=0x2000
++CONFIG_DEFAULT_DEVICE_TREE="microchip-mpfs-icicle-kit-amp"
++CONFIG_TARGET_MICROCHIP_ICICLE=y
++CONFIG_ARCH_RV64I=y
++CONFIG_RISCV_SMODE=y
++CONFIG_DISTRO_DEFAULTS=y
++CONFIG_SYS_LOAD_ADDR=0x1000200000
++CONFIG_FIT=y
++CONFIG_DISPLAY_CPUINFO=y
++CONFIG_DISPLAY_BOARDINFO=y
++CONFIG_SYS_PROMPT="RISC-V # "
++CONFIG_SYS_RELOC_GD_ENV_ADDR=y
++CONFIG_BOOTP_SEND_HOSTNAME=y
++CONFIG_DM_MTD=y
++CONFIG_CMD_MTDPARTS=y
++CONFIG_MTDPARTS_DEFAULT="mtdparts=spi-nand0:8m(payload),128k(env),48m(fitimage)"
++CONFIG_USE_BOOTCOMMAND=y
++CONFIG_BOOTCOMMAND="run bootcmd_qspi;run bootcmd_mmc;run bootcmd_dhcp"
+-- 
+2.25.1
+

@@ -1,0 +1,91 @@
+From f260a88186f251ea14f56405064bcd06a7db6538 Mon Sep 17 00:00:00 2001
+From: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
+Date: Mon, 13 Jun 2022 11:31:31 +0100
+Subject: [PATCH 4/9] icicle: add support for booting from QSPI flash memory
+
+Signed-off-by: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
+---
+ configs/microchip_mpfs_icicle_defconfig |  4 +++
+ include/configs/microchip_mpfs_icicle.h | 47 +++++++++++++++++++++++--
+ 2 files changed, 48 insertions(+), 3 deletions(-)
+
+diff --git a/configs/microchip_mpfs_icicle_defconfig b/configs/microchip_mpfs_icicle_defconfig
+index fd0c3dd47c..ba20e6b184 100644
+--- a/configs/microchip_mpfs_icicle_defconfig
++++ b/configs/microchip_mpfs_icicle_defconfig
+@@ -15,3 +15,7 @@ CONFIG_SYS_PROMPT="RISC-V # "
+ CONFIG_SYS_RELOC_GD_ENV_ADDR=y
+ CONFIG_BOOTP_SEND_HOSTNAME=y
+ CONFIG_DM_MTD=y
++CONFIG_CMD_MTDPARTS=y
++CONFIG_MTDPARTS_DEFAULT="mtdparts=spi-nand0:8m(payload),128k(env),48m(fitimage)"
++CONFIG_USE_BOOTCOMMAND=y
++CONFIG_BOOTCOMMAND="run bootcmd_qspi;run bootcmd_mmc;run bootcmd_dhcp"
+diff --git a/include/configs/microchip_mpfs_icicle.h b/include/configs/microchip_mpfs_icicle.h
+index 0b7e56af93..c6c709aa04 100644
+--- a/include/configs/microchip_mpfs_icicle.h
++++ b/include/configs/microchip_mpfs_icicle.h
+@@ -18,9 +18,49 @@
+ 
+ /* Environment options */
+ 
++#if defined(CONFIG_CMD_DHCP)
++#define BOOT_TARGET_DEVICES_DHCP(func)	func(DHCP, dhcp, na)
++#else
++#define BOOT_TARGET_DEVICES_DHCP(func)
++#endif
++
++#if defined(CONFIG_CMD_MTD)
++# define BOOT_TARGET_DEVICES_QSPI(func) func(QSPI, qspi, na)
++#else
++# define BOOT_TARGET_DEVICES_QSPI(func)
++#endif
++
++#if defined(CONFIG_CMD_MMC)
++#define BOOT_TARGET_DEVICES_EMMC(func)	func(EMMC, mmc, 0)
++#else
++#define BOOT_TARGET_DEVICES_EMMC(func)
++#endif
++
++#define BOOTENV_DEV_QSPI(devtypeu, devtypel, instance) \
++	"bootcmd_qspi=echo Trying to boot from QSPI...; "\
++			"setenv scriptname boot.scr.uimg; " \
++			"if mtd list; then setenv mtd_present true; " \
++			"mtd read env ${scriptaddr} 0; " \
++			"source ${scriptaddr}; setenv mtd_present; " \
++			"fi\0 "
++
++#define BOOTENV_DEV_EMMC(devtypeu, devtypel, instance) \
++	"bootcmd_mmc=echo Trying to boot from eMMC/SD...;"\
++			"setenv devnum 0; setenv mmcbootpart 1; setenv scriptname boot.scr.uimg;"\
++			"if mmc rescan; then " \
++			"load mmc 0:${mmcbootpart} ${scriptaddr} ${scriptname}; source ${scriptaddr}; " \
++			"fi\0 "
++
++#define BOOTENV_DEV_NAME_QSPI(devtypeu, devtypel, instance) \
++	"qspi "
++
++#define BOOTENV_DEV_NAME_EMMC(devtypeu, devtypel, instance) \
++	"mmc "
++
+ #define BOOT_TARGET_DEVICES(func) \
+-	func(MMC, mmc, 0) \
+-	func(DHCP, dhcp, na)
++	BOOT_TARGET_DEVICES_EMMC(func)\
++	BOOT_TARGET_DEVICES_QSPI(func)\
++	BOOT_TARGET_DEVICES_DHCP(func)
+ 
+ #include <config_distro_bootcmd.h>
+ 
+@@ -31,6 +71,7 @@
+ 	"scriptaddr=0x1008100000\0" \
+ 	"pxefile_addr_r=0x1008200000\0" \
+ 	"ramdisk_addr_r=0x1008300000\0" \
+-	BOOTENV
++	"boot_script_dhcp=boot.scr.uimg\0" \
++	BOOT_TARGET_DEVICES(BOOTENV_DEV)
+ 
+ #endif /* __CONFIG_H */
+-- 
+2.25.1
+

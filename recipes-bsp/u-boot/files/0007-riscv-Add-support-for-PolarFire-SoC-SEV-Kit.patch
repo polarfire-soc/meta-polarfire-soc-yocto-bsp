@@ -1,7 +1,7 @@
-From 9ef2b497b86bd79d50d913fe6754c859dc27a1fe Mon Sep 17 00:00:00 2001
+From 7a0ad62a12eb371d1adb365bf8e30ff8818e37a7 Mon Sep 17 00:00:00 2001
 From: Vattipalli Praveen <praveen.kumar@microchip.com>
 Date: Thu, 16 Jun 2022 16:33:09 +0530
-Subject: [PATCH] Support-Microchip-PolarFire-SoC-SEV-Kit
+Subject: [PATCH 8/9] riscv: Add support for Microchip PolarFire SoC SEV Kit
 
 Signed-off-by: Vattipalli Praveen <praveen.kumar@microchip.com>
 ---
@@ -25,10 +25,10 @@ Signed-off-by: Vattipalli Praveen <praveen.kumar@microchip.com>
  create mode 100644 include/configs/microchip_mpfs_sevkit.h
 
 diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index ba29e70acf..751660631b 100644
+index 997e1e22ab..b239a1a3c7 100644
 --- a/arch/riscv/Kconfig
 +++ b/arch/riscv/Kconfig
-@@ -14,6 +14,9 @@ config TARGET_AX25_AE350
+@@ -17,6 +17,9 @@ config TARGET_AX25_AE350
  config TARGET_MICROCHIP_ICICLE
  	bool "Support Microchip PolarFire-SoC Icicle Board"
  
@@ -38,8 +38,8 @@ index ba29e70acf..751660631b 100644
  config TARGET_QEMU_VIRT
  	bool "Support QEMU Virt Board"
  
-@@ -61,6 +64,7 @@ config SPL_SYS_DCACHE_OFF
- source "board/AndesTech/ax25-ae350/Kconfig"
+@@ -65,6 +68,7 @@ source "board/AndesTech/ax25-ae350/Kconfig"
+ source "board/aries/m100pfsevp/Kconfig"
  source "board/emulation/qemu-riscv/Kconfig"
  source "board/microchip/mpfs_icicle/Kconfig"
 +source "board/microchip/mpfs_sevkit/Kconfig"
@@ -60,13 +60,13 @@ index 584e656169..ea720900e1 100644
  	 * Ensure that we run from first 4GB so that all
  	 * addresses used by U-Boot are 32bit addresses.
 diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
-index b6e9166767..e6b838109b 100644
+index 57bddfaef2..41c5f7fa97 100644
 --- a/arch/riscv/dts/Makefile
 +++ b/arch/riscv/dts/Makefile
-@@ -2,6 +2,7 @@
- 
- dtb-$(CONFIG_TARGET_AX25_AE350) += ae350_32.dtb ae350_64.dtb
- dtb-$(CONFIG_TARGET_MICROCHIP_ICICLE) += microchip-mpfs-icicle-kit.dtb
+@@ -4,6 +4,7 @@ dtb-$(CONFIG_TARGET_AX25_AE350) += ae350_32.dtb ae350_64.dtb
+ dtb-$(CONFIG_TARGET_ARIES_M100PFSEVP) += m100pfsevp.dtb
+ dtb-$(CONFIG_TARGET_MICROCHIP_ICICLE) += microchip-mpfs-icicle-kit.dtb \
+ microchip-mpfs-icicle-kit-amp.dtb
 +dtb-$(CONFIG_TARGET_MICROCHIP_SEVKIT) += microchip-mpfs-sev-kit.dtb
  dtb-$(CONFIG_TARGET_QEMU_VIRT) += qemu-virt.dtb
  dtb-$(CONFIG_TARGET_OPENPITON_RISCV64) += openpiton-riscv64.dtb

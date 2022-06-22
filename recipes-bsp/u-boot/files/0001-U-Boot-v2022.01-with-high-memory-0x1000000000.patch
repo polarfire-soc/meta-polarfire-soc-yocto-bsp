@@ -1,22 +1,25 @@
-From 3217ec002dab864a2fe29312551d395a26befdba Mon Sep 17 00:00:00 2001
-From: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
-Date: Wed, 26 Jan 2022 14:50:15 +0000
-Subject: [PATCH v2 1/1] U-Boot v2022.01 with high memory 0x1000000000
+From acbd5a2db28a27c1af85e4e3bcb7fe9b17639c5a Mon Sep 17 00:00:00 2001
+From: Padmarao Begari <padmarao.begari@microchip.com>
+Date: Tue, 18 Jan 2022 12:04:43 +0530
+Subject: [PATCH 2/9] U-Boot v2022.01 with high memory 0x1000000000
 
 Enable the DDR 1GB high memory(0x1000000000), the MMC 64-bit DMA,
 Host Controller version 4 and update ADMA descriptor table for
 64-bit address.
 
+Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
+Fixed DDR size &
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 ---
  arch/riscv/cpu/generic/dram.c                |  3 ++-
- arch/riscv/dts/microchip-mpfs-icicle-kit.dts | 15 ++++-----------
+ arch/riscv/dts/microchip-mpfs-icicle-kit.dts | 12 ++----------
  board/microchip/mpfs_icicle/Kconfig          |  4 ++--
  configs/microchip_mpfs_icicle_defconfig      |  2 +-
  drivers/mmc/sdhci-adma.c                     |  1 +
  drivers/mmc/sdhci.c                          |  7 ++++++-
  include/configs/microchip_mpfs_icicle.h      | 14 +++++++-------
  include/sdhci.h                              |  2 ++
- 8 files changed, 25 insertions(+), 23 deletions(-)
+ 8 files changed, 23 insertions(+), 22 deletions(-)
 
 diff --git a/arch/riscv/cpu/generic/dram.c b/arch/riscv/cpu/generic/dram.c
 index 1fdc7837b8..584e656169 100644
@@ -39,27 +42,9 @@ index 1fdc7837b8..584e656169 100644
  	return gd->ram_top;
  }
 diff --git a/arch/riscv/dts/microchip-mpfs-icicle-kit.dts b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
-index 287ef3d23b..616019dc8d 100644
+index 287ef3d23b..1da1d5139a 100644
 --- a/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
 +++ b/arch/riscv/dts/microchip-mpfs-icicle-kit.dts
-@@ -35,7 +35,7 @@
- 
- 		fabricbuf0: fabricbuf@0 {
- 			compatible = "shared-dma-pool";
--			reg = <0x0 0xae000000 0x0 0x2000000>;
-+			reg = <0x0 0x80000000 0x0 0x2000000>;
- 			label = "fabricbuf0-ddr-c";
- 		};
- 
-@@ -47,7 +47,7 @@
- 
- 		fabricbuf2: fabricbuf@2 {
- 			compatible = "shared-dma-pool";
--			reg = <0x0 0xd8000000 0x0 0x8000000>;
-+			reg = <0x0 0xd0000000 0x0 0x8000000>;
- 			label = "fabricbuf2-ddr-nc-wcb";
- 		};
- 	};
 @@ -79,16 +79,9 @@
  		sync-mode = <3>;
  	};
@@ -79,6 +64,14 @@ index 287ef3d23b..616019dc8d 100644
  		clocks = <&clkcfg CLK_DDRC>;
  		status = "okay";
  	};
+@@ -100,7 +93,6 @@
+ 
+ &mmc {
+ 	status = "okay";
+-
+ 	bus-width = <4>;
+ 	disable-wp;
+ 	cap-mmc-highspeed;
 diff --git a/board/microchip/mpfs_icicle/Kconfig b/board/microchip/mpfs_icicle/Kconfig
 index 092e411215..4f2a236fbb 100644
 --- a/board/microchip/mpfs_icicle/Kconfig
