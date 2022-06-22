@@ -62,9 +62,15 @@ do_install:sev-kit-es() {
 	:
 }
 
-SYSTEMD_SERVICE:icicle-kit-es:${PN} = "collectdiio.service"
-SYSTEMD_SERVICE:icicle-kit-es-amp:${PN} = "collectdiio.service"
-SYSTEMD_AUTO_ENABLE:icicle-kit-es:${PN} = "disable"
-SYSTEMD_AUTO_ENABLE:icicle-kit-es-amp:${PN} = "disable"
+do_install:m100pfsevp() {
+	:
+}
+
+SYSTEMD_SERVICE:${PN}:append:icicle-kit-es = "collectdiio.service"
+SYSTEMD_AUTO_ENABLE:${PN}:append:icicle-kit-es = "disable"
+
+SYSTEMD_SERVICE:${PN}:append:icicle-kit-es-amp = "collectdiio.service"
+SYSTEMD_AUTO_ENABLE:${PN}:append:icicle-kit-es-amp = "disable"
+
 FILES:${PN} += "/opt/microchip/"
 
