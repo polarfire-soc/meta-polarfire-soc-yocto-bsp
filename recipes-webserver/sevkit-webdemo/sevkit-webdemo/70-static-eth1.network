@@ -1,0 +1,11 @@
+[Match]
+# You can also use wildcards. Maybe you want enable dhcp
+# an all eth* NICs
+Name=eth1
+[Network]
+DHCP=v4
+# static IP
+# 192.168.100.2 netmask 255.255.255.0
+#Address=192.168.2.2/24
+#Gateway=192.168.2.254
+#DNS=8.8.8.8

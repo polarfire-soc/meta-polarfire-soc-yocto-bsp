@@ -75,6 +75,7 @@ DISTRO_FEATURES:append = " largefile opengl ptest multiarch wayland pam  systemd
 DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
 VIRTUAL-RUNTIME_init_manager = "systemd"
 HOSTTOOLS_NONFATAL:append = " ssh"
+LICENSE_FLAGS_WHITELIST = "commercial_ffmpeg"
 EOF
 
 echo "Creating initramfs.conf"
@@ -97,6 +98,7 @@ echo "---------------------------------------------------"
 echo " Default MACHINE=${MACHINE}"
 echo "* icicle-kit-es: Microchip Polarfire SoC Icicle Kit Engineering Sample"
 echo "* icicle-kit-es-amp: Microchip Polarfire SoC Icicle Kit Engineering Sample in AMP mode"
+echo "* sev-kit-es: Microchip Polarfire SoC SEV(Smart Embedded Vision) Kit Engineering Sample"
 echo "---------------------------------------------------"
 echo "Bitbake Image"
 echo "---------------------------------------------------"

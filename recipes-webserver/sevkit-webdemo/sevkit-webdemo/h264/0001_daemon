@@ -1,0 +1,6 @@
+daemon ALL=(ALL:ALL) NOPASSWD: /srv/www/h264/ffmpeg.sh
+daemon ALL=(ALL:ALL) NOPASSWD: /srv/www/h264/bash.sh
+daemon ALL=(ALL:ALL) NOPASSWD: /srv/www/h264/stop.sh
+daemon ALL=(ALL:ALL) NOPASSWD: /srv/www/h264/update.sh
+
+daemon ALL=(ALL:ALL) NOPASSWD: /usr/bin/ffmpeg
