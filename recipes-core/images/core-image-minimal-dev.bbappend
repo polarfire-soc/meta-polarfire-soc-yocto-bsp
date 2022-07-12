@@ -37,5 +37,17 @@ IMAGE_INSTALL = "\
     ${CORE_IMAGE_EXTRA_INSTALL} \
     "
 
-
+IMAGE_INSTALL:append:sev-kit-es = " \
+    ffmpeg \
+    apache2 \
+    php \
+    php-cli \
+    php-fpm \
+    php-cgi \
+    php-modphp \
+    sudo \
+    v4l2-start-service \
+    v4l-utils \
+    sevkit-webdemo \
+    "
 

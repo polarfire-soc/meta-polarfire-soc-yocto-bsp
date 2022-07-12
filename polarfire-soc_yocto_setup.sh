@@ -43,7 +43,7 @@ bitbake-layers add-layer ../meta-openembedded/meta-multimedia
 bitbake-layers add-layer ../meta-openembedded/meta-networking
 bitbake-layers add-layer ../meta-riscv
 bitbake-layers add-layer ../meta-polarfire-soc-yocto-bsp
-
+bitbake-layers add-layer ../meta-openembedded/meta-webserver
 
 
 # fix the configuration
