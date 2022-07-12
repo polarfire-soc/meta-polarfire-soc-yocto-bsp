@@ -1,7 +1,7 @@
-From 7a0ad62a12eb371d1adb365bf8e30ff8818e37a7 Mon Sep 17 00:00:00 2001
+From ae7fecdc4dc51728adb293e7d22e272f21123005 Mon Sep 17 00:00:00 2001
 From: Vattipalli Praveen <praveen.kumar@microchip.com>
 Date: Thu, 16 Jun 2022 16:33:09 +0530
-Subject: [PATCH 8/9] riscv: Add support for Microchip PolarFire SoC SEV Kit
+Subject: [PATCH 7/7] riscv: Add support for Microchip PolarFire SoC SEV Kit
 
 Signed-off-by: Vattipalli Praveen <praveen.kumar@microchip.com>
 ---
@@ -73,14 +73,14 @@ index 57bddfaef2..41c5f7fa97 100644
  dtb-$(CONFIG_TARGET_SIFIVE_UNLEASHED) += hifive-unleashed-a00.dtb
 diff --git a/arch/riscv/dts/microchip-mpfs-sev-kit.dts b/arch/riscv/dts/microchip-mpfs-sev-kit.dts
 new file mode 100644
-index 0000000000..98b7057be0
+index 0000000000..3902390aaa
 --- /dev/null
 +++ b/arch/riscv/dts/microchip-mpfs-sev-kit.dts
 @@ -0,0 +1,137 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (C) 2021 Microchip Technology Inc.
-+ * Padmarao Begari <padmarao.begari@microchip.com>
++ * vattipalli praveen <praveen.kumar@microchip.com>
 + */
 +
 +/dts-v1/;
@@ -92,7 +92,7 @@ index 0000000000..98b7057be0
 +
 +/ {
 +	model = "Microchip PolarFire-SoC SEV Kit";
-+	compatible = "microchip,mpfs-sev-kit", "microchip,mpfs-icicle-kit", "microchip,mpfs";
++	compatible = "microchip,mpfs-sev-kit", "microchip,mpfs";
 +
 +	aliases {
 +		serial1 = &uart1;
@@ -276,13 +276,13 @@ index 0000000000..ea503a2ad6
 +endif
 diff --git a/board/microchip/mpfs_sevkit/MAINTAINERS b/board/microchip/mpfs_sevkit/MAINTAINERS
 new file mode 100644
-index 0000000000..fce998e6e4
+index 0000000000..663515f1e5
 --- /dev/null
 +++ b/board/microchip/mpfs_sevkit/MAINTAINERS
 @@ -0,0 +1,7 @@
 +Microchip MPFS sev-kit
-+M:	Padmarao Begari <padmarao.begari@microchip.com>
-+M:	Cyril Jean <cyril.jean@microchip.com>
++M:	Vattipalli Praveen <praveen.kumar@microchip.com>
++M:	Shravan Chippa <shravan.chippa@microchip.com>
 +S:	Maintained
 +F:	board/microchip/mpfs_sevkit/
 +F:	include/configs/microchip_mpfs_sevkit.h
