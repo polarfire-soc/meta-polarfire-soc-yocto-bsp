@@ -155,6 +155,7 @@ The following table details the available targets:
 | -------------------------- | --------------------------------------------------------------------- |
 | `MACHINE=icicle-kit-es`    | ICICLE-KIT-ES, Icicle Kit engineering samples                         |
 | `MACHINE=icicle-kit-es-amp`| ICICLE-KIT-ES, Icicle Kit engineering samples in AMP mode             |
+| `MACHINE=SEV-kit-es`       | SEV-KIT-ES, SEV Kit engineering samples                               |
 
 The `icicle-kit-es-amp` machine can be used to build the Icicle Kit engineering sample with AMP support. Please see the [Asymmetric Multiprocessing (AMP)](https://github.com/polarfire-soc/polarfire-soc-documentation/blob/master/asymmetric-multiprocessing/amp.md) documentation for further details.
 
@@ -276,6 +277,13 @@ sudo apt-get install bmap-tools
 [Kernel Documentation for v5.12](https://www.kernel.org/doc/html/v5.12/)
 
 [Yocto Flashing images using bmaptool](https://www.yoctoproject.org/docs/current/mega-manual/mega-manual.html#flashing-images-using-bmaptool)
+
+## Licensing
+
+This project is licensed under the terms of the MIT license (please see LICENSE file in this directory for further details).
+By using the PolarFire SoC Yocto BSP layer in this repository, the user agrees to the terms and conditions from the licenses of the packages that are installed into the final image and that are covered by a commercial license.
+The user also acknowledges that it's their responsibility to make sure they hold the right to use code protected by commercial agreements, whether the commercially protected packages are selected by Microchips' PolarFire SoC BSPs or by them.
+Finally, the user acknowledges that it's their responsibility to make sure they hold the right to copy, use, modify, and re-distribute the intellectual property offered by this collection of meta-layers.
 
 ## Known issues
 
