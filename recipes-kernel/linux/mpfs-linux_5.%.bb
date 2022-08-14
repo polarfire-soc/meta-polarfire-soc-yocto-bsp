@@ -11,9 +11,11 @@ SRC_URI = " \
 
 SRC_URI:append:icicle-kit-es = " file://bsp_cmdline.cfg \
     file://rpi_sense_hat.cfg \
+    file://qspi_flash.cfg \
 "
 SRC_URI:append:icicle-kit-es-amp = " file://bsp_cmdline.cfg \
     file://rpi_sense_hat.cfg \
+    file://qspi_flash.cfg \
 "
 
 SRC_URI:append:m100pfsevp = "file://m100pfsevp_configs.cfg"

@@ -142,13 +142,13 @@ flash_mtdpart() {
     # Flash zeros first to make sure that a shorter ubimg doesn't truncate the
     # write.
     dd if="/dev/zero" \
-        of="${IMGDEPLOYDIR}/${IMAGE_NAME}.mtdimg" \
+        of="${IMGDEPLOYDIR}/${IMAGE_NAME}.${MPFS_MTD_TYPE}.mtdimg" \
         bs=1024 \
         seek=$kboffset \
         count=$kbsize \
         conv=notrunc
     dd if="$file" \
-        of="${IMGDEPLOYDIR}/${IMAGE_NAME}.mtdimg" \
+        of="${IMGDEPLOYDIR}/${IMAGE_NAME}.${MPFS_MTD_TYPE}.mtdimg" \
         bs=1024 \
         seek=$kboffset \
         count=$kbsize \
@@ -175,6 +175,8 @@ IMAGE_CMD:mtd () {
             flash_mtdpart "${DEPLOY_DIR_IMAGE}/boot.scr.uimg" $size $kbsize $kboffset $name
         elif [ "$name" = "fitimage" ]; then
             flash_mtdpart "${DEPLOY_DIR_IMAGE}/fitImage" $size $kbsize $kboffset $name
+        elif [ "$name" = "rootfs" ]; then
+            flash_mtdpart "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.ubi" $size $kbsize $kboffset $name
         else
             bbwarn "Don't know how to flash mtdparts '$name'. Filling with zeros."
             flash_mtdpart "/dev/zero" $size $kbsize $kboffset $name
@@ -183,6 +185,6 @@ IMAGE_CMD:mtd () {
         i=$(expr $i + 1)
     done
 
-    ln -sfn "${IMAGE_NAME}.mtdimg" "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.mtdimg"
+    ln -sfn "${IMAGE_NAME}.${MPFS_MTD_TYPE}.mtdimg" "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.${MPFS_MTD_TYPE}.mtdimg"
 
 }
