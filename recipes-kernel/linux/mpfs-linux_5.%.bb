@@ -9,6 +9,8 @@ SRC_URI = " \
     git://bitbucket.microchip.com/scm/fpga_pfsoc_es/linux.git;protocol=https;branch=${BRANCH}  \
 "
 
+do_assemble_fitimage[depends] += "dt-overlay-mchp:do_deploy"
+
 SRC_URI:append:icicle-kit-es = " file://bsp_cmdline.cfg \
     file://rpi_sense_hat.cfg \
     file://qspi_flash.cfg \
