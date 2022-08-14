@@ -19,7 +19,7 @@ DT_FILES_PATH = "${WORKDIR}/git/mpfs-icicle"
 
 BRANCH = "master"
 SRCREV="195213614b15a8cd5d4c8baa92fe94f2144465f2"
-SRC_URI="git://github.com/linux4microchip/dt-overlay-mchp.git;protocol=https;branch=${BRANCH} \
+SRC_URI="git://bitbucket.microchip.com/scm/fpga_pfsoc_es/dt-overlay-polarfire-soc.git;protocol=https;branch=${BRANCH} \
 "
 
 do_install() {
