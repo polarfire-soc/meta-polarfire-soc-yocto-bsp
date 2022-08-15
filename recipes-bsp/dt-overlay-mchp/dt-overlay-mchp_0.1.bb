@@ -15,7 +15,8 @@ COMPATIBLE_MACHINE = "(icicle-kit-es|icicle-kit-es-amp|m100pfsev|sev-kit-es)"
 
 S = "${WORKDIR}/git"
 
-DT_FILES_PATH = "${WORKDIR}/git/mpfs_icicle"
+DT_FILES_PATH:icicle-kit-es = "${WORKDIR}/git/mpfs_icicle"
+DT_FILES_PATH:icicle-kit-es-amp = "${WORKDIR}/git/mpfs_icicle"
 
 BRANCH = "feature/mpfs_qspi"
 SRCREV="${AUTOREV}"
@@ -23,13 +24,17 @@ SRC_URI="git://bitbucket.microchip.com/scm/fpga_pfsoc_es/dt-overlay-polarfire-so
 "
 
 do_install() {
-    install -d ${D}/boot
-    install ${B}/*.dtbo ${D}/boot
+    cd ${B}
+    for DTB_FILE in `ls *.dtbo`; do
+        install -Dm 0644 ${B}/${DTB_FILE} ${D}/boot/${DTB_FILE}
+    done
 }
 
-devicetree_do_deploy() {
-	install -d ${DEPLOYDIR}/overlays
-	install -m 0644 ${B}/*.dtbo ${DEPLOYDIR}/overlays/
+do_deploy() {
+    cd ${B}
+    for DTB_FILE in `ls *.dtbo`; do
+        install -Dm 0644 ${B}/${DTB_FILE} ${DEPLOYDIR}/overlays/${DTB_FILE}
+    done
 }
 
 FILES:${PN} += "/boot/*.dtbo"
