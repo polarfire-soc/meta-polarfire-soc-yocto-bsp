@@ -84,7 +84,7 @@ if [ -e $INITRAMFS_CONF ]; then
     rm -rf $INITRAMFS_CONF
 fi
 cat <<EOF > $INITRAMFS_CONF
-INITRAMFS_IMAGE = "mpfs-initramfs-base"
+INITRAMFS_IMAGE = "mpfs-core-image-base"
 EOF
 
 
