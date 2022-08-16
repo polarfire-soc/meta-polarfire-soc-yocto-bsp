@@ -33,6 +33,8 @@ IMAGE_INSTALL = "\
     tar \
     wget \
     zip \
+    mtd-utils \
+    mtd-utils-ubifs \
     kernel-modules \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     "
