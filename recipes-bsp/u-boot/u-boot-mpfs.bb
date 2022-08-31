@@ -20,11 +20,22 @@ DEPENDS:append:icicle-kit-es-amp = " polarfire-soc-amp-examples"
 TFTP_SERVER_IP ?= "127.0.0.1"
 
 do_configure:prepend () {
+
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
-        sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/${UBOOT_ENV}.txt
+        cp ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/${UBOOT_ENV}.txt.pp
+        sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/${UBOOT_ENV}.txt.pp
+        sed -i -e 's/@MTDPARTS@/${MPFS_MTDPARTS}/gI' ${WORKDIR}/${UBOOT_ENV}.txt.pp
+        sed -i -e 's/@MTDTYPE@/${MPFS_MTD_TYPE}/gI' ${WORKDIR}/${UBOOT_ENV}.txt.pp
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
-            -d ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/boot.scr.uimg
-    fi    
+            -d ${WORKDIR}/${UBOOT_ENV}.txt.pp ${WORKDIR}/boot.scr.uimg
+    fi
+}
+
+do_install:append() {
+    if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
+        install -m 644 ${WORKDIR}/${UBOOT_ENV_BINARY}.pp ${D}/boot/${UBOOT_ENV_IMAGE}
+        ln -sf ${UBOOT_ENV_IMAGE} ${D}/boot/${UBOOT_ENV_BINARY}
+    fi
 }
 
 do_deploy:append () {

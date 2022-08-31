@@ -6,21 +6,41 @@
 #  4. TFTP boot a uImage
 
 if test -n ${mtd_present}; then
-  mtd read fitimage ${ramdisk_addr_r} 0x0
+  ubi part rootfs
+  ubifsmount ubi0:rootfs
+  ubifsload 0x80000000 boot/fitImage
+  ubifsumount
+  ubi detach
+fi;
+
+if test "${$?}" -eq 0; then
+  cp 0x80000000 ${ramdisk_addr_r} ${filesize}
+  setenv base_args "earlycon=sbi uio_pdrv_genirq.of_id=generic-uio"
+  setenv mtd_type "@MTDTYPE@"
+  setenv bootargs "${base_args} ubi.mtd=2 root=ubi0:rootfs rootfstype=ubifs rootwait rw mtdparts=@MTDPARTS@"
 else
   load mmc 0:${mmcbootpart} ${ramdisk_addr_r} fitImage
 fi;
 
-if test "${$?}" -eq 0; then
+if test -n ${mtd_present}; then
+  if test "${mtd_type}" = "nor"; then
+    bootm start ${ramdisk_addr_r}#conf-microchip_mpfs-icicle-kit.dtb#conf-mpfs_icicle_pmod_sf3.dtbo
+  elif test "${mtd_type}" = "nand"; then
+    bootm start ${ramdisk_addr_r}#conf-microchip_mpfs-icicle-kit.dtb#conf-mpfs_icicle_flash5_click.dtbo
+  else
+    bootm start ${ramdisk_addr_r};
+  fi;
+else
   bootm start ${ramdisk_addr_r};
-  bootm loados ${ramdisk_addr_r};
-  # Try to load a ramdisk if available inside fitImage
-  bootm ramdisk;
-  bootm prep;
-  fdt set /soc/ethernet@20112000 mac-address ${icicle_mac_addr0};
-  fdt set /soc/ethernet@20110000 mac-address ${icicle_mac_addr1};
-  bootm go;
 fi;
+
+bootm loados ${ramdisk_addr_r};
+# Try to load a ramdisk if available inside fitImage
+bootm ramdisk;
+bootm prep;
+fdt set /soc/ethernet@20112000 mac-address ${icicle_mac_addr0};
+fdt set /soc/ethernet@20110000 mac-address ${icicle_mac_addr1};
+bootm go;
 
 # Setup the DHCP for a TFTP boot
 setenv serverip @SERVERIP@
