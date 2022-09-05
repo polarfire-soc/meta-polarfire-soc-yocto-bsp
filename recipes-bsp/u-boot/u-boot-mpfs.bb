@@ -5,7 +5,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 BRANCH = "mpfs-uboot-2022.01"
 SRCREV = "${AUTOREV}"
-SRC_URI = " git://github.com/polarfire-soc/u-boot.git;protocol=https;branch=${BRANCH}  \
+SRC_URI = " git://bitbucket.microchip.com/scm/fpga_pfsoc_es/u-boot.git;protocol=https;branch=${BRANCH}  \
            file://${UBOOT_ENV}.txt \
            file://${HSS_PAYLOAD}.yaml \
           "
