@@ -24,6 +24,7 @@ EXAMPLE_FILES = "\
     fpga-fabric-interfaces/lsram \
     gpio \
     system-services \
+    pdma \
     "
 
 EXAMPLE_FILES:append:icicle-kit-es-amp = "\
