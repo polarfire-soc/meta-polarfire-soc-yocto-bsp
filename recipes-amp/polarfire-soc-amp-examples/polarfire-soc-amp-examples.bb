@@ -21,7 +21,12 @@ EXT_CFLAGS += "--sysroot=${STAGING_DIR_TARGET}"
 EXT_CFLAGS += "-DMPFS_HAL_FIRST_HART=4 -DMPFS_HAL_LAST_HART=4"
 
 PARALLEL_MAKE = ""
-EXTRA_OEMAKE = "REMOTE=1 CROSS_COMPILE=${TARGET_PREFIX} EXT_CFLAGS='${EXT_CFLAGS}'"
+EXTRA_OEMAKE = "REMOTE=1 REMOTEPROC=1 CROSS_COMPILE=${TARGET_PREFIX} EXT_CFLAGS='${EXT_CFLAGS}'"
+
+do_install() {
+    install -d ${D}${nonarch_base_libdir}/firmware
+    install ${S}/mpfs-rpmsg-${AMP_DEMO}/Remote-Default/mpfs-rpmsg-remote.elf ${D}${nonarch_base_libdir}/firmware/rproc-miv-rproc-fw
+}
 
 do_compile() {
    oe_runmake -C ${S}/mpfs-rpmsg-${AMP_DEMO}
@@ -34,3 +39,5 @@ do_deploy() {
 addtask deploy after do_install
 
 COMPATIBLE_MACHINE = "(icicle-kit-es-amp)"
+
+FILES:${PN} += "/lib/firmware/"
