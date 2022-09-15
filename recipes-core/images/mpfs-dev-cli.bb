@@ -8,6 +8,7 @@ IMAGE_FEATURES += " ssh-server-openssh \
                   "
 
 IMAGE_INSTALL = "\
+    rsync \
     iperf3 \
     devmem2 \
     packagegroup-core-boot \

@@ -4,6 +4,7 @@ EXTRA_IMAGE_FEATURES += " \
       tools-sdk"
 
 IMAGE_INSTALL = "\
+    rsync \
     rng-tools \
     iperf3 \
     devmem2 \
