@@ -34,6 +34,10 @@ EXAMPLE_FILES:append:icicle-kit-es-amp = "\
     amp/rpmsg-tty-example \
     "
 
+EXAMPLE_FILES:sev-kit-es = "\
+    pdma \
+    "
+
 do_compile() {
   for i in ${EXAMPLE_FILES}; do
     if [ -f ${S}/$i/Makefile ]; then
@@ -55,20 +59,17 @@ do_install() {
   for i in ${EXAMPLE_FILES}; do
     install -d ${D}/opt/microchip/`dirname $i`/`basename $i`
     cp -rfd ${S}/$i ${D}/opt/microchip/`dirname $i`
-  done
 
-    ## Symbolic Link for iiohttpserver
-    ln -s -r ${D}/opt/microchip/ethernet/iio-http-server ${D}/opt/microchip/iiohttpserver
-    
-    rm -f ${D}/opt/microchip/.git
-    rm -f ${D}/opt/microchip/Jenkinsfile
-    ## Install the iio-http-server
-    install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${S}/ethernet/iio-http-server/collection/collectdiio.service ${D}${systemd_unitdir}/system
-}
+    if [ "${i}" = "ethernet" ]; then
+      ## Symbolic Link for iiohttpserver
+      ln -s -r ${D}/opt/microchip/ethernet/iio-http-server ${D}/opt/microchip/iiohttpserver
 
-do_install:sev-kit-es() {
-	:
+      ## Install the iio-http-server
+      install -d ${D}${systemd_unitdir}/system
+      install -m 0644 ${S}/ethernet/iio-http-server/collection/collectdiio.service ${D}${systemd_unitdir}/system
+    fi
+
+    done
 }
 
 do_install:m100pfsevp() {
