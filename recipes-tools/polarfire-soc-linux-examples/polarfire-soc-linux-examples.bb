@@ -21,6 +21,8 @@ S = "${WORKDIR}/git"
 EXAMPLE_FILES = "\
     can \
     dma \
+    dt-overlays \
+    ethernet \
     fpga-fabric-interfaces/lsram \
     gpio \
     system-services \
@@ -34,7 +36,9 @@ EXAMPLE_FILES:append:icicle-kit-es-amp = "\
 
 do_compile() {
   for i in ${EXAMPLE_FILES}; do
-    oe_runmake -C ${S}/$i
+    if [ -f ${S}/$i/Makefile ]; then
+      oe_runmake -C ${S}/$i
+    fi
   done
 }
 
@@ -45,10 +49,14 @@ INSANE_SKIP:${PN}-dev = "ldflags"
 SECURITY_CFLAGS = ""
 
 do_install() {
-    install -d ${D}/opt/microchip
-    chmod a+x ${D}/opt/microchip
+  install -d ${D}/opt/microchip
+  chmod a+x ${D}/opt/microchip
 
-    cp -rfd ${S}/* ${D}/opt/microchip/
+  for i in ${EXAMPLE_FILES}; do
+    install -d ${D}/opt/microchip/`dirname $i`/`basename $i`
+    cp -rfd ${S}/$i ${D}/opt/microchip/`dirname $i`
+  done
+
     ## Symbolic Link for iiohttpserver
     ln -s -r ${D}/opt/microchip/ethernet/iio-http-server ${D}/opt/microchip/iiohttpserver
     
