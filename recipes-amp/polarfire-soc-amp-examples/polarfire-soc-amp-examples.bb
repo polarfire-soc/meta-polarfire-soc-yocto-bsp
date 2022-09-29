@@ -13,7 +13,7 @@ inherit deploy
 
 BRANCH = "main"
 SRCREV="9a0816d28a7a746c37db3d61bbb1816bc2da9c8a"
-SRC_URI = "git://bitbucket.microchip.com/scm/fpga_pfsoc_es/polarfire-soc-amp-examples.git;protocol=https;branch=${BRANCH}"
+SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-amp-examples.git;protocol=https;branch=${BRANCH}"
 
 S = "${WORKDIR}/git"
 

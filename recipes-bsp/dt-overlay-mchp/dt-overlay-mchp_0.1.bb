@@ -18,9 +18,9 @@ S = "${WORKDIR}/git"
 DT_FILES_PATH:icicle-kit-es = "${WORKDIR}/git/mpfs_icicle"
 DT_FILES_PATH:icicle-kit-es-amp = "${WORKDIR}/git/mpfs_icicle"
 
-BRANCH = "feature/mpfs_qspi"
-SRCREV="${AUTOREV}"
-SRC_URI="git://bitbucket.microchip.com/scm/fpga_pfsoc_es/dt-overlay-polarfire-soc.git;protocol=https;branch=${BRANCH} \
+BRANCH = "master"
+SRCREV="715a9671e5baff7fc4f012b8e526da460ebb1871"
+SRC_URI="git://github.com/linux4microchip/dt-overlay-mchp.git;protocol=https;branch=${BRANCH} \
 "
 
 do_install() {

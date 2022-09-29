@@ -3,10 +3,10 @@ require recipes-kernel/linux/mpfs-linux-common.inc
 LINUX_VERSION ?= "5.15"
 KERNEL_VERSION_SANITY_SKIP="1"
 
-BRANCH = "mpfs-linux-5.15-next"
-SRCREV="${AUTOREV}"
+BRANCH = "linux-5.15-mchp+fpga"
+SRCREV="82a69ddd171851559ca28bd76b4eb0b956a74b1f"
 SRC_URI = " \
-    git://bitbucket.microchip.com/scm/fpga_pfsoc_es/linux.git;protocol=https;branch=${BRANCH}  \
+    git://github.com/linux4microchip/linux.git;protocol=https;branch=${BRANCH} \
 "
 
 do_assemble_fitimage[depends] += "dt-overlay-mchp:do_deploy"
