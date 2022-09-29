@@ -59,7 +59,7 @@ For instructions on how to copy the image to the eMMC or SD card refer to the [C
 
 The `icicle-kit-es` target machine provides support for building images suitable for programming to the oficially supported QSPI flash memories. The `core-image-minimal-mtdutils` generates a Linux image with either a `.nand.mtdimg` or `.nor.mtdimg` file extension in the `build/tmp-glibc/deploy/images/icicle-kit-es/` directory.
 
-For more information on how to enable QSPI support on PolarFire SOC, please refer to the [booting from QSPI](https://mi-v-ecosystem.github.io/redirects/booting-from-qspi_booting-from-qspi) documentation.
+For more information on how to enable QSPI support on PolarFire SoC, please refer to the [booting from QSPI](https://mi-v-ecosystem.github.io/redirects/booting-from-qspi_booting-from-qspi) documentation.
 
 ##### Building a Linux image suitable for a Winbond W25N01GV NAND flash memory (Default)
 
@@ -82,7 +82,7 @@ For instructions on how to transfer the image to the external QSPI flash memory 
 
 ##### Building a Linux image suitable for a Micron MT25QL256 NOR flash memory
 
-To generate an image for the Micron MT25QL256 NOR flash memory, uncomment the following setting in the Icicle Kit machine configuration file (conf/machine/icicle-kit-es.conf):
+To generate an image for the Micron MT25QL256 NOR flash memory, use the following setting in the Icicle Kit machine configuration file (conf/machine/icicle-kit-es.conf):
 
 ```
 UBOOT_CONFIG = "mpfs_icicle_nor"
