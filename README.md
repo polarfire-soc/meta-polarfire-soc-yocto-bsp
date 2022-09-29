@@ -44,7 +44,7 @@ MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 Using Yocto bitbake command and setting the initramfs configuration file (conf/initramfs.conf) and the mpfs-initramfs-image
 
 ```bash
-MACHINE=icicle-kit-es -R conf/initramfs.conf bitbake mpfs-initramfs-image
+MACHINE=icicle-kit-es bitbake mpfs-initramfs-image -R conf/initramfs.conf
 ```
 
 The image generated from the command above can be used to boot Linux with a RAM-based root filesystem from the eMMC, an SD card, or an external QSPI flash memory device.
