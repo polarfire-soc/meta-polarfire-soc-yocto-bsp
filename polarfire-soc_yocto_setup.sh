@@ -75,7 +75,7 @@ DISTRO_FEATURES:append = " largefile opengl ptest multiarch wayland pam  systemd
 DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
 VIRTUAL-RUNTIME_init_manager = "systemd"
 HOSTTOOLS_NONFATAL:append = " ssh"
-LICENSE_FLAGS_WHITELIST = "commercial_ffmpeg"
+LICENSE_FLAGS_ACCEPTED = "commercial_ffmpeg"
 EOF
 
 echo "Creating initramfs.conf"
