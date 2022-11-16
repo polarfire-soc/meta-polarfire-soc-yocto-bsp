@@ -19,7 +19,7 @@ DT_FILES_PATH:icicle-kit-es = "${WORKDIR}/git/mpfs_icicle"
 DT_FILES_PATH:icicle-kit-es-amp = "${WORKDIR}/git/mpfs_icicle"
 
 BRANCH = "master"
-SRCREV="715a9671e5baff7fc4f012b8e526da460ebb1871"
+SRCREV="9378e90ae7b3781c602e38f2b028d1b43a8b83b8"
 SRC_URI="git://github.com/linux4microchip/dt-overlay-mchp.git;protocol=https;branch=${BRANCH} \
 "
 
