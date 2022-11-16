@@ -19,7 +19,7 @@ if test "${$?}" -eq 0; then
   setenv mtd_type "@MTDTYPE@"
   setenv bootargs "${base_args} ubi.mtd=2 root=ubi0:rootfs rootfstype=ubifs rootwait rw mtdparts=@MTDPARTS@"
 else
-  load mmc 0:${mmcbootpart} ${ramdisk_addr_r} fitImage
+  load mmc 0:${distro_bootpart} ${ramdisk_addr_r} fitImage
 fi;
 
 if test -n ${mtd_present}; then
