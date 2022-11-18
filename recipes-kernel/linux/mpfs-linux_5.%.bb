@@ -4,7 +4,7 @@ LINUX_VERSION ?= "5.15"
 KERNEL_VERSION_SANITY_SKIP="1"
 
 BRANCH = "linux-5.15-mchp+fpga"
-SRCREV="82a69ddd171851559ca28bd76b4eb0b956a74b1f"
+SRCREV="fc0130402595011cada0ffe58cb853faccdb1e9f"
 SRC_URI = " \
     git://github.com/linux4microchip/linux.git;protocol=https;branch=${BRANCH} \
 "
