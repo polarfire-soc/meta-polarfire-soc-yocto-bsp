@@ -1,4 +1,4 @@
-This is version v2022.09 of the Polarfire SoC Yocto BSP.
+This is version v2022.11 of the Polarfire SoC Yocto BSP.
 
 Updated images and documentation are available at:
         https://github.com/polarfire-soc/
@@ -6,5 +6,5 @@ Updated images and documentation are available at:
         https://github.com/polarfire-soc/icicle-kit-reference-design/releases
 * Yocto releases
         https://github.com/polarfire-soc/meta-polarfire-soc-yocto-bsp/releases
-* Buildroot releases
-        https://github.com/polarfire-soc/polarfire-soc-buildroot-sdk/releases
+* Buildroot External
+	https://github.com/linux4microchip/buildroot-external-microchip
