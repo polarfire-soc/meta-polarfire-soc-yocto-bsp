@@ -21,7 +21,7 @@ Before continuing, ensure that the prerequisite packages are present on your sys
 This needs to be done every time you want a clean setup based on the latest BSP.
 ```bash
 mkdir yocto-dev && cd yocto-dev
-repo init -u https://github.com/polarfire-soc/meta-polarfire-soc-yocto-bsp.git -b master -m tools/manifests/riscv-yocto.xml
+repo init -u https://github.com/polarfire-soc/meta-polarfire-soc-yocto-bsp.git -b 2022.11 -m tools/manifests/riscv-yocto.xml
 ```
 ### Update the repo workspace
 ```bash
