@@ -12,7 +12,7 @@ Using Yocto 'Openembedded' you will build the following:
 The complete User Guides for each development platform, containing board and boot instructions, are available for the following supported platforms:
 
   - [ICICLE-KIT-ES](https://mi-v-ecosystem.github.io/redirects/icicle-kit-sw-developer-guide_icicle-kit-sw-developer-guide) (Icicle Kit Engineering Sample) (Requires minimum Design Tag 2022.09)
-  - [MPFS-SEV-KIT](https://mi-v-ecosystem.github.io/redirects/boards-mpfs-sev-kit-sev-kit-user-guide) (Smart Embedded Vision Kit)
+  - [MPFS-VIDEO-KIT](https://mi-v-ecosystem.github.io/redirects/boards-mpfs-sev-kit-sev-kit-user-guide) (PolarFire SoC Video Kit)
 
 ## Build Instructions
 Before continuing, ensure that the prerequisite packages are present on your system. Please see the [Host PC setup for Yocto section](#Dependencies) for further details.
@@ -205,7 +205,7 @@ The following table details the available targets:
 | -------------------------- | --------------------------------------------------------------------- |
 | `MACHINE=icicle-kit-es`    | ICICLE-KIT-ES, Icicle Kit engineering samples                         |
 | `MACHINE=icicle-kit-es-amp`| ICICLE-KIT-ES, Icicle Kit engineering samples in AMP mode             |
-| `MACHINE=sev-kit-es`       | SEV-KIT-ES, SEV Kit engineering samples                               |
+| `MACHINE=mpfs-video-kit`   | MPFS250-VIDEO-KIT, PolarFire SoC Video Kit                            |
 
 The `icicle-kit-es-amp` machine can be used to build the Icicle Kit engineering sample with AMP support. Please see the [Asymmetric Multiprocessing (AMP)](https://mi-v-ecosystem.github.io/redirects/asymmetric-multiprocessing_amp) documentation for further details.
 

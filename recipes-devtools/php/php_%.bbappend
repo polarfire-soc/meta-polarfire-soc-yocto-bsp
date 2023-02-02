@@ -1,1 +1,1 @@
-PACKAGECONFIG:append:sev-kit-es = " apache2"
+PACKAGECONFIG:append:mpfs-video-kit = " apache2"

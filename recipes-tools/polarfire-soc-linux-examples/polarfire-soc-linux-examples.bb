@@ -34,7 +34,7 @@ EXAMPLE_FILES:append:icicle-kit-es-amp = "\
     amp/rpmsg-tty-example \
     "
 
-EXAMPLE_FILES:sev-kit-es = "\
+EXAMPLE_FILES:mpfs-video-kit = "\
     pdma \
     "
 

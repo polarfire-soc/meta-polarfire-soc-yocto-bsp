@@ -1,5 +1,5 @@
 DESCRIPTION = "Web server application showcasing video streaming over Ethernet \
-using the SEV kit's Video4Linux pipeline"
+using the Polarfire SoC Video kit's Video4Linux pipeline"
 
 SECTION = "examples"
 LICENSE = "MIT"
@@ -30,5 +30,5 @@ do_install:append () {
 FILES:${PN} += "${WEB_PATH}/*"
 FILES:${PN} += "/etc/systemd/network/*"
 
-COMPATIBLE_MACHINE = "(sev-kit-es)"
+COMPATIBLE_MACHINE = "(mpfs-video-kit)"
 

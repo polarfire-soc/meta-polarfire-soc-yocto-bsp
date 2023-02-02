@@ -68,4 +68,4 @@ do_deploy:append () {
 
 FILES:${PN}:append = " /boot/boot.scr.uimg"
 
-COMPATIBLE_MACHINE = "(icicle-kit-es|icicle-kit-es-amp|sev-kit-es|m100pfsevp)"
+COMPATIBLE_MACHINE = "(icicle-kit-es|icicle-kit-es-amp|mpfs-video-kit|m100pfsevp)"

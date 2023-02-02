@@ -11,7 +11,7 @@ PR = "r0"
 
 inherit devicetree
 
-COMPATIBLE_MACHINE = "(icicle-kit-es|icicle-kit-es-amp|m100pfsev|sev-kit-es)"
+COMPATIBLE_MACHINE = "(icicle-kit-es|icicle-kit-es-amp|m100pfsev|mpfs-video-kit)"
 
 S = "${WORKDIR}/git"
 

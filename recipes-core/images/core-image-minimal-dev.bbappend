@@ -41,7 +41,7 @@ IMAGE_INSTALL = "\
     ${CORE_IMAGE_EXTRA_INSTALL} \
     "
 
-IMAGE_INSTALL:append:sev-kit-es = " \
+IMAGE_INSTALL:append:mpfs-video-kit = " \
     ffmpeg \
     apache2 \
     php \
@@ -52,6 +52,6 @@ IMAGE_INSTALL:append:sev-kit-es = " \
     sudo \
     v4l2-start-service \
     v4l-utils \
-    sevkit-webdemo \
+    videokit-webdemo \
     "
 

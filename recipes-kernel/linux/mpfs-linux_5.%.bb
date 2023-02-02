@@ -22,7 +22,7 @@ SRC_URI:append:icicle-kit-es-amp = " file://bsp_cmdline.cfg \
 
 SRC_URI:append:m100pfsevp = "file://m100pfsevp_configs.cfg"
 
-SRC_URI:append:sev-kit-es = " \
+SRC_URI:append:mpfs-video-kit = " \
     file://bsp_cmdline.cfg \
     file://mpfs-v4l2.cfg \
 "
