@@ -5,6 +5,9 @@
 #  3. TFTP boot a fitImage
 #  4. TFTP boot a uImage
 
+setenv fdt_high 0xffffffffffffffff
+setenv initrd_high 0xffffffffffffffff
+
 if test -n ${mtd_present}; then
   ubi part rootfs
   ubifsmount ubi0:rootfs
@@ -14,27 +17,27 @@ if test -n ${mtd_present}; then
 fi;
 
 if test "${$?}" -eq 0; then
-  cp 0x80000000 ${ramdisk_addr_r} ${filesize}
+  cp 0x80000000 ${scriptaddr} ${filesize}
   setenv base_args "earlycon=sbi uio_pdrv_genirq.of_id=generic-uio"
   setenv mtd_type "@MTDTYPE@"
   setenv bootargs "${base_args} ubi.mtd=2 root=ubi0:rootfs rootfstype=ubifs rootwait rw mtdparts=@MTDPARTS@"
 else
-  load mmc 0:${distro_bootpart} ${ramdisk_addr_r} fitImage
+  load mmc 0:${distro_bootpart} ${scriptaddr} fitImage
 fi;
 
 if test -n ${mtd_present}; then
   if test "${mtd_type}" = "nor"; then
-    bootm start ${ramdisk_addr_r}#conf-microchip_mpfs-icicle-kit.dtb#conf-mpfs_icicle_pmod_sf3.dtbo
+    bootm start ${scriptaddr}#conf-microchip_mpfs-icicle-kit.dtb#conf-mpfs_icicle_pmod_sf3.dtbo
   elif test "${mtd_type}" = "nand"; then
-    bootm start ${ramdisk_addr_r}#conf-microchip_mpfs-icicle-kit.dtb#conf-mpfs_icicle_flash5_click.dtbo
+    bootm start ${scriptaddr}#conf-microchip_mpfs-icicle-kit.dtb#conf-mpfs_icicle_flash5_click.dtbo
   else
-    bootm start ${ramdisk_addr_r};
+    bootm start ${scriptaddr};
   fi;
 else
-  bootm start ${ramdisk_addr_r};
+  bootm start ${scriptaddr};
 fi;
 
-bootm loados ${ramdisk_addr_r};
+bootm loados ${scriptaddr};
 # Try to load a ramdisk if available inside fitImage
 bootm ramdisk;
 bootm prep;
@@ -48,16 +51,15 @@ dhcp
 
 # Fallback to a TFTP fitImage
 # Try to boot a fitImage from the TFTP server
-if tftpboot ${ramdisk_addr_r} fitImage; then 
- bootm start ${ramdisk_addr_r};
- bootm loados ${ramdisk_addr_r};
+if tftpboot ${scriptaddr} fitImage; then 
+ bootm start ${scriptaddr};
+ bootm loados ${scriptaddr};
  # Try to load a ramdisk if available inside fitImage
  bootm ramdisk;
  bootm prep;
  fdt set /soc/ethernet@20112000 mac-address ${icicle_mac_addr0};
  fdt set /soc/ethernet@20110000 mac-address ${icicle_mac_addr1};
  bootm go;
- run design_overlays
 fi;
 
 
