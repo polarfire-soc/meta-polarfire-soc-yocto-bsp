@@ -8,7 +8,7 @@ set-name: 'PolarFire-SoC-HSS::U-Boot'
 #
 # Next, we'll define the entry point addresses for each hart, as follows:
 #
-hart-entry-points: {u54_1: '0x1000200000', u54_2: '0x1000200000', u54_3: '0x1000200000', u54_4: '0x1000200000'}
+hart-entry-points: {u54_1: '0x80200000', u54_2: '0x1000200000', u54_3: '0x1000200000', u54_4: '0x1000200000'}
 
 #
 # Finally, we'll define some payloads (source ELF files) that will be placed at certain regions in memory
