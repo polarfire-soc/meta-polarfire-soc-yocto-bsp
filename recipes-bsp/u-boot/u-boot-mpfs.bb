@@ -3,7 +3,7 @@ require recipes-bsp/u-boot/u-boot.inc
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-BRANCH = "mpfs-uboot-2022.01-design-structure"
+BRANCH = "mpfs-uboot-2022.01"
 SRCREV="${AUTOREV}"
 SRC_URI = " git://bitbucket.microchip.com/scm/fpga_pfsoc_es/u-boot.git;protocol=https;branch=${BRANCH}  \
            file://${UBOOT_ENV}.txt \
