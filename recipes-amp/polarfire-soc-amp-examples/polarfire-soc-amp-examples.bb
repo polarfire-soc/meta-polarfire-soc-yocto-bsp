@@ -11,12 +11,10 @@ DEPENDS = "makedepend-native"
 
 inherit deploy
 
-BRANCH = "develop-memmap_2023_02"
-#SRCREV="6a7b2b30667e563deadcb6e97a4ea316cd35a721"
-#SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-amp-examples.git;protocol=https;branch=${BRANCH}"
-SRCREV="${AUTOREV}"
-SRC_URI = " git://bitbucket.microchip.com/scm/fpga_pfsoc_es/polarfire-soc-amp-examples.git;protocol=https;branch=${BRANCH}"
-          
+BRANCH = "main"
+SRCREV="8fdffbee677993b2cdaf163cb8db32bd734bffe6"
+SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-amp-examples.git;protocol=https;branch=${BRANCH}"
+
 S = "${WORKDIR}/git"
 
 EXT_CFLAGS += "--sysroot=${STAGING_DIR_TARGET}"
