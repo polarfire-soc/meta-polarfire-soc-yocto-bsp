@@ -8,7 +8,7 @@ set-name: 'PolarFire-SoC-HSS::Linux + FreeRTOS AMP'
 #
 # Next, we'll define the entry point addresses for each hart, as follows:
 #
-hart-entry-points: {u54_1: '0x80200000', u54_2: '0x80200000', u54_3: '0x80200000', u54_4: '0x80200000'}
+hart-entry-points: {u54_1: '0x80200000', u54_2: '0x80200000', u54_3: '0x80200000', u54_4: '0x91C00000'}
 #
 # Finally, we'll define a payloads (source binary file) that will be placed at certain regions in memory
 # The payload section is defined with the keyword payloads, and then a number of individual
