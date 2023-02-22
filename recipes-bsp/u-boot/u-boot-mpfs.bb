@@ -4,7 +4,7 @@ require recipes-bsp/u-boot/u-boot.inc
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 BRANCH = "mpfs-uboot-2022.01"
-SRCREV="6f9f4791d2ce0793c3cb27e4a0c07d352e069171"
+SRCREV="cf0bc7ea7293e49f48eca15f527d2321d414ebd2"
 SRC_URI = "git://github.com/polarfire-soc/u-boot.git;protocol=https;branch=${BRANCH}  \
            file://${UBOOT_ENV}.txt \
            file://${HSS_PAYLOAD}.yaml \
