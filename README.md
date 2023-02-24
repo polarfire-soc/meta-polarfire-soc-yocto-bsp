@@ -11,7 +11,7 @@ Using Yocto 'Openembedded' you will build the following:
 
 The complete User Guides for each development platform, containing board and boot instructions, are available for the following supported platforms:
 
-  - [ICICLE-KIT-ES](https://mi-v-ecosystem.github.io/redirects/icicle-kit-sw-developer-guide_icicle-kit-sw-developer-guide) (Icicle Kit Engineering Sample) (Requires minimum Design Tag 2022.09)
+  - [ICICLE-KIT-ES](https://mi-v-ecosystem.github.io/redirects/icicle-kit-sw-developer-guide_icicle-kit-sw-developer-guide) (Icicle Kit Engineering Sample) (Requires minimum Design Tag 2023.02)
   - [MPFS-VIDEO-KIT](https://mi-v-ecosystem.github.io/redirects/boards-mpfs-sev-kit-sev-kit-user-guide) (PolarFire SoC Video Kit)
 
 ## Build Instructions
@@ -21,7 +21,7 @@ Before continuing, ensure that the prerequisite packages are present on your sys
 This needs to be done every time you want a clean setup based on the latest BSP.
 ```bash
 $ mkdir yocto-dev && cd yocto-dev
-$ repo init -u https://github.com/polarfire-soc/polarfire-soc-yocto-manifests.git -b main -m default.xml
+$ repo init -u https://github.com/polarfire-soc/polarfire-soc-yocto-manifests.git -b 2023.02 -m default.xml
 ```
 ### Update the repo workspace
 ```bash
