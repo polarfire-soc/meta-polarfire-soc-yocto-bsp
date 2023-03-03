@@ -290,7 +290,7 @@ The BSP uses the Yocto RISCV Architecture Layer, and the Yocto release Kirkstone
 
 **Make sure to install the [repo utility](https://source.android.com/setup/develop#installing-repo) first.**
 
-Detailed instructions for various distributions can be found in the ["Required Packages for the Build Host"](https://docs.yoctoproject.org/3.4/ref-manual/system-requirements.html#required-packages-for-the-build-host) section in the Yocto Project Reference Manual.
+Detailed instructions for various distributions can be found in the ["Required Packages for the Build Host"](https://docs.yoctoproject.org/4.0.5/ref-manual/system-requirements.html#required-packages-for-the-build-host) section in the Yocto Project Reference Manual.
 
 ```bash
 **Note: Some extra packages are requried to support the Yocto 4.0.5 Release (codename “kirkstone”) compared to the prior release.**
