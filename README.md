@@ -183,12 +183,12 @@ Once sure of the drive identifier, use the following command to copy your Linux 
 
 For flashing a Linux image suitable for a **Winbond W25N01GV NAND** flash memory:
 ```bash
-$ sudo dd if=tmp-glibc/deploy/images/icicle-kit-es/core-image-minimal-mtdutils.nand.mtdimg of=/dev/sdX
+$ sudo dd if=tmp-glibc/deploy/images/icicle-kit-es/core-image-minimal-mtdutils-icicle-kit-es.nand.mtdimg of=/dev/sdX
 ```
 
 For flashing a Linux image suitable for a **Micron MT25QL256 NOR** flash memory:
 ```bash
-$ sudo dd if=tmp-glibc/deploy/images/icicle-kit-es/core-image-minimal-mtdutils.nor.mtdimg of=/dev/sdX
+$ sudo dd if=tmp-glibc/deploy/images/icicle-kit-es/core-image-minimal-mtdutils-icicle-kit-es.nor.mtdimg of=/dev/sdX
 ```
 
 When the transfer has completed, press CTRL+C in the HSS serial console to return to the HSS console.
