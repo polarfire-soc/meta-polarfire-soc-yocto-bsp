@@ -4,6 +4,7 @@ EXTRA_IMAGE_FEATURES += " \
       tools-sdk"
 
 IMAGE_INSTALL = "\
+    packagegroup-core-full-cmdline \
     expect \
     rsync \
     rng-tools \
