@@ -12,9 +12,8 @@ DEPENDS = "collectd libgpiod"
 inherit systemd
 
 PV = "1.0+git${SRCPV}"
-BRANCH = "master"
 SRCREV="24f105b9bacb7cfd41090e2ef2439679aa5b1d34"
-SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-linux-examples.git;protocol=https;branch=${BRANCH} \
+SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-linux-examples.git;protocol=https;nobranch=1 \
           "
 S = "${WORKDIR}/git"
 

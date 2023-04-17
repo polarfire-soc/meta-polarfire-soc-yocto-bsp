@@ -11,9 +11,8 @@ DEPENDS = "makedepend-native"
 
 inherit deploy
 
-BRANCH = "main"
 SRCREV="8fdffbee677993b2cdaf163cb8db32bd734bffe6"
-SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-amp-examples.git;protocol=https;branch=${BRANCH}"
+SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-amp-examples.git;protocol=https;nobranch=1"
 
 S = "${WORKDIR}/git"
 
