@@ -1,13 +1,12 @@
 require recipes-kernel/linux/mpfs-linux-common.inc
 
-LINUX_VERSION ?= "5.15"
+LINUX_VERSION ?= 6.1"
 KERNEL_VERSION_SANITY_SKIP="1"
 
-SRCREV="linux4microchip+fpga-2023.02.1"
+SRCREV="638fbea112396ddf97feaf41681961476714da58"
 SRC_URI = " \
     git://github.com/linux4microchip/linux.git;protocol=https;nobranch=1 \
 "
-
 do_assemble_fitimage[depends] += "dt-overlay-mchp:do_deploy"
 
 SRC_URI:append:icicle-kit-es = " file://bsp_cmdline.cfg \
