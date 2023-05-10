@@ -1,6 +1,6 @@
 require recipes-kernel/linux/mpfs-linux-common.inc
 
-LINUX_VERSION ?= 6.1"
+LINUX_VERSION ?= "6.1"
 KERNEL_VERSION_SANITY_SKIP="1"
 
 SRCREV="638fbea112396ddf97feaf41681961476714da58"
