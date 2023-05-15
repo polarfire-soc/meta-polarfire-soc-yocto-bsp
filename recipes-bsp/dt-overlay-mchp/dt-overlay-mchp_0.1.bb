@@ -11,12 +11,11 @@ PR = "r0"
 
 inherit devicetree
 
-COMPATIBLE_MACHINE = "(icicle-kit-es|icicle-kit-es-amp|m100pfsev|mpfs-video-kit)"
+COMPATIBLE_MACHINE = "(icicle-kit-es|icicle-kit-es-amp|icicle-kit-es-auth|m100pfsev|mpfs-video-kit)"
 
 S = "${WORKDIR}/git"
 
-DT_FILES_PATH:icicle-kit-es = "${WORKDIR}/git/mpfs_icicle"
-DT_FILES_PATH:icicle-kit-es-amp = "${WORKDIR}/git/mpfs_icicle"
+DT_FILES_PATH = "${WORKDIR}/git/mpfs_icicle"
 
 SRCREV="9378e90ae7b3781c602e38f2b028d1b43a8b83b8"
 SRC_URI="git://github.com/linux4microchip/dt-overlay-mchp.git;protocol=https;nobranch=1 \

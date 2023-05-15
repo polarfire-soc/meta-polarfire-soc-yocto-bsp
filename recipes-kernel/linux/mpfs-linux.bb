@@ -9,7 +9,7 @@ SRC_URI = " \
 "
 do_assemble_fitimage[depends] += "dt-overlay-mchp:do_deploy"
 
-SRC_URI:append:icicle-kit-es = " file://bsp_cmdline.cfg \
+SRC_URI:append:icicle-kit-es = " file://mpfs_cmdline.cfg \
     file://rpi_sense_hat.cfg \
     file://qspi_flash.cfg \
 "
@@ -18,10 +18,14 @@ SRC_URI:append:icicle-kit-es-amp = " file://bsp_cmdline.cfg \
     file://qspi_flash.cfg \
 "
 
+SRC_URI:append:icicle-kit-es-auth = " file://mpfs_cmdline.cfg \
+    file://rpi_sense_hat.cfg \
+    file://qspi_flash.cfg \
+"
 SRC_URI:append:m100pfsevp = "file://m100pfsevp_configs.cfg"
 
 SRC_URI:append:mpfs-video-kit = " \
-    file://bsp_cmdline.cfg \
+    file://mpfs_cmdline.cfg \
     file://mpfs-v4l2.cfg \
 "
 

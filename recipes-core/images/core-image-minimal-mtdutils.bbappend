@@ -1,5 +1,5 @@
 IMAGE_FSTYPES:append:icicle-kit-es = " mtd ubi ubifs"
-
+IMAGE_FSTYPES:append:icicle-kit-es-auth = " mtd ubi ubifs"
 # do mtd last
 IMAGE_TYPEDEP:mtd += "${IMAGE_FSTYPES}"
 IMAGE_TYPEDEP:mtd:remove = "mtd"

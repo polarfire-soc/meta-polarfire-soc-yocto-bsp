@@ -219,9 +219,14 @@ The following table details the available targets:
 | -------------------------- | --------------------------------------------------------------------- |
 | `MACHINE=icicle-kit-es`    | ICICLE-KIT-ES, Icicle Kit engineering samples                         |
 | `MACHINE=icicle-kit-es-amp`| ICICLE-KIT-ES, Icicle Kit engineering samples in AMP mode             |
+| `MACHINE=icicle-kit-es-auth`| ICICLE-KIT-ES, Icicle Kit engineering samples with authenticated boot|
 | `MACHINE=mpfs-video-kit`   | MPFS250-VIDEO-KIT, PolarFire SoC Video Kit                            |
 
 The `icicle-kit-es-amp` machine can be used to build the Icicle Kit engineering sample with AMP support. Please see the [Asymmetric Multiprocessing (AMP)](https://mi-v-ecosystem.github.io/redirects/asymmetric-multiprocessing_amp) documentation for further details.
+
+The `icicle-kit-es-auth` machine can be used to build an image that demonstrates a simple approach
+for booting an authenticated Linux kernel. Please see the [Linux Boot Authentication](https://mi-v-ecosystem.github.io/redirects/linux-boot-authentication) documentation for further details on
+how to build an authentication scheme implementing a chain of trust.
 
 When building for different 'Machines' or want a 'clean' build, we recommend deleting the 'build' directory when switching.
 This will delete all cache / configurations and downloads.
