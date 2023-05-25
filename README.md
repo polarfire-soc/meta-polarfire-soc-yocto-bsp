@@ -1,42 +1,51 @@
 # Microchip PolarFire SoC Yocto BSP
 
-Microchip Polarfire-SoC Yocto 'Board Support Package' (BSP) is based on OpenEmbedded (OE). The 'Polarfire SoC Yocto BSP' layer is build on top of the RISC-V Architectural layer (meta-riscv) to provide hardware specific features and additional disk images. 
+Microchip Polarfire-SoC Yocto 'Board Support Package' (BSP) is based on OpenEmbedded (OE). The 'Polarfire SoC Yocto BSP' layer is build on top of the RISC-V Architectural layer (meta-riscv) to provide hardware specific features and additional disk images.
 Using Yocto 'Openembedded' you will build the following:
 
-  - RISC-V Toolchain
-  - Predefined Disk Images
-  - Bootloader Binaries (FSBL / U-Boot)
-  - Device Tree Binary (DTB)
-  - Linux Kernel Images
+- RISC-V Toolchain
+- Predefined Disk Images
+- Bootloader Binaries (FSBL / U-Boot)
+- Device Tree Binary (DTB)
+- Linux Kernel Images
 
 The complete User Guides for each development platform, containing board and boot instructions, are available for the following supported platforms:
 
-  - [ICICLE-KIT-ES](https://mi-v-ecosystem.github.io/redirects/icicle-kit-sw-developer-guide_icicle-kit-sw-developer-guide) (Icicle Kit Engineering Sample) (Requires minimum Design Tag 2023.02)
-  - [MPFS-VIDEO-KIT](https://mi-v-ecosystem.github.io/redirects/boards-mpfs-sev-kit-sev-kit-user-guide) (PolarFire SoC Video Kit)
+- [ICICLE-KIT-ES](https://mi-v-ecosystem.github.io/redirects/icicle-kit-sw-developer-guide_icicle-kit-sw-developer-guide) (Icicle Kit Engineering Sample) (Requires minimum Design Tag 2023.02)
+- [MPFS-VIDEO-KIT](https://mi-v-ecosystem.github.io/redirects/boards-mpfs-sev-kit-sev-kit-user-guide) (PolarFire SoC Video Kit)
 
 ## Build Instructions
+
 Before continuing, ensure that the prerequisite packages are present on your system. Please see the [Host PC setup for Yocto section](#Dependencies) for further details.
 
 ### Create the Workspace
+
 This needs to be done every time you want a clean setup based on the latest BSP.
+
 ```bash
 $ mkdir yocto-dev && cd yocto-dev
 $ repo init -u https://github.com/polarfire-soc/polarfire-soc-yocto-manifests.git -b main -m default.xml
 ```
+
 ### Update the repo workspace
+
 ```bash
 repo sync
 repo rebase
 ```
+
 ### Setup Bitbake environment
+
 ```bash
 . ./meta-polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh
 ```
+
 ### Building board Disk Image
 
 #### Building a Linux Image with a root file system (RootFS)
 
 Using Yocto bitbake command and setting the MACHINE and image required.
+
 ```bash
 MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 ```
@@ -84,7 +93,7 @@ For instructions on how to transfer the image to the external QSPI flash memory 
 
 To generate an image for the Micron MT25QL256 NOR flash memory, use the following setting in the Icicle Kit machine configuration file (conf/machine/icicle-kit-es.conf):
 
-```
+```text
 UBOOT_CONFIG = "mpfs_icicle_nor"
 ```
 
@@ -110,7 +119,9 @@ For instructions on how to transfer the image to the external QSPI flash memory 
 We recommend using the `bmaptool` utility to program the storage device. `bmaptool` is a generic tool for creating the block map (bmap) for a file and copying files using this block map. Raw system image files can be flashed a lot faster with bmaptool than with traditional tools, like "dd" or "cp".
 
 The created disk image is a 'wic' file, and is located in `yocto-dev/build/tmp-glibc/deploy/images/<MACHINE>/` directory,
- - e.g., for mpfs-dev-cli image and machine icicle-kit-es, it will be located in 
+
+e.g., for mpfs-dev-cli image and machine icicle-kit-es, it will be located in
+
 `yocto-dev/build/tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic`.
 
 ```bash
@@ -182,11 +193,13 @@ The output should contain a line similar to one of the following lines:
 Once sure of the drive identifier, use the following command to copy your Linux image to the external QSPI flash memory device, replacing the X as appropriate:
 
 For flashing a Linux image suitable for a **Winbond W25N01GV NAND** flash memory:
+
 ```bash
 $ sudo dd if=tmp-glibc/deploy/images/icicle-kit-es/core-image-minimal-mtdutils-icicle-kit-es.nand.mtdimg of=/dev/sdX
 ```
 
 For flashing a Linux image suitable for a **Micron MT25QL256 NOR** flash memory:
+
 ```bash
 $ sudo dd if=tmp-glibc/deploy/images/icicle-kit-es/core-image-minimal-mtdutils-icicle-kit-es.nor.mtdimg of=/dev/sdX
 ```
@@ -198,6 +211,7 @@ Wait for the image transfer to complete. A progress bar will be shown in the HSS
 To boot into Linux, type boot in the HSS console. U-Boot and Linux will use UART1. When Linux boots, log in with the username root. There is no password required.
 
 ### Supported Machine Targets
+
 The `MACHINE` (board) option can be used to set the target board for which linux is built, and if left blank it will default to `MACHINE=icicle-kit-es`.
 The following table details the available targets:
 
@@ -211,12 +225,14 @@ The `icicle-kit-es-amp` machine can be used to build the Icicle Kit engineering 
 
 When building for different 'Machines' or want a 'clean' build, we recommend deleting the 'build' directory when switching.
 This will delete all cache / configurations and downloads.
-```
+
+```bash
 cd yocto-dev
 rm -rf build
 ```
 
 ### Linux Images
+
 The table below summarizes the most common Linux images that can be built using this BSP.
 
 | bitbake `<image>` argument    | Description                                                                  |
@@ -229,53 +245,65 @@ The table below summarizes the most common Linux images that can be built using 
 For more information on available images refer to [Yocto reference manual](https://docs.yoctoproject.org/ref-manual/images.html)
 
 #### Target machine Linux login
-Login with `root` account, there is no password set.
 
+Login with `root` account, there is no password set.
 
 ## Bitbake commands
 
 With the bitbake environment setup, execute the bitbake command in the following format to build the disk images.
+
 ```bash
 MACHINE=<machine> bitbake <image>
 ```
+
 Example building the icicle-kit-es machine and the mpfs-dev-cli Linux image
+
 ```bash
 MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 ```
+
 To work with individual recipes:
+
 ```bash
 MACHINE=<MACHINE> bitbake <recipe> -c <command>
 ```
+
 View/Edit the Kernel menuconfig:
+
 ```bash
 MACHINE=<MACHINE> bitbake mpfs-linux -c menuconfig
 ```
+
 Run the diffconfig command to prepare a configuration fragment.
 The resulting file fragment.cfg should be copied to meta-polarfire-soc-yocto-bsp/recipes-kernel/linux/files directory:
 Afterwards the mpfs-linux.bb src_uri should be updated to include the <fragment>.cfg,
+
 ```bash
 MACHINE=<MACHINE> bitbake mpfs-linux -c diffconfig
 ```
 
 **Available BSP recipes:**
 
-  - hss (Microchip Hart Software Services) payload generator
-  - u-boot-mpfs (PolarFire SoC U-Boot)
-  - mpfs-linux (Linux Kernel for PolarFire SoC)
+- hss (Microchip Hart Software Services) payload generator
+- u-boot-mpfs (PolarFire SoC U-Boot)
+- mpfs-linux (Linux Kernel for PolarFire SoC)
 
 **Available commands:**
 
-  - clean
-  - configure
-  - compile
-  - install
+- clean
+- configure
+- compile
+- install
 
 ### Yocto Image and Binaries directory
-```
+
+```bash
 build/tmp-glibc/deploy/images/{MACHINE}
 ```
+
 For Example the following is the path for the Icicle-kit-es
-```
+
+```bash
 build/tmp-glibc/deploy/images/icicle-kit-es
 ```
 
@@ -283,10 +311,11 @@ build/tmp-glibc/deploy/images/icicle-kit-es
 ## Host PC setup for Yocto
 
 ### Yocto Dependencies
+
 This document assumes you are running on a modern Linux system. The process documented here was tested using Ubuntu 18.04 LTS.
 It should also work with other Linux distributions if the equivalent prerequisite packages are installed.
 
-The BSP uses the Yocto RISCV Architecture Layer, and the Yocto release Kirkstone (Revision 4.0.5)	(Released November 2022).
+The BSP uses the Yocto RISCV Architecture Layer, and the Yocto release Kirkstone (Revision 4.0.5) (Released November 2022).
 
 **Make sure to install the [repo utility](https://source.android.com/setup/develop#installing-repo) first.**
 
@@ -300,13 +329,14 @@ Detailed instructions for various distributions can be found in the ["Required P
 ### Other Dependencies
 
 For Ubuntu 18.04 (or newer) install python3-distutils:
-```
+
+```bash
 sudo apt install python3-distutils
 ```
 
 You can install the bmap-tools package using the following command:
 
-```
+```bash
 sudo apt-get install bmap-tools
 ```
 
@@ -338,6 +368,7 @@ Finally, the user acknowledges that it's their responsibility to make sure they 
 ## Known issues
 
 ### Issue 001: Required binaries not available before creating the disk image
+
 We sometimes get dependencies not building correctly.
 During the process do_wic_install payload may not be present.
 
@@ -346,13 +377,17 @@ For example after requesting a complete build:
 ```bash
 MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 ```
+
 If u-boot or boot.src.uimg or payload.bin is missing,
 execute the following:
+
 ```bash
 MACHINE=icicle-kit-es bitbake u-boot -c clean
 MACHINE=icicle-kit-es bitbake u-boot -c install
 ```
+
 And finally a complete build:
+
 ```bash
 MACHINE=icicle-kit-es bitbake mpfs-dev-cli
 ```
