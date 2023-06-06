@@ -1,0 +1,114 @@
+From c78800b84dc81db1a32510f6a40638519a0fa2b5 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Tue, 23 May 2023 09:02:25 +0200
+Subject: [PATCH 2/2] m100pfsevp: remove eth mac address setting a la Icicle
+
+Like for the other boards from ARIES Embedded, we use the env variables
+"ethaddr" and "eth1addr" to define the mac address for the two Ethernet
+interfaces at commissioning time. For the user's convenience we also
+enable random mac addresses in case "ethaddr" or "eth1addr" are unset.
+
+For the Icicle, the last three bytes of the mac address was derived
+from the serial number from the System Services Block. We keep and
+print it out to the console.
+
+Signed-off-by: Wolfgang Grandegger <wg@grandegger.com>
+---
+ board/aries/m100pfsevp/m100pfsevp.c | 66 +++--------------------------
+ configs/m100pfsevp_defconfig        |  1 +
+ 2 files changed, 7 insertions(+), 60 deletions(-)
+
+diff --git a/board/aries/m100pfsevp/m100pfsevp.c b/board/aries/m100pfsevp/m100pfsevp.c
+index 10bd9a7e87..6c95519bae 100644
+--- a/board/aries/m100pfsevp/m100pfsevp.c
++++ b/board/aries/m100pfsevp/m100pfsevp.c
+@@ -83,69 +83,15 @@ int board_early_init_f(void)
+ 
+ int board_late_init(void)
+ {
+-	u32 ret;
+-	u32 node;
+-	u8 idx;
+ 	u8 device_serial_number[16] = { 0 };
+-	unsigned char mac_addr[6];
+-	char icicle_mac_addr[20];
+-	void *blob = (void *)gd->fdt_blob;
+-
+-	node = fdt_path_offset(blob, "ethernet0");
+-	if (node < 0) {
+-		printf("No ethernet0 path offset\n");
+-		return -ENODEV;
+-	}
+-
+-	ret = fdtdec_get_byte_array(blob, node, "local-mac-address", mac_addr, 6);
+-	if (ret) {
+-		printf("No local-mac-address property\n");
+-		return -EINVAL;
+-	}
++	int i;
+ 
+ 	read_device_serial_number(device_serial_number, 16);
+-
+-	/* Update MAC address with device serial number */
+-	mac_addr[0] = 0xc0;
+-	mac_addr[1] = 0xe5;
+-	mac_addr[2] = 0x4e;
+-	mac_addr[3] = device_serial_number[2];
+-	mac_addr[4] = device_serial_number[1];
+-	mac_addr[5] = device_serial_number[0];
+-
+-	ret = fdt_setprop(blob, node, "local-mac-address", mac_addr, 6);
+-	if (ret) {
+-		printf("Error setting local-mac-address property\n");
+-		return -ENODEV;
+-	}
+-
+-	icicle_mac_addr[0] = '[';
+-
+-	sprintf(&icicle_mac_addr[1], "%pM", mac_addr);
+-
+-	icicle_mac_addr[18] = ']';
+-	icicle_mac_addr[19] = '\0';
+-
+-	for (idx = 0; idx < 20; idx++) {
+-		if (icicle_mac_addr[idx] == ':')
+-			icicle_mac_addr[idx] = ' ';
+-	}
+-	env_set("icicle_mac_addr0", icicle_mac_addr);
+-
+-	mac_addr[5] = device_serial_number[0] + 1;
+-
+-	icicle_mac_addr[0] = '[';
+-
+-	sprintf(&icicle_mac_addr[1], "%pM", mac_addr);
+-
+-	icicle_mac_addr[18] = ']';
+-	icicle_mac_addr[19] = '\0';
+-
+-	for (idx = 0; idx < 20; idx++) {
+-		if (icicle_mac_addr[idx] == ':')
+-			icicle_mac_addr[idx] = ' ';
+-	}
+-	env_set("icicle_mac_addr1", icicle_mac_addr);
++	
++	puts("S/N:   ");
++	for (i = 15; i >= 0; i--)
++	  printf("%02x", device_serial_number[i]);
++	puts("\n");
+ 
+ 	return 0;
+ }
+diff --git a/configs/m100pfsevp_defconfig b/configs/m100pfsevp_defconfig
+index 00357f9869..f35afc8244 100644
+--- a/configs/m100pfsevp_defconfig
++++ b/configs/m100pfsevp_defconfig
+@@ -18,5 +18,6 @@ CONFIG_ENV_OVERWRITE=y
+ CONFIG_ENV_IS_IN_MMC=y
+ CONFIG_SYS_RELOC_GD_ENV_ADDR=y
+ CONFIG_BOOTP_SEND_HOSTNAME=y
++CONFIG_NET_RANDOM_ETHADDR=y
+ # CONFIG_MMC_HS200_SUPPORT is not set
+ CONFIG_DM_MTD=y
+-- 
+2.34.1
+

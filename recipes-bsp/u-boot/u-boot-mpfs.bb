@@ -18,6 +18,7 @@ SRC_URI:remove:icicle-kit-es-auth = "file://${UBOOT_ENV}.txt"
 SRC_URI:remove:m100pfsevp = "file://${UBOOT_ENV}.txt"
 SRC_URI:append:m100pfsevp = "\
 	file://0001-riscv-dts-m100pfsevp-fix-broken-emmc-support.patch \
+	file://0002-m100pfsevp-remove-eth-mac-address-setting-a-la-Icicl.patch \
 	"
 
 DEPENDS:append = " u-boot-tools-native hss-payload-generator-native"
