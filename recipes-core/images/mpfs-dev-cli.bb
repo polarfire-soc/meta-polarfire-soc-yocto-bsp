@@ -91,5 +91,10 @@ IMAGE_INSTALL:append:mpfs-video-kit = " \
     sudo \
     v4l2-start-service \
     videokit-webdemo \
+    python3-opcua \
+    "
+
+IMAGE_INSTALL:append:icicle-kit-es = " \
+    python3-opcua \
     "
 

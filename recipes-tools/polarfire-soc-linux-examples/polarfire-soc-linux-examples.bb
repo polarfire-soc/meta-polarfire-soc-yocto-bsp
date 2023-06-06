@@ -12,7 +12,7 @@ DEPENDS = "collectd libgpiod"
 inherit systemd
 
 PV = "1.0+git${SRCPV}"
-SRCREV="13cb6d843b407e7b47ba265c27fa170ec4124f81"
+SRCREV="ca78a9b2e523788214f94d1c4bec2d68cb8eadd1"
 SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-linux-examples.git;protocol=https;nobranch=1 \
           "
 S = "${WORKDIR}/git"
@@ -35,6 +35,14 @@ EXAMPLE_FILES:append:icicle-kit-es-amp = "\
 
 EXAMPLE_FILES:mpfs-video-kit = "\
     pdma \
+    "
+
+EXAMPLE_FILES:append:icicle-kit-es = "\
+    opcua/icicle-kit \
+    "
+
+EXAMPLE_FILES:append:mpfs-video-kit = "\
+    opcua/video-kit \
     "
 
 do_compile() {
