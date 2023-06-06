@@ -30,5 +30,4 @@ do_install:append () {
 FILES:${PN} += "${WEB_PATH}/*"
 FILES:${PN} += "/etc/systemd/network/*"
 
-COMPATIBLE_MACHINE = "(mpfs-video-kit)"
-
+COMPATIBLE_MACHINE = "mpfs-video-kit"

@@ -1,3 +1,5 @@
+#!/bin/sh
+
 /srv/www/h264/stop.sh > /srv/www/h264/kill_messages
 
 SERVER="192.168.1.1"

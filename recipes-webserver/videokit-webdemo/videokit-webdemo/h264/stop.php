@@ -28,7 +28,6 @@
     	$url.= $_SERVER['HTTP_HOST'];   
 	$url.= $_SERVER['REQUEST_URI'];    
 	$ip_server = $_SERVER['SERVER_ADDR'];
-//	sleep(1);
 	echo shell_exec("sudo /srv/www/h264/stop.sh >/srv/www/h264/messages 2>/srv/www/h264/error_log");
 
 header('Refresh: 3; URL=http://'.$ip_server.'/h264/index.htm?stream=stopped');

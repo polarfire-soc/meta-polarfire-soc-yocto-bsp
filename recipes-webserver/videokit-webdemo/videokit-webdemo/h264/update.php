@@ -19,6 +19,7 @@ $cbgreen = $_REQUEST['cbgreen'];
 $cbblue = $_REQUEST['cbblue'];
 $resolution = $_REQUEST['resolution'];
 ?>
+
 <table align=center>
 <tr></tr>
 <tr align=center> <td>
@@ -37,6 +38,7 @@ $resolution = $_REQUEST['resolution'];
 	<td> <b>Color Blue: <?php echo $cbblue ?> </td>
 </tr>
 </table>
+
 <?php
         if( $resolution == 1) {
 		$hreso = "devmem2 0x40001078 w 432 >/dev/null";
@@ -58,6 +60,7 @@ $resolution = $_REQUEST['resolution'];
 		$vreso = "devmem2 0x4000107C w 720 >/dev/null";
 	}
 		$qhp = "devmem2 0x40001074 w ".$qf." >/dev/null";
+
 $myfile = fopen("update.sh", "w") or die("Unable to open file!");
 $txt = "/usr/bin/v4l2-ctl -d /dev/video0 --set-ctrl=quality_factor=".$qf." --set-ctrl=brightness=".$brightness." --set-ctrl=contrast=".$contrast." --set-ctrl=gain_red=".$cbred." --set-ctrl=gain_green=".$cbgreen." --set-ctrl=gain_blue=".$cbblue."\n";
 fwrite($myfile, $txt);
