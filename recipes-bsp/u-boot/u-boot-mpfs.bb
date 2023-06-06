@@ -16,6 +16,9 @@ SRC_URI:append:icicle-kit-es-auth = " file://authenticated-boot.cfg"
 SRC_URI:remove:icicle-kit-es-auth = "file://${UBOOT_ENV}.txt"
 # Aries m100pfsevp machine uses built-in U-boot env
 SRC_URI:remove:m100pfsevp = "file://${UBOOT_ENV}.txt"
+SRC_URI:append:m100pfsevp = "\
+	file://0001-riscv-dts-m100pfsevp-fix-broken-emmc-support.patch \
+	"
 
 DEPENDS:append = " u-boot-tools-native hss-payload-generator-native"
 DEPENDS:append:icicle-kit-es-amp = " polarfire-soc-amp-examples"
