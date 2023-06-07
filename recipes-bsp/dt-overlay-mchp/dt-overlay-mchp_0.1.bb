@@ -17,7 +17,7 @@ S = "${WORKDIR}/git"
 
 DT_FILES_PATH = "${WORKDIR}/git/mpfs_icicle"
 
-SRCREV="9378e90ae7b3781c602e38f2b028d1b43a8b83b8"
+SRCREV="d99814d03546b3dd9f6c4cf365b426e576a85e06"
 SRC_URI="git://github.com/linux4microchip/dt-overlay-mchp.git;protocol=https;nobranch=1 \
 "
 
