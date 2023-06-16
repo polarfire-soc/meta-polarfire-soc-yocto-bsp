@@ -41,32 +41,23 @@ $resolution = $_REQUEST['resolution'];
 
 <?php
         if( $resolution == 1) {
-		$hreso = "devmem2 0x40001078 w 432 >/dev/null";
-		$vreso = "devmem2 0x4000107C w 240 >/dev/null";
+		$reso = "v4l2-ctl --device /dev/video0 --set-fmt-video=width=432,height=240";
 	} elseif( $resolution == 2) {
-		$hreso = "devmem2 0x40001078 w 640 >/dev/null";
-		$vreso = "devmem2 0x4000107C w 480 >/dev/null";
+		$reso = "v4l2-ctl --device /dev/video0 --set-fmt-video=width=640,height=480";
 	} elseif( $resolution == 3) {
-		$hreso = "devmem2 0x40001078 w 960 >/dev/null";
-		$vreso = "devmem2 0x4000107C w 544 >/dev/null";
+		$reso = "v4l2-ctl --device /dev/video0 --set-fmt-video=width=960,height=544";
 	} elseif( $resolution == 4) {
-		$hreso = "devmem2 0x40001078 w 1280 >/dev/null";
-		$vreso = "devmem2 0x4000107C w 720 >/dev/null";
+		$reso = "v4l2-ctl --device /dev/video0 --set-fmt-video=width=1280,height=720";
 	} elseif( $resolution == 5) {
-		$hreso = "devmem2 0x40001078 w 1920 >/dev/null";
-		$vreso = "devmem2 0x4000107C w 1072 >/dev/null";
+		$reso = "v4l2-ctl --device /dev/video0 --set-fmt-video=width=1920,height=1072";
 	} else {
-		$hreso = "devmem2 0x40001078 w 1280 >/dev/null";
-		$vreso = "devmem2 0x4000107C w 720 >/dev/null";
+		$reso = "v4l2-ctl --device /dev/video0 --set-fmt-video=width=1280,height=720";
 	}
-		$qhp = "devmem2 0x40001074 w ".$qf." >/dev/null";
 
 $myfile = fopen("update.sh", "w") or die("Unable to open file!");
 $txt = "/usr/bin/v4l2-ctl -d /dev/video0 --set-ctrl=quality_factor=".$qf." --set-ctrl=brightness=".$brightness." --set-ctrl=contrast=".$contrast." --set-ctrl=gain_red=".$cbred." --set-ctrl=gain_green=".$cbgreen." --set-ctrl=gain_blue=".$cbblue."\n";
 fwrite($myfile, $txt);
-$txt = "$hreso"."\n";
-fwrite($myfile, $txt);
-$txt = "$vreso"."\n";
+$txt = "$reso"."\n";
 fwrite($myfile, $txt);
 fclose($myfile);
 ?>
