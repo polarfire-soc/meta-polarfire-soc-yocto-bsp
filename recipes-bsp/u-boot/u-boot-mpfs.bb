@@ -3,7 +3,8 @@ require recipes-bsp/u-boot/u-boot.inc
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRCREV = "a223cac46018ee4251e51c0c1b84e9cfcf5428c0"
+PV = "2022.01+git${SRCPV}"
+SRCREV = "linux4microchip+fpga-2023.06-rc1"
 SRC_URI = "git://github.com/polarfire-soc/u-boot.git;protocol=https;nobranch=1  \
            file://${UBOOT_ENV}.txt \
            file://${HSS_PAYLOAD}.yaml \
