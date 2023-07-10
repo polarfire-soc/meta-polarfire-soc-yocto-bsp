@@ -1,0 +1,179 @@
+From 81e74b771800153be3e490d1139cdcc8ab5e1112 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Thu, 6 Jul 2023 20:16:48 +0200
+Subject: [PATCH] riscv: dts: microchip: mpfs: m100pfsevp: re-add dts for emmc
+ and sdcard
+
+The M100PFSEVP can boot from the SD-Card or the eMMC depending on
+the level of GPIO #12. We re-introduce a device tree source for both
+cases, "mpfs-m100pfsevp-sdcard.dts" and "mpfs-m100pfsevp-sdcard.dts".
+These include the common "mpfs-m100pfsevp.dtsi".
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/riscv/boot/dts/microchip/Makefile        |  3 +-
+ .../dts/microchip/mpfs-m100pfsevp-emmc.dts    | 29 +++++++++++++++
+ .../dts/microchip/mpfs-m100pfsevp-sdcard.dts  | 35 +++++++++++++++++++
+ ...fs-m100pfsevp.dts => mpfs-m100pfsevp.dtsi} | 29 ++++-----------
+ 4 files changed, 73 insertions(+), 23 deletions(-)
+ create mode 100644 arch/riscv/boot/dts/microchip/mpfs-m100pfsevp-emmc.dts
+ create mode 100644 arch/riscv/boot/dts/microchip/mpfs-m100pfsevp-sdcard.dts
+ rename arch/riscv/boot/dts/microchip/{mpfs-m100pfsevp.dts => mpfs-m100pfsevp.dtsi} (85%)
+
+diff --git a/arch/riscv/boot/dts/microchip/Makefile b/arch/riscv/boot/dts/microchip/Makefile
+index 48c9d3d071f3..8e4ed6f06b28 100644
+--- a/arch/riscv/boot/dts/microchip/Makefile
++++ b/arch/riscv/boot/dts/microchip/Makefile
+@@ -1,7 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0
+ dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-icicle-kit.dtb
+ dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-icicle-kit-context-a.dtb
+-dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-m100pfsevp.dtb
++dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-m100pfsevp-sdcard.dtb
++dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-m100pfsevp-emmc.dtb
+ dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-polarberry.dtb
+ dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-video-kit.dtb
+ dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-tysom-m.dtb
+diff --git a/arch/riscv/boot/dts/microchip/mpfs-m100pfsevp-emmc.dts b/arch/riscv/boot/dts/microchip/mpfs-m100pfsevp-emmc.dts
+new file mode 100644
+index 000000000000..8690071ea504
+--- /dev/null
++++ b/arch/riscv/boot/dts/microchip/mpfs-m100pfsevp-emmc.dts
+@@ -0,0 +1,29 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Original all-in-one devicetree:
++ * Copyright (C) 2021-2023 - Wolfgang Grandegger <wg@aries-embedded.de>
++ * Rewritten to use includes:
++ * Copyright (C) 2022 - Conor Dooley <conor.dooley@microchip.com>
++ */
++/dts-v1/;
++
++#include "mpfs-m100pfsevp.dtsi"
++
++&gpio0 {
++	/* Set to low for eMMC, high for SD-card */
++	mmc-sel-hog {
++		gpio-hog;
++		gpios = <12 0>;
++		output-low;
++	};
++};
++
++&mmc {
++	max-frequency = <50000000>;
++	bus-width = <8>;
++	cap-mmc-highspeed;
++	no-1-8-v;
++	non-removable;
++	disable-wp;
++	status = "okay";
++};
+diff --git a/arch/riscv/boot/dts/microchip/mpfs-m100pfsevp-sdcard.dts b/arch/riscv/boot/dts/microchip/mpfs-m100pfsevp-sdcard.dts
+new file mode 100644
+index 000000000000..03455ccdb94c
+--- /dev/null
++++ b/arch/riscv/boot/dts/microchip/mpfs-m100pfsevp-sdcard.dts
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Original all-in-one devicetree:
++ * Copyright (C) 2021-2023 - Wolfgang Grandegger <wg@aries-embedded.de>
++ * Rewritten to use includes:
++ * Copyright (C) 2022 - Conor Dooley <conor.dooley@microchip.com>
++ */
++/dts-v1/;
++
++#include "mpfs-m100pfsevp.dtsi"
++
++/* Clock frequency (in Hz) of the rtcclk */
++#define MTIMER_FREQ	1000000
++
++&gpio0 {
++	/* Set to low for eMMC, high for SD-card */
++	mmc-sel-hog {
++		gpio-hog;
++		gpios = <12 0>;
++		output-high;
++	};
++};
++
++&mmc {
++	max-frequency = <50000000>;
++	bus-width = <4>;
++	cap-sd-highspeed;
++	no-1-8-v;
++	sd-uhs-sdr12;
++	sd-uhs-sdr25;
++	sd-uhs-sdr50;
++	sd-uhs-sdr104;
++	disable-wp;
++	status = "okay";
++};
+diff --git a/arch/riscv/boot/dts/microchip/mpfs-m100pfsevp.dts b/arch/riscv/boot/dts/microchip/mpfs-m100pfsevp.dtsi
+similarity index 85%
+rename from arch/riscv/boot/dts/microchip/mpfs-m100pfsevp.dts
+rename to arch/riscv/boot/dts/microchip/mpfs-m100pfsevp.dtsi
+index 8eb944d4bcf0..09638716a13c 100644
+--- a/arch/riscv/boot/dts/microchip/mpfs-m100pfsevp.dts
++++ b/arch/riscv/boot/dts/microchip/mpfs-m100pfsevp.dtsi
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+  * Original all-in-one devicetree:
+- * Copyright (C) 2021-2022 - Wolfgang Grandegger <wg@aries-embedded.de>
++ * Copyright (C) 2021-2023 - Wolfgang Grandegger <wg@aries-embedded.de>
+  * Rewritten to use includes:
+  * Copyright (C) 2022 - Conor Dooley <conor.dooley@microchip.com>
+  */
+@@ -76,13 +76,6 @@ pmic-irq-hog {
+ 		gpios = <13 0>;
+ 		input;
+ 	};
+-
+-	/* Set to low for eMMC, high for SD-card */
+-	mmc-sel-hog {
+-		gpio-hog;
+-		gpios = <12 0>;
+-		output-high;
+-	};
+ };
+ 
+ &gpio2 {
+@@ -119,20 +112,6 @@ &mbox {
+ 	status = "okay";
+ };
+ 
+-&mmc {
+-	max-frequency = <50000000>;
+-	bus-width = <4>;
+-	cap-mmc-highspeed;
+-	cap-sd-highspeed;
+-	no-1-8-v;
+-	sd-uhs-sdr12;
+-	sd-uhs-sdr25;
+-	sd-uhs-sdr50;
+-	sd-uhs-sdr104;
+-	disable-wp;
+-	status = "okay";
+-};
+-
+ &mmuart1 {
+ 	status = "okay";
+ };
+@@ -167,6 +146,12 @@ &rtc {
+ 
+ &spi0 {
+ 	status = "okay";
++	spidev@0 {
++		compatible = "linux,spidev";
++		reg = <0>; /* CS 0 */
++		spi-max-frequency = <10000000>;
++		status = "okay";
++	};
+ };
+ 
+ &spi1 {
+-- 
+2.34.1
+

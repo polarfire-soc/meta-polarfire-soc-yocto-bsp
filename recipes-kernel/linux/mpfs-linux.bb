@@ -22,7 +22,11 @@ SRC_URI:append:icicle-kit-es-auth = " file://mpfs_cmdline.cfg \
     file://rpi_sense_hat.cfg \
     file://qspi_flash.cfg \
 "
-SRC_URI:append:m100pfsevp = "file://m100pfsevp_configs.cfg"
+
+SRC_URI:append:m100pfsevp = " \
+    file://m100pfsevp_configs.cfg \
+    file://0001-riscv-dts-microchip-mpfs-m100pfsevp-re-add-dts-for-e.patch \
+"
 
 SRC_URI:append:mpfs-video-kit = " \
     file://mpfs_cmdline.cfg \
