@@ -1,9 +1,0 @@
-UBOOT_SIGN_ENABLE = "1"
-UBOOT_SIGN_KEYNAME ?= "mpfs_fitimage_key"
-UBOOT_SIGN_KEYDIR ?= "${TOPDIR}/../keys"
-UBOOT_MKIMAGE_DTCOPTS = "-I dts -O dtb -p 2000"
-FIT_SIGN_ALG = "rsa4096"
-FIT_HASH_ALG = "sha256"
-
-HSS_PAYLOAD_PRIVATE_KEYNAME ?= "x509-ec-secp384r1-private"
-HSS_PAYLOAD_KEYDIR ?= "${TOPDIR}/../keys"
