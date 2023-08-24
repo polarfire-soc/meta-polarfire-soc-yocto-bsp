@@ -8,7 +8,7 @@ DESCRIPTION = "Linux Example applications, includes the following \
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE;md5=06ec214e9fafe6d4515883d77674a453"
 
-DEPENDS = "collectd libgpiod"
+DEPENDS = "collectd libgpiod  python3-flask"
 inherit systemd
 
 PV = "1.0+git${SRCPV}"

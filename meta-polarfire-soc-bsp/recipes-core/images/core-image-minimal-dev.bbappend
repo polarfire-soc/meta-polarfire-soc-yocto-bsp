@@ -23,8 +23,6 @@ IMAGE_INSTALL = "\
     iw \
     python3 \
     python3-pip \
-    python3-flask \
-    python3-flask-dev \
     python3-werkzeug \
     libudev \
     glib-2.0 \

@@ -9,7 +9,6 @@ IMAGE_INSTALL = "\
     polarfire-soc-linux-examples \
     dt-overlay-mchp \
     python3 \
-    python3-flask \
     rng-tools \
     i2c-tools \
     libgpiod \
