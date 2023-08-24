@@ -4,7 +4,7 @@
 
 require conf/machine/include/riscv/tune-riscv.inc
 
-MACHINE_FEATURES = "screen keyboard ext2 ext3 serial"
+MACHINE_FEATURES = "screen keyboard ext2 ext3 serial pci usbhost wifi"
 
 KERNEL_CLASSES = "kernel-fitimage"
 KERNEL_IMAGETYPE = "fitImage"

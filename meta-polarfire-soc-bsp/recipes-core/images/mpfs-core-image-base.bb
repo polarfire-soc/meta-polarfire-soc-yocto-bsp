@@ -15,7 +15,6 @@ IMAGE_INSTALL = "\
     libgpiod \
     libgpiod-tools \
     util-linux \
-    pciutils \
     wget \
     kernel-modules \
     "

@@ -11,8 +11,6 @@ IMAGE_INSTALL = "\
     iperf3 \
     devmem2 \
     can-utils \
-    usbutils \
-    pciutils \
     polarfire-soc-linux-examples \
     dt-overlay-mchp \
     libgpiod \
