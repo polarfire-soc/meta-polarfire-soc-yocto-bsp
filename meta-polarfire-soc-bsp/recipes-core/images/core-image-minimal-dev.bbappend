@@ -4,7 +4,7 @@ EXTRA_IMAGE_FEATURES += " \
       tools-sdk"
 
 IMAGE_INSTALL = "\
-    ncurses-tools \
+    packagegroup-core-base-utils \
     expect \
     rsync \
     rng-tools \
@@ -15,12 +15,8 @@ IMAGE_INSTALL = "\
     dt-overlay-mchp \
     libgpiod \
     libgpiod-tools \
-    libgpiod-dev \
     i2c-tools \
-    vim vim-vimrc \
-    net-tools \
     htop \
-    iw \
     python3 \
     python3-pip \
     python3-werkzeug \
@@ -29,9 +25,6 @@ IMAGE_INSTALL = "\
     sqlite3 \
     dtc \
     cmake \
-    tar \
-    wget \
-    zip \
     mtd-utils \
     mtd-utils-ubifs \
     kernel-modules \
