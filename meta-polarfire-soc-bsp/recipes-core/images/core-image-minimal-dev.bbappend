@@ -12,7 +12,6 @@ IMAGE_INSTALL = "\
     devmem2 \
     can-utils \
     polarfire-soc-linux-examples \
-    dt-overlay-mchp \
     libgpiod \
     libgpiod-tools \
     i2c-tools \

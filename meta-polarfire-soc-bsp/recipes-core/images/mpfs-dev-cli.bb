@@ -14,7 +14,6 @@ IMAGE_INSTALL = "\
     packagegroup-core-boot \
     packagegroup-core-full-cmdline \
     polarfire-soc-linux-examples \
-    dt-overlay-mchp \
     coremarkpro \
     libgpiod \
     libgpiod-tools \

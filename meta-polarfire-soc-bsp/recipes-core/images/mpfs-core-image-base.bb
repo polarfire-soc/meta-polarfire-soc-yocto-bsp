@@ -7,7 +7,6 @@ DEPENDS += "virtual/bootloader"
 IMAGE_INSTALL = "\
     packagegroup-core-boot \
     polarfire-soc-linux-examples \
-    dt-overlay-mchp \
     python3 \
     rng-tools \
     i2c-tools \
