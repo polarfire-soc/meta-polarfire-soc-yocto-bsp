@@ -88,9 +88,8 @@ do_deploy:append () {
     fi
 }
 
-FILES:${PN}:append:icicle-kit-es = " /boot/boot.scr.uimg"
-FILES:${PN}:append:icicle-kit-es-amp = " /boot/boot.scr.uimg"
+FILES:${PN}:append:icicle-kit = " /boot/boot.scr.uimg"
 FILES:${PN}:append:mpfs-video-kit = " /boot/boot.scr.uimg"
 
-COMPATIBLE_MACHINE = "(icicle-kit-es|icicle-kit-es-amp|icicle-kit-es-auth|mpfs-video-kit|m100pfsevp)"
+COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit|m100pfsevp)"
 

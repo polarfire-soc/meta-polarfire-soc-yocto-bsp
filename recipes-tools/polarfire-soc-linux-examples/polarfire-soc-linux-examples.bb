@@ -83,14 +83,11 @@ do_install:m100pfsevp() {
 	:
 }
 
-SYSTEMD_SERVICE:${PN}:append:icicle-kit-es = "collectdiio.service"
-SYSTEMD_AUTO_ENABLE:${PN}:append:icicle-kit-es = "disable"
+SYSTEMD_SERVICE:${PN}:append:icicle-kit = "collectdiio.service"
+SYSTEMD_AUTO_ENABLE:${PN}:append:icicle-kit = "disable"
 
 SYSTEMD_SERVICE:${PN}:append:icicle-kit-es-amp = "collectdiio.service"
 SYSTEMD_AUTO_ENABLE:${PN}:append:icicle-kit-es-amp = "disable"
-
-SYSTEMD_SERVICE:${PN}:append:icicle-kit-es-auth = "collectdiio.service"
-SYSTEMD_AUTO_ENABLE:${PN}:append:icicle-kit-es-auth = "disable"
 
 FILES:${PN} += "/opt/microchip/"
 
