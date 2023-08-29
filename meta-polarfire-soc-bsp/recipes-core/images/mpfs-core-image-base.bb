@@ -28,12 +28,6 @@ LICENSE = "MIT"
 
 IMAGE_FSTYPES = "${INITRAMFS_FSTYPES}"
 
-IMAGE_FSTYPES:append:icicle-kit-es = "${@bb.utils.contains('INITRAMFS_IMAGE', 'mpfs-core-image-base', \
-' ', ' mtd ubi ubifs', d)}"
-
-IMAGE_FSTYPES:append:icicle-kit-es-amp = "${@bb.utils.contains('INITRAMFS_IMAGE', 'mpfs-core-image-base', \
-' ', ' mtd ubi ubifs', d)}"
-
 # do mtd last
 IMAGE_TYPEDEP:mtd += "${IMAGE_FSTYPES}"
 IMAGE_TYPEDEP:mtd:remove = "mtd"
