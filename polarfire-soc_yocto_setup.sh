@@ -41,7 +41,6 @@ bitbake-layers add-layer ../meta-openembedded/meta-oe
 bitbake-layers add-layer ../meta-openembedded/meta-python
 bitbake-layers add-layer ../meta-openembedded/meta-multimedia
 bitbake-layers add-layer ../meta-openembedded/meta-networking
-bitbake-layers add-layer ../meta-riscv
 bitbake-layers add-layer ../meta-polarfire-soc-yocto-bsp/meta-polarfire-soc-bsp
 bitbake-layers add-layer ../meta-polarfire-soc-yocto-bsp/meta-polarfire-soc-community
 bitbake-layers add-layer ../meta-polarfire-soc-yocto-bsp/meta-polarfire-soc-extras
