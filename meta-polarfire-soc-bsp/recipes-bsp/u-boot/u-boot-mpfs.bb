@@ -10,6 +10,9 @@ SRC_URI = "git://github.com/polarfire-soc/u-boot.git;protocol=https;nobranch=1  
            file://${HSS_PAYLOAD}.yaml \
           "
 
+SRC_URI:append:icicle-kit-es = "file://boot_priority.cfg"
+SRC_URI:append:icicle-kit-es-amp = "file://boot_priority.cfg"
+
 DEPENDS:append = " u-boot-tools-native hss-payload-generator-native"
 DEPENDS:append:icicle-kit-es-amp = " polarfire-soc-amp-examples"
 
