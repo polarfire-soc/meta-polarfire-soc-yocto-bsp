@@ -21,8 +21,11 @@ do_configure:prepend () {
     if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
         cp ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/${UBOOT_ENV}.txt.pp
         sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/${UBOOT_ENV}.txt.pp
-        sed -i -e 's/@MTDPARTS@/${MPFS_MTDPARTS}/gI' ${WORKDIR}/${UBOOT_ENV}.txt.pp
-        sed -i -e 's/@MTDTYPE@/${MPFS_MTD_TYPE}/gI' ${WORKDIR}/${UBOOT_ENV}.txt.pp
+
+        if [ -n "${MPFS_MTDPARTS}" ]; then
+            sed -i -e 's/@MTDPARTS@/${MPFS_MTDPARTS}/gI' ${WORKDIR}/${UBOOT_ENV}.txt.pp
+        fi
+
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
             -d ${WORKDIR}/${UBOOT_ENV}.txt.pp ${WORKDIR}/boot.scr.uimg
     fi

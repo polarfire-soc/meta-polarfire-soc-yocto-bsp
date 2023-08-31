@@ -1,14 +1,35 @@
 # This is the default MMC and TFTP u-boot boot script
 # The order is as follows:
-#  1. MMC load a fitImage
-#  2. TFTP boot a fitImage
-#  3. TFTP boot a uImage
+#  1. QSPI load a fitImage
+#  2. MMC load a fitImage
+#  3. TFTP boot a fitImage
+#  4. TFTP boot a uImage
 
 setenv fdt_high 0xffffffffffffffff
 setenv initrd_high 0xffffffffffffffff
 
-load mmc 0:${distro_bootpart} ${scriptaddr} fitImage
-bootm start ${scriptaddr};
+if test -n ${mtd_present}; then
+  ubi part rootfs
+  ubifsmount ubi0:rootfs
+  ubifsload 0x80000000 boot/fitImage
+  ubifsumount
+  ubi detach
+fi;
+
+if test "${$?}" -eq 0; then
+  cp 0x80000000 ${scriptaddr} ${filesize}
+  setenv base_args "earlycon=sbi uio_pdrv_genirq.of_id=generic-uio"
+  setenv bootargs "${base_args} ubi.mtd=2 root=ubi0:rootfs rootfstype=ubifs rootwait rw mtdparts=@MTDPARTS@"
+else
+  load mmc 0:${distro_bootpart} ${scriptaddr} fitImage
+fi;
+
+if test -n ${mtd_present}; then
+  bootm start ${scriptaddr}#conf-microchip_mpfs-icicle-kit.dtb#conf-mpfs_icicle_pmod_sf3.dtbo
+else
+  bootm start ${scriptaddr};
+fi;
+
 bootm loados ${scriptaddr};
 # Try to load a ramdisk if available inside fitImage
 bootm ramdisk;
