@@ -16,6 +16,7 @@ COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit)"
 S = "${WORKDIR}/git"
 
 DT_FILES_PATH = "${WORKDIR}/git/mpfs_icicle"
+DT_FILES_PATH:mpfs-video-kit = "${WORKDIR}/git/mpfs_video"
 
 SRCREV="0d44e2006e2c555a06750db9fa03257521227104"
 SRC_URI="git://github.com/linux4microchip/dt-overlay-mchp.git;protocol=https;nobranch=1 \
