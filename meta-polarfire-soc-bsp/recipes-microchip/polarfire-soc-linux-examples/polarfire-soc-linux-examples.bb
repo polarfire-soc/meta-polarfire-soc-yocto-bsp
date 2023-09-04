@@ -12,7 +12,7 @@ DEPENDS = "collectd libgpiod  python3-flask"
 inherit systemd
 
 PV = "1.0+git${SRCPV}"
-SRCREV="v2023.06"
+SRCREV="aebf5417932011de5974c6c4bab45591a177fde4"
 SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-linux-examples.git;protocol=https;nobranch=1 \
           "
 S = "${WORKDIR}/git"
@@ -43,6 +43,7 @@ EXAMPLE_FILES:icicle-kit-es-amp = "\
 
 EXAMPLE_FILES:mpfs-video-kit = "\
     pdma \
+    dt-overlays \
     "
 
 do_compile() {

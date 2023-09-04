@@ -4,4 +4,5 @@ EXAMPLE_FILES:append:icicle-kit-es = "\
 
 EXAMPLE_FILES:append:mpfs-video-kit = "\
     opcua/video-kit \
+    multimedia/v4l2 \
     "
