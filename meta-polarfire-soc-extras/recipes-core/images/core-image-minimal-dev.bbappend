@@ -10,6 +10,7 @@ IMAGE_INSTALL:append:mpfs-video-kit = " \
     v4l2-start-service \
     v4l-utils \
     videokit-webdemo \
+    fswebcam \
     python3-opcua \
     "
 

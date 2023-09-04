@@ -7,6 +7,7 @@ IMAGE_INSTALL:append:mpfs-video-kit = " \
     php-cgi \
     php-modphp \
     sudo \
+    fswebcam \
     v4l2-start-service \
     v4l-utils \
     videokit-webdemo \
