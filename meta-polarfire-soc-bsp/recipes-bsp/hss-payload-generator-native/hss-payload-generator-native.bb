@@ -10,7 +10,7 @@ inherit native
 DEPENDS = "elfutils-native libyaml-native"
 
 PV = "1.0+git${SRCPV}"
-SRCREV = "8d9c56fb68c07a763942a919d07ff5577a2d6613"
+SRCREV = "919a27fa692d356a8fa0d9a6c4b950d04bee41bf"
 SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;protocol=https;nobranch=1"
 
 S = "${WORKDIR}/git"
