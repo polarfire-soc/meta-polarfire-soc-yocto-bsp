@@ -2,9 +2,9 @@
 
 Collection of OpenEmbedded/Yocto layers for PolarFire SoC.
 
-- **meta-polarfire-soc-bsp**: layer containing PolarFire SoC evaluation board's metadata such as machine configuration files and core recipes (Linux, U-Boot, etc.).
+- **meta-polarfire-soc-bsp**: layer containing PolarFire SoC's evaluation boards' metadata such as machine configuration files and core recipes (Linux, U-Boot, etc.).
 
-- **meta-polarfire-soc-community**: layer containing partner/3rd party evaluation kit's machine configuration files and associated configuration fragments.
+- **meta-polarfire-soc-community**: layer containing Microchip's partners' evaluation kits' machine configuration files and associated configuration fragments.
 
 - **meta-polarfire-soc-extras**: layer containing recipes that extend and supplement the meta-polarfire-soc-bsp layer. These include additional applications and demos to demonstrate PolarFire SoC features.
 
