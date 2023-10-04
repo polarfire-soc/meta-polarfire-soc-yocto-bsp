@@ -5,6 +5,7 @@ EXTRA_IMAGE_FEATURES += " \
 
 IMAGE_INSTALL = "\
     packagegroup-core-base-utils \
+    packagegroup-base \
     expect \
     rsync \
     rng-tools \
@@ -27,6 +28,7 @@ IMAGE_INSTALL = "\
     mtd-utils \
     mtd-utils-ubifs \
     kernel-modules \
+    zip \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     "
 

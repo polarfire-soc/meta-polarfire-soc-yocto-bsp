@@ -6,6 +6,7 @@ DEPENDS += "virtual/bootloader"
 
 IMAGE_INSTALL = "\
     packagegroup-core-boot \
+    packagegroup-base \
     polarfire-soc-linux-examples \
     python3 \
     rng-tools \
