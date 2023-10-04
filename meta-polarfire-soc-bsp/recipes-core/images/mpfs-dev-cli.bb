@@ -11,6 +11,7 @@ IMAGE_INSTALL = "\
     rsync \
     iperf3 \
     devmem2 \
+    packagegroup-base \
     packagegroup-core-boot \
     packagegroup-core-full-cmdline \
     polarfire-soc-linux-examples \
