@@ -12,6 +12,7 @@ The complete User Guides for each development platform, containing board and boo
 
 - [ICICLE-KIT-ES](https://mi-v-ecosystem.github.io/redirects/icicle-kit-sw-developer-guide_icicle-kit-sw-developer-guide) (Icicle Kit Engineering Sample) (Requires minimum Design Tag 2023.06)
 - [MPFS-VIDEO-KIT](https://mi-v-ecosystem.github.io/redirects/boards-mpfs-sev-kit-sev-kit-user-guide) (PolarFire SoC Video Kit)
+- [M100PFSEVP](https://www.aries-embedded.com/evaluation-kit/fpga/polarfire-microchip-soc-fpga-m100pfsevp-riscv-hsmc-pmod) (ARIES Embedded M100PFSEVP PolarFire SoC-FPGA Evaluation Platform)
 
 ## Build Instructions
 
@@ -210,6 +211,7 @@ The following table details the available targets:
 | `MACHINE=icicle-kit-es-nand`| ICICLE-KIT-ES, Icicle Kit engineering samples with Winbond W25N01GV NAND flash memory boot|
 | `MACHINE=icicle-kit-es-nor` | ICICLE-KIT-ES, Icicle Kit engineering samples with Micron MT25QL256 NOR flash memory boot |
 | `MACHINE=mpfs-video-kit`    | MPFS250-VIDEO-KIT, PolarFire SoC Video Kit                                                |
+| `MACHINE=m100pfsevp`        | M100PFSEVP, Aries M100PFSEVP PolarFire SoC-FPGA Evaluation Platform                       |
 
 The `icicle-kit-es-amp` machine can be used to build the Icicle Kit engineering sample with AMP support. Please see the [Asymmetric Multiprocessing (AMP)](https://mi-v-ecosystem.github.io/redirects/asymmetric-multiprocessing_amp) documentation for further details.
 
