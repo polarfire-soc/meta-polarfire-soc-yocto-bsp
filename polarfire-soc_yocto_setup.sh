@@ -1,10 +1,24 @@
 #!/bin/bash
 
-DIR="build"
-MACHINE="icicle-kit-es"
 CONFFILE="conf/auto.conf"
 INITRAMFS_CONF="conf/initramfs.conf"
 BITBAKEIMAGE="mpfs-dev-cli"
+
+unset MACHINE
+unset mpfs_setup_error
+unset mpfs_setup_help
+unset BUILD_DIR
+
+usage()
+{
+  echo -e "\nUsage: source polarfire-soc_yocto_setup.sh
+       Optional parameters: [-b build-dir] [-m machine] [-h]"
+  echo "
+    * [-b build-dir]: Build directory, if unspecified script uses 'build' as output directory
+    * [-m machine]: Machine target, if unspecified script uses 'icicle-kit-es' as the default machine
+    * [-h]: help
+  "
+}
 
 # Reconfigure dash on debian-like systems
 which aptitude > /dev/null 2>&1
@@ -16,10 +30,40 @@ elif [ "${0##*/}" = "dash" ]; then
   echo "dash as default shell is not supported"
   return
 fi
+
+OPTIND=1
+while getopts ":hb:m:" option; do
+   case $option in
+      h) 
+         mpfs_setup_help=1
+         usage;;
+      b) 
+         BUILD_DIR=$OPTARG
+         ;;
+      m) 
+         MACHINE=$OPTARG
+         ;;
+     \?) # Invalid option
+         echo "Error: Invalid option"
+         mpfs_setup_error=1
+         ;;
+   esac
+done
+
+if [[ "$mpfs_setup_error" != "1" && "$mpfs_setup_help" != "1" ]]; then
+
+if [ -z "$BUILD_DIR" ]; then
+    BUILD_DIR='build'
+fi
+
+if [ -z "$MACHINE" ]; then
+    MACHINE='icicle-kit-es'
+fi
+
 # bootstrap OE
 echo "Init OE"
 export BASH_SOURCE="openembedded-core/oe-init-build-env"
-. ./openembedded-core/oe-init-build-env $DIR
+. ./openembedded-core/oe-init-build-env $BUILD_DIR
 
 # Symlink the cache
 #echo "Setup symlink for sstate"
@@ -88,6 +132,8 @@ echo "* core-image-minimal-dev: OE console-only image, with some additional deve
 echo "* core-image-minimal: OE console-only image"
 echo "* core-image-full-cmdline: OE console-only image with more full-featured Linux system functionality installed."
 echo "---------------------------------------------------"
+fi
+
 
 # start build
 #echo "Starting build"
