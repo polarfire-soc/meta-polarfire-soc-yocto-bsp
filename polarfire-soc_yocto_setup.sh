@@ -6,16 +6,6 @@ CONFFILE="conf/auto.conf"
 INITRAMFS_CONF="conf/initramfs.conf"
 BITBAKEIMAGE="mpfs-dev-cli"
 
-# clean up the output dir
-#echo "Cleaning build dir"
-#rm -rf $DIR
-
-# make sure sstate is there
-#echo "Creating sstate directory"
-#mkdir -p ~/sstate/$MACHINE
-
-echo $(pwd)
-
 # Reconfigure dash on debian-like systems
 which aptitude > /dev/null 2>&1
 ret=$?
@@ -55,27 +45,15 @@ if [ -e $CONFFILE ]; then
 fi
 cat <<EOF > $CONFFILE
 MACHINE ?= "${MACHINE}"
-BBMASK += "opensbi_0.9.bb"
 #IMAGE_FEATURES += "tools-debug"
 #IMAGE_FEATURES += "tools-tweaks"
 #IMAGE_FEATURES += "dbg-pkgs"
 # rootfs for debugging
 #IMAGE_GEN_DEBUGFS = "1"
 #IMAGE_FSTYPES_DEBUGFS = "tar.gz"
-EXTRA_IMAGE_FEATURES:append = " ssh-server-dropbear"
-EXTRA_IMAGE_FEATURES:append = " package-management"
 PACKAGECONFIG:append:pn-qemu-native = " sdl"
 PACKAGECONFIG:append:pn-nativesdk-qemu = " sdl"
-USER_CLASSES ?= "buildstats buildhistory buildstats-summary"
-
-require conf/distro/include/no-static-libs.inc
-require conf/distro/include/yocto-uninative.inc
-require conf/distro/include/security_flags.inc
-INHERIT += "uninative"
-DISTRO_FEATURES:append = " largefile opengl ptest multiarch wayland pam  systemd "
-DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
-VIRTUAL-RUNTIME_init_manager = "systemd"
-HOSTTOOLS_NONFATAL:append = " ssh"
+USER_CLASSES:append = " buildstats buildhistory buildstats-summary"
 LICENSE_FLAGS_ACCEPTED = "commercial_ffmpeg"
 EOF
 
