@@ -11,9 +11,9 @@ IMAGE_INSTALL:append:mpfs-video-kit = " \
     v4l2-start-service \
     v4l-utils \
     videokit-webdemo \
-    python3-opcua \
+    python3-asyncua \
     "
 
 IMAGE_INSTALL:append:icicle-kit-es = " \
-    python3-opcua \
+    python3-asyncua \
     "
