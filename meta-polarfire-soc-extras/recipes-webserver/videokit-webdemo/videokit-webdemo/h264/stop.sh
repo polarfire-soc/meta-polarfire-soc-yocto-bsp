@@ -6,5 +6,7 @@ echo -e "Start Time: $(date +"%T.%6N")"
 echo "Stopping H.264 wrapper..."
 kill $(pidof ffmpeg)
 kill $(pidof ffmpeg)
+kill $(pidof auto-enhance-osd)
+kill $(pidof auto-enhance-osd)
 echo -e "End Time: $(date +"%T.%6N")"
 
