@@ -88,4 +88,34 @@ input[type="range"]::-ms-fill-lower {
 	top: 50%;
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);
-	}
+}
+
+.resolution {
+        border-color: RoyalBlue;
+        padding: 7px 25px;
+        font-size: 13px;
+}
+.select_box {
+        border-color: RoyalBlue;
+        padding: 6px 1px;
+        font-size: 13px;
+}
+/* set the position of dropdown */
+.dropdown {
+             position: relative;
+             display: inline-block;
+}
+/* set the size and position of button on web */
+.btn {
+        background-color: DodgerBlue;
+        border: none;
+        color: white;
+        padding: 8px 30px;
+        cursor: pointer;
+        font-size: 12px;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+        background-color: RoyalBlue;
+}
