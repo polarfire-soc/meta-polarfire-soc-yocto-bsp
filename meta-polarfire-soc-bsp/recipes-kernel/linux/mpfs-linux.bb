@@ -21,6 +21,7 @@ SRC_URI:append:icicle-kit = " file://mpfs_cmdline.cfg \
 
 SRC_URI:append:mpfs-video-kit = " file://mpfs_cmdline.cfg \
                                   file://mpfs-v4l2.cfg \
+                                  file://mpfs_crypto.cfg \
                                 "
 
 do_deploy:append() {
