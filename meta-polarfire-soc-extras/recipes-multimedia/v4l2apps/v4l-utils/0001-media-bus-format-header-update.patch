@@ -1,0 +1,40 @@
+From b35987f45c7c41bd4e2d548ab8be4bf47b8e7dcd Mon Sep 17 00:00:00 2001
+From: Shravan Chippa <shravan.chippa@microchip.com>
+Date: Tue, 29 Aug 2023 12:18:42 +0530
+Subject: [PATCH] media-bus-format header update
+
+Signed-off-by: Shravan Chippa <shravan.chippa@microchip.com>
+---
+ include/linux/media-bus-format.h | 2 ++
+ include/linux/v4l2-mediabus.h    | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/include/linux/media-bus-format.h b/include/linux/media-bus-format.h
+index 0dfc11ee..3eb64126 100644
+--- a/include/linux/media-bus-format.h
++++ b/include/linux/media-bus-format.h
+@@ -154,6 +154,8 @@
+ /* S5C73M3 sensor specific interleaved UYVY and JPEG */
+ #define MEDIA_BUS_FMT_S5C_UYVY_JPEG_1X8		0x5001
+ 
++#define MEDIA_BUS_FMT_H264_1X8		0x5002
++
+ /* HSV - next is	0x6002 */
+ #define MEDIA_BUS_FMT_AHSV8888_1X32		0x6001
+ 
+diff --git a/include/linux/v4l2-mediabus.h b/include/linux/v4l2-mediabus.h
+index 846dadfb..4b7674b5 100644
+--- a/include/linux/v4l2-mediabus.h
++++ b/include/linux/v4l2-mediabus.h
+@@ -142,6 +142,8 @@ enum v4l2_mbus_pixelcode {
+ 
+ 	V4L2_MBUS_FROM_MEDIA_BUS_FMT(JPEG_1X8),
+ 
++	V4L2_MBUS_FROM_MEDIA_BUS_FMT(H264_1X8),
++
+ 	V4L2_MBUS_FROM_MEDIA_BUS_FMT(S5C_UYVY_JPEG_1X8),
+ 
+ 	V4L2_MBUS_FROM_MEDIA_BUS_FMT(AHSV8888_1X32),
+-- 
+2.34.1
+
