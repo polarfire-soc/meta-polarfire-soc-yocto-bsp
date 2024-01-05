@@ -1,0 +1,41 @@
+From 4f58e83034bbe2608e876a72bc6638709ab40880 Mon Sep 17 00:00:00 2001
+From: Shravan Chippa <shravan.chippa@microchip.com>
+Date: Fri, 25 Aug 2023 10:45:02 +0530
+Subject: [PATCH] YUV420_H264_1X8 media bus format
+
+Upstream-Status: Pending
+Signed-off-by: Shravan Chippa <shravan.chippa@microchip.com>
+---
+ include/uapi/linux/media-bus-format.h | 2 ++
+ include/uapi/linux/v4l2-mediabus.h    | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/include/uapi/linux/media-bus-format.h b/include/uapi/linux/media-bus-format.h
+index 689131982509..6dea7ff3bcbd 100644
+--- a/include/uapi/linux/media-bus-format.h
++++ b/include/uapi/linux/media-bus-format.h
+@@ -154,6 +154,8 @@
+ /* S5C73M3 sensor specific interleaved UYVY and JPEG */
+ #define MEDIA_BUS_FMT_S5C_UYVY_JPEG_1X8		0x5001
+ 
++#define MEDIA_BUS_FMT_H264_1X8		0x5002
++
+ /* HSV - next is	0x6002 */
+ #define MEDIA_BUS_FMT_AHSV8888_1X32		0x6001
+ 
+diff --git a/include/uapi/linux/v4l2-mediabus.h b/include/uapi/linux/v4l2-mediabus.h
+index 95c839d365ac..1363ed53cae6 100644
+--- a/include/uapi/linux/v4l2-mediabus.h
++++ b/include/uapi/linux/v4l2-mediabus.h
+@@ -148,6 +148,8 @@ enum v4l2_mbus_pixelcode {
+ 
+ 	V4L2_MBUS_FROM_MEDIA_BUS_FMT(S5C_UYVY_JPEG_1X8),
+ 
++	V4L2_MBUS_FROM_MEDIA_BUS_FMT(H264_1X8),
++
+ 	V4L2_MBUS_FROM_MEDIA_BUS_FMT(AHSV8888_1X32),
+ };
+ #endif /* __KERNEL__ */
+-- 
+2.34.1
+
