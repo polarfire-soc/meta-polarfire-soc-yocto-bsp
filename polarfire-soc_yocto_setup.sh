@@ -95,7 +95,7 @@ MACHINE ?= "${MACHINE}"
 # rootfs for debugging
 #IMAGE_GEN_DEBUGFS = "1"
 #IMAGE_FSTYPES_DEBUGFS = "tar.gz"
-EXTRA_IMAGE_FEATURES:append = " package-management"
+EXTRA_IMAGE_FEATURES:append = " ssh-server-openssh package-management"
 PACKAGECONFIG:append:pn-qemu-native = " sdl"
 PACKAGECONFIG:append:pn-nativesdk-qemu = " sdl"
 USER_CLASSES:append = " buildstats buildhistory buildstats-summary"
