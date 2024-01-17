@@ -95,9 +95,19 @@ MACHINE ?= "${MACHINE}"
 # rootfs for debugging
 #IMAGE_GEN_DEBUGFS = "1"
 #IMAGE_FSTYPES_DEBUGFS = "tar.gz"
+EXTRA_IMAGE_FEATURES:append = " package-management"
 PACKAGECONFIG:append:pn-qemu-native = " sdl"
 PACKAGECONFIG:append:pn-nativesdk-qemu = " sdl"
 USER_CLASSES:append = " buildstats buildhistory buildstats-summary"
+
+require conf/distro/include/no-static-libs.inc
+require conf/distro/include/yocto-uninative.inc
+require conf/distro/include/security_flags.inc
+INHERIT += "uninative"
+DISTRO_FEATURES:append = " largefile multiarch pam systemd "
+DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
+VIRTUAL-RUNTIME_init_manager = "systemd"
+HOSTTOOLS_NONFATAL:append = " ssh"
 LICENSE_FLAGS_ACCEPTED = "commercial_ffmpeg"
 EOF
 
