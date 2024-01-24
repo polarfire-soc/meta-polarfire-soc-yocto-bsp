@@ -1,6 +1,6 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI:remove:icicle-kit-es-auth = "file://${UBOOT_ENV}.txt"
+SRC_URI:remove:icicle-kit-es-auth = "file://${UBOOT_ENV}.cmd"
 
 SRC_URI:append:icicle-kit-es-auth = "file://authenticated-boot.cfg"
 
