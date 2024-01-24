@@ -1,5 +1,6 @@
 require recipes-bsp/u-boot/u-boot-common.inc
 require recipes-bsp/u-boot/u-boot.inc
+require u-boot-env-mpfs.inc
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
@@ -13,13 +14,15 @@ SRC_URI = "git://github.com/polarfire-soc/u-boot.git;protocol=https;nobranch=1  
 
 SRC_URI:append:icicle-kit = "file://${UBOOT_ENV}.cmd \
                              file://${MACHINE}.cfg \
+                             file://uEnv.txt \
                             "
 
 SRC_URI:append:mpfs-video-kit = "file://${UBOOT_ENV}.cmd \
                                  file://${MACHINE}.cfg \
+                                 file://uEnv.txt \
                                 "
 
-DEPENDS += " python3-setuptools-native"
+DEPENDS += " python3-setuptools-native u-boot-mkenvimage-native"
 DEPENDS:append = " u-boot-tools-native hss-payload-generator-native"
 DEPENDS:append:icicle-kit-es-amp = " polarfire-soc-amp-examples"
 
@@ -48,4 +51,6 @@ do_deploy:append () {
 }
 
 COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit)"
+
+
 

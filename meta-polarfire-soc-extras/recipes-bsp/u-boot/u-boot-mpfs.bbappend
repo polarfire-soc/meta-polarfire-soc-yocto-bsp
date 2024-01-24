@@ -1,6 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI:remove:icicle-kit-es-auth = "file://${UBOOT_ENV}.cmd"
+SRC_URI:remove:icicle-kit-es-auth = "file://${UBOOT_ENV}.cmd \
+                                     file://uEnv.txt \"
 
 do_deploy:append:icicle-kit-es-auth () {
 
