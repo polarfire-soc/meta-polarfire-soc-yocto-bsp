@@ -14,6 +14,9 @@ SRC_URI = "git://github.com/polarfire-soc/u-boot.git;protocol=https;nobranch=1  
 
 SRC_URI:append:icicle-kit-es = "file://boot_priority.cfg"
 SRC_URI:append:icicle-kit-es-amp = "file://boot_priority.cfg"
+SRC_URI:append:beaglev-fire = "file://boot_priority.cfg \
+                               file://devicetree.patch \
+                              "
 
 DEPENDS += " python3-setuptools-native"
 DEPENDS:append = " u-boot-tools-native hss-payload-generator-native"
@@ -76,6 +79,7 @@ do_deploy:append () {
 
 FILES:${PN}:append:icicle-kit = " /boot/boot.scr.uimg"
 FILES:${PN}:append:mpfs-video-kit = " /boot/boot.scr.uimg"
+FILES:${PN}:append:beaglev-fire = " /boot/boot.scr.uimg"
 
-COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit)"
+COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit|beaglev-fire)"
 

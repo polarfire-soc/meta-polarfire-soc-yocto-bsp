@@ -1,0 +1,18 @@
+--- arch/riscv/dts/microchip-mpfs-icicle-kit.dts.orig	2024-01-24 08:14:32.535361099 +0000
++++ arch/riscv/dts/microchip-mpfs-icicle-kit.dts	2024-01-24 08:15:19.752642537 +0000
+@@ -17,13 +17,13 @@
+ 		     "microchip,mpfs-icicle-kit", "microchip,mpfs";
+ 
+ 	aliases {
+-		serial1 = &uart1;
++		serial0 = &uart0;
+ 		ethernet0 = &mac1;
+ 		spi0 = &qspi;
+ 	};
+ 
+ 	chosen {
+-		stdout-path = "serial1";
++		stdout-path = "serial0";
+ 	};
+ 
+ 	cpus {
