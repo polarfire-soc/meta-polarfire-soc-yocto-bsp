@@ -8,12 +8,16 @@ LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
 PV = "2023.07+git${SRCPV}"
 SRCREV = "88ead39c3f90b71aecafcd1485dd8222160266b6"
 SRC_URI = "git://github.com/polarfire-soc/u-boot.git;protocol=https;nobranch=1  \
-           file://${UBOOT_ENV}.cmd \
            file://${HSS_PAYLOAD}.yaml \
           "
 
-SRC_URI:append:icicle-kit-es = "file://boot_priority.cfg"
-SRC_URI:append:icicle-kit-es-amp = "file://boot_priority.cfg"
+SRC_URI:append:icicle-kit = "file://${UBOOT_ENV}.cmd \
+                             file://${MACHINE}.cfg \
+                            "
+
+SRC_URI:append:mpfs-video-kit = "file://${UBOOT_ENV}.cmd \
+                                 file://${MACHINE}.cfg \
+                                "
 
 DEPENDS += " python3-setuptools-native"
 DEPENDS:append = " u-boot-tools-native hss-payload-generator-native"
