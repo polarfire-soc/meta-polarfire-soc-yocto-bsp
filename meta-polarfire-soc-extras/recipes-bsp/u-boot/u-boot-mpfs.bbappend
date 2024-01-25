@@ -1,7 +1,13 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
+SRC_URI:append:icicle-kit-es-auth = "file://${MACHINE}.env"
+
 SRC_URI:remove:icicle-kit-es-auth = "file://${UBOOT_ENV}.cmd \
                                      file://uEnv.txt \"
+
+do_configure:append:icicle-kit-es-auth () {
+    cp -f ${WORKDIR}/${MACHINE}.env ${S}/board/microchip/mpfs_icicle
+}
 
 do_deploy:append:icicle-kit-es-auth () {
 
@@ -20,5 +26,4 @@ do_deploy:append:icicle-kit-es-auth () {
     bbplain "Using Signing Keys Located in ${HSS_PAYLOAD_KEYDIR}"
 
     hss-payload-generator -c ${WORKDIR}/${HSS_PAYLOAD}.yaml -v ${DEPLOYDIR}/payload.bin -p ${HSS_PAYLOAD_KEYDIR}/${HSS_PAYLOAD_PRIVATE_KEYNAME}.pem
-
 }
