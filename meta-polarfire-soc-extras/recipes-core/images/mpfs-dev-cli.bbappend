@@ -12,6 +12,11 @@ IMAGE_INSTALL:append:mpfs-video-kit = " \
     v4l-utils \
     videokit-webdemo \
     python3-asyncua \
+    openssl \
+    openssl-engines \
+    cryptodev-module \
+    libkcapi \
+    libnl \
     "
 
 IMAGE_INSTALL:append:icicle-kit-es = " \
