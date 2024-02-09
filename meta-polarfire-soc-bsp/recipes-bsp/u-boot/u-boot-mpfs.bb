@@ -7,7 +7,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
 
 PV = "2023.07+git${SRCPV}"
-SRCREV = "88ead39c3f90b71aecafcd1485dd8222160266b6"
+SRCREV = "780c71869a9f8fca230ab4d8dd2f7c8a06c65b37"
 SRC_URI = "git://github.com/polarfire-soc/u-boot.git;protocol=https;nobranch=1  \
            file://${HSS_PAYLOAD}.yaml \
           "
