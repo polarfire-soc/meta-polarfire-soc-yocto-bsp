@@ -10,6 +10,7 @@ IMAGE_INSTALL = "\
     rsync \
     rng-tools \
     iperf3 \
+    iproute2 \
     devmem2 \
     can-utils \
     polarfire-soc-linux-examples \

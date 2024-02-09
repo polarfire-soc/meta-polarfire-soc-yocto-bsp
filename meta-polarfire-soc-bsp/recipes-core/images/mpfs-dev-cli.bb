@@ -44,6 +44,7 @@ IMAGE_INSTALL = "\
     elfutils \
     elfutils-dev \
     can-utils \
+    iproute2 \
     sysfsutils \
     htop \
     iw \
