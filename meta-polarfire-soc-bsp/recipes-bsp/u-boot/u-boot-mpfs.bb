@@ -1,56 +1,32 @@
 require recipes-bsp/u-boot/u-boot-common.inc
 require recipes-bsp/u-boot/u-boot.inc
+require u-boot-env-mpfs.inc
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
 
 PV = "2023.07+git${SRCPV}"
-SRCREV = "88ead39c3f90b71aecafcd1485dd8222160266b6"
+SRCREV = "780c71869a9f8fca230ab4d8dd2f7c8a06c65b37"
 SRC_URI = "git://github.com/polarfire-soc/u-boot.git;protocol=https;nobranch=1  \
-           file://${UBOOT_ENV}.txt \
            file://${HSS_PAYLOAD}.yaml \
           "
 
-SRC_URI:append:icicle-kit-es = "file://boot_priority.cfg"
-SRC_URI:append:icicle-kit-es-amp = "file://boot_priority.cfg"
+SRC_URI:append:icicle-kit = "file://${UBOOT_ENV}.cmd \
+                             file://${MACHINE}.cfg \
+                             file://uEnv.txt \
+                            "
 
-DEPENDS += " python3-setuptools-native"
+SRC_URI:append:mpfs-video-kit = "file://${UBOOT_ENV}.cmd \
+                                 file://${MACHINE}.cfg \
+                                 file://uEnv.txt \
+                                "
+
+DEPENDS += " python3-setuptools-native u-boot-mkenvimage-native"
 DEPENDS:append = " u-boot-tools-native hss-payload-generator-native"
 DEPENDS:append:icicle-kit-es-amp = " polarfire-soc-amp-examples"
 
-# Overwrite this for your server
-TFTP_SERVER_IP ?= "127.0.0.1"
-
-do_configure:prepend () {
-
-    if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
-        cp ${WORKDIR}/${UBOOT_ENV}.txt ${WORKDIR}/${UBOOT_ENV}.txt.pp
-        sed -i -e 's,@SERVERIP@,${TFTP_SERVER_IP},g' ${WORKDIR}/${UBOOT_ENV}.txt.pp
-
-        if [ -n "${MPFS_MTDPARTS}" ]; then
-            sed -i -e 's/@MTDPARTS@/${MPFS_MTDPARTS}/gI' ${WORKDIR}/${UBOOT_ENV}.txt.pp
-        fi
-
-        mkimage -O linux -T script -C none -n "U-Boot boot script" \
-            -d ${WORKDIR}/${UBOOT_ENV}.txt.pp ${WORKDIR}/boot.scr.uimg
-    fi
-}
-
-do_install:append() {
-
-    if [ -f "${WORKDIR}/${UBOOT_ENV}.txt" ]; then
-        install -m 644 ${WORKDIR}/${UBOOT_ENV_BINARY}.pp ${D}/boot/${UBOOT_ENV_IMAGE}
-        ln -sf ${UBOOT_ENV_IMAGE} ${D}/boot/${UBOOT_ENV_BINARY}
-    fi
-}
-
 do_deploy:append () {
-
-    if [ -f "${WORKDIR}/boot.scr.uimg" ]; then
-       rm -f ${DEPLOYDIR}/boot.scr.uimg
-       install -m 755 ${WORKDIR}/boot.scr.uimg ${DEPLOYDIR}
-    fi
 
     #
     # for icicle-kit-es-amp, we'll already have an amp-application.elf in
@@ -74,8 +50,7 @@ do_deploy:append () {
 
 }
 
-FILES:${PN}:append:icicle-kit = " /boot/boot.scr.uimg"
-FILES:${PN}:append:mpfs-video-kit = " /boot/boot.scr.uimg"
-
 COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit)"
+
+
 

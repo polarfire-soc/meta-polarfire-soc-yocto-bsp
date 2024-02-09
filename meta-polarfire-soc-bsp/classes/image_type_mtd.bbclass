@@ -171,14 +171,8 @@ IMAGE_CMD:mtd () {
 
         if [ "$name" = "payload" ]; then
             flash_mtdpart "${DEPLOY_DIR_IMAGE}/payload.bin" $size $kbsize $kboffset $name
-        elif [ "$name" = "env" ] ; then
-            if [ -f "${DEPLOY_DIR_IMAGE}/boot.scr.uimg" ]; then
-                flash_mtdpart "${DEPLOY_DIR_IMAGE}/boot.scr.uimg" $size $kbsize $kboffset $name
-            fi
-        elif [ "$name" = "fitimage" ]; then
-            flash_mtdpart "${DEPLOY_DIR_IMAGE}/fitImage" $size $kbsize $kboffset $name
-        elif [ "$name" = "rootfs" ]; then
-            flash_mtdpart "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.ubi" $size $kbsize $kboffset $name
+        elif [ "$name" = "ubi" ]; then
+            flash_mtdpart "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.ubimg" $size $kbsize $kboffset $name
         else
             bbwarn "Don't know how to flash mtdparts '$name'. Filling with zeros."
             flash_mtdpart "/dev/zero" $size $kbsize $kboffset $name
