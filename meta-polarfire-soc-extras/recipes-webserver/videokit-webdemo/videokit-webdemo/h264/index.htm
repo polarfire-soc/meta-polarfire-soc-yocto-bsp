@@ -6,35 +6,16 @@
 	<link rel="stylesheet" href="pfsoc.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-.resolution {  
-	border-color: RoyalBlue;
-	padding: 7px 25px;  
-	font-size: 13px;  
-}  
-/* set the position of dropdown */  
-.dropdown {  
-	     position: relative;  
-	     display: inline-block;  
-}  
-/* set the size and position of button on web */  
-.btn {
-	background-color: DodgerBlue;
-	border: none;
-	color: white;
-	padding: 8px 30px;
-	cursor: pointer;
-	font-size: 12px;
-}
+	body {
+		background-color: #FFFFFA;
+	        border: 2px solid #F0F0F0;
+	}
 
-/* Darker background on mouse-over */
-.btn:hover {
-	background-color: RoyalBlue;
-}
-#wrapper {
-	margin-left:auto;
-	margin-right:auto;
-	width:1220px;
-}
+	#wrapper {
+		margin-left:auto;
+		margin-right:auto;
+		width:1220px;
+	}
 </style>
 </head>
 <script>  
@@ -227,8 +208,63 @@
 		</td>
 	        <td style="width:8%" align=left> </td>
 	</tr>
-	<tr height=25px>
+	<tr height=25px> </tr>
+</table>
+
+<table width=75% align=center>
+	<tr height=5px> </tr>
+</table>
+<table width=75% align=center bordercolor="#D3D3D3">
+	<tr height=1px> </tr>
+	<tr style="background-color: #EDEDED;">
+		<td width=15% align=center>
+			<div style="color:blue;font-family:verdana;font-size:13px;font-weight:bold;">
+				<input type="checkbox" id="e_osd" name="e_osd" checked> Enable OSD
+			</div>
+		</td>
+		<td width=10% align=right>
+			<div style="color:blue;font-family:verdana;font-size:12px;">
+			<select class="select_box" id="p_osd" name="p_osd"
+			style="color:blue;font-family:verdana;font-size:12px;font-weight:bold">
+				<option value="">OSD Position</option>
+				<option value="1"> Top-left </option>
+				<option value="2"> Top-right </option>
+				<option value="3"> Center </option>
+				<option value="4"> Bottom-left </option>
+				<option value="5"> Bottom-right </option>
+			</select>
+		</td>
+		<td width=15% align=right>
+			<div style="color:blue;font-family:verdana;font-size:12px;">
+			<select class="select_box" id="color" name="color"
+			style="color:blue;font-family:verdana;font-size:12px;font-weight:bold">
+				<option value="">OSD Color</option>
+				<option style="color:#0071c5;" value="1">&#9724; Dark blue</option>
+				<option style="color:#40E0D0;" value="2">&#9724; Turquoise</option>
+				<option style="color:#008000;" value="3">&#9724; Green</option>
+				<option style="color:#FFD700;" value="4">&#9724; Yellow</option>
+				<option style="color:#FF8C00;" value="5">&#9724; Orange</option>
+				<option style="color:#FF0000;" value="6">&#9724; Red</option>
+				<option style="color:#000;" value="7">&#9724; Black</option>
+			</select>
+		</td>
+		<td width=40% align=right>
+			<div style="color:blue;font-family:verdana;font-size:12px;">
+			<select class="select_box" id="pattern" name="pattern"
+			style="color:blue;font-family:verdana;font-size:12px;font-weight:bold">
+				<option value=""> Test Pattern</option>
+				<option value="1"> Horizontal </option>
+				<option value="2"> Vertical </option>
+				<option value="3"> Reset Test Pattern </option>
+			</select>
+		</td>
+		<td width=15% align=right>
+			<div style="color:blue;font-family:verdana;font-size:13px;font-weight:bold;">
+				<input type="checkbox" id="e_enhance" name="e_enhance"> Auto Enhance
+			</div>
+		</td>
 	</tr>
+	<tr height=1px> </tr>
 </table>
  <table align=center width=30%>
 	<tr height=20px>
@@ -379,11 +415,26 @@
 	}
 
 	</script>
+
 	<script type="text/javascript">
 		    document.getElementById("stop").onclick = function () {
 			            location.href = "stop.php";
 			        };
 	</script>
+
+	<script type="text/javascript">
+		const colorBox = document.getElementById('color');
+		colorBox.addEventListener('change', (event) => {
+		  const color = event.target.value;
+		  event.target.style.color = color;
+		}, false);
+
+		function updateColor() {
+			var customColor = document.getElementById("customColorValue").value;
+			document.getElementById("colorBox").style.backgroundColor = customColor;
+		}
+	</script>
+
 	<script>
 		function change() 
 		{
@@ -408,37 +459,41 @@
 			document.getElementById("start").disabled = true;
 			document.getElementById("stop").disabled = false;
 			document.getElementById("update").disabled = false;
-                	}
-			  url = new URL(window.location.href);
+		}
+		url = new URL(window.location.href);
 
-			  var bright_slider = document.getElementById("s_bright");
-			  var bright_value = document.getElementById("v_bright");
-			  var contrast_slider = document.getElementById("s_contrast");
-			  var contrast_value = document.getElementById("v_contrast");
-			  var qf_slider = document.getElementById("s_qf");
-			  var qf_value = document.getElementById("v_qf");
-			  var red_slider = document.getElementById("s_red");
-			  var red_value = document.getElementById("v_red");
-			  var green_slider = document.getElementById("s_green");
-			  var green_value = document.getElementById("v_green");
-			  var blue_slider = document.getElementById("s_blue");
-			  var blue_value = document.getElementById("v_blue");
-			  var resolution_value = document.getElementById("s_resolution");
+		var bright_slider = document.getElementById("s_bright");
+		var bright_value = document.getElementById("v_bright");
+		var contrast_slider = document.getElementById("s_contrast");
+		var contrast_value = document.getElementById("v_contrast");
+		var qf_slider = document.getElementById("s_qf");
+		var qf_value = document.getElementById("v_qf");
+		var red_slider = document.getElementById("s_red");
+		var red_value = document.getElementById("v_red");
+		var green_slider = document.getElementById("s_green");
+		var green_value = document.getElementById("v_green");
+		var blue_slider = document.getElementById("s_blue");
+		var blue_value = document.getElementById("v_blue");
+		var resolution_value = document.getElementById("s_resolution");
+		var osd_value = document.getElementById("e_osd");
+		var enhance_value = document.getElementById("e_enhance");
 
-			if (url.searchParams.get('v_bright')) {
-			  bright_slider.value = getURIParameter("v_bright");
-			  bright_value.value = getURIParameter("v_bright");
-			  contrast_slider.value = getURIParameter("v_contrast");
-			  contrast_value.value = getURIParameter("v_contrast");
-			  qf_slider.value = getURIParameter("v_qf");
-			  qf_value.value = getURIParameter("v_qf");
-			  red_slider.value = getURIParameter("v_red");
-			  red_value.value = getURIParameter("v_red");
-			  green_slider.value = getURIParameter("v_green");
-			  green_value.value = getURIParameter("v_green");
-			  blue_slider.value = getURIParameter("v_blue");
-			  blue_value.value = getURIParameter("v_blue");
-			  resolution_value.value = getURIParameter("v_resolution");
+		if (url.searchParams.get('v_bright')) {
+			bright_slider.value = getURIParameter("v_bright");
+			bright_value.value = getURIParameter("v_bright");
+			contrast_slider.value = getURIParameter("v_contrast");
+			contrast_value.value = getURIParameter("v_contrast");
+			qf_slider.value = getURIParameter("v_qf");
+			qf_value.value = getURIParameter("v_qf");
+			red_slider.value = getURIParameter("v_red");
+			red_value.value = getURIParameter("v_red");
+			green_slider.value = getURIParameter("v_green");
+			green_value.value = getURIParameter("v_green");
+			blue_slider.value = getURIParameter("v_blue");
+			blue_value.value = getURIParameter("v_blue");
+			resolution_value.value = getURIParameter("v_resolution");
+			osd_value.checked = getURIParameter("v_osd");
+			enhance_value.checked = getURIParameter("v_enhance");
 			}
 		}
 	</script>
