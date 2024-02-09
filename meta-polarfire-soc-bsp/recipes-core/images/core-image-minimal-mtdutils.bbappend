@@ -4,4 +4,4 @@ IMAGE_TYPEDEP:mtd:remove = "mtd"
 
 IMAGE_INSTALL += "kernel u-boot-mpfs"
 
-EXTRA_IMAGE_FEATURES:remove = "package-management"
+EXTRA_IMAGE_FEATURES:remove = "package-management ssh-server-openssh"
