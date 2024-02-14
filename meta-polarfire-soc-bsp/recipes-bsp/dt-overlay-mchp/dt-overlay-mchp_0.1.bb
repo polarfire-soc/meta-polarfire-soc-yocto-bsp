@@ -18,7 +18,8 @@ S = "${WORKDIR}/git"
 DT_FILES_PATH = "${WORKDIR}/git/mpfs_icicle"
 DT_FILES_PATH:mpfs-video-kit = "${WORKDIR}/git/mpfs_video"
 
-SRCREV="88e47573e935b42f2ce21d8484038c3bb539ec6e"
+PV = "1.0+git${SRCPV}"
+SRCREV="linux4microchip+fpga-2024.02"
 SRC_URI="git://github.com/linux4microchip/dt-overlay-mchp.git;protocol=https;nobranch=1 \
 "
 
