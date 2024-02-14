@@ -3,7 +3,7 @@ require recipes-kernel/linux/mpfs-linux-common.inc
 LINUX_VERSION ?= "6.1"
 KERNEL_VERSION_SANITY_SKIP="1"
 
-SRCREV="8c8b5467c379a894e4d82e15bad8c553987d29e9"
+SRCREV="linux4microchip+fpga-2024.02"
 SRC_URI = " \
     git://github.com/linux4microchip/linux.git;protocol=https;nobranch=1 \
 "
