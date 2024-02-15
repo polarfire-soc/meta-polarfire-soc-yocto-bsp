@@ -1,5 +1,6 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}/motd:"
 
-SRC_URI:remove:icicle-kit-es-nand = "file://fstab"
-SRC_URI:remove:icicle-kit-es-nor = "file://fstab"
+FILESEXTRAPATHS:prepend:icicle-kit-es := "${THISDIR}/${PN}/growfs:"
+FILESEXTRAPATHS:prepend:icicle-kit-es-amp := "${THISDIR}/${PN}/growfs:"
+FILESEXTRAPATHS:prepend:mpfs-video-kit := "${THISDIR}/${PN}/growfs:"
 
