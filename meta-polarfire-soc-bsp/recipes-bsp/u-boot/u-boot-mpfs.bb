@@ -17,6 +17,11 @@ SRC_URI:append:icicle-kit = "file://${UBOOT_ENV}.cmd \
                              file://uEnv.txt \
                             "
 
+SRC_URI:append:icicle-kit-es-amp = "file://${UBOOT_ENV}.cmd \
+                                    file://${MACHINE}.cfg \
+                                    file://uEnv.txt \
+                                "
+
 SRC_URI:append:mpfs-video-kit = "file://${UBOOT_ENV}.cmd \
                                  file://${MACHINE}.cfg \
                                  file://uEnv.txt \
