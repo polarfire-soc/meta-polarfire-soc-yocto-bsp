@@ -8,7 +8,7 @@ PACKAGE_WRITE_DEPS += "systemd-systemctl-native"
 
 S = "${WORKDIR}"
 
-# inherit features_check
+inherit features_check
 
 INHIBIT_DEFAULT_DEPS = "1"
 
