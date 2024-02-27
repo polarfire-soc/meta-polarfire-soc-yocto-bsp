@@ -10,7 +10,7 @@ Collection of OpenEmbedded/Yocto layers for PolarFire SoC.
 
 The complete User Guides for each development platform, containing board and boot instructions, are available for the following supported platforms:
 
-- [ICICLE-KIT-ES](https://mi-v-ecosystem.github.io/redirects/icicle-kit-sw-developer-guide_icicle-kit-sw-developer-guide) (Icicle Kit Engineering Sample) (Requires minimum Design Tag 2023.06)
+- [ICICLE-KIT-ES](https://mi-v-ecosystem.github.io/redirects/icicle-kit-sw-developer-guide_icicle-kit-sw-developer-guide) (Icicle Kit Engineering Sample)
 - [MPFS-VIDEO-KIT](https://mi-v-ecosystem.github.io/redirects/boards-mpfs-sev-kit-sev-kit-user-guide) (PolarFire SoC Video Kit)
 - [M100PFSEVP](https://www.aries-embedded.com/evaluation-kit/fpga/polarfire-microchip-soc-fpga-m100pfsevp-riscv-hsmc-pmod) (ARIES Embedded M100PFSEVP PolarFire SoC-FPGA Evaluation Platform)
 
