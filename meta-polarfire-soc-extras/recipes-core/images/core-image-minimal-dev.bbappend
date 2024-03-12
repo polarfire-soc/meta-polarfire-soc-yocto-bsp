@@ -22,3 +22,7 @@ IMAGE_INSTALL:append:mpfs-video-kit = " \
 IMAGE_INSTALL:append:icicle-kit-es = " \
     python3-asyncua \
     "
+
+IMAGE_INSTALL:append:discovery-kit = " \
+    python3-asyncua \
+    "
