@@ -1,0 +1,31 @@
+From 4d0457caea1ffec106926988eb57a9c43ec4cf3c Mon Sep 17 00:00:00 2001
+From: Pierre-Henry Moussay <ph.moussay.dev@gmail.com>
+Date: Wed, 14 Feb 2024 12:58:09 +0000
+Subject: [PATCH 1/2] dt-bindings: riscv: microchip: document the mpfs disco
+ kit
+
+Update devicetree bindings document with PolarFire SoC Discovery Kit, known
+by its "mpfs-disco-kit" product code.
+
+Signed-off-by: Pierre-Henry Moussay <ph.moussay.dev@gmail.com>
+---
+ Documentation/devicetree/bindings/riscv/microchip.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/riscv/microchip.yaml b/Documentation/devicetree/bindings/riscv/microchip.yaml
+index 42d4a9a6874a..a72d06bbe91e 100644
+--- a/Documentation/devicetree/bindings/riscv/microchip.yaml
++++ b/Documentation/devicetree/bindings/riscv/microchip.yaml
+@@ -36,6 +36,7 @@ properties:
+               - beagle,beaglev-fire
+               - microchip,mpfs-sev-kit
+               - sundance,polarberry
++              - microchip,mpfs-disco-kit
+           - const: microchip,mpfs
+
+ additionalProperties: true
+
+base-commit: 311d54dc2aab474763829784ed6499ce0338776c
+--
+2.30.2
+

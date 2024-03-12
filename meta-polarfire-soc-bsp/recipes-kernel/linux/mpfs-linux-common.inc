@@ -14,7 +14,7 @@ PV = "${LINUX_VERSION}+git${SRCPV}"
 
 KCONFIG_MODE="--alldefconfig"
 
-COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit)"
+COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit|discovery-kit)"
 
 KERNEL_FEATURES:remove = "features/debug/printk.scc"
 KERNEL_FEATURES:remove = "features/kernel-sample/kernel-sample.scc"
