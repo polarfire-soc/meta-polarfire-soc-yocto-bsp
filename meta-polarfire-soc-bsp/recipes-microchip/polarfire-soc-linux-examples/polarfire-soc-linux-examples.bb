@@ -47,6 +47,16 @@ EXAMPLE_FILES:mpfs-video-kit = "\
     dt-overlays \
     "
 
+EXAMPLE_FILES:discovery-kit = "\
+    can \
+    dma \
+    dt-overlays \
+    ethernet \
+    gpio \
+    system-services \
+    pdma \
+    "
+
 do_compile() {
   for i in ${EXAMPLE_FILES}; do
     if [ -f ${S}/$i/Makefile ]; then
@@ -86,6 +96,9 @@ SYSTEMD_AUTO_ENABLE:${PN}:append:icicle-kit = "disable"
 
 SYSTEMD_SERVICE:${PN}:append:icicle-kit-es-amp = "collectdiio.service"
 SYSTEMD_AUTO_ENABLE:${PN}:append:icicle-kit-es-amp = "disable"
+
+SYSTEMD_SERVICE:${PN}:append:discovery-kit = "collectdiio.service"
+SYSTEMD_AUTO_ENABLE:${PN}:append:discovery-kit = "disable"
 
 FILES:${PN} += "/opt/microchip/"
 
