@@ -3,11 +3,9 @@ require recipes-kernel/linux/mpfs-linux-common.inc
 LINUX_VERSION ?= "6.1"
 KERNEL_VERSION_SANITY_SKIP="1"
 
-SRCREV="linux4microchip+fpga-2024.02"
+SRCREV="a5d0ec8847067156e9c77bc6e4d699a55a3b20b8"
 SRC_URI = " \
     git://github.com/linux4microchip/linux.git;protocol=https;nobranch=1 \
-    file://0001-dt-bindings-riscv-microchip-document-the-mpfs-disco-kit.patch \
-    file://0002-riscv-dts-microchip-add-mpfs-disco-kit-dts.patch \
 "
 do_assemble_fitimage[depends] = "${@'dt-overlay-mchp:do_deploy' \
                                   if "icicle-kit" in d.getVar('MACHINE') \
