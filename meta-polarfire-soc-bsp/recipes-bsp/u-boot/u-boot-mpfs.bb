@@ -27,7 +27,7 @@ SRC_URI:append:mpfs-video-kit = "file://${UBOOT_ENV}.cmd \
                                  file://uEnv.txt \
                                 "
 
-SRC_URI:append:discovery-kit = "file://${UBOOT_ENV}.cmd \
+SRC_URI:append:mpfs-disco-kit = "file://${UBOOT_ENV}.cmd \
                                 file://${MACHINE}.cfg \
                                 file://uEnv.txt \
                                 "
@@ -60,4 +60,4 @@ do_deploy:append () {
 
 }
 
-COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit|discovery-kit)"
+COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit|mpfs-disco-kit)"

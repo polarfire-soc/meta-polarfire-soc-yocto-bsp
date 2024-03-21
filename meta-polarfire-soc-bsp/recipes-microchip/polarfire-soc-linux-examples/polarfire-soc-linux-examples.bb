@@ -47,7 +47,7 @@ EXAMPLE_FILES:mpfs-video-kit = "\
     dt-overlays \
     "
 
-EXAMPLE_FILES:discovery-kit = "\
+EXAMPLE_FILES:mpfs-disco-kit = "\
     can \
     dma \
     dt-overlays \
@@ -97,8 +97,8 @@ SYSTEMD_AUTO_ENABLE:${PN}:append:icicle-kit = "disable"
 SYSTEMD_SERVICE:${PN}:append:icicle-kit-es-amp = "collectdiio.service"
 SYSTEMD_AUTO_ENABLE:${PN}:append:icicle-kit-es-amp = "disable"
 
-SYSTEMD_SERVICE:${PN}:append:discovery-kit = "collectdiio.service"
-SYSTEMD_AUTO_ENABLE:${PN}:append:discovery-kit = "disable"
+SYSTEMD_SERVICE:${PN}:append:mpfs-disco-kit = "collectdiio.service"
+SYSTEMD_AUTO_ENABLE:${PN}:append:mpfs-disco-kit = "disable"
 
 FILES:${PN} += "/opt/microchip/"
 

@@ -11,13 +11,13 @@ PR = "r0"
 
 inherit devicetree
 
-COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit|discovery-kit)"
+COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit|mpfs-disco-kit)"
 
 S = "${WORKDIR}/git"
 
 DT_FILES_PATH = "${WORKDIR}/git/mpfs_icicle"
 DT_FILES_PATH:mpfs-video-kit = "${WORKDIR}/git/mpfs_video"
-DT_FILES_PATH:discovery-kit = "${WORKDIR}/git"
+DT_FILES_PATH:mpfs-disco-kit = "${WORKDIR}/git"
 
 PV = "1.0+git${SRCPV}"
 SRCREV="linux4microchip+fpga-2024.02"
