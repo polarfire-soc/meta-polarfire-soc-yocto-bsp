@@ -23,6 +23,3 @@ IMAGE_INSTALL:append:icicle-kit-es = " \
     python3-asyncua \
     "
 
-IMAGE_INSTALL:append:mpfs-disco-kit = " \
-    python3-asyncua \
-    "
