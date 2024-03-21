@@ -48,11 +48,9 @@ EXAMPLE_FILES:mpfs-video-kit = "\
     "
 
 EXAMPLE_FILES:mpfs-disco-kit = "\
-    can \
     dma \
     dt-overlays \
-    ethernet \
-    gpio \
+    fpga-fabric-interfaces/lsram \
     system-services \
     pdma \
     "
@@ -96,9 +94,6 @@ SYSTEMD_AUTO_ENABLE:${PN}:append:icicle-kit = "disable"
 
 SYSTEMD_SERVICE:${PN}:append:icicle-kit-es-amp = "collectdiio.service"
 SYSTEMD_AUTO_ENABLE:${PN}:append:icicle-kit-es-amp = "disable"
-
-SYSTEMD_SERVICE:${PN}:append:mpfs-disco-kit = "collectdiio.service"
-SYSTEMD_AUTO_ENABLE:${PN}:append:mpfs-disco-kit = "disable"
 
 FILES:${PN} += "/opt/microchip/"
 
