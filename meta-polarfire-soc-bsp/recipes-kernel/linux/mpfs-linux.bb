@@ -15,6 +15,7 @@ do_assemble_fitimage[depends] = "${@'dt-overlay-mchp:do_deploy' \
 SRC_URI:append:icicle-kit = " file://mpfs_cmdline.cfg \
                               file://qspi_flash.cfg \
                               file://rpi_sense_hat.cfg \
+                              file://mcp23s08_spi.cfg \
                             "
 
 SRC_URI:append:icicle-kit-es-amp = "file://mpfs_amp_cmdline.cfg \
