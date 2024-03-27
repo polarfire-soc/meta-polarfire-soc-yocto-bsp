@@ -12,7 +12,7 @@ DEPENDS = "collectd libgpiod  python3-flask"
 inherit systemd
 
 PV = "1.0+git${SRCPV}"
-SRCREV="v2024.02"
+SRCREV="67c29c5248d1c8245873583d0aaa319ad915c87d"
 SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-linux-examples.git;protocol=https;nobranch=1 \
 	"
 
