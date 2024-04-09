@@ -47,6 +47,14 @@ EXAMPLE_FILES:mpfs-video-kit = "\
     dt-overlays \
     "
 
+EXAMPLE_FILES:mpfs-disco-kit = "\
+    dma \
+    dt-overlays \
+    fpga-fabric-interfaces/lsram \
+    system-services \
+    pdma \
+    "
+
 do_compile() {
   for i in ${EXAMPLE_FILES}; do
     if [ -f ${S}/$i/Makefile ]; then
