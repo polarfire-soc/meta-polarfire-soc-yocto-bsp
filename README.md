@@ -12,6 +12,7 @@ The complete User Guides for each development platform, containing board and boo
 
 - [ICICLE-KIT-ES](https://mi-v-ecosystem.github.io/redirects/icicle-kit-sw-developer-guide_icicle-kit-sw-developer-guide) (Icicle Kit Engineering Sample)
 - [MPFS-VIDEO-KIT](https://mi-v-ecosystem.github.io/redirects/boards-mpfs-sev-kit-sev-kit-user-guide) (PolarFire SoC Video Kit)
+- [MPFS-DISCO-KIT](https://mi-v-ecosystem.github.io/redirects/boards-mpfs-discovery-kit-user-guide) (PolarFire SoC Discovery Kit)
 - [M100PFSEVP](https://www.aries-embedded.com/evaluation-kit/fpga/polarfire-microchip-soc-fpga-m100pfsevp-riscv-hsmc-pmod) (ARIES Embedded M100PFSEVP PolarFire SoC-FPGA Evaluation Platform)
 
 ## Build Instructions
