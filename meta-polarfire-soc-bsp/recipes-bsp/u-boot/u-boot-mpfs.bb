@@ -7,9 +7,10 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
 
 PV = "2023.07+git${SRCPV}"
-SRCREV = "60a6e2bd7d52e1ac7443839d1824433913273204"
+SRCREV = "049a256e42b72a65ac3329fbe3085b47bdf20cbc"
 SRC_URI = "git://github.com/polarfire-soc/u-boot.git;protocol=https;nobranch=1  \
            file://${HSS_PAYLOAD}.yaml \
+           file://0001-riscv-Add-AMP-support-for-the-MPFS-Discovery-Kit-boa.patch \
            "
 
 SRC_URI:append:icicle-kit = "file://${UBOOT_ENV}.cmd \
@@ -32,9 +33,15 @@ SRC_URI:append:mpfs-disco-kit = "file://${UBOOT_ENV}.cmd \
                                 file://uEnv.txt \
                                 "
 
+SRC_URI:append:mpfs-disco-kit-amp = "file://${UBOOT_ENV}.cmd \
+                                     file://${MACHINE}.cfg \
+                                     file://uEnv.txt \
+                                    "
+
 DEPENDS += " python3-setuptools-native u-boot-mkenvimage-native"
 DEPENDS:append = " u-boot-tools-native hss-payload-generator-native"
 DEPENDS:append:icicle-kit-es-amp = " polarfire-soc-amp-examples"
+DEPENDS:append:mpfs-disco-kit-amp = " polarfire-soc-amp-examples"
 
 do_deploy:append () {
 
