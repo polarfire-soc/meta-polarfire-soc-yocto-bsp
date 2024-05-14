@@ -6,7 +6,9 @@ KERNEL_VERSION_SANITY_SKIP="1"
 SRCREV="060758d16686da594dcef5d5ecf33c5328736857"
 SRC_URI = " \
     git://github.com/linux4microchip/linux.git;protocol=https;nobranch=1 \
+    file://0001-riscv-dts-microchip-add-mpfs-disco-kit-context-a.dts.patch \
 "
+
 do_assemble_fitimage[depends] = "${@'dt-overlay-mchp:do_deploy' \
                                   if "icicle-kit" in d.getVar('MACHINE') \
                                   or "mpfs-video-kit" in d.getVar('MACHINE') \
@@ -29,6 +31,8 @@ SRC_URI:append:mpfs-video-kit = " file://mpfs_cmdline.cfg \
                                   file://mpfs_crypto.cfg \
                                 "
 SRC_URI:append:mpfs-disco-kit =  " file://mpfs_cmdline.cfg "
+
+SRC_URI:append:mpfs-disco-kit-amp =  " file://mpfs_amp_cmdline.cfg "
 
 do_deploy:append() {
 

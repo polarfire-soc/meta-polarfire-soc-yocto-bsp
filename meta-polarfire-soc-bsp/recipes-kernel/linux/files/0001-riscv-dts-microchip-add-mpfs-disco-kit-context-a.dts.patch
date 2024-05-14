@@ -1,0 +1,299 @@
+From 15fda97719c5310da6d2f25e3b3ba13aa65558f3 Mon Sep 17 00:00:00 2001
+From: Pierre-Henry Moussay <ph.moussay.dev@gmail.com>
+Date: Mon, 6 May 2024 01:01:51 +0100
+Subject: [PATCH] riscv: dts: microchip: add mpfs-disco-kit-context-a.dts
+
+Add mpfs-disco-kit-context-a.dts to support AMP configuration on disco board
+
+Signed-off-by: Pierre-Henry Moussay <ph.moussay.dev@gmail.com>
+---
+ arch/riscv/boot/dts/microchip/Makefile        |   1 +
+ .../microchip/mpfs-disco-kit-context-a.dts    | 232 ++++++++++++++++++
+ .../dts/microchip/mpfs-disco-kit-fabric.dtsi  |  11 +
+ 3 files changed, 244 insertions(+)
+ create mode 100644 arch/riscv/boot/dts/microchip/mpfs-disco-kit-context-a.dts
+
+diff --git a/arch/riscv/boot/dts/microchip/Makefile b/arch/riscv/boot/dts/microchip/Makefile
+index 71ac67e0e516..39bdd03f5a58 100644
+--- a/arch/riscv/boot/dts/microchip/Makefile
++++ b/arch/riscv/boot/dts/microchip/Makefile
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-beaglev-fire.dtb
+ dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-disco-kit.dtb
++dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-disco-kit-context-a.dtb
+ dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-icicle-kit.dtb
+ dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-icicle-kit-context-a.dtb
+ dtb-$(CONFIG_SOC_MICROCHIP_POLARFIRE) += mpfs-m100pfsevp-sdcard.dtb
+diff --git a/arch/riscv/boot/dts/microchip/mpfs-disco-kit-context-a.dts b/arch/riscv/boot/dts/microchip/mpfs-disco-kit-context-a.dts
+new file mode 100644
+index 000000000000..0a8e86409bfe
+--- /dev/null
++++ b/arch/riscv/boot/dts/microchip/mpfs-disco-kit-context-a.dts
+@@ -0,0 +1,232 @@
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++/* Copyright (c) 2020-2021 Microchip Technology Inc */
++
++/dts-v1/;
++
++#include "mpfs.dtsi"
++#include "mpfs-disco-kit-fabric.dtsi"
++
++/* Clock frequency (in Hz) of the rtcclk */
++#define RTCCLK_FREQ		1000000
++
++/ {
++	#address-cells = <2>;
++	#size-cells = <2>;
++	model = "Microchip PolarFire-SoC Discovery Kit";
++	compatible = "microchip,mpfs-disco-kit", "microchip,mpfs";
++
++	soc {
++		dma-ranges = <0x14 0x0 0x0 0x80000000 0x0 0x4000000>,
++					<0x14 0x4000000 0x0 0xc4000000 0x0 0x6000000>,
++					<0x14 0xa000000 0x0 0x8a000000 0x0 0x8000000>,
++					<0x14 0x12000000 0x14 0x12000000 0x0 0x10000000>,
++					<0x14 0x22000000 0x10 0x22000000 0x0 0x1e000000>;
++	};
++
++	aliases {
++		ethernet0 = &mac0;
++		serial4 = &mmuart4;
++	};
++
++	chosen {
++		stdout-path = "serial4:115200n8";
++	};
++
++	cpus {
++		timebase-frequency = <RTCCLK_FREQ>;
++	};
++
++	kernel: memory@80000000 {
++		device_type = "memory";
++		reg = <0x0 0x80000000 0x0 0x4000000>;
++	};
++
++	ddr_cached_low: memory@8a000000 {
++		device_type = "memory";
++		reg = <0x0 0x8a000000 0x0 0x8000000>;
++	};
++
++	ddr_non_cached_low: memory@c4000000 {
++		device_type = "memory";
++		reg = <0x0 0xc4000000 0x0 0x6000000>;
++	};
++
++	ddr_cached_high: memory@1022000000 {
++		device_type = "memory";
++		reg = <0x10 0x22000000 0x0 0x1e000000>;
++	};
++
++	ddr_non_cached_high: memory@1412000000 {
++		device_type = "memory";
++		reg = <0x14 0x12000000 0x0 0x10000000>;
++	};
++
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++
++		hss: hss-buffer@103fc00000 {
++			compatible = "shared-dma-pool";
++			reg = <0x10 0x3fc00000 0x0 0x400000>;
++			no-map;
++		};
++
++		dma_non_cached_low: non-cached-low-buffer {
++			compatible = "shared-dma-pool";
++			size = <0x0 0x4000000>;
++			no-map;
++			linux,dma-default;
++			alloc-ranges = <0x0 0xc4000000 0x0 0x4000000>;
++		};
++
++		dma_non_cached_high: non-cached-high-buffer {
++			compatible = "shared-dma-pool";
++			size = <0x0 0x10000000>;
++			no-map;
++			linux,dma-default;
++			alloc-ranges = <0x14 0x12000000 0x0 0x10000000>;
++		};
++
++		fabricbuf0ddrc: buffer@88000000 {
++			compatible = "shared-dma-pool";
++			reg = <0x0 0x88000000 0x0 0x2000000>;
++			no-map;
++		};
++
++		fabricbuf1ddrnc: buffer@c8000000 {
++			compatible = "shared-dma-pool";
++			reg = <0x0 0xc8000000 0x0 0x2000000>;
++			no-map;
++		};
++
++		fabricbuf2ddrncwcb: buffer@d8000000 {
++			compatible = "shared-dma-pool";
++			reg = <0x0 0xd8000000 0x0 0x2000000>;
++			no-map;
++		};
++
++		contextb_reserved: contextb_reserved@91c00000 {
++			reg = <0x0 0x91c00000 0x0 0x100000>;
++			no-map;
++		};
++
++		vdev0vring0: vdev0vring0@91d00000 {
++			reg = <0x0 0x91d00000 0x0 0x8000>;
++			no-map;
++		};
++
++		vdev0vring1: vdev0vring1@91d08000 {
++			reg = <0x0 0x91d08000 0x0 0x8000>;
++			no-map;
++		};
++
++		vdev0buffer: vdev0buff@91d10000 {
++			compatible = "shared-dma-pool";
++			reg = <0x0 0x91d10000 0x0 0x40000>;
++			no-map;
++		};
++
++		rsctable: rsc-table@91d50000 {
++			reg = <0x0 0x91d50000 0x0 0x1000>;
++			no-map;
++		};
++	};
++
++	rproc_contextb: remote-context {
++		compatible = "microchip,miv-remoteproc";
++		memory-region = <&vdev0buffer>, <&rsctable>,
++				<&contextb_reserved>, <&vdev0vring0>,
++				<&vdev0vring1>;
++		mboxes= <&ihc 0>;
++		status = "okay";
++	};
++
++	udmabuf0 {
++		compatible = "ikwzm,u-dma-buf";
++		device-name = "udmabuf-ddr-c0";
++		minor-number = <0>;
++		size = <0x0 0x2000000>;
++		memory-region = <&fabricbuf0ddrc>;
++		sync-mode = <3>;
++	};
++
++	udmabuf1 {
++		compatible = "ikwzm,u-dma-buf";
++		device-name = "udmabuf-ddr-nc0";
++		minor-number = <1>;
++		size = <0x0 0x2000000>;
++		memory-region = <&fabricbuf1ddrnc>;
++		sync-mode = <3>;
++	};
++
++	udmabuf2 {
++		compatible = "ikwzm,u-dma-buf";
++		device-name = "udmabuf-ddr-nc-wcb0";
++		minor-number = <2>;
++		size = <0x0 0x2000000>;
++		memory-region = <&fabricbuf2ddrncwcb>;
++		sync-mode = <3>;
++	};
++};
++
++&fpgadma {
++	status = "okay";
++};
++
++&fpgalsram {
++	status = "okay";
++};
++
++&mac0 {
++	dma-noncoherent;
++	status = "okay";
++	phy-mode = "sgmii";
++	phy-handle = <&phy0>;
++
++	phy0: ethernet-phy@11 {
++		reg = <11>;
++	};
++};
++
++&mbox {
++	status = "okay";
++};
++
++&mmc {
++	dma-noncoherent;
++	bus-width = <4>;
++	disable-wp;
++	cap-sd-highspeed;
++	cap-mmc-highspeed;
++	sd-uhs-sdr12;
++	sd-uhs-sdr25;
++	sd-uhs-sdr50;
++	sd-uhs-sdr104;
++	no-1-8-v;
++	status = "okay";
++};
++
++&mmuart4 {
++	status = "okay";
++};
++
++&mmuart0 {
++	status = "disabled"; // in use by context b
++};
++
++&refclk {
++	clock-frequency = <125000000>;
++};
++
++&ihc {
++	status = "okay";
++};
++
++&rtc {
++	status = "okay";
++};
++
++&syscontroller {
++	status = "okay";
++};
+diff --git a/arch/riscv/boot/dts/microchip/mpfs-disco-kit-fabric.dtsi b/arch/riscv/boot/dts/microchip/mpfs-disco-kit-fabric.dtsi
+index 441bca177627..f5b61ea93217 100644
+--- a/arch/riscv/boot/dts/microchip/mpfs-disco-kit-fabric.dtsi
++++ b/arch/riscv/boot/dts/microchip/mpfs-disco-kit-fabric.dtsi
+@@ -1,6 +1,8 @@
+ // SPDX-License-Identifier: (GPL-2.0 OR MIT)
+ /* Copyright (c) 2020-2021 Microchip Technology Inc */
+ 
++#include "dt-bindings/mailbox/miv-ihc.h"
++
+ / {
+ 	compatible = "microchip,mpfs-disco-kit", "microchip,mpfs";
+ 
+@@ -31,6 +33,15 @@ fpgalsram: uio@60000000 {
+ 		};
+ 	};
+ 
++	ihc: mailbox {
++		compatible = "microchip,miv-ihc";
++		interrupt-parent = <&plic>;
++		interrupts = <IHC_HART1_INT>;
++		microchip,miv-ihc-remote-context-id = <IHC_CONTEXT_B>;
++		#mbox-cells = <1>;
++		status = "disabled";
++	};
++
+ 	mpfs_dma_proxy: mpfs-dma-proxy {
+ 		compatible = "microchip,mpfs-dma-proxy";
+ 		dmas = <&pdma 0>, <&pdma 1>, <&pdma 2>, <&pdma 3>;
+
+base-commit: 060758d16686da594dcef5d5ecf33c5328736857
+-- 
+2.30.2
+
