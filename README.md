@@ -212,6 +212,7 @@ The following table details the available targets:
 | `MACHINE=icicle-kit-es-nand`| ICICLE-KIT-ES, Icicle Kit engineering samples with Winbond W25N01GV NAND flash memory boot|
 | `MACHINE=icicle-kit-es-nor` | ICICLE-KIT-ES, Icicle Kit engineering samples with Micron MT25QL256 NOR flash memory boot |
 | `MACHINE=mpfs-disco-kit`    | MPFS-DISCO-KIT, PolarFire SoC Discovery Kit                                               |
+| `MACHINE=mpfs-disco-kit-amp`| MPFS-DISCO-KIT, PolarFire SoC Discovery Kit in AMP mode                                   |
 | `MACHINE=mpfs-video-kit`    | MPFS250-VIDEO-KIT, PolarFire SoC Video Kit                                                |
 | `MACHINE=m100pfsevp`        | M100PFSEVP, Aries M100PFSEVP PolarFire SoC-FPGA Evaluation Platform                       |
 
