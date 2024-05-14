@@ -55,6 +55,16 @@ EXAMPLE_FILES:mpfs-disco-kit = "\
     pdma \
     "
 
+EXAMPLE_FILES:mpfs-disco-kit-amp = "\
+    dma \
+    dt-overlays \
+    fpga-fabric-interfaces/lsram \
+    system-services \
+    pdma \
+    amp/rpmsg-pingpong \
+    amp/rpmsg-tty-example \
+    "
+
 do_compile() {
   for i in ${EXAMPLE_FILES}; do
     if [ -f ${S}/$i/Makefile ]; then

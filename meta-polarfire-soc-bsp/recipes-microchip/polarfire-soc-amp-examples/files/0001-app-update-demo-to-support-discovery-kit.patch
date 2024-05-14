@@ -1,0 +1,172 @@
+From a9fc5606ad66f5c74b2219b295b293734f39bc9e Mon Sep 17 00:00:00 2001
+From: Pierre-Henry Moussay <ph.moussay.dev@gmail.com>
+Date: Fri, 10 May 2024 15:58:59 +0100
+Subject: [PATCH] app: update demo to support discovery kit
+
+Signed-off-by: Pierre-Henry Moussay <ph.moussay.dev@gmail.com>
+---
+ mpfs-rpmsg-bm/src/application/hart0/e51.c        |  2 +-
+ mpfs-rpmsg-bm/src/application/inc/demo_main.c    | 16 ++++++++++++++--
+ mpfs-rpmsg-bm/src/application/inc/demo_main.h    | 12 ++++++++++--
+ mpfs-rpmsg-freertos/src/application/hart0/e51.c  |  2 +-
+ .../src/application/inc/demo_main.c              | 16 ++++++++++++++--
+ .../src/application/inc/demo_main.h              | 12 ++++++++++--
+ 6 files changed, 50 insertions(+), 10 deletions(-)
+
+diff --git a/mpfs-rpmsg-bm/src/application/hart0/e51.c b/mpfs-rpmsg-bm/src/application/hart0/e51.c
+index 0c0bc23..df16058 100644
+--- a/mpfs-rpmsg-bm/src/application/hart0/e51.c
++++ b/mpfs-rpmsg-bm/src/application/hart0/e51.c
+@@ -16,7 +16,7 @@
+ volatile uint32_t count_sw_ints_h0 = 0U;
+ 
+ const uint8_t g_info_string[] =
+-"\r\n\r\n\r\n **** PolarFire SoC Icicle Kit AMP FreeRTOS example  ****\r\n\r\n\r\n\
++"\r\n\r\n\r\n **** PolarFire SoC AMP FreeRTOS example  ****\r\n\r\n\r\n\
+ This program should be run from an application core (U54) in an AMP build.\r\n\r\n\
+ For more information refer to the project's README\r\n\
+ \r\n";
+diff --git a/mpfs-rpmsg-bm/src/application/inc/demo_main.c b/mpfs-rpmsg-bm/src/application/inc/demo_main.c
+index dbf104c..c86f920 100644
+--- a/mpfs-rpmsg-bm/src/application/inc/demo_main.c
++++ b/mpfs-rpmsg-bm/src/application/inc/demo_main.c
+@@ -57,10 +57,10 @@ void start_demo()
+ 
+ #ifdef RPMSG_MASTER
+     const uint8_t g_message[] =
+-    "\r\n\r\n\r\n **** PolarFire SoC Icicle Kit AMP RPMsg Master Bare Metal Example ****\r\n\r\n\r\n";
++    "\r\n\r\n\r\n **** PolarFire SoC AMP RPMsg Master Bare Metal Example ****\r\n\r\n\r\n";
+ #else
+     const uint8_t g_message[] =
+-    "\r\n\r\n\r\n **** PolarFire SoC Icicle Kit AMP RPMsg Remote Bare Metal Example ****\r\n\r\n\r\n";
++    "\r\n\r\n\r\n **** PolarFire SoC AMP RPMsg Remote Bare Metal Example ****\r\n\r\n\r\n";
+ #endif
+ 
+     const uint8_t g_menu[] =
+@@ -85,9 +85,21 @@ void start_demo()
+ #endif
+ 
+ #ifdef RPMSG_MASTER
++# if defined(BOARD_MPFS_DISCO_KIT_AMP)
++#  define UART_APP &g_mss_uart4_lo
++    (void)mss_config_clk_rst(MSS_PERIPH_MMUART4, (uint8_t) MPFS_HAL_FIRST_HART, PERIPHERAL_ON);
++# else
+     (void)mss_config_clk_rst(MSS_PERIPH_MMUART1, (uint8_t) MPFS_HAL_FIRST_HART, PERIPHERAL_ON);
++#  define UART_APP &g_mss_uart1_lo
++# endif
+ #else
++# if defined(BOARD_MPFS_DISCO_KIT_AMP)
++    (void)mss_config_clk_rst(MSS_PERIPH_MMUART0, (uint8_t) MPFS_HAL_FIRST_HART, PERIPHERAL_ON);
++#  define UART_APP &g_mss_uart0_lo
++# else
+     (void)mss_config_clk_rst(MSS_PERIPH_MMUART3, (uint8_t) MPFS_HAL_FIRST_HART, PERIPHERAL_ON);
++#  define UART_APP &g_mss_uart3_lo
++# endif
+ #endif
+ 
+     PLIC_init();
+diff --git a/mpfs-rpmsg-bm/src/application/inc/demo_main.h b/mpfs-rpmsg-bm/src/application/inc/demo_main.h
+index 6136ff2..f043b79 100644
+--- a/mpfs-rpmsg-bm/src/application/inc/demo_main.h
++++ b/mpfs-rpmsg-bm/src/application/inc/demo_main.h
+@@ -17,9 +17,17 @@
+ #define printf_to(...) ee_printf_to(__VA_ARGS__)
+ 
+ #ifdef RPMSG_MASTER
+-#define UART_APP &g_mss_uart1_lo
++# if defined(BOARD_MPFS_DISCO_KIT_AMP)
++#  define UART_APP &g_mss_uart4_lo
++# else
++#  define UART_APP &g_mss_uart1_lo
++# endif
+ #else
+-#define UART_APP &g_mss_uart3_lo
++# if defined(BOARD_MPFS_DISCO_KIT_AMP)
++#  define UART_APP &g_mss_uart0_lo
++# else
++#  define UART_APP &g_mss_uart3_lo
++# endif
+ #endif
+ 
+ typedef void *rpmsg_comm_stack_handle_t;
+diff --git a/mpfs-rpmsg-freertos/src/application/hart0/e51.c b/mpfs-rpmsg-freertos/src/application/hart0/e51.c
+index ab79e13..9093514 100644
+--- a/mpfs-rpmsg-freertos/src/application/hart0/e51.c
++++ b/mpfs-rpmsg-freertos/src/application/hart0/e51.c
+@@ -16,7 +16,7 @@
+ volatile uint32_t count_sw_ints_h0 = 0U;
+ 
+ const uint8_t g_info_string[] =
+-"\r\n\r\n\r\n **** PolarFire SoC Icicle Kit AMP FreeRTOS example  ****\r\n\r\n\r\n\
++"\r\n\r\n\r\n **** PolarFire SoC AMP FreeRTOS example  ****\r\n\r\n\r\n\
+ This program should be run from an application core (U54) in an AMP build.\r\n\r\n\
+ For more information refer to the project's README\r\n\
+ \r\n";
+diff --git a/mpfs-rpmsg-freertos/src/application/inc/demo_main.c b/mpfs-rpmsg-freertos/src/application/inc/demo_main.c
+index 3e69c5a..769227a 100644
+--- a/mpfs-rpmsg-freertos/src/application/inc/demo_main.c
++++ b/mpfs-rpmsg-freertos/src/application/inc/demo_main.c
+@@ -75,9 +75,21 @@ void start_demo()
+ #endif
+ 
+ #ifdef RPMSG_MASTER
++# if defined(BOARD_MPFS_DISCO_KIT_AMP)
++#  define UART_APP &g_mss_uart4_lo
++    (void)mss_config_clk_rst(MSS_PERIPH_MMUART4, (uint8_t) MPFS_HAL_FIRST_HART, PERIPHERAL_ON);
++# else
+     (void)mss_config_clk_rst(MSS_PERIPH_MMUART1, (uint8_t) MPFS_HAL_FIRST_HART, PERIPHERAL_ON);
++#  define UART_APP &g_mss_uart1_lo
++# endif
+ #else
++# if defined(BOARD_MPFS_DISCO_KIT_AMP)
++    (void)mss_config_clk_rst(MSS_PERIPH_MMUART0, (uint8_t) MPFS_HAL_FIRST_HART, PERIPHERAL_ON);
++#  define UART_APP &g_mss_uart0_lo
++# else
+     (void)mss_config_clk_rst(MSS_PERIPH_MMUART3, (uint8_t) MPFS_HAL_FIRST_HART, PERIPHERAL_ON);
++#  define UART_APP &g_mss_uart3_lo
++# endif
+ #endif
+ 
+     PLIC_init();
+@@ -124,10 +136,10 @@ void freertos_task_one( void *pvParameters )
+ 
+ #ifdef RPMSG_MASTER
+     const uint8_t g_message[] =
+-    "\r\n\r\n\r\n **** PolarFire SoC Icicle Kit AMP RPMsg Master FreeRTOS example ****\r\n\r\n\r\n";
++    "\r\n\r\n\r\n **** PolarFire SoC AMP RPMsg Master FreeRTOS example ****\r\n\r\n\r\n";
+ #else
+     const uint8_t g_message[] =
+-    "\r\n\r\n\r\n **** PolarFire SoC Icicle Kit AMP RPMsg Remote FreeRTOS example ****\r\n\r\n\r\n";
++    "\r\n\r\n\r\n **** PolarFire SoC AMP RPMsg Remote FreeRTOS example ****\r\n\r\n\r\n";
+ #endif
+ 
+     const uint8_t g_menu[] =
+diff --git a/mpfs-rpmsg-freertos/src/application/inc/demo_main.h b/mpfs-rpmsg-freertos/src/application/inc/demo_main.h
+index 6136ff2..f043b79 100644
+--- a/mpfs-rpmsg-freertos/src/application/inc/demo_main.h
++++ b/mpfs-rpmsg-freertos/src/application/inc/demo_main.h
+@@ -17,9 +17,17 @@
+ #define printf_to(...) ee_printf_to(__VA_ARGS__)
+ 
+ #ifdef RPMSG_MASTER
+-#define UART_APP &g_mss_uart1_lo
++# if defined(BOARD_MPFS_DISCO_KIT_AMP)
++#  define UART_APP &g_mss_uart4_lo
++# else
++#  define UART_APP &g_mss_uart1_lo
++# endif
+ #else
+-#define UART_APP &g_mss_uart3_lo
++# if defined(BOARD_MPFS_DISCO_KIT_AMP)
++#  define UART_APP &g_mss_uart0_lo
++# else
++#  define UART_APP &g_mss_uart3_lo
++# endif
+ #endif
+ 
+ typedef void *rpmsg_comm_stack_handle_t;
+
+base-commit: 99c5e686dbdf023ca3386bb4bf61d255d7bf082c
+-- 
+2.30.2
+
