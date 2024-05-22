@@ -104,6 +104,8 @@ require conf/distro/include/no-static-libs.inc
 require conf/distro/include/yocto-uninative.inc
 require conf/distro/include/security_flags.inc
 INHERIT += "uninative"
+INHERIT += "create-spdx"
+SPDX_PRETTY = "1"
 DISTRO_FEATURES:append = " largefile multiarch pam systemd "
 DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
 VIRTUAL-RUNTIME_init_manager = "systemd"
