@@ -2,7 +2,7 @@ setenv fdt_high 0xffffffffffffffff
 setenv initrd_high 0xffffffffffffffff
 
 load mmc 0:${distro_bootpart} ${scriptaddr} fitImage
-bootm start ${scriptaddr}#conf-microchip_mpfs-video-kit.dtb#conf-mpfs_h264.dtbo;
+bootm start ${scriptaddr}#conf-microchip_mpfs-video-kit.dtb;
 bootm loados ${scriptaddr};
 # Try to load a ramdisk if available inside fitImage
 bootm ramdisk;
