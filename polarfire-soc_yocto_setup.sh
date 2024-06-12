@@ -134,6 +134,7 @@ echo "* icicle-kit-es-amp: Microchip Polarfire SoC Icicle Kit Engineering Sample
 echo "* icicle-kit-es-auth: Microchip Polarfire SoC Icicle Kit Engineering Sample in authenticated boot mode"
 echo "* mpfs-disco-kit: Microchip Polarfire SoC Discovery Kit"
 echo "* mpfs-video-kit: Microchip Polarfire SoC Video Kit"
+echo "* beaglev-fire: Microchip Polarfire SoC Video Kit"
 echo "---------------------------------------------------"
 echo "Bitbake Image"
 echo "---------------------------------------------------"

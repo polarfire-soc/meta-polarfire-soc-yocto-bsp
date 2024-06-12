@@ -13,10 +13,10 @@ do_assemble_fitimage[depends] = "${@'dt-overlay-mchp:do_deploy' \
                                   or "mpfs-disco-kit" in d.getVar('MACHINE') \
                                   else ''}"
 
-SRC_URI:append:icicle-kit = " file://mpfs_cmdline.cfg \
-                              file://qspi_flash.cfg \
-                              file://rpi_sense_hat.cfg \
-                              file://mcp23s08_spi.cfg \
+SRC_URI:append:icicle-kit = "file://mpfs_cmdline.cfg \
+                             file://qspi_flash.cfg \
+                             file://rpi_sense_hat.cfg \
+                             file://mcp23s08_spi.cfg \
                             "
 
 SRC_URI:append:icicle-kit-es-amp = "file://mpfs_amp_cmdline.cfg \
@@ -24,11 +24,17 @@ SRC_URI:append:icicle-kit-es-amp = "file://mpfs_amp_cmdline.cfg \
                                     file://rpi_sense_hat.cfg \
                                    "
 
-SRC_URI:append:mpfs-video-kit = " file://mpfs_cmdline.cfg \
-                                  file://mpfs-v4l2.cfg \
-                                  file://mpfs_crypto.cfg \
+SRC_URI:append:mpfs-video-kit = "file://mpfs_cmdline.cfg \
+                                 file://mpfs-v4l2.cfg \
+                                 file://mpfs_crypto.cfg \
                                 "
-SRC_URI:append:mpfs-disco-kit =  " file://mpfs_cmdline.cfg "
+SRC_URI:append:mpfs-disco-kit = "file://mpfs_cmdline.cfg "
+
+SRC_URI:append:beaglev-fire = "file://mpfs_cmdline.cfg \
+                               file://qspi_flash.cfg \
+                               file://rpi_sense_hat.cfg \
+                               file://mcp23s08_spi.cfg \
+                              "
 
 do_deploy:append() {
 
