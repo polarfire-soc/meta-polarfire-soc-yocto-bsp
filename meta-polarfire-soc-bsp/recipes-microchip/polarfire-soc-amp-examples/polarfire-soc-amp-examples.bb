@@ -12,7 +12,7 @@ DEPENDS = "makedepend-native"
 inherit deploy
 
 PV = "1.0+git${SRCPV}"
-SRCREV="v2024.02"
+SRCREV="e14b9c739c4a8703a1b3c705a2a53760a3c6af57"
 SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-amp-examples.git;protocol=https;nobranch=1"
 
 S = "${WORKDIR}/git"
@@ -25,7 +25,7 @@ EXTRA_OEMAKE = "REMOTE=1 REMOTEPROC=1 CROSS_COMPILE=${TARGET_PREFIX} EXT_CFLAGS=
 
 do_install() {
     install -d ${D}${nonarch_base_libdir}/firmware
-    install ${S}/mpfs-rpmsg-${AMP_DEMO}/Remote-Default/mpfs-rpmsg-remote.elf ${D}${nonarch_base_libdir}/firmware/rproc-miv-rproc-fw
+    install ${S}/mpfs-rpmsg-${AMP_DEMO}/Remote-Default/mpfs-rpmsg-remote.elf ${D}${nonarch_base_libdir}/firmware/rproc-remote-context-fw
 }
 
 do_compile() {

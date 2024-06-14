@@ -283,7 +283,7 @@ MACHINE=<MACHINE> bitbake mpfs-linux -c diffconfig
 **Available BSP recipes:**
 
 - hss (Microchip Hart Software Services) payload generator
-- u-boot-mpfs (PolarFire SoC U-Boot)
+- u-boot-mchp (Microchip U-Boot)
 - mpfs-linux (Linux Kernel for PolarFire SoC)
 
 **Available commands:**
