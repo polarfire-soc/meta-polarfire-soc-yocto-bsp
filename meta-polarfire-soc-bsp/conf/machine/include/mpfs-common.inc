@@ -24,18 +24,18 @@ UBOOT_DTBO_LOADADDRESS = "0x8a080000"
 UBOOT_RD_LOADADDRESS = "0x8aa00000"
 UBOOT_RD_ENTRYPOINT = "0x8aa00000"
 
-MACHINE_EXTRA_RRECOMMENDS += " kernel-modules"
+MACHINE_EXTRA_RRECOMMENDS += "kernel-modules"
 
 IMAGE_FSTYPES += "wic wic.gz wic.bmap ext4"
 
 ## Do not update fstab file when using wic images
 WIC_CREATE_EXTRA_ARGS ?= "--no-fstab-update"
 
-IMAGE_INSTALL:append = " dt-overlay-mchp"
+IMAGE_INSTALL:append = "dt-overlay-mchp"
 
 ## wic default support
 WKS_FILE_DEPENDS ?= " \
     e2fsprogs-native \
-    bmap-tools-native \
+    bmaptool-native \
     u-boot-mpfs \
 "

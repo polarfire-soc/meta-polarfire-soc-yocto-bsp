@@ -1,37 +1,35 @@
 
 EXTRA_IMAGE_FEATURES += " \
-      tools-debug \      
-      tools-sdk"
+    tools-debug \
+    tools-sdk \
+"
 
 IMAGE_INSTALL = "\
-    packagegroup-core-base-utils \
-    packagegroup-base \
+    ${CORE_IMAGE_EXTRA_INSTALL} \
+    can-utils \
+    cmake \
+    devmem2 \
+    dtc \
     expect \
-    rsync \
-    rng-tools \
+    glib-2.0 \
+    htop \
+    i2c-tools \
     iperf3 \
     iproute2 \
-    devmem2 \
-    can-utils \
-    polarfire-soc-linux-examples \
+    kernel-modules \
     libgpiod \
     libgpiod-tools \
-    i2c-tools \
-    htop \
+    libudev \
+    mtd-utils \
+    mtd-utils-ubifs \
+    packagegroup-base \
+    packagegroup-core-base-utils \
+    polarfire-soc-linux-examples \
     python3 \
     python3-pip \
     python3-werkzeug \
-    libudev \
-    glib-2.0 \
+    rng-tools \
+    rsync \
     sqlite3 \
-    dtc \
-    cmake \
-    mtd-utils \
-    mtd-utils-ubifs \
-    kernel-modules \
     zip \
-    ${CORE_IMAGE_EXTRA_INSTALL} \
-    "
-
-
-
+"

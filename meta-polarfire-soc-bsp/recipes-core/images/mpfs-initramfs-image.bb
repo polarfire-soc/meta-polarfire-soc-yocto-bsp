@@ -14,7 +14,7 @@ WKS_FILE = "mpfs-initramfs.wks"
 
 IMAGE_INSTALL = ""
 
-IMAGE_FSTYPES:remove = " ext4"
+IMAGE_FSTYPES:remove = "ext4"
 
 do_rootfs[depends] += "mpfs-core-image-base:do_image_complete"
 

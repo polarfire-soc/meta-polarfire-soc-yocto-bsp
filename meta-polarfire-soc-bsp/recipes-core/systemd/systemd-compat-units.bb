@@ -3,7 +3,6 @@ HOMEPAGE = "http://www.freedesktop.org/wiki/Software/systemd"
 LICENSE = "MIT"
 PR = "r30"
 
-
 PACKAGE_WRITE_DEPS += "systemd-systemctl-native"
 
 S = "${WORKDIR}"

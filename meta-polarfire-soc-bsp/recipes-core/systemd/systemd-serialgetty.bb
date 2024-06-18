@@ -4,7 +4,6 @@ LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/GPL-2.0-only;md5=801f80980d171dd6425610833a22dbe6"
 PR = "r6"
 
-
 SERIAL_CONSOLES ?= "115200;ttyS0"
 SERIAL_TERM ?= "linux"
 

@@ -3,9 +3,11 @@ SECTION = "examples"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 PR = "r0"
-SRC_URI = "file://v4l2-start_service.sh \
-	   file://v4l2-start_service.service \
-	"
+
+SRC_URI = " \
+	file://v4l2-start_service.sh \
+	file://v4l2-start_service.service \
+"
 
 inherit systemd features_check
 

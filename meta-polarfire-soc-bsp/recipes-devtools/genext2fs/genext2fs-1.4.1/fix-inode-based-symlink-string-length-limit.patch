@@ -1,0 +1,29 @@
+Upstream status: Backport
+
+Index: genext2fs-1.4.1/genext2fs.c
+===================================================================
+--- genext2fs-1.4.1.orig/genext2fs.c
++++ genext2fs-1.4.1/genext2fs.c
+@@ -1932,9 +1932,10 @@ mklink_fs(filesystem *fs, uint32 parent_
+ 
+ 	inode_pos_init(fs, &ipos, nod, INODE_POS_TRUNCATE, NULL);
+ 	node->i_size = size;
+-	if(size <= 4 * (EXT2_TIND_BLOCK+1))
++	if(size < 4 * (EXT2_TIND_BLOCK+1))
+ 	{
+ 		strncpy((char *)node->i_block, (char *)b, size);
++		((char*)node->i_block)[size+1] = '\0';
+ 		put_nod(ni);
+ 		return nod;
+ 	}
+@@ -2205,6 +2206,10 @@ add2fs_from_dir(filesystem *fs, uint32 t
+ 			switch(st.st_mode & S_IFMT)
+ 			{
+ 				case S_IFLNK:
++					if((st.st_mode & S_IFMT) == S_IFREG || st.st_size >= 4 * (EXT2_TIND_BLOCK+1))
++						stats->nblocks += (st.st_size + BLOCKSIZE - 1) / BLOCKSIZE;
++					stats->ninodes++;
++					break;
+ 				case S_IFREG:
+ 					if((st.st_mode & S_IFMT) == S_IFREG || st.st_size > 4 * (EXT2_TIND_BLOCK+1))
+ 						stats->nblocks += (st.st_size + BLOCKSIZE - 1) / BLOCKSIZE;

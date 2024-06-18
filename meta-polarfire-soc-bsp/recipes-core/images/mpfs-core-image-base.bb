@@ -5,17 +5,17 @@ images"
 DEPENDS += "virtual/bootloader"
 
 IMAGE_INSTALL = "\
-    packagegroup-core-boot \
+    i2c-tools \
+    kernel-modules \
+    libgpiod \
+    libgpiod-tools \
     packagegroup-base \
+    packagegroup-core-boot \
     polarfire-soc-linux-examples \
     python3 \
     rng-tools \
-    i2c-tools \
-    libgpiod \
-    libgpiod-tools \
     util-linux \
     wget \
-    kernel-modules \
     "
 
 # Do not pollute the initrd image with rootfs features

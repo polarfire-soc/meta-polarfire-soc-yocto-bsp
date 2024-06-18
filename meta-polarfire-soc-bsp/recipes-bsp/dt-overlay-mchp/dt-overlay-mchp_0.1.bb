@@ -11,16 +11,14 @@ PR = "r0"
 
 inherit devicetree
 
-COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit|mpfs-disco-kit)"
-
 S = "${WORKDIR}/git"
 
 DT_FILES_PATH = "${WORKDIR}/git/mpfs_icicle"
 DT_FILES_PATH:mpfs-video-kit = "${WORKDIR}/git/mpfs_video"
 DT_FILES_PATH:mpfs-disco-kit = "${WORKDIR}/git"
 
-PV = "1.0+git${SRCPV}"
-SRCREV="53592f188bbb9dfe67c85b272f27acd9a9e54c7c"
+PV = "2024.04"
+SRCREV="77df5fd07814283d725d65be6d34c72e78ccccd4"
 SRC_URI="git://github.com/linux4microchip/dt-overlay-mchp.git;protocol=https;nobranch=1 \
 "
 
@@ -39,3 +37,5 @@ do_deploy() {
 }
 
 FILES:${PN} += "/boot/*.dtbo"
+
+COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit|mpfs-disco-kit|beaglev-fire)"

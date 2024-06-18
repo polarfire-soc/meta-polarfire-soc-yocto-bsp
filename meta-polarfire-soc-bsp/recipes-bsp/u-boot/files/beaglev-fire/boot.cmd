@@ -1,3 +1,6 @@
+# this assumes ${scriptaddr} is already set!!
+
+# Try to boot a fitImage from eMMC/SD
 setenv fdt_high 0xffffffffffffffff
 setenv initrd_high 0xffffffffffffffff
 
