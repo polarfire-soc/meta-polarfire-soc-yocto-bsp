@@ -30,6 +30,7 @@ IMAGE_INSTALL = "\
     mtd-utils-ubifs \
     kernel-modules \
     zip \
+    netcat \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     "
 

@@ -74,6 +74,7 @@ IMAGE_INSTALL = "\
     dtc \
     cmake \
     kernel-modules kernel-dev \
+    netcat \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     "
 
