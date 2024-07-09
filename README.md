@@ -120,35 +120,6 @@ sudo bmaptool copy tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit
 > Replace sdX with your drive identifier. Be very careful while picking /dev/sdX device! Look at dmesg, lsblk, GNOME Disks, etc. before and after plugging in your usb flash device/uSD/SD to find a proper device. Double check it to avoid overwriting any of system disks/partitions!
 >
 
-The wic image uses a GUID Partition Table (GPT). GPT stores its primary GPT header at the start of the storage device, and a secondary GPT header at the end of the device.  The wic creation scripts do not correctly place this secondary GPT header at the current time.  To avoid later warnings about the GPT secondary header location, open the device with fdisk at this stage and rewrite the partition table:
-
-```bash
-fdisk /dev/sdX
-```
-
-This will output something like the following:
-
-```bash
-Welcome to fdisk (util-linux 2.34).
-Changes will remain in memory only, until you decide to write them.
-Be careful before using the write command.
-
-GPT PMBR size mismatch (13569937 != 15273599) will be corrected by write.
-The backup GPT table is not on the end of the device. This problem will be corrected by write.
-
-Command (m for help):
-```
-
-Press `w` to write the partition table and exit `fdisk`:
-
-```bash
-Command (m for help): w
-
-The partition table has been altered.
-Calling ioctl() to re-read partition table.
-Syncing disks.
-```
-
 <a name="Copy-the-created-Disk-Image-to-an-external-QSPI-flash-memory"></a>
 
 ### Copy the created Disk Image to an external QSPI flash memory
