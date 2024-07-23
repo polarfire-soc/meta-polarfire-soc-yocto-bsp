@@ -24,8 +24,8 @@ Before continuing, ensure that the prerequisite packages are present on your sys
 This needs to be done every time you want a clean setup based on the latest BSP.
 
 ```bash
-$ mkdir yocto-dev && cd yocto-dev
-$ repo init -u https://github.com/polarfire-soc/polarfire-soc-yocto-manifests.git -b main -m default.xml
+mkdir yocto-dev && cd yocto-dev
+repo init -u https://github.com/polarfire-soc/polarfire-soc-yocto-manifests.git -b main -m default.xml
 ```
 
 ### Update the repo workspace
@@ -136,7 +136,7 @@ Connect the board to your host PC using J16, located beside the SD card slot.
 Once this is complete, on the host PC, use `dmesg` to check what the drive identifier for the QSPI flash memory device is.
 
 ```bash
-$ dmesg | egrep "sd"
+dmesg | egrep "sd"
 ```
 
 The output should contain a line similar to one of the following lines:
@@ -157,13 +157,13 @@ Once sure of the drive identifier, use the following command to copy your Linux 
 For flashing a Linux image suitable for a **Winbond W25N01GV NAND** flash memory:
 
 ```bash
-$ sudo dd if=tmp-glibc/deploy/images/icicle-kit-es-nand/core-image-minimal-mtdutils-icicle-kit-es-nand.nand.mtdimg of=/dev/sdX
+sudo dd if=tmp-glibc/deploy/images/icicle-kit-es-nand/core-image-minimal-mtdutils-icicle-kit-es-nand.nand.mtdimg of=/dev/sdX
 ```
 
 For flashing a Linux image suitable for a **Micron MT25QL256 NOR** flash memory:
 
 ```bash
-$ sudo dd if=tmp-glibc/deploy/images/icicle-kit-es-nor/core-image-minimal-mtdutils-icicle-kit-es-nor.nor.mtdimg of=/dev/sdX
+sudo dd if=tmp-glibc/deploy/images/icicle-kit-es-nor/core-image-minimal-mtdutils-icicle-kit-es-nor.nor.mtdimg of=/dev/sdX
 ```
 
 When the transfer has completed, press CTRL+C in the HSS serial console to return to the HSS console.
@@ -370,7 +370,7 @@ Listen uses inotify by default on Linux to monitor directories for changes. It's
 You can get your current inotify file watch limit by executing:
 
 ```bash
-$ cat /proc/sys/fs/inotify/max_user_watches
+cat /proc/sys/fs/inotify/max_user_watches
 ```
 
 When this limit is not enough to monitor all files inside a directory, the limit must be increased for Listen to work properly.
