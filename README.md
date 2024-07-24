@@ -24,8 +24,8 @@ Before continuing, ensure that the prerequisite packages are present on your sys
 This needs to be done every time you want a clean setup based on the latest BSP.
 
 ```bash
-$ mkdir yocto-dev && cd yocto-dev
-$ repo init -u https://github.com/polarfire-soc/polarfire-soc-yocto-manifests.git -b main -m default.xml
+mkdir yocto-dev && cd yocto-dev
+repo init -u https://github.com/polarfire-soc/polarfire-soc-yocto-manifests.git -b main -m default.xml
 ```
 
 ### Update the repo workspace
@@ -102,9 +102,6 @@ For instructions on how to transfer the image to the external QSPI flash memory 
 
 ### Copy the created Disk Image to flash device (USB mmc flash/SD/uSD)
 
-> Be very careful while picking /dev/sdX device! Look at dmesg, lsblk, GNOME Disks, etc. before and after plugging in your usb flash device/uSD/SD to find a proper device. Double check it to avoid overwriting any of system disks/partitions!
->
-
 We recommend using the `bmaptool` utility to program the storage device. `bmaptool` is a generic tool for creating the block map (bmap) for a file and copying files using this block map. Raw system image files can be flashed a lot faster with bmaptool than with traditional tools, like "dd" or "cp".
 
 The created disk image is a 'wic' file, and is located in `yocto-dev/build/tmp-glibc/deploy/images/<MACHINE>/` directory,
@@ -113,39 +110,15 @@ e.g., for mpfs-dev-cli image and machine icicle-kit-es, it will be located in
 
 `yocto-dev/build/tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic`.
 
+Navigate to the build directory and flash the image using `bmaptool` command:
+
 ```bash
 cd yocto-dev/build
-bmaptool copy tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic /dev/sdX
+sudo bmaptool copy tmp-glibc/deploy/images/icicle-kit-es/mpfs-dev-cli-icicle-kit-es.wic /dev/sdX
 ```
 
-The wic image uses a GUID Partition Table (GPT). GPT stores its primary GPT header at the start of the storage device, and a secondary GPT header at the end of the device.  The wic creation scripts do not correctly place this secondary GPT header at the current time.  To avoid later warnings about the GPT secondary header location, open the device with fdisk at this stage and rewrite the partition table:
-
-```bash
-fdisk /dev/sdX
-```
-
-This will output something like the following:
-
-```bash
-Welcome to fdisk (util-linux 2.34).
-Changes will remain in memory only, until you decide to write them.
-Be careful before using the write command.
-
-GPT PMBR size mismatch (13569937 != 15273599) will be corrected by write.
-The backup GPT table is not on the end of the device. This problem will be corrected by write.
-
-Command (m for help):
-```
-
-Press `w` to write the partition table and exit `fdisk`:
-
-```bash
-Command (m for help): w
-
-The partition table has been altered.
-Calling ioctl() to re-read partition table.
-Syncing disks.
-```
+> Replace sdX with your drive identifier. Be very careful while picking /dev/sdX device! Look at dmesg, lsblk, GNOME Disks, etc. before and after plugging in your usb flash device/uSD/SD to find a proper device. Double check it to avoid overwriting any of system disks/partitions!
+>
 
 <a name="Copy-the-created-Disk-Image-to-an-external-QSPI-flash-memory"></a>
 
@@ -163,7 +136,7 @@ Connect the board to your host PC using J16, located beside the SD card slot.
 Once this is complete, on the host PC, use `dmesg` to check what the drive identifier for the QSPI flash memory device is.
 
 ```bash
-$ dmesg | egrep "sd"
+dmesg | egrep "sd"
 ```
 
 The output should contain a line similar to one of the following lines:
@@ -184,13 +157,13 @@ Once sure of the drive identifier, use the following command to copy your Linux 
 For flashing a Linux image suitable for a **Winbond W25N01GV NAND** flash memory:
 
 ```bash
-$ sudo dd if=tmp-glibc/deploy/images/icicle-kit-es-nand/core-image-minimal-mtdutils-icicle-kit-es-nand.nand.mtdimg of=/dev/sdX
+sudo dd if=tmp-glibc/deploy/images/icicle-kit-es-nand/core-image-minimal-mtdutils-icicle-kit-es-nand.nand.mtdimg of=/dev/sdX
 ```
 
 For flashing a Linux image suitable for a **Micron MT25QL256 NOR** flash memory:
 
 ```bash
-$ sudo dd if=tmp-glibc/deploy/images/icicle-kit-es-nor/core-image-minimal-mtdutils-icicle-kit-es-nor.nor.mtdimg of=/dev/sdX
+sudo dd if=tmp-glibc/deploy/images/icicle-kit-es-nor/core-image-minimal-mtdutils-icicle-kit-es-nor.nor.mtdimg of=/dev/sdX
 ```
 
 When the transfer has completed, press CTRL+C in the HSS serial console to return to the HSS console.
@@ -315,7 +288,7 @@ It should also work with other Linux distributions if the equivalent prerequisit
 
 The BSP uses the Yocto RISCV Architecture Layer, and the Yocto release Kirkstone (Revision 4.0.17) (Released March 2024).
 
-**Make sure to install the [repo utility](https://source.android.com/setup/develop#installing-repo) first.**
+**Make sure to install the [repo utility](https://gerrit.googlesource.com/git-repo/+/HEAD/README.md) first.**
 
 Detailed instructions for various distributions can be found in the ["Required Packages for the Build Host"](https://docs.yoctoproject.org/4.0.17/ref-manual/system-requirements.html#required-packages-for-the-build-host) section in the Yocto Project Reference Manual.
 
@@ -397,7 +370,7 @@ Listen uses inotify by default on Linux to monitor directories for changes. It's
 You can get your current inotify file watch limit by executing:
 
 ```bash
-$ cat /proc/sys/fs/inotify/max_user_watches
+cat /proc/sys/fs/inotify/max_user_watches
 ```
 
 When this limit is not enough to monitor all files inside a directory, the limit must be increased for Listen to work properly.
