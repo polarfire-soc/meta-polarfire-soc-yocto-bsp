@@ -11,6 +11,14 @@ IMAGE_INSTALL:append:mpfs-video-kit = " \
     v4l-utils \
     videokit-webdemo \
     fswebcam \
+    gstreamer1.0 \
+    gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-ugly \
+    x264 \
+    gst-examples \
+    gstreamer1.0-plugins-base-videotestsrc \
     python3-asyncua \
     openssl \
     openssl-engines \

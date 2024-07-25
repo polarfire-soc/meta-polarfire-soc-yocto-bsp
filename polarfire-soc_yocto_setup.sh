@@ -110,7 +110,7 @@ DISTRO_FEATURES:append = " largefile multiarch pam systemd "
 DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
 VIRTUAL-RUNTIME_init_manager = "systemd"
 HOSTTOOLS_NONFATAL:append = " ssh"
-LICENSE_FLAGS_ACCEPTED = "commercial_ffmpeg"
+LICENSE_FLAGS_ACCEPTED = "commercial_ffmpeg commercial_gstreamer1.0-plugins-ugly commercial_x264 commercial_mpeg2dec"
 EOF
 
 echo "Creating initramfs.conf"
