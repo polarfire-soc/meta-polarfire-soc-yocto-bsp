@@ -187,6 +187,7 @@ The following table details the available targets:
 | `MACHINE=mpfs-disco-kit`    | MPFS-DISCO-KIT, PolarFire SoC Discovery Kit                                               |
 | `MACHINE=mpfs-video-kit`    | MPFS250-VIDEO-KIT, PolarFire SoC Video Kit                                                |
 | `MACHINE=m100pfsevp`        | M100PFSEVP, Aries M100PFSEVP PolarFire SoC-FPGA Evaluation Platform                       |
+| `MACHINE=beaglev-fire`      | BeagleV-Fire, BeagleBoard.org BeagleV-Fire single-board computer (SBC)                    |
 
 The `icicle-kit-es-amp` machine can be used to build the Icicle Kit engineering sample with AMP support. Please see the [Asymmetric Multiprocessing (AMP)](https://mi-v-ecosystem.github.io/redirects/asymmetric-multiprocessing_amp) documentation for further details.
 
