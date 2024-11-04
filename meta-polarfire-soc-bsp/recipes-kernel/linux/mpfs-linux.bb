@@ -42,3 +42,6 @@ do_deploy:append() {
 
 addtask deploy after do_install
 
+KERNEL_FEATURES:append = " \
+    CONFIG_NET_RX_BUSY_POLL=y \
+"
