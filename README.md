@@ -287,14 +287,14 @@ build/tmp-glibc/deploy/images/icicle-kit-es
 This document assumes you are running on a modern Linux system. The process documented here was tested using Ubuntu 18.04 LTS.
 It should also work with other Linux distributions if the equivalent prerequisite packages are installed.
 
-The BSP uses the Yocto RISCV Architecture Layer, and the Yocto release Kirkstone (Revision 4.0.17) (Released March 2024).
+The BSP uses the Yocto release Scarthgap (Revision 5.0.3) (Released August 2024).
 
 **Make sure to install the [repo utility](https://gerrit.googlesource.com/git-repo/+/HEAD/README.md) first.**
 
-Detailed instructions for various distributions can be found in the ["Required Packages for the Build Host"](https://docs.yoctoproject.org/4.0.17/ref-manual/system-requirements.html#required-packages-for-the-build-host) section in the Yocto Project Reference Manual.
+Detailed instructions for various distributions can be found in the ["Required Packages for the Build Host"](https://docs.yoctoproject.org/5.0.3/ref-manual/system-requirements.html#required-packages-for-the-build-host) section in the Yocto Project Reference Manual.
 
 ```bash
-**Note: Some extra packages are requried to support the Yocto 4.0.17 Release (codename “kirkstone”) compared to the prior release.**
+**Note: Some extra packages are requried to support the Yocto 5.0.3 Release (codename scarthgap) compared to the prior release.**
 ```
 
 <a name="OtherDeps"></a>

@@ -17,6 +17,7 @@ PREFERRED_VERSION_openocd-native = "riscv"
 PREFERRED_VERSION_openocd = "riscv"
 PREFERRED_PROVIDER_virtual/bootloader = "u-boot-mchp"
 PREFERRED_PROVIDER_u-boot = "u-boot-mchp"
+PREFERRED_VERSION_libgpiod = "1.6.4"
 
 UBOOT_ENTRYPOINT = "0x80200000"
 UBOOT_DTB_LOADADDRESS = "0x8a000000"
@@ -36,6 +37,6 @@ IMAGE_INSTALL:append = " dt-overlay-mchp"
 ## wic default support
 WKS_FILE_DEPENDS ?= " \
     e2fsprogs-native \
-    bmap-tools-native \
+    bmaptool-native \
     u-boot-mchp \
 "

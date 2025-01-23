@@ -10,11 +10,11 @@ This layer depends on:
 ```text
 URI: git://git.openembedded.org/openembedded-core
 layers: meta
-branch: kirkstone
+branch: scarthgap
 
 URI: git://git.openembedded.org/meta-openembedded
 layers: meta-oe, meta-python, meta-multimedia, meta-networking, meta-webserver
-branch: kirkstone
+branch: scarthgap
 
 URI: git://github.com/polarfire-soc/meta-polarfire-soc-yocto-bsp.git
 layers: meta-polarfire-soc-bsp
