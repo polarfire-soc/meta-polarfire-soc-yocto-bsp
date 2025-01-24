@@ -1,29 +1,30 @@
-From fd738b9a9e3e0b1f6cf6d1150fad6afb28f0834e Mon Sep 17 00:00:00 2001
-From: Lewis Hanly <lewis.hanly@microchip.com>
-Date: Thu, 1 Jun 2023 16:30:22 +0100
-Subject: [PATCH 1/1] networkd: add any option to the wait online
+From de67d8c236dad99e9f19d4d131b7d82d2324a711 Mon Sep 17 00:00:00 2001
+From: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
+Date: Tue, 21 Jan 2025 13:43:24 +0000
+Subject: [PATCH] networkd: add any option to the wait online
 
 To prevent any delay in starting add the --any option
 to the ExecStart line
 
-Signed-off-by: Lewis Hanly <lewis.hanly@microchip.com>
+Upstream-Status: Inappropriate [PolarFire SoC specific]
+Signed-off-by: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
 ---
  units/systemd-networkd-wait-online.service.in | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/units/systemd-networkd-wait-online.service.in b/units/systemd-networkd-wait-online.service.in
-index 10d8b08c8e..6dd5f79377 100644
+index 7768121f5f..7d26e04fe3 100644
 --- a/units/systemd-networkd-wait-online.service.in
 +++ b/units/systemd-networkd-wait-online.service.in
-@@ -18,7 +18,7 @@ Before=network-online.target shutdown.target
+@@ -19,7 +19,7 @@ Before=network-online.target shutdown.target
  
  [Service]
  Type=oneshot
--ExecStart={{ROOTLIBEXECDIR}}/systemd-networkd-wait-online
-+ExecStart={{ROOTLIBEXECDIR}}/systemd-networkd-wait-online --any
+-ExecStart={{LIBEXECDIR}}/systemd-networkd-wait-online
++ExecStart={{LIBEXECDIR}}/systemd-networkd-wait-online --any
  RemainAfterExit=yes
  
  [Install]
 -- 
-2.25.1
+2.34.1
 
