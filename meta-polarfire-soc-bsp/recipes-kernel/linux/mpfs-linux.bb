@@ -10,7 +10,6 @@ SRC_URI = " \
 do_assemble_fitimage[depends] = "${@'dt-overlay-mchp:do_deploy' \
                                   if "icicle-kit" in d.getVar('MACHINE') \
                                   or "mpfs-video-kit" in d.getVar('MACHINE') \
-                                  or "mpfs-disco-kit" in d.getVar('MACHINE') \
                                   else ''}"
 
 SRC_URI:append:icicle-kit = " file://mpfs_cmdline.cfg \
