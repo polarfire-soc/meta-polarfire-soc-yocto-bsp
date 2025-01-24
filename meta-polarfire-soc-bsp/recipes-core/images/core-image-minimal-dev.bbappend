@@ -3,7 +3,7 @@ EXTRA_IMAGE_FEATURES += " \
       tools-debug \      
       tools-sdk"
 
-IMAGE_INSTALL = "\
+IMAGE_INSTALL += "\
     packagegroup-core-base-utils \
     packagegroup-base \
     expect \
