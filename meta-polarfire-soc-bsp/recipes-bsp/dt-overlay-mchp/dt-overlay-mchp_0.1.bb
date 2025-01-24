@@ -16,6 +16,7 @@ COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit)"
 S = "${WORKDIR}/git"
 
 DT_FILES_PATH:icicle-kit = "${WORKDIR}/git/mpfs_icicle"
+DT_FILES_PATH:icicle-kit-es-amp = "${WORKDIR}/git/mpfs_icicle"
 DT_FILES_PATH:mpfs-video-kit = "${WORKDIR}/git/mpfs_video"
 
 PV = "1.0+git${SRCPV}"
