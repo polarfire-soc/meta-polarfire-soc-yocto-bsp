@@ -19,13 +19,13 @@ S = "${WORKDIR}/git"
 
 EXT_CFLAGS += "--sysroot=${STAGING_DIR_TARGET}"
 EXT_CFLAGS += "-DMPFS_HAL_FIRST_HART=4 -DMPFS_HAL_LAST_HART=4"
+EXT_CFLAGS += "-fdebug-prefix-map=${TMPDIR}=${TARGET_DBGSRC_DIR}"
 
 PARALLEL_MAKE = ""
 EXTRA_OEMAKE = "REMOTE=1 REMOTEPROC=1 CROSS_COMPILE=${TARGET_PREFIX} EXT_CFLAGS='${EXT_CFLAGS}'"
 
 do_install() {
-    install -d ${D}${nonarch_base_libdir}/firmware
-    install ${S}/mpfs-rpmsg-${AMP_DEMO}/Remote-Default/mpfs-rpmsg-remote.elf ${D}${nonarch_base_libdir}/firmware/rproc-miv-rproc-fw
+    install -Dm 0644 ${S}/mpfs-rpmsg-${AMP_DEMO}/Remote-Default/mpfs-rpmsg-remote.elf ${D}/usr/lib/firmware/rproc-miv-rproc-fw
 }
 
 do_compile() {
@@ -40,4 +40,4 @@ addtask deploy after do_install
 
 COMPATIBLE_MACHINE = "(icicle-kit-es-amp)"
 
-FILES:${PN} += "/lib/firmware/"
+FILES:${PN} += "/usr/lib/firmware/rproc-miv-rproc-fw"
