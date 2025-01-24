@@ -16,5 +16,7 @@ KCONFIG_MODE="--alldefconfig"
 
 COMPATIBLE_MACHINE = "(icicle-kit|mpfs-video-kit|mpfs-disco-kit)"
 
+KERNEL_DTBVENDORED = "1"
+
 KERNEL_FEATURES:remove = "features/debug/printk.scc"
 KERNEL_FEATURES:remove = "features/kernel-sample/kernel-sample.scc"
