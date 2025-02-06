@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSN Web Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .countdown-display {
+            display: inline-block;
+            padding: 110px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .countdown {
+            font-size: 4em;
+            font-weight: bold;
+            color: #007BFF;
+            transition: all 0.05s ease-in-out;
+        }
+
+        #header {
+            background-color: #00004B;
+            color: white;
+            font-size: 24px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 60px;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+
+        .block {
+            width: 120px;
+            height: 100px;
+            background-color: #e0e0e0;
+            color: maroon;
+            font-weight: bold;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2em;
+            padding: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .block3 {
+            height: 260px;
+        }
+
+        @media (max-width: 768px) {
+            .flex-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo -->
+    <img src="mchp_logo.png" alt="Microchip" width="187" height="100" align="left">
+    <br><br><br><br><br><br>
+
+    <!-- Header -->
+    <div id="header">
+        PolarFire<sup>&reg;</sup> SoC TSN Demo
+    </div>
+
+    <br><br><br><br><br><br>
+
+<div class="flex-container">
+  <table>
+    <tr>
+      <td style="width: 20%;">
+        <div class="block" id="block1">Flood Traffic</div>
+      </td>
+      <td rowspan="1" style="width: 20%;">
+              <img src="arrow.png" alt="Arrow">
+      </td>
+      <td rowspan="3" style="width: 20%;">
+        <div class="block block3" id="block3">TSN</div>
+      </td>
+      <td rowspan="3" style="width: 20%;">
+              <img src="arrow.png" alt="Arrow">
+      </td>
+      <td rowspan="3" style="width: 20%;">
+        <div class="countdown-display">
+          <div id="server-countdown" class="countdown">00:00:00:000</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 20%;">
+        <div class="block" id="block2">Counter</div>
+      </td>
+      <td rowspan="1" style="width: 20%;">
+              <img src="arrow.png" alt="Arrow">
+      </td>
+      <td style="width: 20%;"> </td>
+      <td style="width: 20%;"> </td>
+      <td style="width: 20%;"> </td>
+    </tr>
+  </table>
+</div>
+
+<!-- Stepper Motor Control Button -->
+<div style="margin-top: 50px;">
+    <button id="stepperMotorButton" style="padding: 15px 30px; font-size: 18px; cursor: pointer;">
+        Start Stepper Motor
+    </button>
+</div>
+
+    <div style="margin-top: 50px;" id="footer">
+        <img src="footer_tsn.jpg" alt="Footer">
+    </div>
+
+    <script>
+        window.onload = function () {
+            fetch('start_countdown.php')
+                .then(response => response.text())
+                .then(data => console.log("Countdown Response:", data))
+                .catch(err => console.error("Error starting countdown:", err));
+
+            // Reset TSN block
+            const tsnBlock = document.getElementById('block3');
+            tsnBlock.style.backgroundColor = '#e0e0e0';
+            tsnBlock.style.color = 'maroon';
+
+            fetch('tsn_disable.php')
+                .then(response => response.text())
+                .then(data => console.log("TSN Reset Response:", data))
+                .catch(err => console.error("Error resetting TSN:", err));
+        };
+
+        const countdownBox = document.querySelector('.countdown-display');
+        let serverInterval;
+
+        function setLightingEffect(color) {
+            countdownBox.style.boxShadow = `0 0 20px 5px ${color}`;
+            countdownBox.style.transition = 'box-shadow 0.3s ease';
+        }
+
+        function removeLightingEffect() {
+            countdownBox.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.1)';
+        }
+
+        function startServerCounter() {
+            fetchServerCountdown();
+            serverInterval = setInterval(fetchServerCountdown, 1000);
+        }
+
+        function stopServerCounter() {
+            clearInterval(serverInterval);
+        }
+
+        function fetchServerCountdown() {
+            fetch('getcount.php')
+                .then(response => response.text())
+                .then(data => updateServerCountdownDisplay(data.trim()))
+                .catch(error => {
+                    console.error('Error fetching countdown:', error);
+                    serverCountdownElement.textContent = "Error!";
+                });
+        }
+
+        function updateServerCountdownDisplay(time) {
+            document.getElementById('server-countdown').textContent = time;
+        }
+
+        function toggleBackgroundColor(event) {
+            const block = event.target;
+
+            if (block.id === 'block1') {
+                block.style.backgroundColor = 'green';
+                block.style.color = 'white';
+                setLightingEffect('maroon');
+
+                fetch('execute_flood.php')
+                    .then(response => response.text())
+                    .then(data => console.log("Flood Traffic Response:", data))
+                    .catch(err => console.error("Flood Traffic Error:", err));
+
+                setTimeout(() => {
+                    block.style.backgroundColor = '#e0e0e0';
+                    block.style.color = 'maroon';
+                    removeLightingEffect();
+                }, 15000);
+            }
+
+            if (block.id === 'block2') {
+                if (block.style.backgroundColor === 'green') {
+                    block.style.backgroundColor = '#e0e0e0';
+                    block.style.color = 'maroon';
+                    stopServerCounter();
+                } else {
+                    block.style.backgroundColor = 'green';
+                    block.style.color = 'white';
+                    startServerCounter();
+                }
+            }
+
+            if (block.id === 'block3') {
+                if (block.style.backgroundColor === 'green') {
+                    block.style.backgroundColor = '#e0e0e0';
+                    block.style.color = 'maroon';
+
+                    fetch('tsn_disable.php')
+                        .then(response => response.text())
+                        .then(data => console.log("TSN Disable Response:", data))
+                        .catch(err => console.error("TSN Disable Error:", err));
+
+                    removeLightingEffect();
+                } else {
+                    block.style.backgroundColor = 'green';
+                    block.style.color = 'white';
+
+                    fetch('tsn_enable.php')
+                        .then(response => response.text())
+                        .then(data => console.log("TSN Enable Response:", data))
+                        .catch(err => console.error("TSN Enable Error:", err));
+
+                    setLightingEffect('rgba(0, 123, 255, 0.8)');
+                }
+            }
+        }
+
+        document.getElementById('block1').addEventListener('click', toggleBackgroundColor);
+        document.getElementById('block2').addEventListener('click', toggleBackgroundColor);
+        document.getElementById('block3').addEventListener('click', toggleBackgroundColor);
+
+        let motorInterval;
+        const motorButton = document.getElementById('stepperMotorButton');
+
+        motorButton.addEventListener('click', () => {
+            if (motorButton.textContent.trim() === 'Start Stepper Motor') {
+                motorButton.textContent = 'Stop Stepper Motor';
+                motorButton.style.backgroundColor = 'green';
+                motorButton.style.color = 'white';
+
+                motorInterval = setInterval(() => {
+                    fetch('run_motor.php')
+                        .then(response => response.text())
+                        .then(data => console.log("Motor Response:", data))
+                        .catch(err => console.error("Motor Error:", err));
+                }, 1000);
+            } else {
+                motorButton.textContent = 'Start Stepper Motor';
+                motorButton.style.backgroundColor = '';
+                motorButton.style.color = '';
+
+                clearInterval(motorInterval);
+            }
+        });
+    </script>
+</body>
+</html>
+

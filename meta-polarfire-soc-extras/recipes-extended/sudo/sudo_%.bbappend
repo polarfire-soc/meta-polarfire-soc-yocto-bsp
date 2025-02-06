@@ -8,6 +8,11 @@ do_install:append:mpfs-video-kit () {
     echo 'daemon ALL=(ALL:ALL) NOPASSWD: /srv/www/h264/ffmpeg.sh
     daemon ALL=(ALL:ALL) NOPASSWD: /srv/www/h264/stop.sh
     daemon ALL=(ALL:ALL) NOPASSWD: /srv/www/h264/update.sh
+    daemon ALL=(ALL:ALL) NOPASSWD: /srv/www/tsn/flood_traffic.sh
+    daemon ALL=(ALL:ALL) NOPASSWD: /srv/www/tsn/restart_countdown.sh
+    daemon ALL=(ALL:ALL) NOPASSWD: /srv/www/tsn/apply_tsn.sh
+    daemon ALL=(ALL:ALL) NOPASSWD: /srv/www/tsn/run_motor.sh
+    daemon ALL=(ALL:ALL) NOPASSWD: /srv/www/tsn/load_spi_device.sh
     daemon ALL=(ALL:ALL) NOPASSWD: /usr/bin/ffmpeg'  > "${D}/etc/sudoers.d/0001_${AUTHORIZED_USER_NAME}"
 
     chmod 0644 "${D}/etc/sudoers.d/0001_${AUTHORIZED_USER_NAME}"
