@@ -1,8 +1,6 @@
 ubifsload ${scriptaddr} boot/fitImage
 ubifsumount
 ubi detach
-setenv base_args "earlycon=sbi uio_pdrv_genirq.of_id=generic-uio"
-setenv bootargs "${base_args} ubi.mtd=1 root=ubi0:rootfs rootfstype=ubifs rootwait rw mtdparts=spi2.0:2m(payload),28m(ubi)"
 bootm start ${scriptaddr}#conf-microchip_mpfs-icicle-kit.dtb#conf-mpfs_icicle_pmod_sf3.dtbo
 bootm loados ${scriptaddr};
 # Try to load a ramdisk if available inside fitImage
