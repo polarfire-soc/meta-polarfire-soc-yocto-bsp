@@ -15,7 +15,25 @@ The complete User Guides for each development platform, containing board and boo
 - [MPFS-DISCO-KIT](https://mi-v-ecosystem.github.io/redirects/boards-mpfs-discovery-kit-user-guide) (PolarFire SoC Discovery Kit)
 - [M100PFSEVP](https://www.aries-embedded.com/evaluation-kit/fpga/polarfire-microchip-soc-fpga-m100pfsevp-riscv-hsmc-pmod) (ARIES Embedded M100PFSEVP PolarFire SoC-FPGA Evaluation Platform)
 
-## Build Instructions
+## Build instructions (using Kas)
+
+Before continuing, ensure that the prerequisite packages are present on your system. Please see the [Host PC setup for Yocto section](#Dependencies) for further details.
+
+Install Kas as per the documentation [here](https://kas.readthedocs.io/en/latest/userguide/getting-started.html)
+
+Run Kas with your machine definition to override the default machine `icicle-kit-es`
+
+```
+KAS_MACHINE=icicle-kit-es kas build kas.yml
+```
+
+NOTE: We have seen failures building `uboot-native` building on Ubuntu 24.04 LTS. If you think your host operating systsem might be causing issues the suggestion is to use `kas-container` to build within a container image to insulate from the host.
+
+```
+KAS_MACHINE=icicle-kit-es kas-container build kas.yml
+```
+
+## Build Instructions (using Repo)
 
 Before continuing, ensure that the prerequisite packages are present on your system. Please see the [Host PC setup for Yocto section](#Dependencies) for further details.
 
