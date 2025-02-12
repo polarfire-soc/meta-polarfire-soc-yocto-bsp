@@ -1,0 +1,62 @@
+#
+# To build with Kas use:
+#
+# `KAS_MACHINE=icicle-kit-es kas-container build kas.yml`
+# or
+# `KAS_MACHINE=beagleev-fire kas-container build kas.yml`
+# or your own choice of supported machine.
+#
+# NOTE: I've had failures building on certain hosts including Ubuntu 24.04 LTS so use kas-container to eliminate the
+#       host OS as a point of failure.
+#
+# For details contact Alex Lennon <ajlennon@dynamicdevices.co.uk>
+
+header:
+  version: 14
+
+distro: poky
+target: mpfs-dev-cli
+machine: icicle-kit-es
+
+repos:
+  meta-polarfire-soc-yocto-bsp:
+    layers:
+      meta-polarfire-soc-bsp:
+      meta-polarfire-soc-community:
+      meta-polarfire-soc-extras:
+
+  poky:
+    url: https://github.com/yoctoproject/poky.git
+    path: layers/poky
+    branch: kirkstone
+    commit: 6840d3b71ed6adfcd2c2e46daf8a93d3755c5d99
+    layers:
+      meta:
+      meta-poky:
+
+  meta-openembedded:
+    url: http://git.openembedded.org/meta-openembedded
+    path: layers/meta-openembedded
+    branch: kirkstone
+    commit: de8681b4a2a101b99dd2c48d89a7de2ccd9a961f
+    layers:
+      meta-oe:
+      meta-python:
+      meta-multimedia:
+      meta-networking:
+      meta-webserver:
+
+local_conf_header:
+  meta-polarfire-soc-yocto-bsp: |
+    EXTRA_IMAGE_FEATURES:append = " ssh-server-openssh package-management"
+    PACKAGECONFIG:append:pn-qemu-native = " sdl"
+    PACKAGECONFIG:append:pn-nativesdk-qemu = " sdl"
+    USER_CLASSES:append = " buildstats buildhistory buildstats-summary"
+    INHERIT += "uninative"
+    INHERIT += "create-spdx"
+    SPDX_PRETTY = "1"
+    DISTRO_FEATURES:append = " largefile multiarch pam systemd "
+    DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
+    VIRTUAL-RUNTIME_init_manager = "systemd"
+    HOSTTOOLS_NONFATAL:append = " ssh"
+    LICENSE_FLAGS_ACCEPTED = "commercial_ffmpeg commercial_gstreamer1.0-plugins-ugly commercial_x264 commercial_mpeg2dec"
