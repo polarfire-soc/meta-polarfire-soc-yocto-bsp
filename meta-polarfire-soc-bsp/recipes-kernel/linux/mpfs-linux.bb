@@ -23,6 +23,7 @@ SRC_URI:append:icicle-kit-es-amp = "file://qspi_flash.cfg \
 
 SRC_URI:append:mpfs-video-kit = " file://mpfs-v4l2.cfg \
                                   file://mpfs_crypto.cfg \
+                                  file://mpfs-tsn.cfg \
                                 "
 
 do_deploy:append() {
