@@ -1,3 +1,5 @@
+# Clear the first 140 blocks after the script address in case of clobber
+mw.l 8e000258 00000000 140
 ubifsload ${scriptaddr} boot/fitImage
 ubifsumount
 ubi detach
