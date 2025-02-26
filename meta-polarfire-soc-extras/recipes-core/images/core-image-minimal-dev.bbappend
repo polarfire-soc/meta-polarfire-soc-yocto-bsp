@@ -25,6 +25,8 @@ IMAGE_INSTALL:append:mpfs-video-kit = " \
     cryptodev-module \
     libkcapi \
     libnl \
+    linux-firmware-microchip \
+    linuxptp \
     "
 
 IMAGE_INSTALL:append:icicle-kit-es = " \
