@@ -11,6 +11,7 @@ WEB_PATH="/srv/www"
 MJPEG_PATH="/srv/www/mjpeg"
 OPENVX_PATH="/srv/www/php"
 H264_PATH="/srv/www/h264"
+TSN_PATH="/srv/www/tsn"
 SYSTEM_CONF="/etc"
 
 SRC_URI:append = "file://. "
@@ -21,6 +22,8 @@ do_install:append () {
 	install -m 0755 ${WORKDIR}/LICENSE ${D}${WEB_PATH}
 	install -d ${D}${H264_PATH}
 	install -m 0755 ${WORKDIR}/h264/* ${D}${H264_PATH}
+	install -d ${D}${TSN_PATH}
+	install -m 0755 ${WORKDIR}/tsn/* ${D}${TSN_PATH}
 	install -d ${D}/etc/systemd/network/
 	cp ${WORKDIR}/60-static-eth0.network ${D}/etc/systemd/network/
 	cp ${WORKDIR}/70-static-eth1.network ${D}/etc/systemd/network/
