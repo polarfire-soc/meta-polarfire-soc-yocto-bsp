@@ -8,11 +8,11 @@ DESCRIPTION = "Linux Example applications, includes the following \
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE;md5=06ec214e9fafe6d4515883d77674a453"
 
-DEPENDS = "collectd libgpiod  python3-flask"
+DEPENDS = "collectd libgpiod  python3-flask cjson"
 inherit systemd
 
 PV = "1.0+git${SRCPV}"
-SRCREV="50d7d66a2d62b8000c298879c52aba30ac9ca260"
+SRCREV="b39f04e5bdf0d8b623de07bc4bce9e6d6af48c80"
 SRC_URI = "git://github.com/polarfire-soc/polarfire-soc-linux-examples.git;protocol=https;nobranch=1 \
 	"
 

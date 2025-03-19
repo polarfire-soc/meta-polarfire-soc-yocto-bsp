@@ -7,5 +7,6 @@ EXAMPLE_FILES:append:mpfs-video-kit = "\
     multimedia/v4l2 \
     multimedia/v4l2/auto_enhance_osd/ \
     japll-pi-controller \
+    tsn \
     "
 
