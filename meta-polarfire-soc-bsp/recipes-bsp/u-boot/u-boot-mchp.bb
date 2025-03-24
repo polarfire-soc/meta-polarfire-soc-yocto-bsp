@@ -9,7 +9,7 @@ DEPENDS += "coreutils-native"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
 
 PV = "v2023.07-mchp+git${SRCPV}"
-SRCREV = "linux4microchip+fpga-2025.03-rc1"
+SRCREV = "linux4microchip+fpga-2025.03"
 SRC_URI = "git://github.com/linux4microchip/u-boot-mchp.git;protocol=https;nobranch=1  \
            file://${HSS_PAYLOAD}.yaml \
            "
