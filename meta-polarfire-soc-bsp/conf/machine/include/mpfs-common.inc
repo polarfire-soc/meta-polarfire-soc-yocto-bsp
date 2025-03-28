@@ -40,3 +40,5 @@ WKS_FILE_DEPENDS ?= " \
     bmaptool-native \
     u-boot-mchp \
 "
+
+SSTATE_ALLOW_OVERLAP_FILES += "${DEPLOY_DIR_SPDX}"
