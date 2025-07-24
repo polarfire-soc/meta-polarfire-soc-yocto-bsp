@@ -1,3 +1,7 @@
+**This repository is no longer maintained and will be archived.**
+
+For all PolarFire SoC Evaluation Kit Board Support Packages (BSPs), please visit: https://github.com/linux4microchip/meta-mchp
+
 # Microchip PolarFire SoC Yocto BSP
 
 Collection of OpenEmbedded/Yocto layers for PolarFire SoC.
