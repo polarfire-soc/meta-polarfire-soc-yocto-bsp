@@ -1,4 +1,4 @@
-**This repository is no longer maintained and will be archived.**
+**This repository is no longer maintained and has been archived.**
 
 For all PolarFire SoC Evaluation Kit Board Support Packages (BSPs), please visit: https://github.com/linux4microchip/meta-mchp
 
